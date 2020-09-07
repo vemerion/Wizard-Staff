@@ -1,0 +1,65 @@
+{
+  "clock_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:clock_sound",
+        "stream": false
+      }
+    ]
+  },
+  "plop_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:plop_sound",
+        "stream": false
+      }
+    ]
+  },
+  "pumpkin_magic_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:pumpkin_magic_sound",
+        "stream": false
+      }
+    ]
+  },
+  "ray_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:ray_sound",
+        "stream": false
+      }
+    ]
+  },
+  "scribble_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:scribble_sound",
+        "stream": false
+      }
+    ]
+  },
+  "woosh_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:woosh_sound",
+        "stream": false
+      }
+    ]
+  },
+  "burning_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:burning_sound",
+        "stream": false
+      }
+    ]
+  }
+}

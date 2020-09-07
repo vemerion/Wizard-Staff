@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "s s",
+    "sls",
+    " l "
+  ],
+  "key":
+  {
+    "s":
+    {
+      "item": "minecraft:cobblestone"
+    },
+    "l":
+    {
+      "item": "minecraft:stick"
+    }
+  },
+  "result":
+  {
+    "item": "wizard-staff:wizard_staff_item"
+  }
+}
