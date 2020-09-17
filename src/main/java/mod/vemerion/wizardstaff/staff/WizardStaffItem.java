@@ -202,7 +202,7 @@ public class WizardStaffItem extends Item {
 		if (count % 5 == 0)
 			player.playSound(Main.WOOSH_SOUND, 1, soundPitch());
 		if (!world.isRemote) {
-			cost(player, 2);
+			cost(player, 1);
 			Vec3d motion = player.getMotion();
 			player.fallDistance = 0;
 			Vec3d direction = Vec3d.fromPitchYaw(player.getPitchYaw()).scale(0.3);
@@ -298,9 +298,9 @@ public class WizardStaffItem extends Item {
 			Random rand = player.getRNG();
 			cost(player, 1);
 			Vec3d offset = Vec3d.fromPitchYaw(player.getPitchYaw());
-			for (Entity e : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().offset(offset),
+			for (Entity e : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().grow(0.3).offset(offset),
 					(e) -> e instanceof LivingEntity)) {
-				e.attackEntityFrom(DamageSource.causePlayerDamage(player), 1);
+				e.attackEntityFrom(DamageSource.causePlayerDamage(player), 2);
 				e.setFire(2);
 			}
 

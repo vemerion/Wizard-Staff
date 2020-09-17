@@ -2,7 +2,6 @@ package mod.vemerion.wizardstaff;
 
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.WizardHatItem;
-import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.EntityType;
