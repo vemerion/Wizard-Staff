@@ -2,12 +2,17 @@ package mod.vemerion.wizardstaff;
 
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.staff.WizardStaffScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.particle.FlameParticle;
+import net.minecraft.client.particle.RedstoneParticle;
+import net.minecraft.client.particle.SmokeParticle;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -34,6 +39,17 @@ public class ClientModEventSubscriber {
 		event.getItemColors().register((stack, tint) -> {
 			return tint > 0 ? -1 : ((IDyeableArmorItem) stack.getItem()).getColor(stack);
 		}, Main.WIZARD_HAT_ITEM);
+	}
+	
+	@SubscribeEvent
+	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
+		Minecraft.getInstance().particles.registerFactory(Main.MAGIC_SMOKE_PARTICLE_TYPE,
+				sprite -> new SmokeParticle.Factory(sprite));
+		Minecraft.getInstance().particles.registerFactory(Main.MAGIC_FLAME_PARTICLE_TYPE,
+				sprite -> new FlameParticle.Factory(sprite));
+		Minecraft.getInstance().particles.registerFactory(Main.MAGIC_DUST_PARTICLE_TYPE,
+				sprite -> new RedstoneParticle.Factory(sprite));
+
 	}
 	
 	public static <T extends IForgeRegistryEntry<T>> T setup(final T entry, final String name) {

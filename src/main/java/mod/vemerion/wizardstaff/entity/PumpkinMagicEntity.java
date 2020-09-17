@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.entity;
 import java.util.Random;
 import java.util.UUID;
 
+import mod.vemerion.wizardstaff.Main;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -10,7 +11,6 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
@@ -84,7 +84,7 @@ public class PumpkinMagicEntity extends Entity {
 			for (int j = 0; j < 50; j++) {
 				Vec3d offset = Vec3d.fromPitchYaw(random.nextFloat() * 360, rotationYaw + 90)
 						.scale((radius + random.nextDouble() * 0.4 - 0.2) * random.nextDouble());
-				serverWorld.spawnParticle(ParticleTypes.SMOKE, pos.x + offset.x, pos.y + offset.y, pos.z + offset.z, 1,
+				serverWorld.spawnParticle(Main.MAGIC_SMOKE_PARTICLE_TYPE, pos.x + offset.x, pos.y + offset.y, pos.z + offset.z, 1,
 						0, 0, 0, 0);
 			}
 		}
@@ -92,7 +92,7 @@ public class PumpkinMagicEntity extends Entity {
 		// Mouth
 		Vec3d pos = getPositionVec().add(sideways.x * 3, -1, sideways.z * 3);
 		for (int i = 0; i < 50; i++) {
-			serverWorld.spawnParticle(ParticleTypes.SMOKE, pos.x, pos.y + random.nextDouble() - 0.5, pos.z, 1, 0, 0, 0,
+			serverWorld.spawnParticle(Main.MAGIC_SMOKE_PARTICLE_TYPE, pos.x, pos.y + random.nextDouble() - 0.5, pos.z, 1, 0, 0, 0,
 					0);
 			pos = pos.add(-sideways.x * 0.12, 0, -sideways.z * 0.12);
 		}

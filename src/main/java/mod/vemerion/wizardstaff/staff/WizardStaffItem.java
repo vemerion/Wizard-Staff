@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
+import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.sound.WizardStaffTickableSound;
 import net.minecraft.block.Blocks;
@@ -26,8 +27,6 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
@@ -310,7 +309,7 @@ public class WizardStaffItem extends Item {
 				Vec3d direction = Vec3d.fromPitchYaw(player.rotationPitch + rand.nextFloat() * 30 - 15,
 						player.rotationYaw + rand.nextFloat() * 30 - 15);
 				Vec3d particlePos = player.getPositionVec().add(0, 1.5, 0).add(direction.scale(distance));
-				serverWorld.spawnParticle(ParticleTypes.FLAME, particlePos.x, particlePos.y, particlePos.z, 0, 0, 0, 0,
+				serverWorld.spawnParticle(Main.MAGIC_FLAME_PARTICLE_TYPE, particlePos.x, particlePos.y, particlePos.z, 0, 0, 0, 0,
 						1);
 			}
 		}
@@ -348,7 +347,7 @@ public class WizardStaffItem extends Item {
 				ServerWorld serverWorld = (ServerWorld) world;
 				Vec3d pos = player.getPositionVec().add(0, 1.5, 0).add(direction);
 				for (int i = 0; i < 25; i++) {
-					serverWorld.spawnParticle(new RedstoneParticleData(0.8f + rand.nextFloat() * 0.2f,
+					serverWorld.spawnParticle(new MagicDustParticleData(0.8f + rand.nextFloat() * 0.2f,
 							rand.nextFloat() * 0.2f, 0.8f + rand.nextFloat() * 0.2f, 1), pos.x, pos.y, pos.z, 1, 0, 0,
 							0, 0.1);
 					pos = pos.add(direction.scale(0.3));

@@ -8,6 +8,9 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
+import net.minecraft.particles.BasicParticleType;
+import net.minecraft.particles.ParticleType;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.extensions.IForgeContainerType;
@@ -36,6 +39,13 @@ public class ModEventSubscriber {
 		EntityType<PumpkinMagicEntity> pumpkinMagicEntity = EntityType.Builder
 				.<PumpkinMagicEntity>create(PumpkinMagicEntity::new, EntityClassification.MISC).size(1, 1F).build("pumpkin_magic_entity");
 		event.getRegistry().register(setup(pumpkinMagicEntity, "pumpkin_magic_entity"));
+	}
+	
+	@SubscribeEvent
+	public static void onIParticleTypeRegistration(RegistryEvent.Register<ParticleType<?>> event) {
+		event.getRegistry().register(setup(new BasicParticleType(true), "magic_smoke_particle_type"));
+		event.getRegistry().register(setup(new BasicParticleType(true), "magic_flame_particle_type"));
+		event.getRegistry().register(setup(new ParticleType<RedstoneParticleData>(true, RedstoneParticleData.DESERIALIZER), "magic_dust_particle_type"));
 
 	}
 	
