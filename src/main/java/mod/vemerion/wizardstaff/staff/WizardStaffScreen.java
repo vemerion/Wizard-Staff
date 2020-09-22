@@ -11,7 +11,7 @@ import net.minecraft.util.text.ITextComponent;
 
 public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/staff_screen.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/staff_screen_new.png");
 
 	public WizardStaffScreen(WizardStaffContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
 		super(screenContainer, inv, titleIn);
