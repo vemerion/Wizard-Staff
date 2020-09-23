@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Helper.Helper;
+import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -68,10 +69,13 @@ public class WizardStaffItem extends Item {
 
 		if (playerIn.isCrouching()) { // Open inventory if crouching
 			if (!worldIn.isRemote) {
+				boolean shouldAnimate = ScreenAnimations.getScreenAnimations(playerIn).shouldAnimate();
+
 				SimpleNamedContainerProvider provider = new SimpleNamedContainerProvider((id, inventory,
-						player) -> new WizardStaffContainer(id, inventory, getHandler(itemstack), itemstack),
+						player) -> new WizardStaffContainer(id, inventory, getHandler(itemstack), itemstack, shouldAnimate),
 						new StringTextComponent("Wizard Staff"));
-				NetworkHooks.openGui((ServerPlayerEntity) playerIn, provider);
+				NetworkHooks.openGui((ServerPlayerEntity) playerIn, provider,
+						(buffer) -> buffer.writeBoolean(shouldAnimate));
 			}
 			return ActionResult.resultSuccess(itemstack);
 		} else { // Use staff
@@ -309,8 +313,8 @@ public class WizardStaffItem extends Item {
 				Vec3d direction = Vec3d.fromPitchYaw(player.rotationPitch + rand.nextFloat() * 30 - 15,
 						player.rotationYaw + rand.nextFloat() * 30 - 15);
 				Vec3d particlePos = player.getPositionVec().add(0, 1.5, 0).add(direction.scale(distance));
-				serverWorld.spawnParticle(Main.MAGIC_FLAME_PARTICLE_TYPE, particlePos.x, particlePos.y, particlePos.z, 0, 0, 0, 0,
-						1);
+				serverWorld.spawnParticle(Main.MAGIC_FLAME_PARTICLE_TYPE, particlePos.x, particlePos.y, particlePos.z,
+						0, 0, 0, 0, 1);
 			}
 		}
 	}
@@ -391,7 +395,8 @@ public class WizardStaffItem extends Item {
 					.rayTraceBlocks(new RayTraceContext(start, stop, BlockMode.COLLIDER, FluidMode.NONE, player));
 			if (result.getType() == Type.BLOCK && world.getBlockState(result.getPos()).getBlock() == Blocks.STONE) {
 				BlockPos pos = result.getPos();
-				world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_STONE_BREAK, SoundCategory.PLAYERS, 1.5f, soundPitch());
+				world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_STONE_BREAK,
+						SoundCategory.PLAYERS, 1.5f, soundPitch());
 				cost(player, 50);
 				world.setBlockState(pos, Blocks.GOLD_ORE.getDefaultState());
 			}

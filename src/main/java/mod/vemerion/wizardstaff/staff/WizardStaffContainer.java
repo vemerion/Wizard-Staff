@@ -14,16 +14,18 @@ public class WizardStaffContainer extends Container {
 
 	private WizardStaffHandler handler;
 	private ItemStack heldItem;
+	private boolean shouldAnimate;
 
 	public static WizardStaffContainer createContainerClientSide(int id, PlayerInventory inventory,
 			PacketBuffer buffer) {
-		return new WizardStaffContainer(id, inventory, new WizardStaffHandler(), ItemStack.EMPTY);
+		return new WizardStaffContainer(id, inventory, new WizardStaffHandler(), ItemStack.EMPTY, buffer.readBoolean());
 	}
 
-	protected WizardStaffContainer(int id, PlayerInventory inventory, WizardStaffHandler handler, ItemStack heldItem) {
+	protected WizardStaffContainer(int id, PlayerInventory inventory, WizardStaffHandler handler, ItemStack heldItem, boolean shouldAnimate) {
 		super(Main.WIZARD_STAFF_CONTAINER, id);
 		this.handler = handler;
 		this.heldItem = heldItem;
+		this.shouldAnimate = shouldAnimate;
 
 		// Staff slot
 		addSlot(new SlotItemHandler(handler, 0, 80, 32));
@@ -39,6 +41,10 @@ public class WizardStaffContainer extends Container {
 		for (int x = 0; x < 9; ++x) {
 			this.addSlot(new Slot(inventory, x, 8 + x * 18, 142));
 		}
+	}
+	
+	public boolean shouldAnimate() {
+		return shouldAnimate;
 	}
 
 	@Override

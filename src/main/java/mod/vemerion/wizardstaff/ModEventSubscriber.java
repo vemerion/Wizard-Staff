@@ -1,7 +1,9 @@
 package mod.vemerion.wizardstaff;
 
+import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.WizardHatItem;
+import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.EntityClassification;
@@ -13,10 +15,12 @@ import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 @EventBusSubscriber(modid = Main.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -66,7 +70,16 @@ public class ModEventSubscriber {
 		SoundEvent burning_sound = new SoundEvent(new ResourceLocation(Main.MODID, "burning_sound"));
 		event.getRegistry().register(setup(burning_sound, "burning_sound"));
 
-	}      
+	}  
+	
+	@SubscribeEvent
+	public static void setup(FMLCommonSetupEvent event) {
+		CapabilityManager.INSTANCE.register(ScreenAnimations.class, new ScreenAnimations.ScreenAnimationsStorage(), ScreenAnimations::new);
+		
+		Network.INSTANCE.registerMessage(0, ScreenAnimations.class, ScreenAnimations::encode,
+				ScreenAnimations::decode, ScreenAnimations::handle);
+
+	}
 
 	public static <T extends IForgeRegistryEntry<T>> T setup(final T entry, final String name) {
 		return setup(entry, new ResourceLocation(Main.MODID, name));
