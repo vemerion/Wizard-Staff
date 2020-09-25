@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff;
 
+import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.WizardHatItem;
@@ -75,6 +76,7 @@ public class ModEventSubscriber {
 	@SubscribeEvent
 	public static void setup(FMLCommonSetupEvent event) {
 		CapabilityManager.INSTANCE.register(ScreenAnimations.class, new ScreenAnimations.ScreenAnimationsStorage(), ScreenAnimations::new);
+		CapabilityManager.INSTANCE.register(Experience.class, new Experience.ExperienceStorage(), Experience::new);
 		
 		Network.INSTANCE.registerMessage(0, ScreenAnimations.class, ScreenAnimations::encode,
 				ScreenAnimations::decode, ScreenAnimations::handle);

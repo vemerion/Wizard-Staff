@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Helper.Helper;
+import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
@@ -148,15 +149,16 @@ public class WizardStaffItem extends Item {
 		}
 	}
 
-	private void cost(PlayerEntity player, int amount) {
+	private void cost(PlayerEntity player, double amount) {
+		int whole = Experience.add(player, amount);
 		int exp = player.experienceTotal;
 
-		if (exp < amount) {
+		if (exp < whole) {
 			player.giveExperiencePoints(-exp);
-			amount -= exp;
-			player.attackEntityFrom(DamageSource.MAGIC, amount);
+			whole -= exp;
+			player.attackEntityFrom(DamageSource.MAGIC, whole);
 		} else {
-			player.giveExperiencePoints(-amount);
+			player.giveExperiencePoints(-whole);
 		}
 	}
 
@@ -300,7 +302,7 @@ public class WizardStaffItem extends Item {
 		if (!world.isRemote) {
 			ServerWorld serverWorld = (ServerWorld) world;
 			Random rand = player.getRNG();
-			cost(player, 1);
+			cost(player, 0.3);
 			Vec3d offset = Vec3d.fromPitchYaw(player.getPitchYaw());
 			for (Entity e : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().grow(0.3).offset(offset),
 					(e) -> e instanceof LivingEntity)) {
