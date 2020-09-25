@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff;
 
+import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
@@ -80,6 +81,8 @@ public class ModEventSubscriber {
 		
 		Network.INSTANCE.registerMessage(0, ScreenAnimations.class, ScreenAnimations::encode,
 				ScreenAnimations::decode, ScreenAnimations::handle);
+		
+		Magics.init();
 
 	}
 
