@@ -32,8 +32,8 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrixStackIn.scale(1.0F, -1.0F, -1.0F);
 		matrixStackIn.scale(0.5f, 0.5f, 0.5f);
 		IVertexBuilder builder = ItemRenderer.getBuffer(bufferIn,
-				this.STAFF.getRenderType(WizardStaffModel.TEXTURE_LOCATION), false, itemStackIn.hasEffect());
-		this.STAFF.render(matrixStackIn, builder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1F);
+				STAFF.getRenderType(WizardStaffModel.TEXTURE_LOCATION), false, itemStackIn.hasEffect());
+		STAFF.render(matrixStackIn, builder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1F);
 		matrixStackIn.push();
 		matrixStackIn.translate(0, -3.1, 0);
 		matrixStackIn.rotate(new Quaternion(180, ageInTicks, 0, true));
@@ -43,7 +43,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrixStackIn.pop();
 		matrixStackIn.pop();
 	}
-	
+
 	private static void renderStaff(ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 			int combinedLightIn, int combinedOverlayIn) {
 		ItemStack magic = ((WizardStaffItem) itemStackIn.getItem()).getMagic(itemStackIn);
@@ -65,8 +65,8 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrixStackIn.pop();
 	}
 
-	private static void renderOnlyStaffNoPop(ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
-			int combinedLightIn, int combinedOverlayIn) {
+	private static void renderOnlyStaffNoPop(ItemStack itemStackIn, MatrixStack matrixStackIn,
+			IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.push();
 		matrixStackIn.scale(1.0F, -1.0F, -1.0F);
 		matrixStackIn.scale(0.5f, 0.5f, 0.5f);
@@ -90,8 +90,8 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 
 	}
 
-	public static void buildup(float duration, int maxDuration, ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer,
-			int light, int combinedOverlayIn, float partialTicks, HandSide side) {
+	public static void buildup(float duration, int maxDuration, ItemStack stack, MatrixStack matrix,
+			IRenderTypeBuffer buffer, int light, int combinedOverlayIn, float partialTicks, HandSide side) {
 		float progress = duration / maxDuration;
 		Random random = new Random((int) duration % 5 + 5);
 		Vec3d offset = new Vec3d((random.nextDouble() * 0.6 - 0.3) * progress,
@@ -113,8 +113,8 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrix.pop();
 	}
 
-	public static void forward(float duration, int maxDuration, ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer,
-			int light, int combinedOverlayIn, float partialTicks, HandSide hand) {
+	public static void forward(float duration, int maxDuration, ItemStack stack, MatrixStack matrix,
+			IRenderTypeBuffer buffer, int light, int combinedOverlayIn, float partialTicks, HandSide hand) {
 		float offset = hand == HandSide.RIGHT ? 1 : -1;
 		float max = maxDuration > 20 ? 5 : maxDuration / 4;
 		float progress = MathHelper.clamp(duration / max, 0, 1);
@@ -156,8 +156,8 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrix.pop();
 	}
 
-	public static void swinging(float duration, int maxDuration, ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer,
-			int light, int combinedOverlayIn, float partialTicks, HandSide hand) {
+	public static void swinging(float duration, int maxDuration, ItemStack stack, MatrixStack matrix,
+			IRenderTypeBuffer buffer, int light, int combinedOverlayIn, float partialTicks, HandSide hand) {
 		matrix.push();
 		matrix.rotate(new Quaternion((float) MathHelper.sin((duration / 20) * (float) Math.PI * 2) * 30, 0, 0, true));
 		matrix.translate(hand == HandSide.RIGHT ? 1 : -1, -1, -1.2);
@@ -173,7 +173,8 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		float buildupProgress = duration / maxDuration;
 		Random random = new Random((int) duration % 5 + 5);
 		Vec3d offset = new Vec3d((random.nextDouble() * 0.5 - 0.25) * buildupProgress,
-				(random.nextDouble() * 0.5 - 0.25) * buildupProgress, (random.nextDouble() * 0.5 - 0.25) * buildupProgress);
+				(random.nextDouble() * 0.5 - 0.25) * buildupProgress,
+				(random.nextDouble() * 0.5 - 0.25) * buildupProgress);
 
 		matrix.push();
 		matrix.rotate(new Quaternion((float) MathHelper.clampedLerp(0, -45, progress), 0,
@@ -184,7 +185,26 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		renderStaff(stack, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
-	
+
+	public static void forwardWaving(float duration, int maxDuration, ItemStack stack, MatrixStack matrix,
+			IRenderTypeBuffer buffer, int light, int combinedOverlayIn, float partialTicks, HandSide hand) {
+		float offset = hand == HandSide.RIGHT ? 1 : -1;
+		float maxForward = maxDuration > 20 ? 5 : maxDuration / 4;
+		float forwardProgress = MathHelper.clamp(duration / maxForward, 0, 1);
+		Vec3d forward = new Vec3d(MathHelper.clampedLerp(0, -45, forwardProgress), 0,
+				MathHelper.clampedLerp(0, 35 * offset, forwardProgress));
+		Vec3d waving = new Vec3d(MathHelper.cos(duration / 20 * (float) Math.PI * 2) * 10, 0,
+				MathHelper.sin(duration / 20 * (float) Math.PI * 2) * 10);
+		matrix.push();
+		matrix.translate(0, -0.5, 0);
+		matrix.rotate(
+				new Quaternion((float) (forward.x + waving.x), (float) waving.y, (float) (forward.z + waving.z), true));
+		matrix.translate(0, 0.5, 0);
+		matrix.translate(offset, -0.5 - forwardProgress / 5, -1.2);
+		renderStaff(stack, matrix, buffer, light, combinedOverlayIn);
+		matrix.pop();
+	}
+
 	@FunctionalInterface
 	public static interface RenderMagic {
 		public void render(float duration, int maxDuration, ItemStack stack, MatrixStack matrix,

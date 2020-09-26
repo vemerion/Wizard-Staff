@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff;
 
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
+import mod.vemerion.wizardstaff.renderer.NetherPortalRenderer;
 import mod.vemerion.wizardstaff.staff.WizardStaffScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -32,6 +33,7 @@ public class ClientModEventSubscriber {
 						return null;
 					}
 				});
+		RenderingRegistry.registerEntityRenderingHandler(Main.NETHER_PORTAL_ENTITY, NetherPortalRenderer::new);
 	}
 	
 	@SubscribeEvent

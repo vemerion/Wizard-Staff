@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff;
 import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
+import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.WizardHatItem;
 import mod.vemerion.wizardstaff.network.Network;
@@ -45,6 +46,11 @@ public class ModEventSubscriber {
 		EntityType<PumpkinMagicEntity> pumpkinMagicEntity = EntityType.Builder
 				.<PumpkinMagicEntity>create(PumpkinMagicEntity::new, EntityClassification.MISC).size(1, 1F).build("pumpkin_magic_entity");
 		event.getRegistry().register(setup(pumpkinMagicEntity, "pumpkin_magic_entity"));
+		
+		EntityType<NetherPortalEntity> netherPortalEntity = EntityType.Builder
+				.<NetherPortalEntity>create(NetherPortalEntity::new, EntityClassification.MISC).size(1, 2F).immuneToFire().build("nether_portal_entity");
+		event.getRegistry().register(setup(netherPortalEntity, "nether_portal_entity"));
+
 	}
 	
 	@SubscribeEvent

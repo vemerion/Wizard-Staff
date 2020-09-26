@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mod.vemerion.wizardstaff.Magic.netherupdate.ObsidianMagic;
 import mod.vemerion.wizardstaff.Magic.original.BlazePowderMagic;
 import mod.vemerion.wizardstaff.Magic.original.CarvedPumpkinMagic;
 import mod.vemerion.wizardstaff.Magic.original.ClockMagic;
@@ -55,6 +56,7 @@ public class Magics {
 		magics.add(new LeatherHelmetMagic());
 		magics.add(new WizardStaffMagic());
 		magics.add(new WritableBookMagic());
+		magics.add(new ObsidianMagic());
 		magics.add(new NoMagic());
 	}
 
