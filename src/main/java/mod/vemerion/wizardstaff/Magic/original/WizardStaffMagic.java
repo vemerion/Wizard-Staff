@@ -46,6 +46,6 @@ public class WizardStaffMagic extends Magic {
 	
 	@Override
 	public RenderMagic renderer() {
-		return WizardStaffTileEntityRenderer::forwardBuildup;
+		return WizardStaffTileEntityRenderer::buildup;
 	}
 }

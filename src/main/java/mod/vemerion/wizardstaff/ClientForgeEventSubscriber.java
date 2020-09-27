@@ -8,7 +8,6 @@ import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraftforge.api.distmarker.Dist;
@@ -28,43 +27,15 @@ public class ClientForgeEventSubscriber {
 		if (item.equals(Main.WIZARD_STAFF_ITEM) && player.getActiveItemStack().equals(itemStack)) {
 			event.setCanceled(true);
 			Item magic = ((WizardStaffItem) item).getMagic(itemStack).getItem();
-			HandSide side = event.getHand() == Hand.MAIN_HAND ? player.getPrimaryHand() : player.getPrimaryHand().opposite();
-			WizardStaffTileEntityRenderer renderer = new WizardStaffTileEntityRenderer();
+			HandSide side = event.getHand() == Hand.MAIN_HAND ? player.getPrimaryHand()
+					: player.getPrimaryHand().opposite();
+			WizardStaffTileEntityRenderer renderer = (WizardStaffTileEntityRenderer) item
+					.getItemStackTileEntityRenderer();
 			int maxDuration = itemStack.getUseDuration();
-			float duration = (float)maxDuration
-					- ((float) player.getItemInUseCount() - partialTicks + 1.0f);
-			Magics.getInstance().get(magic).renderer().render(duration, maxDuration, itemStack, event.getMatrixStack(), event.getBuffers(), event.getLight(), OverlayTexture.NO_OVERLAY, partialTicks, side);
-//			if (magic.equals(Items.ELYTRA)) {
-//				renderer.helicopter(duration, maxDuration, itemStack, event.getMatrixStack(), event.getBuffers(), event.getLight(),
-//						OverlayTexture.NO_OVERLAY, partialTicks, side);
-//			} else if (magic.equals(Main.WIZARD_STAFF_ITEM)) {
-//				renderer.buildup(duration, maxDuration, itemStack, event.getMatrixStack(), event.getBuffers(), event.getLight(),
-//						OverlayTexture.NO_OVERLAY, partialTicks, side);
-//			} else if (magic.equals(Items.CLOCK)) {
-//				renderer.spinMagic(duration, maxDuration, itemStack, event.getMatrixStack(), event.getBuffers(), event.getLight(),
-//						OverlayTexture.NO_OVERLAY, partialTicks, side);
-//			} else if (magic.equals(Items.WRITABLE_BOOK)) {
-//				renderer.buildupMagic(duration, maxDuration, itemStack, event.getMatrixStack(), event.getBuffers(), event.getLight(),
-//						OverlayTexture.NO_OVERLAY, partialTicks, side);
-//			} else if (magic.equals(Items.CARVED_PUMPKIN)) {
-//				renderer.forward(duration, maxDuration, itemStack, event.getMatrixStack(), event.getBuffers(), event.getLight(),
-//						OverlayTexture.NO_OVERLAY, partialTicks, side);
-//			} else if (magic.equals(Items.JUKEBOX)) {
-//				renderer.swinging(duration, maxDuration, itemStack, event.getMatrixStack(), event.getBuffers(), event.getLight(),
-//						OverlayTexture.NO_OVERLAY, partialTicks, side);
-//			} else if (magic.equals(Items.BLAZE_POWDER)) {
-//				renderer.forward(duration, maxDuration, itemStack, event.getMatrixStack(), event.getBuffers(), event.getLight(),
-//						OverlayTexture.NO_OVERLAY, partialTicks, side);
-//			} else if (magic.equals(Items.LEATHER_HELMET)) {
-//				renderer.buildupMagic(duration, maxDuration, itemStack, event.getMatrixStack(), event.getBuffers(), event.getLight(),
-//						OverlayTexture.NO_OVERLAY, partialTicks, side);
-//			} else if (magic.equals(Items.EGG)) {
-//				renderer.forward(duration, maxDuration, itemStack, event.getMatrixStack(), event.getBuffers(), event.getLight(),
-//						OverlayTexture.NO_OVERLAY, partialTicks, side);
-//			} else if (magic.equals(Items.GOLD_INGOT)) {
-//				renderer.forwardBuildup(duration, maxDuration, itemStack, event.getMatrixStack(), event.getBuffers(), event.getLight(),
-//						OverlayTexture.NO_OVERLAY, partialTicks, side);
-//			}
+			float duration = (float) maxDuration - ((float) player.getItemInUseCount() - partialTicks + 1.0f);
+			Magics.getInstance().get(magic).renderer().render(renderer, duration, maxDuration, itemStack,
+					event.getMatrixStack(), event.getBuffers(), event.getLight(), OverlayTexture.NO_OVERLAY,
+					partialTicks, side);
 		}
 	}
 }

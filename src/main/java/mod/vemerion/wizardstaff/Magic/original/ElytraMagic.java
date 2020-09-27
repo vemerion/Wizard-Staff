@@ -42,7 +42,7 @@ public class ElytraMagic extends Magic {
 	
 	@Override
 	public RenderMagic renderer() {
-		return WizardStaffTileEntityRenderer::forwardBuildup;
+		return WizardStaffTileEntityRenderer::helicopter;
 	}
 
 }
