@@ -9,11 +9,11 @@
   {
     "s":
     {
-      "item": "minecraft:cobblestone"
+      "tag": "forge:cobblestone"
     },
     "l":
     {
-      "item": "minecraft:stick"
+      "tag": "forge:rods/wooden"
     }
   },
   "result":
