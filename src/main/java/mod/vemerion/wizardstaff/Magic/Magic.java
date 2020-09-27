@@ -16,6 +16,7 @@ public abstract class Magic {
 		return 0.8f + player.getRNG().nextFloat() * 0.4f;
 	}
 	
+	// FIXME: This only works in some cases due to how wierd the vanilla exp system is implemented
 	protected void cost(PlayerEntity player, double amount) {
 		int whole = Experience.add(player, amount);
 		int exp = player.experienceTotal;
