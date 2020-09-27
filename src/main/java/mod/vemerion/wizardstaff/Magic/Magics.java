@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.ObsidianMagic;
 import mod.vemerion.wizardstaff.Magic.original.BlazePowderMagic;
 import mod.vemerion.wizardstaff.Magic.original.CarvedPumpkinMagic;
@@ -57,6 +58,10 @@ public class Magics {
 		magics.add(new WizardStaffMagic());
 		magics.add(new WritableBookMagic());
 		magics.add(new ObsidianMagic());
+		magics.add(new GlowstoneDustMagic());
+		
+		
+		// This should be last
 		magics.add(new NoMagic());
 	}
 

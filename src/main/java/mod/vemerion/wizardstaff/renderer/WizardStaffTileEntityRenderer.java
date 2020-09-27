@@ -30,7 +30,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		renderOnlyMagic(itemStackIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.pop();
 	}
-	
+
 	protected Model getModel() {
 		return STAFF;
 	}
@@ -179,6 +179,19 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 				new Quaternion((float) (forward.x + waving.x), (float) waving.y, (float) (forward.z + waving.z), true));
 		matrix.translate(0, 0.5, 0);
 		matrix.translate(offset, -0.5 - forwardProgress / 5, -1.2);
+		renderer.render(stack, matrix, buffer, light, combinedOverlayIn);
+		matrix.pop();
+	}
+
+	public static void circling(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
+			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
+			float partialTicks, HandSide hand) {
+		matrix.push();
+		matrix.translate(0, -1, 0);
+		matrix.rotate(new Quaternion((float) MathHelper.cos((duration / 10) * (float) Math.PI * 2) * 10, 0,
+				(float) MathHelper.sin((duration / 10) * (float) Math.PI * 2) * 10, true));
+		matrix.translate(0, 1, 0);
+		matrix.translate(hand == HandSide.RIGHT ? 1 : -1, -1, -1.2);
 		renderer.render(stack, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
