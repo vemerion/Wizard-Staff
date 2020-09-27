@@ -57,7 +57,7 @@ public class WizardStaffContainer extends Container {
 		Slot slot = this.inventorySlots.get(index);
 		ItemStack stack = slot.getStack();
 		ItemStack copy = stack.copy();
-		if (slot != null && slot.getHasStack()) {
+		if (slot != null && slot.getHasStack() && stack != playerIn.getHeldItemMainhand()) {
 			if (index == 0) {
 				if (!mergeItemStack(stack, 1, 1 + 9 * 4, false))
 					return ItemStack.EMPTY;
