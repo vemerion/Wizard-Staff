@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class GlowstoneDustMagic extends Magic {
-	
+
 	private static final ResourceLocation GLOWSTONE_DUST = new ResourceLocation("forge", "dusts/glowstone");
 
 	@Override
@@ -31,11 +31,15 @@ public class GlowstoneDustMagic extends Magic {
 	public RenderMagic renderer() {
 		return WizardStaffTileEntityRenderer::circling;
 	}
-	
+
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		for (LivingEntity e : world.getEntitiesWithinAABB(LivingEntity.class, player.getBoundingBox().grow(10), e -> e != player)) {
-			e.addPotionEffect(new EffectInstance(Effects.GLOWING, 20 * 10));
+		if (!world.isRemote) {
+			cost(player, 50);
+			for (LivingEntity e : world.getEntitiesWithinAABB(LivingEntity.class, player.getBoundingBox().grow(10),
+					e -> e != player)) {
+				e.addPotionEffect(new EffectInstance(Effects.GLOWING, 20 * 10));
+			}
 		}
 		return super.magicFinish(world, player, staff);
 	}
