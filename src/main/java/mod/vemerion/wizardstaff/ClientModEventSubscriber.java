@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff;
 
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
+import mod.vemerion.wizardstaff.renderer.MagicWitherSkullRenderer;
 import mod.vemerion.wizardstaff.renderer.NetherPortalRenderer;
 import mod.vemerion.wizardstaff.staff.WizardStaffScreen;
 import net.minecraft.client.Minecraft;
@@ -34,6 +35,7 @@ public class ClientModEventSubscriber {
 					}
 				});
 		RenderingRegistry.registerEntityRenderingHandler(Main.NETHER_PORTAL_ENTITY, NetherPortalRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(Main.MAGIC_WITHER_SKULL_ENTITY, MagicWitherSkullRenderer::new);
 	}
 	
 	@SubscribeEvent

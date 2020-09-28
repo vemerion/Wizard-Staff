@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff;
 
+import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.WizardHatItem;
@@ -32,6 +33,9 @@ public class Main {
 	
 	@ObjectHolder(Main.MODID + ":nether_portal_entity")
 	public static final EntityType<NetherPortalEntity> NETHER_PORTAL_ENTITY = null;
+	
+	@ObjectHolder(Main.MODID + ":magic_wither_skull_entity")
+	public static final EntityType<MagicWitherSkullEntity> MAGIC_WITHER_SKULL_ENTITY = null;
 	
 	@ObjectHolder(Main.MODID + ":magic_smoke_particle_type")
 	public static final BasicParticleType MAGIC_SMOKE_PARTICLE_TYPE = null;

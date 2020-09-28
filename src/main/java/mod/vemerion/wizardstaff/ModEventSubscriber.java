@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff;
 import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
+import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.WizardHatItem;
@@ -50,6 +51,10 @@ public class ModEventSubscriber {
 		EntityType<NetherPortalEntity> netherPortalEntity = EntityType.Builder
 				.<NetherPortalEntity>create(NetherPortalEntity::new, EntityClassification.MISC).size(1, 2F).immuneToFire().build("nether_portal_entity");
 		event.getRegistry().register(setup(netherPortalEntity, "nether_portal_entity"));
+
+		EntityType<MagicWitherSkullEntity> magicWitherSkullEntity = EntityType.Builder
+				.<MagicWitherSkullEntity>create(MagicWitherSkullEntity::new, EntityClassification.MISC).size(0.3125F, 0.3125F).immuneToFire().build("magic_wither_skull_entity");
+		event.getRegistry().register(setup(magicWitherSkullEntity, "magic_wither_skull_entity"));
 
 	}
 	

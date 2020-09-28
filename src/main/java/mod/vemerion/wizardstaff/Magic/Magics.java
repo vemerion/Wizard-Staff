@@ -8,6 +8,7 @@ import java.util.Map;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherrackMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.ObsidianMagic;
+import mod.vemerion.wizardstaff.Magic.netherupdate.WitherSkullMagic;
 import mod.vemerion.wizardstaff.Magic.original.BlazePowderMagic;
 import mod.vemerion.wizardstaff.Magic.original.CarvedPumpkinMagic;
 import mod.vemerion.wizardstaff.Magic.original.ClockMagic;
@@ -61,6 +62,7 @@ public class Magics {
 		magics.add(new ObsidianMagic());
 		magics.add(new GlowstoneDustMagic());
 		magics.add(new NetherrackMagic());
+		magics.add(new WitherSkullMagic());
 		
 		
 		// This should be last
