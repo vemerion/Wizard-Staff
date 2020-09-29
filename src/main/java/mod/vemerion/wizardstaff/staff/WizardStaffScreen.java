@@ -81,12 +81,14 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 		}
 
 		// Face
+		RenderSystem.enableBlend();
 		RenderSystem.alphaFunc(516, 0);
 		RenderSystem.color4f(1, 1, 1,
 				Math.max(0, MathHelper.sin((ticks + partialTicks) / 160 * (float) Math.PI * 2) * 0.3f));
 		blit(guiLeft + FACE_X, guiTop + FACE_Y, ANIMATION_FACE_X, 0, FACE_WIDTH, FACE_HEIGHT);
 		RenderSystem.color4f(1, 1, 1, 1);
 		RenderSystem.defaultAlphaFunc();
+		RenderSystem.disableBlend();
 	}
 
 	@Override
