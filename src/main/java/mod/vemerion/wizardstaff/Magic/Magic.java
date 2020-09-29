@@ -1,8 +1,10 @@
 package mod.vemerion.wizardstaff.Magic;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -17,12 +19,18 @@ public abstract class Magic {
 	}
 
 	protected void cost(PlayerEntity player, double amount) {
-		int whole = Experience.add(player, amount);
+		int whole = Experience.add(player, amount * discount(player));
 		double debt = debt(player, whole);
 		player.giveExperiencePoints(-whole);
 		if (debt > 0)
 			player.attackEntityFrom(DamageSource.MAGIC, (float) debt);
 
+	}
+
+	private double discount(PlayerEntity player) {
+		return player.inventory.armorInventory.get(EquipmentSlotType.HEAD.getIndex()).getItem() == Main.WIZARD_HAT_ITEM
+				? 0.9
+				: 1;
 	}
 
 	private double debt(PlayerEntity player, double amount) {
