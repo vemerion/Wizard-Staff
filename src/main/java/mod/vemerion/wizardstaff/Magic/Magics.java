@@ -7,6 +7,7 @@ import java.util.Map;
 
 import mod.vemerion.wizardstaff.Magic.netherupdate.GhastTearMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
+import mod.vemerion.wizardstaff.Magic.netherupdate.NetherBrickMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherrackMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.ObsidianMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.WitherSkullMagic;
@@ -65,6 +66,7 @@ public class Magics {
 		magics.add(new NetherrackMagic());
 		magics.add(new WitherSkullMagic());
 		magics.add(new GhastTearMagic());
+		magics.add(new NetherBrickMagic());
 		
 		
 		// This should be last
