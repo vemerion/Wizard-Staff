@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -39,7 +38,7 @@ public class WizardStaffItem extends Item {
 				SimpleNamedContainerProvider provider = new SimpleNamedContainerProvider(
 						(id, inventory, player) -> new WizardStaffContainer(id, inventory, getHandler(itemstack),
 								itemstack, shouldAnimate),
-						new StringTextComponent("Wizard Staff"));
+						getDisplayName(itemstack));
 				NetworkHooks.openGui((ServerPlayerEntity) playerIn, provider,
 						(buffer) -> buffer.writeBoolean(shouldAnimate));
 			}

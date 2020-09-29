@@ -1,5 +1,6 @@
 {
   "item.wizard-staff.wizard_staff_item": "Wizard Staff",
   "item.wizard-staff.wizard_hat_item": "Wizard Hat",
-  "item.wizard-staff.wizard_hat_item.description": "-10% spell cost"
+  "item.wizard-staff.wizard_hat_item.description": "-10% spell cost",
+  "gui.wizard-staff.toggle_animations": "Toggle GUI animations"
 }

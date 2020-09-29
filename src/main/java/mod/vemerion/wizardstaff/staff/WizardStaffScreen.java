@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 
@@ -99,7 +100,7 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 		super.render(mouseX, mouseY, partialTicks);
 		renderHoveredToolTip(mouseX, mouseY);
 		if (toggleAnimationsButton.isHovered())
-			renderTooltip("Toggle GUI animations", mouseX, mouseY);
+			renderTooltip(new TranslationTextComponent("gui.wizard-staff.toggle_animations").getFormattedText(), mouseX, mouseY);
 	}
 
 }
