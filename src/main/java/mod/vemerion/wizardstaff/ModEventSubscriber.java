@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff;
 import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
+import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
@@ -56,6 +57,9 @@ public class ModEventSubscriber {
 				.<MagicWitherSkullEntity>create(MagicWitherSkullEntity::new, EntityClassification.MISC).size(0.3125F, 0.3125F).immuneToFire().build("magic_wither_skull_entity");
 		event.getRegistry().register(setup(magicWitherSkullEntity, "magic_wither_skull_entity"));
 
+		EntityType<MagicSoulSandArmEntity> magicSoulSandArmEntity = EntityType.Builder
+				.<MagicSoulSandArmEntity>create(MagicSoulSandArmEntity::new, EntityClassification.MISC).size(1, 1).immuneToFire().build("magic_soul_sand_arm_entity");
+		event.getRegistry().register(setup(magicSoulSandArmEntity, "magic_soul_sand_arm_entity"));
 	}
 	
 	@SubscribeEvent

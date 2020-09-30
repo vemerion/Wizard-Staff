@@ -10,6 +10,7 @@ import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherBrickMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherrackMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.ObsidianMagic;
+import mod.vemerion.wizardstaff.Magic.netherupdate.SoulSandMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.WitherSkullMagic;
 import mod.vemerion.wizardstaff.Magic.original.BlazePowderMagic;
 import mod.vemerion.wizardstaff.Magic.original.CarvedPumpkinMagic;
@@ -67,6 +68,7 @@ public class Magics {
 		magics.add(new WitherSkullMagic());
 		magics.add(new GhastTearMagic());
 		magics.add(new NetherBrickMagic());
+		magics.add(new SoulSandMagic());
 		
 		
 		// This should be last
