@@ -38,7 +38,7 @@ public class NetherBrickMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (world.getDimension().getType() == DimensionType.THE_NETHER) {
 			if (!world.isRemote) {
-				cost(player, 50);
+				cost(player, 60);
 				BlockPos fortressPos = ((ServerWorld) world).findNearestStructure("Fortress", player.getPosition(), 100, false);
 				if (fortressPos != null) {
 					player.lookAt(EntityAnchorArgument.Type.EYES, new Vec3d(fortressPos));

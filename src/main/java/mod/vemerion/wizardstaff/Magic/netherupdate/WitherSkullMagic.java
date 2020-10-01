@@ -15,7 +15,7 @@ public class WitherSkullMagic extends Magic {
 
 	@Override
 	public int getUseDuration(ItemStack staff) {
-		return 30;
+		return 15;
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class WitherSkullMagic extends Magic {
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote) {
-			cost(player, 100);			
+			cost(player, 20);			
 			Vec3d direction = Vec3d.fromPitchYaw(player.getPitchYaw());
 			Vec3d position = player.getPositionVec().add(direction.getX() * 1, 1.2, direction.getZ() * 1);
 			MagicWitherSkullEntity skull = new MagicWitherSkullEntity(position.getX(), position.getY(),

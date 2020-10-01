@@ -35,7 +35,7 @@ public class GlowstoneDustMagic extends Magic {
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote) {
-			cost(player, 50);
+			cost(player, 40);
 			for (LivingEntity e : world.getEntitiesWithinAABB(LivingEntity.class, player.getBoundingBox().grow(10),
 					e -> e != player)) {
 				e.addPotionEffect(new EffectInstance(Effects.GLOWING, 20 * 10));
