@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
@@ -19,7 +20,7 @@ public class GlowstoneDustMagic extends Magic {
 
 	@Override
 	public int getUseDuration(ItemStack staff) {
-		return 30;
+		return 40;
 	}
 
 	@Override
@@ -30,6 +31,13 @@ public class GlowstoneDustMagic extends Magic {
 	@Override
 	public RenderMagic renderer() {
 		return WizardStaffTileEntityRenderer::circling;
+	}
+	
+	@Override
+	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
+		if (count % 11 == 0)
+			player.playSound(Main.RADAR_SOUND, 0.35f, 1);
+		super.magicTick(world, player, staff, count);
 	}
 
 	@Override

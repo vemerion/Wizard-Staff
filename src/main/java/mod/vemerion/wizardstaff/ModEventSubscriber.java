@@ -86,7 +86,16 @@ public class ModEventSubscriber {
 		event.getRegistry().register(setup(woosh_sound, "woosh_sound"));
 		SoundEvent burning_sound = new SoundEvent(new ResourceLocation(Main.MODID, "burning_sound"));
 		event.getRegistry().register(setup(burning_sound, "burning_sound"));
-
+		SoundEvent portal_sound = new SoundEvent(new ResourceLocation(Main.MODID, "portal_sound"));
+		event.getRegistry().register(setup(portal_sound, "portal_sound"));
+		SoundEvent radar_sound = new SoundEvent(new ResourceLocation(Main.MODID, "radar_sound"));
+		event.getRegistry().register(setup(radar_sound, "radar_sound"));
+		SoundEvent skeleton_sound = new SoundEvent(new ResourceLocation(Main.MODID, "skeleton_sound"));
+		event.getRegistry().register(setup(skeleton_sound, "skeleton_sound"));
+		SoundEvent sniffle_sound = new SoundEvent(new ResourceLocation(Main.MODID, "sniffle_sound"));
+		event.getRegistry().register(setup(sniffle_sound, "sniffle_sound"));
+		SoundEvent warp_sound = new SoundEvent(new ResourceLocation(Main.MODID, "warp_sound"));
+		event.getRegistry().register(setup(warp_sound, "warp_sound"));
 	}  
 	
 	@SubscribeEvent

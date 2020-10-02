@@ -8,6 +8,8 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 public abstract class Magic {
@@ -16,6 +18,11 @@ public abstract class Magic {
 
 	protected float soundPitch(PlayerEntity player) {
 		return 0.8f + player.getRNG().nextFloat() * 0.4f;
+	}
+
+	protected void playSoundServer(World world, PlayerEntity player, SoundEvent sound, float volume, float pitch) {
+		world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), sound, SoundCategory.PLAYERS,
+				volume, pitch);
 	}
 
 	protected void cost(PlayerEntity player, double amount) {

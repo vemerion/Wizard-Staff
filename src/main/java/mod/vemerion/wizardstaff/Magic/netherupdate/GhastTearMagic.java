@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 
 import java.util.Random;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
@@ -35,6 +36,8 @@ public class GhastTearMagic extends Magic {
 
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
+		if (count % 13 == 0)
+			player.playSound(Main.SNIFFLE_SOUND, 0.6f, soundPitch(player) * 2);
 		if (!world.isRemote) {
 			cost(player, 0.5);
 			player.extinguish();

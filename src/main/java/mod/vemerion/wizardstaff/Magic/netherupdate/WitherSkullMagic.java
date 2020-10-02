@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -30,6 +31,7 @@ public class WitherSkullMagic extends Magic {
 	
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
+		player.playSound(Main.SKELETON_SOUND, 0.85f, soundPitch(player));
 		if (!world.isRemote) {
 			cost(player, 20);			
 			Vec3d direction = Vec3d.fromPitchYaw(player.getPitchYaw());

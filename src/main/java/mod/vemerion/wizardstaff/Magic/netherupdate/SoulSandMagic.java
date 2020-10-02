@@ -37,6 +37,7 @@ public class SoulSandMagic extends Magic {
 
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
+		player.playSound(Main.PUMPKIN_MAGIC_SOUND, 0.2f, soundPitch(player));
 		if (!world.isRemote) {
 			cost(player, 40);
 			spawnArms(world, player);

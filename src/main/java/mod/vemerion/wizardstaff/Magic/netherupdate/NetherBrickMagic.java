@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
@@ -37,16 +38,19 @@ public class NetherBrickMagic extends Magic {
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (world.getDimension().getType() == DimensionType.THE_NETHER) {
+			player.playSound(Main.WARP_SOUND, 0.8f, soundPitch(player));
 			if (!world.isRemote) {
 				cost(player, 60);
-				BlockPos fortressPos = ((ServerWorld) world).findNearestStructure("Fortress", player.getPosition(), 100, false);
+				BlockPos fortressPos = ((ServerWorld) world).findNearestStructure("Fortress", player.getPosition(), 100,
+						false);
 				if (fortressPos != null) {
 					player.lookAt(EntityAnchorArgument.Type.EYES, new Vec3d(fortressPos));
 				}
 			}
 		} else {
 			if (!world.isRemote) {
-				world.createExplosion(null, player.getPosX(), player.getPosY(), player.getPosZ(), 1, Explosion.Mode.BREAK);
+				world.createExplosion(null, player.getPosX(), player.getPosY(), player.getPosZ(), 1,
+						Explosion.Mode.BREAK);
 			}
 			return ItemStack.EMPTY;
 		}

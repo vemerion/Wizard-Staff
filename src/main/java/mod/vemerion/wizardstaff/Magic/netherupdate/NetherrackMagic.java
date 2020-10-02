@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
@@ -35,7 +36,10 @@ public class NetherrackMagic extends Magic {
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (!world.isRemote && player.ticksExisted % 10 == 0) {
-			cost(player, rackify(world, player));
+			int cost = rackify(world, player);
+			cost(player, cost);
+			if (cost > 0)
+				playSoundServer(world, player, SoundEvents.BLOCK_STONE_PLACE, 1, soundPitch(player));
 		}
 	}
 

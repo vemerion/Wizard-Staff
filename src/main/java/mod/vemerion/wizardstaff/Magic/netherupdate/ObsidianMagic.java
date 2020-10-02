@@ -43,6 +43,7 @@ public class ObsidianMagic extends Magic {
 				NetherPortalEntity portal = new NetherPortalEntity(Main.NETHER_PORTAL_ENTITY, world);
 				portal.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, player.rotationYaw, 0);
 				world.addEntity(portal);
+				playSoundServer(world, player, Main.PORTAL_SOUND, 1, soundPitch(player));
 			}
 		}
 		return super.magicFinish(world, player, staff);

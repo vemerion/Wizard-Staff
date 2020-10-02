@@ -70,4 +70,19 @@ public class Main {
 	
 	@ObjectHolder("wizard-staff:burning_sound")
 	public static final SoundEvent BURNING_SOUND = null;
+	
+	@ObjectHolder(Main.MODID + ":portal_sound")
+	public static final SoundEvent PORTAL_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":radar_sound")
+	public static final SoundEvent RADAR_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":skeleton_sound")
+	public static final SoundEvent SKELETON_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":sniffle_sound")
+	public static final SoundEvent SNIFFLE_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":warp_sound")
+	public static final SoundEvent WARP_SOUND = null;
 }

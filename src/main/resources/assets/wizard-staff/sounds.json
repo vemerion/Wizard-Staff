@@ -61,5 +61,50 @@
         "stream": false
       }
     ]
+  },
+  "portal_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:portal_sound",
+        "stream": false
+      }
+    ]
+  },
+  "radar_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:radar_sound",
+        "stream": false
+      }
+    ]
+  },
+  "skeleton_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:skeleton_sound",
+        "stream": false
+      }
+    ]
+  },
+  "sniffle_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:sniffle_sound",
+        "stream": false
+      }
+    ]
+  },
+  "warp_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:warp_sound",
+        "stream": false
+      }
+    ]
   }
 }
