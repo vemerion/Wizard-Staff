@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -38,12 +38,12 @@ public class EggMagic extends Magic {
 			player.playSound(Main.RAY_SOUND, 0.6f, 0.95f + player.getRNG().nextFloat() * 0.05f);
 		}
 		if (!world.isRemote) {
-			Vec3d direction = Vec3d.fromPitchYaw(player.getPitchYaw());
+			Vector3d direction = Vector3d.fromPitchYaw(player.getPitchYaw());
 			Entity target = Helper.findTargetLine(player.getPositionVec().add(0, 1.5, 0), direction, 7, world, player);
 			if (target != null) {
 				Random rand = player.getRNG();
 				ServerWorld serverWorld = (ServerWorld) world;
-				Vec3d pos = player.getPositionVec().add(0, 1.5, 0).add(direction);
+				Vector3d pos = player.getPositionVec().add(0, 1.5, 0).add(direction);
 				for (int i = 0; i < 25; i++) {
 					serverWorld.spawnParticle(new MagicDustParticleData(0.8f + rand.nextFloat() * 0.2f,
 							rand.nextFloat() * 0.2f, 0.8f + rand.nextFloat() * 0.2f, 1), pos.x, pos.y, pos.z, 1, 0, 0,
@@ -60,7 +60,7 @@ public class EggMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote) {
 			Entity target = Helper.findTargetLine(player.getPositionVec().add(0, 1.5, 0),
-					Vec3d.fromPitchYaw(player.getPitchYaw()), 7, world, player);
+					Vector3d.fromPitchYaw(player.getPitchYaw()), 7, world, player);
 			if (target != null) {
 				target.playSound(Main.PLOP_SOUND, 1, soundPitch(player));
 				SpawnEggItem egg = null;

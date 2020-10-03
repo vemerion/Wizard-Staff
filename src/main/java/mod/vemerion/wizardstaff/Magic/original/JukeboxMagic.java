@@ -18,7 +18,6 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 
 public class JukeboxMagic extends Magic {
@@ -32,22 +31,14 @@ public class JukeboxMagic extends Magic {
 	public boolean isMagicItem(Item item) {
 		return item == Items.JUKEBOX;
 	}
-	
+
 	@Override
 	public void magicStart(World world, PlayerEntity player, ItemStack staff) {
 		if (world.isRemote) {
-			DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-				playMusic(player, staff);
-			});
+			DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> PlayMusic.play(player, staff));
 		}
 	}
-	
-	@OnlyIn(Dist.CLIENT)
-	private void playMusic(PlayerEntity player, ItemStack staff) {
-		WizardStaffTickableSound sound = new WizardStaffTickableSound(player, staff);
-		Minecraft.getInstance().getSoundHandler().play(sound);
-	}
-	
+
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		List<Entity> entities = world.getEntitiesInAABBexcluding(player, player.getBoundingBox().grow(4),
@@ -68,10 +59,24 @@ public class JukeboxMagic extends Magic {
 		if (!world.isRemote)
 			cost(player, 2 + entities.size());
 	}
-	
+
 	@Override
 	public RenderMagic renderer() {
 		return WizardStaffTileEntityRenderer::swinging;
+	}
+
+	private static class PlayMusic {
+		private static DistExecutor.SafeRunnable play(PlayerEntity player, ItemStack staff) {
+			return new DistExecutor.SafeRunnable() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void run() {
+					WizardStaffTickableSound sound = new WizardStaffTickableSound(player, staff);
+					Minecraft.getInstance().getSoundHandler().play(sound);
+				}
+			};
+		}
 	}
 
 }

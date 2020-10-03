@@ -25,7 +25,7 @@ public class GlowstoneDustMagic extends Magic {
 
 	@Override
 	public boolean isMagicItem(Item item) {
-		return ItemTags.getCollection().getOrCreate(GLOWSTONE_DUST).contains(item);
+		return ItemTags.getCollection().getTagByID(GLOWSTONE_DUST).contains(item);
 	}
 
 	@Override

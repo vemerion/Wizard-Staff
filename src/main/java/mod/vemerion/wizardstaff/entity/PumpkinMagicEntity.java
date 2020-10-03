@@ -15,7 +15,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -40,7 +40,7 @@ public class PumpkinMagicEntity extends Entity {
 	public void tick() {
 		super.tick();
 
-		move(MoverType.SELF, Vec3d.fromPitchYaw(getPitchYaw()).scale(0.1));
+		move(MoverType.SELF, Vector3d.fromPitchYaw(getPitchYaw()).scale(0.1));
 		if (!world.isRemote) {
 			spawnParticles();
 			collision();
@@ -57,8 +57,8 @@ public class PumpkinMagicEntity extends Entity {
 	}
 
 	private void collision() {
-		Vec3d sideways = Vec3d.fromPitchYaw(0, rotationYaw + 90);
-		Vec3d pos = getPositionVec().add(sideways.x * 3, 0, sideways.z * 3);
+		Vector3d sideways = Vector3d.fromPitchYaw(0, rotationYaw + 90);
+		Vector3d pos = getPositionVec().add(sideways.x * 3, 0, sideways.z * 3);
 		PlayerEntity shooter = getShooter();
 		DamageSource source = shooter == null ? DamageSource.MAGIC : DamageSource.causePlayerDamage(shooter);
 		for (int i = 0; i < 6; i++) {
@@ -74,15 +74,15 @@ public class PumpkinMagicEntity extends Entity {
 
 	private void spawnParticles() {
 		ServerWorld serverWorld = (ServerWorld) world;
-		Vec3d sideways = Vec3d.fromPitchYaw(0, rotationYaw + 90);
+		Vector3d sideways = Vector3d.fromPitchYaw(0, rotationYaw + 90);
 		Random random = new Random(0);
 
 		// Eyes
 		double radius = 1.7;
 		for (int i = -1; i < 2; i += 2) {
-			Vec3d pos = getPositionVec().add(sideways.x * 2 * i, 2, sideways.z * 2 * i);
+			Vector3d pos = getPositionVec().add(sideways.x * 2 * i, 2, sideways.z * 2 * i);
 			for (int j = 0; j < 50; j++) {
-				Vec3d offset = Vec3d.fromPitchYaw(random.nextFloat() * 360, rotationYaw + 90)
+				Vector3d offset = Vector3d.fromPitchYaw(random.nextFloat() * 360, rotationYaw + 90)
 						.scale((radius + random.nextDouble() * 0.4 - 0.2) * random.nextDouble());
 				serverWorld.spawnParticle(Main.MAGIC_SMOKE_PARTICLE_TYPE, pos.x + offset.x, pos.y + offset.y, pos.z + offset.z, 1,
 						0, 0, 0, 0);
@@ -90,7 +90,7 @@ public class PumpkinMagicEntity extends Entity {
 		}
 
 		// Mouth
-		Vec3d pos = getPositionVec().add(sideways.x * 3, -1, sideways.z * 3);
+		Vector3d pos = getPositionVec().add(sideways.x * 3, -1, sideways.z * 3);
 		for (int i = 0; i < 50; i++) {
 			serverWorld.spawnParticle(Main.MAGIC_SMOKE_PARTICLE_TYPE, pos.x, pos.y + random.nextDouble() - 0.5, pos.z, 1, 0, 0, 0,
 					0);

@@ -7,12 +7,12 @@ import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.model.NetherPortalModel;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Quaternion;
 
 public class NetherPortalRenderer extends EntityRenderer<NetherPortalEntity> {
 	public static final ResourceLocation TEXTURES = new ResourceLocation(Main.MODID,

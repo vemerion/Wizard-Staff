@@ -10,9 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 
 public class ObsidianMagic extends Magic {
 
@@ -33,10 +32,10 @@ public class ObsidianMagic extends Magic {
 
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote && player.dimension == DimensionType.OVERWORLD) {
-			Vec3d spawnPos = player.getPositionVec()
-					.add(Vec3d.fromPitchYaw(player.rotationPitch, player.rotationYaw).scale(2));
-			spawnPos = new Vec3d(spawnPos.x, Math.max(player.getPosY(), spawnPos.y), spawnPos.z);
+		if (!world.isRemote && world.getDimensionKey() == World.OVERWORLD) {
+			Vector3d spawnPos = player.getPositionVec()
+					.add(Vector3d.fromPitchYaw(player.rotationPitch, player.rotationYaw).scale(2));
+			spawnPos = new Vector3d(spawnPos.x, Math.max(player.getPosY(), spawnPos.y), spawnPos.z);
 			BlockPos pos = new BlockPos(spawnPos);
 			if (!world.getBlockState(pos).isSolid() && !world.getBlockState(pos.up()).isSolid()) {
 				cost(player, 100);

@@ -41,7 +41,7 @@ public class WizardHatItem extends DyeableArmorItem {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("item.wizard-staff.wizard_hat_item.description").applyTextStyle(TextFormatting.BLUE));
+		tooltip.add(new TranslationTextComponent("item.wizard-staff.wizard_hat_item.description").mergeStyle(TextFormatting.BLUE));
 		super.addInformation(stack, worldIn, tooltip, flagIn);		
 	}
 

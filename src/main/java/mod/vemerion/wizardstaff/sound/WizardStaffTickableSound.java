@@ -28,7 +28,7 @@ public class WizardStaffTickableSound extends TickableSound {
 			this.y = (float) player.getPosY();
 			this.z = (float) player.getPosZ();
 		} else {
-			donePlaying = true;
+			finishPlaying();
 		}
 		
 	}

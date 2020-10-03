@@ -10,21 +10,21 @@ import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
 
-@SuppressWarnings("deprecation")
 public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 	private final WizardStaffModel STAFF = new WizardStaffModel();
 
 	@Override
-	public void render(ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
+	public void func_239207_a_(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 			int combinedLightIn, int combinedOverlayIn) {
 		renderOnlyStaffNoPop(itemStackIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		renderOnlyMagic(itemStackIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
@@ -65,13 +65,13 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 			HandSide side) {
 		float progress = duration / maxDuration;
 		Random random = new Random((int) duration % 5 + 5);
-		Vec3d offset = new Vec3d((random.nextDouble() * 0.6 - 0.3) * progress,
+		Vector3d offset = new Vector3d((random.nextDouble() * 0.6 - 0.3) * progress,
 				(random.nextDouble() * 0.6 - 0.3) * progress, (random.nextDouble() * 0.6 - 0.3) * progress);
 		matrix.push();
 		matrix.translate(0 + MathHelper.clampedLerp(0, offset.getX(), partialTicks),
 				-1.4 + MathHelper.clampedLerp(0, offset.getY(), partialTicks),
 				-1.5 + MathHelper.clampedLerp(0, offset.getZ(), partialTicks));
-		renderer.render(stack, matrix, buffer, light, combinedOverlayIn);
+		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
 
@@ -81,7 +81,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrix.push();
 		matrix.rotate(new Quaternion(0, 0, (duration / 5f) * 360f, true));
 		matrix.translate(0, -0.5, -1.5);
-		renderer.render(stack, matrix, buffer, light, combinedOverlayIn);
+		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
 
@@ -95,7 +95,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrix.rotate(new Quaternion((float) MathHelper.clampedLerp(0, -45, progress), 0,
 				(float) MathHelper.clampedLerp(0, 35 * offset, progress), true));
 		matrix.translate(offset, -0.5 - progress / 5, -1.2);
-		renderer.render(stack, matrix, buffer, light, combinedOverlayIn);
+		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
 
@@ -118,7 +118,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrix.push();
 		float progress = duration / maxDuration;
 		Random random = new Random((int) duration % 5 + 5);
-		Vec3d offset = new Vec3d((random.nextDouble() * 0.3 - 0.15) * progress,
+		Vector3d offset = new Vector3d((random.nextDouble() * 0.3 - 0.15) * progress,
 				(random.nextDouble() * 0.3 - 0.15) * progress, (random.nextDouble() * 0.3 - 0.15) * progress);
 		matrix.push();
 		matrix.translate(hand == HandSide.RIGHT ? 1 : -1, -1, -1.2);
@@ -137,7 +137,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrix.push();
 		matrix.rotate(new Quaternion((float) MathHelper.sin((duration / 20) * (float) Math.PI * 2) * 30, 0, 0, true));
 		matrix.translate(hand == HandSide.RIGHT ? 1 : -1, -1, -1.2);
-		renderer.render(stack, matrix, buffer, light, combinedOverlayIn);
+		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
 
@@ -149,7 +149,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		float progress = MathHelper.clamp(duration / max, 0, 1);
 		float buildupProgress = duration / maxDuration;
 		Random random = new Random((int) duration % 5 + 5);
-		Vec3d offset = new Vec3d((random.nextDouble() * 0.5 - 0.25) * buildupProgress,
+		Vector3d offset = new Vector3d((random.nextDouble() * 0.5 - 0.25) * buildupProgress,
 				(random.nextDouble() * 0.5 - 0.25) * buildupProgress,
 				(random.nextDouble() * 0.5 - 0.25) * buildupProgress);
 
@@ -159,7 +159,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrix.translate(handOffset + MathHelper.clampedLerp(0, offset.getX(), partialTicks),
 				-0.5 - progress / 5 + MathHelper.clampedLerp(0, offset.getY(), partialTicks),
 				-1.2 + MathHelper.clampedLerp(0, offset.getZ(), partialTicks));
-		renderer.render(stack, matrix, buffer, light, combinedOverlayIn);
+		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
 
@@ -169,9 +169,9 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		float offset = hand == HandSide.RIGHT ? 1 : -1;
 		float maxForward = maxDuration > 20 ? 5 : maxDuration / 4;
 		float forwardProgress = MathHelper.clamp(duration / maxForward, 0, 1);
-		Vec3d forward = new Vec3d(MathHelper.clampedLerp(0, -45, forwardProgress), 0,
+		Vector3d forward = new Vector3d(MathHelper.clampedLerp(0, -45, forwardProgress), 0,
 				MathHelper.clampedLerp(0, 35 * offset, forwardProgress));
-		Vec3d waving = new Vec3d(MathHelper.cos(duration / 20 * (float) Math.PI * 2) * 10, 0,
+		Vector3d waving = new Vector3d(MathHelper.cos(duration / 20 * (float) Math.PI * 2) * 10, 0,
 				MathHelper.sin(duration / 20 * (float) Math.PI * 2) * 10);
 		matrix.push();
 		matrix.translate(0, -0.5, 0);
@@ -179,7 +179,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 				new Quaternion((float) (forward.x + waving.x), (float) waving.y, (float) (forward.z + waving.z), true));
 		matrix.translate(0, 0.5, 0);
 		matrix.translate(offset, -0.5 - forwardProgress / 5, -1.2);
-		renderer.render(stack, matrix, buffer, light, combinedOverlayIn);
+		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
 
@@ -192,7 +192,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 				(float) MathHelper.sin((duration / 10) * (float) Math.PI * 2) * 10, true));
 		matrix.translate(0, 1, 0);
 		matrix.translate(hand == HandSide.RIGHT ? 1 : -1, -1, -1.2);
-		renderer.render(stack, matrix, buffer, light, combinedOverlayIn);
+		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
 

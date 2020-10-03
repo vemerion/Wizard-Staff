@@ -15,7 +15,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -47,15 +46,15 @@ public class MagicWitherSkullEntity extends AbstractArrowEntity {
 	private void smoke() {
 		playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1, 1);
 		for (int i = 0; i < 10; i++) {
-			Vec3d position = getPositionVec().add(rand.nextDouble() * 0.5 - 0.25, rand.nextDouble() * 0.5 - 0.25,
+			net.minecraft.util.math.vector.Vector3d position = getPositionVec().add(rand.nextDouble() * 0.5 - 0.25, rand.nextDouble() * 0.5 - 0.25,
 					rand.nextDouble() * 0.5 - 0.25);
 			((ServerWorld) world).spawnParticle(ParticleTypes.SMOKE, position.x, position.y, position.z, 1, 0, 0, 0, 0);
 		}
 	}
 
 	@Override
-	protected void onHit(RayTraceResult result) {
-		super.onHit(result);
+	protected void onImpact(RayTraceResult result) {
+		super.onImpact(result);
 		if (!world.isRemote) {
 			world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 1.0F, false,
 					Explosion.Mode.DESTROY);
@@ -68,8 +67,8 @@ public class MagicWitherSkullEntity extends AbstractArrowEntity {
 	protected void onEntityHit(EntityRayTraceResult result) {
 		if (!world.isRemote) {
 			Entity target = result.getEntity();
-			if (getShooter() != null && getShooter() instanceof PlayerEntity) {
-				target.attackEntityFrom(DamageSource.causePlayerDamage((PlayerEntity) getShooter()),
+			if (func_234616_v_() != null && func_234616_v_() instanceof PlayerEntity) { // getShooter()
+				target.attackEntityFrom(DamageSource.causePlayerDamage((PlayerEntity) func_234616_v_()),
 						(float) getDamage());
 			} else {
 				target.attackEntityFrom(DamageSource.MAGIC, (float) getDamage());

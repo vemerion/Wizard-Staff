@@ -13,7 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -37,7 +37,7 @@ public class BlazePowderMagic extends Magic {
 			ServerWorld serverWorld = (ServerWorld) world;
 			Random rand = player.getRNG();
 			cost(player, 0.3);
-			Vec3d offset = Vec3d.fromPitchYaw(player.getPitchYaw());
+			Vector3d offset = Vector3d.fromPitchYaw(player.getPitchYaw());
 			for (Entity e : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().grow(0.3).offset(offset),
 					(e) -> e instanceof LivingEntity)) {
 				e.attackEntityFrom(DamageSource.causePlayerDamage(player), 2);
@@ -46,9 +46,9 @@ public class BlazePowderMagic extends Magic {
 
 			for (int i = 0; i < 3; i++) {
 				double distance = rand.nextDouble() + 1;
-				Vec3d direction = Vec3d.fromPitchYaw(player.rotationPitch + rand.nextFloat() * 30 - 15,
+				Vector3d direction = Vector3d.fromPitchYaw(player.rotationPitch + rand.nextFloat() * 30 - 15,
 						player.rotationYaw + rand.nextFloat() * 30 - 15);
-				Vec3d particlePos = player.getPositionVec().add(0, 1.5, 0).add(direction.scale(distance));
+				Vector3d particlePos = player.getPositionVec().add(0, 1.5, 0).add(direction.scale(distance));
 				serverWorld.spawnParticle(Main.MAGIC_FLAME_PARTICLE_TYPE, particlePos.x, particlePos.y, particlePos.z,
 						0, 0, 0, 0, 1);
 			}

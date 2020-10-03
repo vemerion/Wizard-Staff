@@ -9,7 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class WitherSkullMagic extends Magic {
@@ -34,12 +34,12 @@ public class WitherSkullMagic extends Magic {
 		player.playSound(Main.SKELETON_SOUND, 0.85f, soundPitch(player));
 		if (!world.isRemote) {
 			cost(player, 20);			
-			Vec3d direction = Vec3d.fromPitchYaw(player.getPitchYaw());
-			Vec3d position = player.getPositionVec().add(direction.getX() * 1, 1.2, direction.getZ() * 1);
+			Vector3d direction = Vector3d.fromPitchYaw(player.getPitchYaw());
+			Vector3d position = player.getPositionVec().add(direction.getX() * 1, 1.2, direction.getZ() * 1);
 			MagicWitherSkullEntity skull = new MagicWitherSkullEntity(position.getX(), position.getY(),
 					position.getZ(), world);
 			skull.setShooter(player);
-			skull.shoot(player, player.rotationPitch, player.rotationYaw, 0, 0.5f, 0);
+			skull.func_234612_a_(player, player.rotationPitch, player.rotationYaw, 0, 0.5f, 0); // shoot()
 			world.addEntity(skull);
 		}
 		

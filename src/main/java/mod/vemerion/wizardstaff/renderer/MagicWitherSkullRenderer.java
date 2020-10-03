@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.model.GenericHeadModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 
 public class MagicWitherSkullRenderer extends EntityRenderer<MagicWitherSkullEntity> {
 	private static final ResourceLocation WITHER_TEXTURES = new ResourceLocation("minecraft",
@@ -21,7 +22,7 @@ public class MagicWitherSkullRenderer extends EntityRenderer<MagicWitherSkullEnt
 	}
 
 	@Override
-	protected int getBlockLight(MagicWitherSkullEntity entityIn, float partialTicks) {
+	protected int getBlockLight(MagicWitherSkullEntity entityIn, BlockPos pos) {
 		return 15;
 	}
 

@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.staff;
 
 import java.awt.Color;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import mod.vemerion.wizardstaff.Main;
@@ -55,28 +56,29 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 	}
 	
 	@Override
-	public void removed() {
+	public void onClose() {
 		if (buttonPressed && shouldAnimate != container.shouldAnimate())
 			ScreenAnimations.sendMessage(Minecraft.getInstance().player, shouldAnimate);
-		super.removed();
+		super.onClose();
 	}
 	
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
-		blit((width - xSize) / 2, (height - ySize) / 2, 0, 0, xSize, ySize);
+		blit(matrix, (width - xSize) / 2, (height - ySize) / 2, 0, 0, xSize, ySize);
 
 		if ((!buttonPressed && container.shouldAnimate()) || (buttonPressed && shouldAnimate))
-			animations(partialTicks);
+			animations(matrix, partialTicks);
 	}
 
-	private void animations(float partialTicks) {
+	@SuppressWarnings("deprecation")
+	private void animations(MatrixStack matrix, float partialTicks) {
 		int ticks = minecraft.player.ticksExisted;
 
 		// Book
 		if (ticks / 10 % 10 == 0) {
-			blit(guiLeft + BOOK_X, guiTop + BOOK_Y, 0 + BOOK_WIDTH * (ticks % 5),
+			blit(matrix, guiLeft + BOOK_X, guiTop + BOOK_Y, 0 + BOOK_WIDTH * (ticks % 5),
 					ANIMATION_BOOK_Y + (ticks % 10 / 5) * BOOK_HEIGHT, BOOK_WIDTH, BOOK_HEIGHT);
 		}
 
@@ -85,24 +87,24 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 		RenderSystem.alphaFunc(516, 0);
 		RenderSystem.color4f(1, 1, 1,
 				Math.max(0, MathHelper.sin((ticks + partialTicks) / 160 * (float) Math.PI * 2) * 0.3f));
-		blit(guiLeft + FACE_X, guiTop + FACE_Y, ANIMATION_FACE_X, 0, FACE_WIDTH, FACE_HEIGHT);
+		blit(matrix, guiLeft + FACE_X, guiTop + FACE_Y, ANIMATION_FACE_X, 0, FACE_WIDTH, FACE_HEIGHT);
 		RenderSystem.color4f(1, 1, 1, 1);
 		RenderSystem.defaultAlphaFunc();
 		RenderSystem.disableBlend();
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(Main.WIZARD_STAFF_ITEM.getName().getFormattedText(), 6, 12, Color.DARK_GRAY.getRGB());
-		font.drawString(playerInventory.getDisplayName().getFormattedText(), 6, 70, Color.DARK_GRAY.getRGB());
+	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
+		font.drawString(matrix, Main.WIZARD_STAFF_ITEM.getName().getUnformattedComponentText(), 6, 12, Color.DARK_GRAY.getRGB());
+		font.drawString(matrix, playerInventory.getDisplayName().getUnformattedComponentText(), 6, 70, Color.DARK_GRAY.getRGB());
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
-		super.render(mouseX, mouseY, partialTicks);
-		renderHoveredToolTip(mouseX, mouseY);
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+		super.render(matrix, mouseX, mouseY, partialTicks);
+		renderHoveredTooltip(matrix, mouseX, mouseY);
 		if (toggleAnimationsButton.isHovered())
-			renderTooltip(new TranslationTextComponent("gui.wizard-staff.toggle_animations").getFormattedText(), mouseX, mouseY);
+			renderTooltip(matrix, new TranslationTextComponent("gui.wizard-staff.toggle_animations"), mouseX, mouseY);
 	}
 
 }

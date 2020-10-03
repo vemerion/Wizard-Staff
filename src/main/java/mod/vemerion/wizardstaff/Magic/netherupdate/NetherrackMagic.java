@@ -6,7 +6,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMag
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -46,18 +46,19 @@ public class NetherrackMagic extends Magic {
 	// Derived from FrostWalkerEnchantment.freezeNearby()
 	private int rackify(World world, PlayerEntity player) {
 		int i = 0;
-		if (player.onGround) {
+		if (player.isOnGround()) {
 			BlockState netherrack = Blocks.NETHERRACK.getDefaultState();
 			float range = 2;
-			BlockPos start = player.getPosition().add(-range, -1, -range);
-			BlockPos stop = player.getPosition().add(range, -1, range);
+			BlockPos start = new BlockPos(player.getPositionVec()).add(-range, -1, -range);
+			BlockPos stop = new BlockPos(player.getPositionVec()).add(range, -1, range);
 			for (BlockPos pos : BlockPos.getAllInBoxMutable(start, stop)) {
 				if (canBeRackified(world, pos)) {
-					if (world.func_226663_a_(netherrack, pos, ISelectionContext.dummy())
-							&& !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(player,
-									new net.minecraftforge.common.util.BlockSnapshot(world, pos,
-											world.getBlockState(pos)),
-									net.minecraft.util.Direction.UP)) {
+					if (world.placedBlockCollides(netherrack, pos, ISelectionContext.dummy())
+							&& !net.minecraftforge.event.ForgeEventFactory
+									.onBlockPlace(
+											player, net.minecraftforge.common.util.BlockSnapshot
+													.create(world.getDimensionKey(), world, pos),
+											net.minecraft.util.Direction.UP)) {
 						world.setBlockState(pos, netherrack);
 						i++;
 					}
@@ -68,7 +69,7 @@ public class NetherrackMagic extends Magic {
 	}
 
 	private boolean canBeRackified(World world, BlockPos pos) {
-		IFluidState fluidState = world.getFluidState(pos);
+		FluidState fluidState = world.getFluidState(pos);
 		return world.isAirBlock(pos.up()) && fluidState.isTagged(FluidTags.LAVA) && fluidState.isSource();
 	}
 

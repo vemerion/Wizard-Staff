@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class SoulSandMagic extends Magic {
@@ -48,12 +48,12 @@ public class SoulSandMagic extends Magic {
 
 	private void spawnArms(World world, PlayerEntity player) {
 		Random rand = player.getRNG();
-		Vec3d direction = Vec3d.fromPitchYaw(0, player.rotationYaw);
-		Vec3d side = direction.rotateYaw(90);
+		Vector3d direction = Vector3d.fromPitchYaw(0, player.rotationYaw);
+		Vector3d side = direction.rotateYaw(90);
 		for (int i = 0; i < COUNT; i++) {
 			float distance = i / (float) COUNT * (LENGTH - 1) + 1 + rand.nextFloat() * 0.2f;
 			float offset = rand.nextFloat() * WIDTH - WIDTH / 2;
-			Vec3d position = new Vec3d(player.getPosition()).add(direction.x * distance + side.x * offset, 0,
+			Vector3d position = Vector3d.copy(new BlockPos(player.getPositionVec())).add(direction.x * distance + side.x * offset, 0,
 					direction.z * distance + side.z * offset);
 			position = findValidPosition(position, world);
 			if (position != null) {
@@ -64,7 +64,7 @@ public class SoulSandMagic extends Magic {
 		}
 	}
 
-	private Vec3d findValidPosition(Vec3d position, World world) {
+	private Vector3d findValidPosition(Vector3d position, World world) {
 		int[] heights = new int[] { 0, -1, 1 };
 		for (int height : heights) {
 			BlockPos pos = new BlockPos(position).up(height);

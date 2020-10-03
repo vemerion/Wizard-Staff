@@ -4,11 +4,13 @@ import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class ClockMagic extends Magic {
 
@@ -29,9 +31,13 @@ public class ClockMagic extends Magic {
 		if (!world.isRemote) {
 			cost(player, 1);
 		}
-		world.setDayTime(world.getDayTime() + 40);
+		if (!world.isRemote) {
+			((ServerWorld) world).func_241114_a_(world.getDayTime() + 40);
+		} else {
+			((ClientWorld) world).setDayTime(world.getDayTime() + 40);
+		}
 	}
-	
+
 	@Override
 	public RenderMagic renderer() {
 		return WizardStaffTileEntityRenderer::spinMagic;

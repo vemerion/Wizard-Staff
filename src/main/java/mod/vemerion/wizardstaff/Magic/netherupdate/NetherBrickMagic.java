@@ -11,10 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
 
 public class NetherBrickMagic extends Magic {
@@ -27,7 +27,7 @@ public class NetherBrickMagic extends Magic {
 
 	@Override
 	public boolean isMagicItem(Item item) {
-		return ItemTags.getCollection().get(NETHER_BRICK).contains(item);
+		return ItemTags.getCollection().getTagByID(NETHER_BRICK).contains(item);
 	}
 
 	@Override
@@ -37,14 +37,14 @@ public class NetherBrickMagic extends Magic {
 
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (world.getDimension().getType() == DimensionType.THE_NETHER) {
+		if (world.getDimensionKey() == World.THE_NETHER) {
 			player.playSound(Main.WARP_SOUND, 0.8f, soundPitch(player));
 			if (!world.isRemote) {
 				cost(player, 60);
-				BlockPos fortressPos = ((ServerWorld) world).findNearestStructure("Fortress", player.getPosition(), 100,
+				BlockPos fortressPos = ((ServerWorld) world).func_241117_a_(Structure.field_236378_n_, new BlockPos(player.getPositionVec()), 100,
 						false);
 				if (fortressPos != null) {
-					player.lookAt(EntityAnchorArgument.Type.EYES, new Vec3d(fortressPos));
+					player.lookAt(EntityAnchorArgument.Type.EYES, Vector3d.copy(fortressPos));
 				}
 			}
 		} else {

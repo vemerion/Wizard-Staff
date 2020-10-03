@@ -18,7 +18,7 @@ public class NoMagic extends Magic {
 
 	@Override
 	public RenderMagic renderer() {
-		return null;
+		return (a, b, c, d, e, f, g, h, i, j) -> {};
 	}
 
 }

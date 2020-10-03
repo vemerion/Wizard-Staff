@@ -36,7 +36,7 @@ public class WritableBookMagic extends Magic {
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		String wisdom = wisdoms[player.getRNG().nextInt(wisdoms.length)];
-		player.playSound(Main.SCRIBBLE_SOUND, 3, soundPitch(player));
+		player.playSound(Main.SCRIBBLE_SOUND, 1, soundPitch(player));
 		if (!world.isRemote) {
 			cost(player, 10);
 			WizardStaffHandler handler = WizardStaffItem.getHandler(staff);
