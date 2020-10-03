@@ -12,8 +12,10 @@ import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -89,6 +91,16 @@ public class WizardStaffItem extends Item {
 			return Magics.getInstance().get(magic).magicFinish(worldIn, (PlayerEntity) entityLiving, stack);
 		}
 		return stack;
+	}
+	
+	@Override
+	public ActionResultType onItemUse(ItemUseContext context) {
+		Item magic = getMagic(context.getItem()).getItem();
+		if (context.getPlayer() == null) {
+			return ActionResultType.PASS;
+		} else {
+			return Magics.getInstance().get(magic).magicInteractBlock(context);
+		}
 	}
 
 	@Override

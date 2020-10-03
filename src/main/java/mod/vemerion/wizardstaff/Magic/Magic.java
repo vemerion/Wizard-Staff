@@ -7,6 +7,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -64,5 +66,9 @@ public abstract class Magic {
 
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		return staff;
+	}
+
+	public ActionResultType magicInteractBlock(ItemUseContext context) {
+		return ActionResultType.PASS;
 	}
 }
