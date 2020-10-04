@@ -4,13 +4,11 @@ import javax.annotation.Nullable;
 
 import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
@@ -24,9 +22,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 public class WizardStaffItem extends Item {
 
-	public WizardStaffItem() {
-		super(new Item.Properties().maxStackSize(1).group(ItemGroup.COMBAT)
-				.setISTER(() -> WizardStaffTileEntityRenderer::new));
+	public WizardStaffItem(Item.Properties properties) {
+		super(properties);
 	}
 
 	@Override
@@ -54,14 +51,14 @@ public class WizardStaffItem extends Item {
 		return ActionResult.resultPass(itemstack);
 	}
 
-	public static WizardStaffHandler getHandler(ItemStack itemstack) {
-		WizardStaffHandler handler = (WizardStaffHandler) itemstack
+	public static WizardStaffItemHandler getHandler(ItemStack itemstack) {
+		WizardStaffItemHandler handler = (WizardStaffItemHandler) itemstack
 				.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 				.orElseThrow(() -> new IllegalArgumentException("Wizard staff item is missing capability"));
 		return handler;
 	}
 
-	public ItemStack getMagic(ItemStack itemstack) {
+	public static ItemStack getMagic(ItemStack itemstack) {
 		return getHandler(itemstack).getStackInSlot(0);
 	}
 

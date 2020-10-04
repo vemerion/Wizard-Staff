@@ -1,6 +1,5 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
@@ -21,7 +20,7 @@ public class WizardStaffMagic extends Magic {
 
 	@Override
 	public boolean isMagicItem(Item item) {
-		return item == Main.WIZARD_STAFF_ITEM;
+		return item instanceof WizardStaffItem;
 	}
 
 	@Override
@@ -38,7 +37,7 @@ public class WizardStaffMagic extends Magic {
 		int i = 0;
 		ItemStack current = stack;
 		while (current.getItem() instanceof WizardStaffItem) {
-			current = ((WizardStaffItem) current.getItem()).getMagic(current);
+			current = WizardStaffItem.getMagic(current);
 			i++;
 		}
 		return i;

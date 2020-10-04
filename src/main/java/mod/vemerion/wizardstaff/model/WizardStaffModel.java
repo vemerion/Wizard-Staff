@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import mod.vemerion.wizardstaff.Main;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 
@@ -13,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 
 
-public class WizardStaffModel extends Model {
+public class WizardStaffModel extends AbstractWizardStaffModel {
 	public static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Main.MODID,
 			"textures/entity/wizard_staff.png");
 
@@ -129,5 +128,15 @@ public class WizardStaffModel extends Model {
 		modelRenderer.rotateAngleX = x;
 		modelRenderer.rotateAngleY = y;
 		modelRenderer.rotateAngleZ = z;
+	}
+
+	@Override
+	public ResourceLocation getTexture() {
+		return TEXTURE_LOCATION;
+	}
+
+	@Override
+	public float getMagicScale() {
+		return 0.9f;
 	}
 }

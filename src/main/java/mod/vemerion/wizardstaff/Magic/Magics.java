@@ -9,6 +9,7 @@ import mod.vemerion.wizardstaff.Magic.netherupdate.GhastTearMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.LodestoneMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherBrickMagic;
+import mod.vemerion.wizardstaff.Magic.netherupdate.NetheriteIngotMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherrackMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.ObsidianMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.SoulSandMagic;
@@ -71,6 +72,7 @@ public class Magics {
 		magics.add(new NetherBrickMagic());
 		magics.add(new SoulSandMagic());
 		magics.add(new LodestoneMagic());
+		magics.add(new NetheriteIngotMagic());
 		
 		
 		// This should be last

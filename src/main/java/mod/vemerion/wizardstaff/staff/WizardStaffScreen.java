@@ -95,7 +95,7 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
-		font.drawString(matrix, Main.WIZARD_STAFF_ITEM.getName().getUnformattedComponentText(), 6, 12, Color.DARK_GRAY.getRGB());
+		font.drawString(matrix, title.getUnformattedComponentText(), 6, 12, Color.DARK_GRAY.getRGB());
 		font.drawString(matrix, playerInventory.getDisplayName().getUnformattedComponentText(), 6, 70, Color.DARK_GRAY.getRGB());
 	}
 

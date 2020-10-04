@@ -12,12 +12,14 @@ import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.WizardHatItem;
 import mod.vemerion.wizardstaff.network.Network;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.RedstoneParticleData;
@@ -36,7 +38,12 @@ public class ModEventSubscriber {
 
 	@SubscribeEvent
 	public static void onRegisterItem(RegistryEvent.Register<Item> event) {
-		event.getRegistry().register(setup(new WizardStaffItem(), "wizard_staff_item"));
+		Item.Properties staffProperties = new Item.Properties().maxStackSize(1).group(ItemGroup.COMBAT)
+				.setISTER(() -> WizardStaffTileEntityRenderer::new);
+		event.getRegistry().register(setup(new WizardStaffItem(staffProperties), "wizard_staff_item"));
+		Item.Properties netherStaffProperties = new Item.Properties().maxStackSize(1).group(ItemGroup.COMBAT)
+				.setISTER(() -> WizardStaffTileEntityRenderer::new).isImmuneToFire();
+		event.getRegistry().register(setup(new WizardStaffItem(netherStaffProperties), "nether_wizard_staff_item"));
 		event.getRegistry().register(setup(new WizardHatItem(), "wizard_hat_item"));
 
 	}

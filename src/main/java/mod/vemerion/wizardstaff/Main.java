@@ -31,6 +31,10 @@ public class Main {
 	@ObjectHolder(Main.MODID + ":wizard_staff_item")
 	public static final WizardStaffItem WIZARD_STAFF_ITEM = null;
 	
+	@ObjectHolder(Main.MODID + ":nether_wizard_staff_item")
+	public static final WizardStaffItem NETHER_WIZARD_STAFF_ITEM = null;
+
+	
 	@ObjectHolder(Main.MODID + ":wizard_hat_item")
 	public static final WizardHatItem WIZARD_HAT_ITEM = null;
 

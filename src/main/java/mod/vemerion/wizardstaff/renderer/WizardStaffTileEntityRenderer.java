@@ -5,14 +5,16 @@ import java.util.Random;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.model.AbstractWizardStaffModel;
+import mod.vemerion.wizardstaff.model.NetherWizardStaffModel;
 import mod.vemerion.wizardstaff.model.WizardStaffModel;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
@@ -21,7 +23,8 @@ import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 
 public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
-	private final WizardStaffModel STAFF = new WizardStaffModel();
+	private final WizardStaffModel WIZARD_STAFF = new WizardStaffModel();
+	private final NetherWizardStaffModel NETHER_WIZARD_STAFF = new NetherWizardStaffModel();
 
 	@Override
 	public void func_239207_a_(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
@@ -31,8 +34,8 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrixStackIn.pop();
 	}
 
-	protected Model getModel() {
-		return STAFF;
+	protected AbstractWizardStaffModel getModel(ItemStack itemStackIn) {
+		return itemStackIn.getItem() == Main.WIZARD_STAFF_ITEM ? WIZARD_STAFF : NETHER_WIZARD_STAFF;
 	}
 
 	protected void renderOnlyStaffNoPop(ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
@@ -40,21 +43,23 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrixStackIn.push();
 		matrixStackIn.scale(1.0F, -1.0F, -1.0F);
 		matrixStackIn.scale(0.5f, 0.5f, 0.5f);
+		AbstractWizardStaffModel model = getModel(itemStackIn);
 		IVertexBuilder builder = ItemRenderer.getBuffer(bufferIn,
-				getModel().getRenderType(WizardStaffModel.TEXTURE_LOCATION), false, itemStackIn.hasEffect());
-		getModel().render(matrixStackIn, builder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1F);
+				model.getRenderType(model.getTexture()), false, itemStackIn.hasEffect());
+		model.render(matrixStackIn, builder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1F);
 	}
 
 	protected void renderOnlyMagic(ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 			int combinedLightIn, int combinedOverlayIn) {
-		ItemStack magic = ((WizardStaffItem) itemStackIn.getItem()).getMagic(itemStackIn);
+		ItemStack magic = WizardStaffItem.getMagic(itemStackIn);
 		float ageInTicks = Minecraft.getInstance().player.ticksExisted
 				+ Minecraft.getInstance().getRenderPartialTicks();
 		matrixStackIn.push();
 		matrixStackIn.translate(0, -3.1, 0);
 		matrixStackIn.rotate(new Quaternion(180, ageInTicks, 0, true));
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-		matrixStackIn.scale(0.9f, 0.9f, 0.9f);
+		float magicScale = getModel(itemStackIn).getMagicScale();
+		matrixStackIn.scale(magicScale, magicScale, magicScale);
 		itemRenderer.renderItem(magic, TransformType.GUI, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
 		matrixStackIn.pop();
 

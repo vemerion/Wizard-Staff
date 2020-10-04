@@ -2,7 +2,7 @@ package mod.vemerion.wizardstaff.staff;
 
 import net.minecraftforge.items.ItemStackHandler;
 
-public class WizardStaffHandler extends ItemStackHandler {
+public class WizardStaffItemHandler extends ItemStackHandler {
 	
 	private boolean isDirty = true;
 	
