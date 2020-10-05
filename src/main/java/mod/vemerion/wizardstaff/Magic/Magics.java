@@ -7,6 +7,7 @@ import java.util.Map;
 
 import mod.vemerion.wizardstaff.Magic.netherupdate.GhastTearMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
+import mod.vemerion.wizardstaff.Magic.netherupdate.GoldNuggetMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.LodestoneMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherBrickMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetheriteIngotMagic;
@@ -73,6 +74,7 @@ public class Magics {
 		magics.add(new SoulSandMagic());
 		magics.add(new LodestoneMagic());
 		magics.add(new NetheriteIngotMagic());
+		magics.add(new GoldNuggetMagic());
 		
 		
 		// This should be last
