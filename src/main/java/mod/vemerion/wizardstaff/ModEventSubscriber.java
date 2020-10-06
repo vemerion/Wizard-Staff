@@ -117,6 +117,12 @@ public class ModEventSubscriber {
 		event.getRegistry().register(setup(sniffle_sound, "sniffle_sound"));
 		SoundEvent warp_sound = new SoundEvent(new ResourceLocation(Main.MODID, "warp_sound"));
 		event.getRegistry().register(setup(warp_sound, "warp_sound"));
+		SoundEvent gong_sound = new SoundEvent(new ResourceLocation(Main.MODID, "gong_sound"));
+		event.getRegistry().register(setup(gong_sound, "gong_sound"));
+		SoundEvent poof_sound = new SoundEvent(new ResourceLocation(Main.MODID, "poof_sound"));
+		event.getRegistry().register(setup(poof_sound, "poof_sound"));
+		SoundEvent teleport_sound = new SoundEvent(new ResourceLocation(Main.MODID, "teleport_sound"));
+		event.getRegistry().register(setup(teleport_sound, "teleport_sound"));
 	}
 
 	@SubscribeEvent

@@ -94,4 +94,13 @@ public class Main {
 
 	@ObjectHolder(Main.MODID + ":warp_sound")
 	public static final SoundEvent WARP_SOUND = null;
+	
+	@ObjectHolder(Main.MODID + ":gong_sound")
+	public static final SoundEvent GONG_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":poof_sound")
+	public static final SoundEvent POOF_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":teleport_sound")
+	public static final SoundEvent TELEPORT_SOUND = null;
 }

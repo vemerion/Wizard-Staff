@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -33,9 +34,11 @@ public class LodestoneMagic extends Magic {
 	@Override
 	public ActionResultType magicInteractBlock(ItemUseContext context) {
 		World world = context.getWorld();
+		PlayerEntity player = context.getPlayer();
+		player.playSound(Main.GONG_SOUND, 1, soundPitch(player));
 		if (world.getBlockState(context.getPos()).getBlock() == Blocks.LODESTONE) {
 			if (!world.isRemote) {
-				Wizard.getWizard(context.getPlayer()).trackLodestone(world, context.getPos());
+				Wizard.getWizard(player).trackLodestone(world, context.getPos());
 			}
 			return ActionResultType.SUCCESS;
 		}
@@ -51,5 +54,11 @@ public class LodestoneMagic extends Magic {
 			}
 		}
 		return super.magicFinish(world, player, staff);
+	}
+
+	@Override
+	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
+		if (count % 10 == 0)
+			player.playSound(Main.TELEPORT_SOUND, 1, soundPitch(player));
 	}
 }

@@ -18,6 +18,7 @@ import net.minecraft.loot.LootTables;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -59,6 +60,8 @@ public class GoldNuggetMagic extends Magic {
 				piglin.swingArm(Hand.OFF_HAND);
 			}
 			cost(player, barterCount * 30);
+			if (barterCount > 0)
+				playSoundServer(world, player, SoundEvents.ENTITY_PIGLIN_ADMIRING_ITEM, 1, soundPitch(player));
 		}
 		return super.magicFinish(world, player, staff);
 	}

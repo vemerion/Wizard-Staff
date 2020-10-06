@@ -33,6 +33,7 @@ public class NetheriteIngotMagic extends Magic {
 	
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
+		player.playSound(Main.POOF_SOUND, 1, soundPitch(player));
 		if (!world.isRemote) {
 			cost(player, 100);
 			WizardStaffItemHandler handler = WizardStaffItem.getHandler(staff);

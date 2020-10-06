@@ -106,5 +106,32 @@
         "stream": false
       }
     ]
+  },
+  "gong_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:gong_sound",
+        "stream": false
+      }
+    ]
+  },
+  "poof_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:poof_sound",
+        "stream": false
+      }
+    ]
+  },
+  "teleport_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:teleport_sound",
+        "stream": false
+      }
+    ]
   }
 }
