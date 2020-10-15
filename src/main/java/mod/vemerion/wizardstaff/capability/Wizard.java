@@ -4,6 +4,7 @@ import mod.vemerion.wizardstaff.Main;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.NBTDynamicOps;
@@ -37,12 +38,12 @@ public class Wizard {
 		return player.getCapability(CAPABILITY).orElseThrow(() -> new IllegalArgumentException("Player is missing wizard capability"));
 	}
 
-	public boolean lodestoneTeleport(PlayerEntity player) {
+	public boolean lodestoneTeleport(ServerPlayerEntity player) {
 		if (lodestoneTracked && lodestonePos != null && player.world.getDimensionKey() == lodestonePos.getDimension()
 				&& (player.world.getBlockState(lodestonePos.getPos()).getBlock() == Blocks.LODESTONE)) {
 			lodestoneTracked = false;
 			BlockPos destination = lodestonePos.getPos();
-			player.attemptTeleport(destination.getX(), destination.getY() + 1, destination.getZ(), true);
+			player.teleport(player.getServerWorld(), destination.getX(), destination.getY() + 1, destination.getZ(), player.rotationYaw, player.rotationPitch);
 			player.world.destroyBlock(destination, false);
 			return true;
 		}

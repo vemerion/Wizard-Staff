@@ -7,6 +7,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -35,8 +36,8 @@ public class LodestoneMagic extends Magic {
 	public ActionResultType magicInteractBlock(ItemUseContext context) {
 		World world = context.getWorld();
 		PlayerEntity player = context.getPlayer();
-		player.playSound(Main.GONG_SOUND, 1, soundPitch(player));
 		if (world.getBlockState(context.getPos()).getBlock() == Blocks.LODESTONE) {
+			player.playSound(Main.GONG_SOUND, 1, soundPitch(player));
 			if (!world.isRemote) {
 				Wizard.getWizard(player).trackLodestone(world, context.getPos());
 			}
@@ -49,7 +50,8 @@ public class LodestoneMagic extends Magic {
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote) {
-			if (Wizard.getWizard(player).lodestoneTeleport(player)) {
+			if (Wizard.getWizard(player).lodestoneTeleport((ServerPlayerEntity) player)) {
+				playSoundServer(world, player, Main.GONG_SOUND, 1, soundPitch(player));
 				cost(player, 500);
 			}
 		}
