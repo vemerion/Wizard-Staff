@@ -5,7 +5,6 @@ import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
 import mod.vemerion.wizardstaff.staff.WizardStaffHandler;
-import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,7 +29,7 @@ public class LeatherHelmetMagic extends Magic {
 		player.playSound(Main.PLOP_SOUND, 1, soundPitch(player));
 		if (!world.isRemote) {
 			cost(player, 30);
-			WizardStaffHandler handler = WizardStaffItem.getHandler(staff);
+			WizardStaffHandler handler = WizardStaffHandler.get(staff);
 			ItemStack helmet = handler.extractItem(0, 1, false);
 			ItemStack wizardHat = new ItemStack(Main.WIZARD_HAT_ITEM);
 			CompoundNBT tag = helmet.getOrCreateTag();

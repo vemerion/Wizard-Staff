@@ -40,36 +40,43 @@ public class ModEventSubscriber {
 
 	@SubscribeEvent
 	public static void onRegisterContainer(RegistryEvent.Register<ContainerType<?>> event) {
-		event.getRegistry().register(setup(IForgeContainerType.create(WizardStaffContainer::createContainerClientSide), "wizard_staff_container"));
+		event.getRegistry().register(setup(IForgeContainerType.create(WizardStaffContainer::createContainerClientSide),
+				"wizard_staff_container"));
 	}
-	
+
 	@SubscribeEvent
 	public static void onRegisterEntity(RegistryEvent.Register<EntityType<?>> event) {
 		EntityType<PumpkinMagicEntity> pumpkinMagicEntity = EntityType.Builder
-				.<PumpkinMagicEntity>create(PumpkinMagicEntity::new, EntityClassification.MISC).size(1, 1F).build("pumpkin_magic_entity");
+				.<PumpkinMagicEntity>create(PumpkinMagicEntity::new, EntityClassification.MISC).size(1, 1F)
+				.build("pumpkin_magic_entity");
 		event.getRegistry().register(setup(pumpkinMagicEntity, "pumpkin_magic_entity"));
-		
+
 		EntityType<NetherPortalEntity> netherPortalEntity = EntityType.Builder
-				.<NetherPortalEntity>create(NetherPortalEntity::new, EntityClassification.MISC).size(1, 2F).immuneToFire().build("nether_portal_entity");
+				.<NetherPortalEntity>create(NetherPortalEntity::new, EntityClassification.MISC).size(1, 2F)
+				.immuneToFire().build("nether_portal_entity");
 		event.getRegistry().register(setup(netherPortalEntity, "nether_portal_entity"));
 
 		EntityType<MagicWitherSkullEntity> magicWitherSkullEntity = EntityType.Builder
-				.<MagicWitherSkullEntity>create(MagicWitherSkullEntity::new, EntityClassification.MISC).size(0.3125F, 0.3125F).immuneToFire().build("magic_wither_skull_entity");
+				.<MagicWitherSkullEntity>create(MagicWitherSkullEntity::new, EntityClassification.MISC)
+				.size(0.3125F, 0.3125F).immuneToFire().build("magic_wither_skull_entity");
 		event.getRegistry().register(setup(magicWitherSkullEntity, "magic_wither_skull_entity"));
 
 		EntityType<MagicSoulSandArmEntity> magicSoulSandArmEntity = EntityType.Builder
-				.<MagicSoulSandArmEntity>create(MagicSoulSandArmEntity::new, EntityClassification.MISC).size(1, 1).immuneToFire().build("magic_soul_sand_arm_entity");
+				.<MagicSoulSandArmEntity>create(MagicSoulSandArmEntity::new, EntityClassification.MISC).size(1, 1)
+				.immuneToFire().build("magic_soul_sand_arm_entity");
 		event.getRegistry().register(setup(magicSoulSandArmEntity, "magic_soul_sand_arm_entity"));
 	}
-	
+
 	@SubscribeEvent
 	public static void onIParticleTypeRegistration(RegistryEvent.Register<ParticleType<?>> event) {
 		event.getRegistry().register(setup(new BasicParticleType(true), "magic_smoke_particle_type"));
 		event.getRegistry().register(setup(new BasicParticleType(true), "magic_flame_particle_type"));
-		event.getRegistry().register(setup(new ParticleType<RedstoneParticleData>(true, RedstoneParticleData.DESERIALIZER), "magic_dust_particle_type"));
+		event.getRegistry()
+				.register(setup(new ParticleType<RedstoneParticleData>(true, RedstoneParticleData.DESERIALIZER),
+						"magic_dust_particle_type"));
 
 	}
-	
+
 	@SubscribeEvent
 	public static void onRegisterSound(RegistryEvent.Register<SoundEvent> event) {
 		SoundEvent clock_sound = new SoundEvent(new ResourceLocation(Main.MODID, "clock_sound"));
@@ -96,16 +103,17 @@ public class ModEventSubscriber {
 		event.getRegistry().register(setup(sniffle_sound, "sniffle_sound"));
 		SoundEvent warp_sound = new SoundEvent(new ResourceLocation(Main.MODID, "warp_sound"));
 		event.getRegistry().register(setup(warp_sound, "warp_sound"));
-	}  
-	
+	}
+
 	@SubscribeEvent
 	public static void setup(FMLCommonSetupEvent event) {
-		CapabilityManager.INSTANCE.register(ScreenAnimations.class, new ScreenAnimations.ScreenAnimationsStorage(), ScreenAnimations::new);
+		CapabilityManager.INSTANCE.register(ScreenAnimations.class, new ScreenAnimations.ScreenAnimationsStorage(),
+				ScreenAnimations::new);
 		CapabilityManager.INSTANCE.register(Experience.class, new Experience.ExperienceStorage(), Experience::new);
-		
-		Network.INSTANCE.registerMessage(0, ScreenAnimations.class, ScreenAnimations::encode,
-				ScreenAnimations::decode, ScreenAnimations::handle);
-		
+
+		Network.INSTANCE.registerMessage(0, ScreenAnimations.class, ScreenAnimations::encode, ScreenAnimations::decode,
+				ScreenAnimations::handle);
+
 		Magics.init();
 
 	}

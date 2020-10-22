@@ -18,7 +18,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 public class WizardStaffItem extends Item {
 
@@ -36,8 +35,8 @@ public class WizardStaffItem extends Item {
 				boolean shouldAnimate = ScreenAnimations.getScreenAnimations(playerIn).shouldAnimate();
 
 				SimpleNamedContainerProvider provider = new SimpleNamedContainerProvider(
-						(id, inventory, player) -> new WizardStaffContainer(id, inventory, getHandler(itemstack),
-								itemstack, shouldAnimate),
+						(id, inventory, player) -> new WizardStaffContainer(id, inventory,
+								WizardStaffHandler.get(itemstack), itemstack, shouldAnimate),
 						getDisplayName(itemstack));
 				NetworkHooks.openGui((ServerPlayerEntity) playerIn, provider,
 						(buffer) -> buffer.writeBoolean(shouldAnimate));
@@ -52,15 +51,8 @@ public class WizardStaffItem extends Item {
 		return ActionResult.resultPass(itemstack);
 	}
 
-	public static WizardStaffHandler getHandler(ItemStack itemstack) {
-		WizardStaffHandler handler = (WizardStaffHandler) itemstack
-				.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.orElseThrow(() -> new IllegalArgumentException("Wizard staff item is missing capability"));
-		return handler;
-	}
-
 	public ItemStack getMagic(ItemStack itemstack) {
-		return getHandler(itemstack).getStackInSlot(0);
+		return WizardStaffHandler.get(itemstack).getStackInSlot(0);
 	}
 
 	@Override
@@ -95,7 +87,7 @@ public class WizardStaffItem extends Item {
 	public CompoundNBT getShareTag(ItemStack stack) {
 		CompoundNBT result = new CompoundNBT();
 		CompoundNBT tag = super.getShareTag(stack);
-		CompoundNBT cap = getHandler(stack).serializeNBT();
+		CompoundNBT cap = WizardStaffHandler.get(stack).serializeNBT();
 		if (tag != null)
 			result.put("tag", tag);
 		if (cap != null)
@@ -109,7 +101,7 @@ public class WizardStaffItem extends Item {
 			stack.setTag(nbt);
 		} else {
 			stack.setTag(nbt.getCompound("tag"));
-			getHandler(stack).deserializeNBT(nbt.getCompound("cap"));
+			WizardStaffHandler.get(stack).deserializeNBT(nbt.getCompound("cap"));
 		}
 	}
 

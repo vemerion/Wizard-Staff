@@ -1,5 +1,8 @@
 package mod.vemerion.wizardstaff;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
@@ -19,6 +22,8 @@ import net.minecraftforge.registries.ObjectHolder;
 @Mod(Main.MODID)
 public class Main {
 	public static final String MODID = "wizard-staff";
+	
+    public static final Logger LOGGER = LogManager.getLogger();
 	
 	@ObjectHolder(Main.MODID + ":wizard_staff_container")
 	public static final ContainerType<WizardStaffContainer> WIZARD_STAFF_CONTAINER = null;
