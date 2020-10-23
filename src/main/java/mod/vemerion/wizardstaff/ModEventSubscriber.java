@@ -7,12 +7,14 @@ import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
+import mod.vemerion.wizardstaff.item.DruidArmorItem;
 import mod.vemerion.wizardstaff.item.WizardHatItem;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.particles.BasicParticleType;
@@ -36,6 +38,10 @@ public class ModEventSubscriber {
 		event.getRegistry().register(setup(new WizardStaffItem(), "wizard_staff_item"));
 		event.getRegistry().register(setup(new WizardHatItem(), "wizard_hat_item"));
 
+		event.getRegistry().register(setup(new DruidArmorItem(EquipmentSlotType.HEAD), "druid_helmet_item"));
+		event.getRegistry().register(setup(new DruidArmorItem(EquipmentSlotType.CHEST), "druid_chestplate_item"));
+		event.getRegistry().register(setup(new DruidArmorItem(EquipmentSlotType.LEGS), "druid_leggings_item"));
+		event.getRegistry().register(setup(new DruidArmorItem(EquipmentSlotType.FEET), "druid_boots_item"));
 	}
 
 	@SubscribeEvent

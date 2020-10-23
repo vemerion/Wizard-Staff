@@ -43,6 +43,8 @@ public class HeldItemFilterLayer
 			injected.add(renderer);
 		}
 	}
+	
+	// TODO: Make third person staff animations work with armor equipped. Perhaps filter layer for BipedArmorLayer?
 
 	private static void addFilterLayer(PlayerRenderer renderer) {
 		try {
