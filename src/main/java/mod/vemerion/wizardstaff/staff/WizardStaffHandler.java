@@ -17,6 +17,11 @@ public class WizardStaffHandler extends ItemStackHandler {
 		isDirty = false;
 		return dirty;
 	}
+	
+	@Override
+	public int getSlotLimit(int slot) {
+		return 1;
+	}
 
 	@Override
 	protected void onContentsChanged(int slot) {
