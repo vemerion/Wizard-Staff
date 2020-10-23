@@ -207,9 +207,15 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		renderer.render(stack, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
+	
+	public static void noRender(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
+			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
+			float partialTicks, HandSide hand) {
+		
+	}
 
 	@FunctionalInterface
-	public static interface RenderMagic {
+	public static interface RenderFirstPersonMagic {
 		public void render(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration, ItemStack stack,
 				MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn, float partialTicks,
 				HandSide hand);

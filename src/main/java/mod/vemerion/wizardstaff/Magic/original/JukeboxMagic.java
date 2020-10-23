@@ -3,8 +3,10 @@ package mod.vemerion.wizardstaff.Magic.original;
 import java.util.List;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import mod.vemerion.wizardstaff.sound.WizardStaffTickableSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -70,8 +72,13 @@ public class JukeboxMagic extends Magic {
 	}
 	
 	@Override
-	public RenderMagic renderer() {
+	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::swinging;
+	}
+	
+	@Override
+	public RenderThirdPersonMagic thirdPersonRenderer() {
+		return WizardStaffLayer::swinging;
 	}
 
 }

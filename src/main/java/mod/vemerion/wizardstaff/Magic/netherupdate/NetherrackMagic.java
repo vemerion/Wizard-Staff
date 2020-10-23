@@ -1,8 +1,10 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,8 +31,13 @@ public class NetherrackMagic extends Magic {
 	}
 
 	@Override
-	public RenderMagic renderer() {
+	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::swinging;
+	}
+	
+	@Override
+	public RenderThirdPersonMagic thirdPersonRenderer() {
+		return WizardStaffLayer::swinging;
 	}
 
 	@Override

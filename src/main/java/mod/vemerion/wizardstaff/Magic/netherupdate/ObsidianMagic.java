@@ -3,8 +3,10 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,8 +29,13 @@ public class ObsidianMagic extends Magic {
 	}
 
 	@Override
-	public RenderMagic renderer() {
+	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::forwardWaving;
+	}
+	
+	@Override
+	public RenderThirdPersonMagic thirdPersonRenderer() {
+		return WizardStaffLayer::forwardShake;
 	}
 
 	@Override

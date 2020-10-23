@@ -35,7 +35,7 @@ public class ClientForgeEventSubscriber {
 					.getItemStackTileEntityRenderer();
 			int maxDuration = itemStack.getUseDuration();
 			float duration = (float) maxDuration - ((float) player.getItemInUseCount() - partialTicks + 1.0f);
-			Magics.getInstance().get(magic).renderer().render(renderer, duration, maxDuration, itemStack,
+			Magics.getInstance().get(magic).firstPersonRenderer().render(renderer, duration, maxDuration, itemStack,
 					event.getMatrixStack(), event.getBuffers(), event.getLight(), OverlayTexture.NO_OVERLAY,
 					partialTicks, side);
 		}

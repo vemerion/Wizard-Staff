@@ -1,13 +1,11 @@
 package mod.vemerion.wizardstaff.Magic;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.HandSide;
 
 public class NoMagic extends Magic {
 
@@ -22,14 +20,13 @@ public class NoMagic extends Magic {
 	}
 
 	@Override
-	public RenderMagic renderer() {
-		return new RenderMagic() {
-			@Override
-			public void render(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration, ItemStack stack,
-					MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn, float partialTicks,
-					HandSide hand) {
-			}
-		};
+	public RenderFirstPersonMagic firstPersonRenderer() {
+		return WizardStaffTileEntityRenderer::noRender;
+	}
+
+	@Override
+	public RenderThirdPersonMagic thirdPersonRenderer() {
+		return WizardStaffLayer::noRender;
 	}
 
 }
