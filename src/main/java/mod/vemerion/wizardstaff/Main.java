@@ -7,6 +7,7 @@ import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
+import mod.vemerion.wizardstaff.item.DruidArmorItem;
 import mod.vemerion.wizardstaff.item.WizardHatItem;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
@@ -33,6 +34,18 @@ public class Main {
 	
 	@ObjectHolder(Main.MODID + ":wizard_hat_item")
 	public static final WizardHatItem WIZARD_HAT_ITEM = null;
+	
+	@ObjectHolder(Main.MODID + ":druid_helmet_item")
+	public static final DruidArmorItem DRUID_HELMET_ITEM = null;
+	
+	@ObjectHolder(Main.MODID + ":druid_chestplate_item")
+	public static final DruidArmorItem DRUID_CHESTPLATE_ITEM = null;
+	
+	@ObjectHolder(Main.MODID + ":druid_leggings_item")
+	public static final DruidArmorItem DRUID_LEGGINGS_ITEM = null;
+	
+	@ObjectHolder(Main.MODID + ":druid_boots_item")
+	public static final DruidArmorItem DRUID_BOOTS_ITEM = null;
 
 	@ObjectHolder(Main.MODID + ":pumpkin_magic_entity")
 	public static final EntityType<PumpkinMagicEntity> PUMPKIN_MAGIC_ENTITY = null;
