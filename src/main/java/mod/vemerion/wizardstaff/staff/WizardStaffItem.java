@@ -51,6 +51,11 @@ public class WizardStaffItem extends Item {
 		}
 		return ActionResult.resultPass(itemstack);
 	}
+	
+	@Override
+	public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
+		return oldStack == newStack;
+	}
 
 	public ItemStack getMagic(ItemStack itemstack) {
 		return WizardStaffHandler.get(itemstack).getStackInSlot(0);
