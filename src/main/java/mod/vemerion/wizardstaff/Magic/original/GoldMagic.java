@@ -9,6 +9,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -34,6 +35,11 @@ public class GoldMagic extends Magic {
 	@Override
 	public boolean isMagicItem(Item item) {
 		return ItemTags.getCollection().getOrCreate(GOLD).contains(item);
+	}
+	
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.BLOCK;
 	}
 	
 	@Override

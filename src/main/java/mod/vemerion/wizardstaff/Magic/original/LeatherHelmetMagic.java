@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 
@@ -24,6 +25,11 @@ public class LeatherHelmetMagic extends Magic {
 	@Override
 	public boolean isMagicItem(Item item) {
 		return item == Items.LEATHER_HELMET;
+	}
+	
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.NONE;
 	}
 
 	@Override

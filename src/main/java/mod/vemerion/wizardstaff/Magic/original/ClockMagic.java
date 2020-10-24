@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.UseAction;
 import net.minecraft.world.World;
 
 public class ClockMagic extends Magic {
@@ -22,6 +23,11 @@ public class ClockMagic extends Magic {
 	@Override
 	public boolean isMagicItem(Item item) {
 		return item == Items.CLOCK;
+	}
+	
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.NONE;
 	}
 
 	@Override

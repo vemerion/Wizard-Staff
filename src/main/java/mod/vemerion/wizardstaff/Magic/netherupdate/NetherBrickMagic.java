@@ -10,6 +10,7 @@ import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -40,6 +41,11 @@ public class NetherBrickMagic extends Magic {
 	@Override
 	public RenderThirdPersonMagic thirdPersonRenderer() {
 		return WizardStaffLayer::spinMagic;
+	}
+	
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.NONE;
 	}
 
 	@Override

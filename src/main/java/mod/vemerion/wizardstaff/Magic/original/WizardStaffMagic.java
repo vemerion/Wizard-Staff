@@ -10,6 +10,7 @@ import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.Explosion.Mode;
@@ -24,6 +25,11 @@ public class WizardStaffMagic extends Magic {
 	@Override
 	public boolean isMagicItem(Item item) {
 		return item == Main.WIZARD_STAFF_ITEM;
+	}
+	
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.CROSSBOW;
 	}
 
 	@Override

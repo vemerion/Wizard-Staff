@@ -12,6 +12,7 @@ import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -58,6 +59,12 @@ public class WizardStaffItem extends Item {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
 		return new WizardStaffCapabilityProvider();
+	}
+	
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		Item magic = getMagic(stack).getItem();
+		return Magics.getInstance().get(magic).getUseAction(stack);
 	}
 
 	@Override

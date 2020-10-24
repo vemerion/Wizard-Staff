@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -56,8 +57,11 @@ public abstract class Magic {
 	public abstract boolean isMagicItem(Item item);
 
 	public abstract RenderFirstPersonMagic firstPersonRenderer();
-	
+
 	public abstract RenderThirdPersonMagic thirdPersonRenderer();
+	
+	public abstract UseAction getUseAction(ItemStack stack);
+
 
 	public void magicStart(World world, PlayerEntity player, ItemStack staff) {
 	}

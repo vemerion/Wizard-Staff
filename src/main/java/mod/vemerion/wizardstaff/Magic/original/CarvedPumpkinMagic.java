@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.UseAction;
 import net.minecraft.world.World;
 
 public class CarvedPumpkinMagic extends Magic {
@@ -23,6 +24,11 @@ public class CarvedPumpkinMagic extends Magic {
 	@Override
 	public boolean isMagicItem(Item item) {
 		return item == Items.CARVED_PUMPKIN;
+	}
+	
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.BLOCK;
 	}
 
 	@Override
