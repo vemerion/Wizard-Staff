@@ -3,8 +3,8 @@ package mod.vemerion.wizardstaff.item;
 import java.awt.Color;
 
 import mod.vemerion.wizardstaff.Main;
-import mod.vemerion.wizardstaff.model.DruidArmorModel;
 import mod.vemerion.wizardstaff.model.MagicArmorModel;
+import mod.vemerion.wizardstaff.model.WarlockArmorModel;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Items;
@@ -14,13 +14,13 @@ import net.minecraft.util.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class DruidArmorItem extends MagicArmorItem {
-	private static final int COLOR = Color.GREEN.getRGB();
+public class WarlockArmorItem extends MagicArmorItem {
+	private static final int COLOR = Color.RED.getRGB();
 
-	public DruidArmorItem(EquipmentSlotType slot) {
-		super(new DruidArmorMaterial(), slot);
+	public WarlockArmorItem(EquipmentSlotType slot) {
+		super(new WarlockArmorMaterial(), slot);
 	}
-	
+
 	@Override
 	protected int getDefaultColor() {
 		return COLOR;
@@ -28,33 +28,45 @@ public class DruidArmorItem extends MagicArmorItem {
 
 	@Override
 	protected String getMagicArmorName() {
-		return "druid_armor";
+		return "warlock_armor";
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	protected MagicArmorModel<?> getModel() {
 		if (model == null) {
-			model = new DruidArmorModel<>(0.3f);
+			model = new WarlockArmorModel<>(0.3f);
 		}
 		return model;
 	}
 
-	private static class DruidArmorMaterial implements IArmorMaterial {
+	private static class WarlockArmorMaterial implements IArmorMaterial {
 
 		@Override
 		public int getDurability(EquipmentSlotType slotIn) {
-			return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * 10;
+			return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * 15;
 		}
 
 		@Override
 		public int getDamageReductionAmount(EquipmentSlotType slotIn) {
+			switch (slotIn) {
+			case FEET:
+				return 1;
+			case LEGS:
+				return 2;
+			case CHEST:
+				return 3;
+			case HEAD:
+				return 1;
+			default:
+				break;
+			}
 			return 0;
 		}
 
 		@Override
 		public int getEnchantability() {
-			return 15;
+			return 12;
 		}
 
 		@Override
@@ -64,12 +76,12 @@ public class DruidArmorItem extends MagicArmorItem {
 
 		@Override
 		public Ingredient getRepairMaterial() {
-			return Ingredient.fromItems(Items.GOLD_INGOT);
+			return Ingredient.fromItems(Items.IRON_INGOT);
 		}
 
 		@Override
 		public String getName() {
-			return Main.MODID + "_druid_armor";
+			return Main.MODID + "_warlock_armor";
 		}
 
 		@Override

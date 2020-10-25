@@ -77,57 +77,8 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 		return (A) model;
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	protected abstract MagicArmorModel<?> getModel();
-
-	private static class WarlockArmorMaterial implements IArmorMaterial {
-
-		@Override
-		public int getDurability(EquipmentSlotType slotIn) {
-			return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * 15;
-		}
-
-		@Override
-		public int getDamageReductionAmount(EquipmentSlotType slotIn) {
-			switch (slotIn) {
-			case FEET:
-				return 1;
-			case LEGS:
-				return 2;
-			case CHEST:
-				return 3;
-			case HEAD:
-				return 1;
-			default:
-				break;
-			}
-			return 0;
-		}
-
-		@Override
-		public int getEnchantability() {
-			return 12;
-		}
-
-		@Override
-		public SoundEvent getSoundEvent() {
-			return SoundEvents.ITEM_ARMOR_EQUIP_LEATHER;
-		}
-
-		@Override
-		public Ingredient getRepairMaterial() {
-			return Ingredient.fromItems(Items.IRON_INGOT);
-		}
-
-		@Override
-		public String getName() {
-			return Main.MODID + "_warlock_armor";
-		}
-
-		@Override
-		public float getToughness() {
-			return 0;
-		}
-	}
 
 	private static class WizardArmorMaterial implements IArmorMaterial {
 

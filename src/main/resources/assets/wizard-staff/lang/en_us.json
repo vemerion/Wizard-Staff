@@ -1,4 +1,8 @@
 {
+  "item.wizard-staff.warlock_helmet_item": "Warlock Cowl",
+  "item.wizard-staff.warlock_chestplate_item": "Warlock Robe",
+  "item.wizard-staff.warlock_leggings_item": "Warlock Chainmail",
+  "item.wizard-staff.warlock_boots_item": "Warlock Boots",
   "item.wizard-staff.druid_helmet_item": "Druid Skull",
   "item.wizard-staff.druid_chestplate_item": "Druid Robe",
   "item.wizard-staff.druid_leggings_item": "Druid Pants",
@@ -7,5 +11,6 @@
   "item.wizard-staff.wizard_hat_item": "Wizard Hat",
   "item.wizard-staff.wizard_hat_item.description": "-10% spell cost",
   "item.wizard-staff.druid_armor.description": "-10% spell cast time",
+  "item.wizard-staff.warlock_armor.description": "-10% spell cast time",
   "gui.wizard-staff.toggle_animations": "Toggle GUI animations"
 }
