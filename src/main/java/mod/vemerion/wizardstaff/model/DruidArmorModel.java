@@ -85,12 +85,12 @@ public class DruidArmorModel<T extends LivingEntity> extends MagicArmorModel<T> 
 		this.rightShoulderFur1 = new ModelRenderer(this, 20, 55);
 		this.rightShoulderFur1.mirror = true;
 		this.rightShoulderFur1.setRotationPoint(1.0F, 0.0F, 0.0F);
-		this.rightShoulderFur1.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F, modelSize);
+		this.rightShoulderFur1.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F);
 		this.setRotateAngle(rightShoulderFur1, -0.11728612207217244F, 0.0F, -0.19547687289441354F);
 		this.rightShoulderFur3 = new ModelRenderer(this, 20, 55);
 		this.rightShoulderFur3.mirror = true;
 		this.rightShoulderFur3.setRotationPoint(5.0F, 0.0F, 0.0F);
-		this.rightShoulderFur3.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F, modelSize);
+		this.rightShoulderFur3.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F);
 		this.setRotateAngle(rightShoulderFur3, 0.1563815016444822F, 0.0F, 0.19547687289441354F);
 		this.rightShoeSleeve = new ModelRenderer(this, 16, 116);
 		this.rightShoeSleeve.mirror = true;
@@ -118,7 +118,7 @@ public class DruidArmorModel<T extends LivingEntity> extends MagicArmorModel<T> 
 		this.setRotateAngle(rightHorn5, 0.46914448828868976F, 0.0F, 1.2510520131558576F);
 		this.leftShoulderFur3 = new ModelRenderer(this, 20, 55);
 		this.leftShoulderFur3.setRotationPoint(5.0F, 0.0F, 0.0F);
-		this.leftShoulderFur3.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F, modelSize);
+		this.leftShoulderFur3.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F);
 		this.setRotateAngle(leftShoulderFur3, 0.1563815016444822F, 0.0F, 0.19547687289441354F);
 		this.rightHorn6 = new ModelRenderer(this, 0, 64);
 		this.rightHorn6.setRotationPoint(0.0F, -1.5F, 0.0F);
@@ -144,7 +144,7 @@ public class DruidArmorModel<T extends LivingEntity> extends MagicArmorModel<T> 
 		this.rightShoulderFur2 = new ModelRenderer(this, 20, 55);
 		this.rightShoulderFur2.mirror = true;
 		this.rightShoulderFur2.setRotationPoint(3.0F, 0.0F, 0.0F);
-		this.rightShoulderFur2.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F, modelSize);
+		this.rightShoulderFur2.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F);
 		this.setRotateAngle(rightShoulderFur2, 0.23457224414434488F, 0.0F, -0.0781907508222411F);
 		this.leftHorn1 = new ModelRenderer(this, 0, 64);
 		this.leftHorn1.setRotationPoint(2.1F, -1.9F, 1.3F);
@@ -155,7 +155,7 @@ public class DruidArmorModel<T extends LivingEntity> extends MagicArmorModel<T> 
 		this.jaw.addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F, modelSize);
 		this.leftShoulderFur2 = new ModelRenderer(this, 20, 55);
 		this.leftShoulderFur2.setRotationPoint(3.0F, 0.0F, 0.0F);
-		this.leftShoulderFur2.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F, modelSize);
+		this.leftShoulderFur2.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F);
 		this.setRotateAngle(leftShoulderFur2, 0.23457224414434488F, 0.0F, -0.0781907508222411F);
 		this.rightShoe1 = new ModelRenderer(this, 36, 116);
 		this.rightShoe1.mirror = true;
@@ -178,7 +178,7 @@ public class DruidArmorModel<T extends LivingEntity> extends MagicArmorModel<T> 
 		this.leftShoe1.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, modelSize);
 		this.leftShoulderFur1 = new ModelRenderer(this, 20, 55);
 		this.leftShoulderFur1.setRotationPoint(1.0F, 0.0F, 0.0F);
-		this.leftShoulderFur1.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F, modelSize);
+		this.leftShoulderFur1.addBox(-3.0F, -4.0F, -4.5F, 0.0F, 6.0F, 9.0F);
 		this.setRotateAngle(leftShoulderFur1, -0.11728612207217244F, 0.0F, -0.19547687289441354F);
 		this.belt = new ModelRenderer(this, 0, 83);
 		this.belt.setRotationPoint(0.0F, 9.0F, 0.0F);
