@@ -69,7 +69,7 @@ public class DruidArmorItem extends MagicArmorItem {
 
 		@Override
 		public String getName() {
-			return Main.MODID + "_druid_armor";
+			return Main.MODID + ":druid_armor";
 		}
 
 		@Override

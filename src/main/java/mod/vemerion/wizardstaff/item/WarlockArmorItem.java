@@ -81,7 +81,7 @@ public class WarlockArmorItem extends MagicArmorItem {
 
 		@Override
 		public String getName() {
-			return Main.MODID + "_warlock_armor";
+			return Main.MODID + ":warlock_armor";
 		}
 
 		@Override

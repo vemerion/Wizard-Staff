@@ -109,7 +109,7 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 
 		@Override
 		public String getName() {
-			return Main.MODID + "_wizard_armor";
+			return Main.MODID + ":wizard_armor";
 		}
 
 		@Override
