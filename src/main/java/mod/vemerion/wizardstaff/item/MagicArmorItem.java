@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.DyeableArmorItem;
 import net.minecraft.item.IArmorMaterial;
@@ -27,6 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class MagicArmorItem extends DyeableArmorItem {
 	protected static final int[] MAX_DAMAGE_ARRAY = new int[] { 13, 15, 16, 11 };
+	protected static final int[] PROTECTION_ARRAY = new int[]{1, 2, 3, 1};
 
 	@OnlyIn(Dist.CLIENT)
 	protected MagicArmorModel<?> model;
@@ -34,13 +36,14 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 	public MagicArmorItem(IArmorMaterial material, EquipmentSlotType slot) {
 		super(material, slot, new Item.Properties().maxStackSize(1).group(ItemGroup.SEARCH));
 	}
-	
+
 	@Override
 	public int getColor(ItemStack stack) {
 		return hasColor(stack) ? super.getColor(stack) : getDefaultColor();
 	}
-	
+
 	protected abstract int getDefaultColor();
+
 	protected abstract String getMagicArmorName();
 
 	@Override
@@ -80,8 +83,16 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 	@OnlyIn(Dist.CLIENT)
 	protected abstract MagicArmorModel<?> getModel();
 
-	private static class WizardArmorMaterial implements IArmorMaterial {
-
+	public static int countMagicArmorPieces(PlayerEntity player) {
+		int count = 0;
+		for (ItemStack armor : player.getArmorInventoryList()) {
+			if (armor.getItem() instanceof MagicArmorItem)
+				count++;
+		}
+		return count;
+	}
+	
+	protected static abstract class MagicArmorMaterial implements IArmorMaterial {
 		@Override
 		public int getDurability(EquipmentSlotType slotIn) {
 			return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * 5;
@@ -89,7 +100,7 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 
 		@Override
 		public int getDamageReductionAmount(EquipmentSlotType slotIn) {
-			return 0;
+			return PROTECTION_ARRAY[slotIn.getIndex()];
 		}
 
 		@Override
@@ -101,6 +112,14 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 		public SoundEvent getSoundEvent() {
 			return SoundEvents.ITEM_ARMOR_EQUIP_LEATHER;
 		}
+		
+		@Override
+		public float getToughness() {
+			return 0;
+		}
+	}
+
+	private static class WizardArmorMaterial extends MagicArmorMaterial {
 
 		@Override
 		public Ingredient getRepairMaterial() {
@@ -110,11 +129,6 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 		@Override
 		public String getName() {
 			return Main.MODID + ":wizard_armor";
-		}
-
-		@Override
-		public float getToughness() {
-			return 0;
 		}
 	}
 

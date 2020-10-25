@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.Magic;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.capability.Experience;
+import mod.vemerion.wizardstaff.item.MagicArmorItem;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,9 +38,7 @@ public abstract class Magic {
 	}
 
 	private double discount(PlayerEntity player) {
-		return player.inventory.armorInventory.get(EquipmentSlotType.HEAD.getIndex()).getItem() == Main.WIZARD_HAT_ITEM
-				? 0.9
-				: 1;
+		return 1 - 0.1 * MagicArmorItem.countMagicArmorPieces(player);
 	}
 
 	private double debt(PlayerEntity player, double amount) {
@@ -59,9 +58,8 @@ public abstract class Magic {
 	public abstract RenderFirstPersonMagic firstPersonRenderer();
 
 	public abstract RenderThirdPersonMagic thirdPersonRenderer();
-	
-	public abstract UseAction getUseAction(ItemStack stack);
 
+	public abstract UseAction getUseAction(ItemStack stack);
 
 	public void magicStart(World world, PlayerEntity player, ItemStack staff) {
 	}
