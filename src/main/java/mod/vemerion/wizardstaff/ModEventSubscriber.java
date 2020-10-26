@@ -9,7 +9,7 @@ import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.DruidArmorItem;
 import mod.vemerion.wizardstaff.item.WarlockArmorItem;
-import mod.vemerion.wizardstaff.item.WizardHatItem;
+import mod.vemerion.wizardstaff.item.WizardArmorItem;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
@@ -37,7 +37,6 @@ public class ModEventSubscriber {
 	@SubscribeEvent
 	public static void onRegisterItem(RegistryEvent.Register<Item> event) {
 		event.getRegistry().register(setup(new WizardStaffItem(), "wizard_staff_item"));
-		event.getRegistry().register(setup(new WizardHatItem(), "wizard_hat_item"));
 
 		event.getRegistry().register(setup(new DruidArmorItem(EquipmentSlotType.HEAD), "druid_helmet_item"));
 		event.getRegistry().register(setup(new DruidArmorItem(EquipmentSlotType.CHEST), "druid_chestplate_item"));
@@ -48,7 +47,11 @@ public class ModEventSubscriber {
 		event.getRegistry().register(setup(new WarlockArmorItem(EquipmentSlotType.CHEST), "warlock_chestplate_item"));
 		event.getRegistry().register(setup(new WarlockArmorItem(EquipmentSlotType.LEGS), "warlock_leggings_item"));
 		event.getRegistry().register(setup(new WarlockArmorItem(EquipmentSlotType.FEET), "warlock_boots_item"));
-
+		
+		event.getRegistry().register(setup(new WizardArmorItem(EquipmentSlotType.HEAD), "wizard_hat_item"));
+		event.getRegistry().register(setup(new WizardArmorItem(EquipmentSlotType.CHEST), "wizard_chestplate_item"));
+		event.getRegistry().register(setup(new WizardArmorItem(EquipmentSlotType.LEGS), "wizard_leggings_item"));
+		event.getRegistry().register(setup(new WizardArmorItem(EquipmentSlotType.FEET), "wizard_boots_item"));
 	}
 
 	@SubscribeEvent

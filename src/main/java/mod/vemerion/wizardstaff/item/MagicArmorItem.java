@@ -15,8 +15,6 @@ import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
@@ -118,18 +116,4 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 			return 0;
 		}
 	}
-
-	private static class WizardArmorMaterial extends MagicArmorMaterial {
-
-		@Override
-		public Ingredient getRepairMaterial() {
-			return Ingredient.fromItems(Items.LEATHER);
-		}
-
-		@Override
-		public String getName() {
-			return Main.MODID + ":wizard_armor";
-		}
-	}
-
 }

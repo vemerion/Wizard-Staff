@@ -9,7 +9,10 @@
   "item.wizard-staff.druid_boots_item": "Druid Boots",
   "item.wizard-staff.wizard_staff_item": "Wizard Staff",
   "item.wizard-staff.wizard_hat_item": "Wizard Hat",
-  "item.wizard-staff.wizard_hat_item.description": "-10% spell cost",
+  "item.wizard-staff.wizard_chestplate_item": "Wizard Robe",
+  "item.wizard-staff.wizard_leggings_item": "Wizard Skirt",
+  "item.wizard-staff.wizard_boots_item": "Wizard Slippers",
+  "item.wizard-staff.wizard_armor.description": "-10% spell cost",
   "item.wizard-staff.druid_armor.description": "-10% spell cost",
   "item.wizard-staff.warlock_armor.description": "-10% spell cost",
   "gui.wizard-staff.toggle_animations": "Toggle GUI animations"

@@ -45,9 +45,10 @@ public class ClientModEventSubscriber {
 	public static void onRegisterColor(ColorHandlerEvent.Item event) {
 		event.getItemColors().register((stack, tint) -> {
 			return tint > 0 ? -1 : ((IDyeableArmorItem) stack.getItem()).getColor(stack);
-		}, Main.WIZARD_HAT_ITEM, Main.DRUID_HELMET_ITEM, Main.DRUID_BOOTS_ITEM, Main.DRUID_CHESTPLATE_ITEM,
-				Main.DRUID_LEGGINGS_ITEM, Main.WARLOCK_BOOTS_ITEM, Main.WARLOCK_CHESTPLATE_ITEM,
-				Main.WARLOCK_HELMET_ITEM, Main.WARLOCK_LEGGINGS_ITEM);
+		}, Main.WIZARD_HAT_ITEM, Main.WIZARD_BOOTS_ITEM, Main.WIZARD_CHESTPLATE_ITEM, Main.WIZARD_LEGGINGS_ITEM,
+				Main.DRUID_HELMET_ITEM, Main.DRUID_BOOTS_ITEM, Main.DRUID_CHESTPLATE_ITEM, Main.DRUID_LEGGINGS_ITEM,
+				Main.WARLOCK_BOOTS_ITEM, Main.WARLOCK_CHESTPLATE_ITEM, Main.WARLOCK_HELMET_ITEM,
+				Main.WARLOCK_LEGGINGS_ITEM);
 	}
 
 	@SubscribeEvent

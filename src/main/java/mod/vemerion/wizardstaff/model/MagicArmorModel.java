@@ -11,4 +11,6 @@ public abstract class MagicArmorModel<T extends LivingEntity> extends BipedModel
 	}
 	
 	public abstract void setVisibility(EquipmentSlotType armorSlot);
+	
+	// FIXME: Fix armor stand rotations
 }

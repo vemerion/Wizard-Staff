@@ -9,7 +9,7 @@ import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.DruidArmorItem;
 import mod.vemerion.wizardstaff.item.WarlockArmorItem;
-import mod.vemerion.wizardstaff.item.WizardHatItem;
+import mod.vemerion.wizardstaff.item.WizardArmorItem;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.EntityType;
@@ -34,7 +34,16 @@ public class Main {
 	public static final WizardStaffItem WIZARD_STAFF_ITEM = null;
 	
 	@ObjectHolder(Main.MODID + ":wizard_hat_item")
-	public static final WizardHatItem WIZARD_HAT_ITEM = null;
+	public static final WizardArmorItem WIZARD_HAT_ITEM = null;
+	
+	@ObjectHolder(Main.MODID + ":wizard_chestplate_item")
+	public static final WizardArmorItem WIZARD_CHESTPLATE_ITEM = null;
+	
+	@ObjectHolder(Main.MODID + ":wizard_leggings_item")
+	public static final WizardArmorItem WIZARD_LEGGINGS_ITEM = null;
+	
+	@ObjectHolder(Main.MODID + ":wizard_boots_item")
+	public static final WizardArmorItem WIZARD_BOOTS_ITEM = null;
 	
 	@ObjectHolder(Main.MODID + ":druid_helmet_item")
 	public static final DruidArmorItem DRUID_HELMET_ITEM = null;
