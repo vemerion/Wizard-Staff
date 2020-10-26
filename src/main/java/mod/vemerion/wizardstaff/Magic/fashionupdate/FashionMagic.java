@@ -1,4 +1,4 @@
-package mod.vemerion.wizardstaff.Magic.original;
+package mod.vemerion.wizardstaff.Magic.fashionupdate;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
@@ -10,12 +10,19 @@ import mod.vemerion.wizardstaff.staff.WizardStaffHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 
-public class LeatherHelmetMagic extends Magic {
+public class FashionMagic extends Magic {
+	
+	private Item fromArmorPiece;
+	private Item toArmorPiece;
+	
+	public FashionMagic(Item fromArmorPiece, Item toArmorPiece) {
+		this.fromArmorPiece = fromArmorPiece;
+		this.toArmorPiece = toArmorPiece;
+	}
 
 	@Override
 	public int getUseDuration(ItemStack staff) {
@@ -24,14 +31,24 @@ public class LeatherHelmetMagic extends Magic {
 
 	@Override
 	public boolean isMagicItem(Item item) {
-		return item == Items.LEATHER_HELMET;
+		return item == fromArmorPiece;
 	}
-	
+
+	@Override
+	public RenderFirstPersonMagic firstPersonRenderer() {
+		return WizardStaffTileEntityRenderer::buildupMagic;
+	}
+
+	@Override
+	public RenderThirdPersonMagic thirdPersonRenderer() {
+		return WizardStaffLayer::spinMagic;
+	}
+
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.NONE;
 	}
-
+	
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		player.playSound(Main.PLOP_SOUND, 1, soundPitch(player));
@@ -39,29 +56,19 @@ public class LeatherHelmetMagic extends Magic {
 			cost(player, 30);
 			WizardStaffHandler handler = WizardStaffHandler.get(staff);
 			ItemStack helmet = handler.extractItem(0, 1, false);
-			ItemStack wizardHat = new ItemStack(Main.WIZARD_HAT_ITEM);
+			ItemStack toArmorStack = new ItemStack(toArmorPiece);
 			CompoundNBT tag = helmet.getOrCreateTag();
 			if (tag.contains("display")) {
 				CompoundNBT display = tag.getCompound("display");
 				int color = display.getInt("color");
 
-				tag = wizardHat.getOrCreateTag();
-				display = wizardHat.getOrCreateChildTag("display");
+				tag = toArmorStack.getOrCreateTag();
+				display = toArmorStack.getOrCreateChildTag("display");
 				display.putInt("color", color);
 			}
-			handler.insertItem(0, wizardHat, false);
+			handler.insertItem(0, toArmorStack, false);
 		}
 		return super.magicFinish(world, player, staff);
-	}
-	
-	@Override
-	public RenderFirstPersonMagic firstPersonRenderer() {
-		return WizardStaffTileEntityRenderer::buildupMagic;
-	}
-	
-	@Override
-	public RenderThirdPersonMagic thirdPersonRenderer() {
-		return WizardStaffLayer::spinMagic;
 	}
 
 }

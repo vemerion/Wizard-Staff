@@ -1,12 +1,10 @@
 package mod.vemerion.wizardstaff.Magic;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.item.MagicArmorItem;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
