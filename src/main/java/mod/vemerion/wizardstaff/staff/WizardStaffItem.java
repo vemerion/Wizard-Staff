@@ -23,7 +23,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class WizardStaffItem extends Item {
 
 	public WizardStaffItem() {
-		super(new Item.Properties().maxStackSize(1).group(ItemGroup.COMBAT)
+		super(new Item.Properties().maxStackSize(1).group(ItemGroup.SEARCH)
 				.setISTER(() -> WizardStaffTileEntityRenderer::new));
 	}
 

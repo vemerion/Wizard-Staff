@@ -10,6 +10,7 @@ import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.DruidArmorItem;
 import mod.vemerion.wizardstaff.item.WarlockArmorItem;
 import mod.vemerion.wizardstaff.item.WizardArmorItem;
+import mod.vemerion.wizardstaff.item.WizardStaffItemGroup;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.EntityType;
@@ -125,4 +126,7 @@ public class Main {
 
 	@ObjectHolder(Main.MODID + ":warp_sound")
 	public static final SoundEvent WARP_SOUND = null;
+	
+	public static final WizardStaffItemGroup WIZARD_STAFF_ITEM_GROUP = new WizardStaffItemGroup();
+
 }

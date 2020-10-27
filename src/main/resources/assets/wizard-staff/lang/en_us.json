@@ -15,5 +15,6 @@
   "item.wizard-staff.wizard_armor.description": "-10% spell cost",
   "item.wizard-staff.druid_armor.description": "-10% spell cost",
   "item.wizard-staff.warlock_armor.description": "-10% spell cost",
-  "gui.wizard-staff.toggle_animations": "Toggle GUI animations"
+  "gui.wizard-staff.toggle_animations": "Toggle GUI animations",
+  "itemGroup.wizard-staff": "Wizard Staff"
 }
