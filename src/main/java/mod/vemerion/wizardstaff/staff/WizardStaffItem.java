@@ -11,6 +11,7 @@ import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
@@ -35,8 +36,8 @@ public class WizardStaffItem extends Item {
 				boolean shouldAnimate = ScreenAnimations.getScreenAnimations(playerIn).shouldAnimate();
 
 				SimpleNamedContainerProvider provider = new SimpleNamedContainerProvider(
-						(id, inventory, player) -> new WizardStaffContainer(id, inventory, getHandler(itemstack),
-								itemstack, shouldAnimate),
+						(id, inventory, player) -> new WizardStaffContainer(id, inventory,
+								WizardStaffItemHandler.get(itemstack), itemstack, shouldAnimate),
 						getDisplayName(itemstack));
 				NetworkHooks.openGui((ServerPlayerEntity) playerIn, provider,
 						(buffer) -> buffer.writeBoolean(shouldAnimate));
@@ -61,10 +62,22 @@ public class WizardStaffItem extends Item {
 	public static ItemStack getMagic(ItemStack itemstack) {
 		return getHandler(itemstack).getStackInSlot(0);
 	}
+	
+	@Override
+	public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
+		return oldStack == newStack;
+	}
+
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
 		return new WizardStaffCapabilityProvider();
+	}
+	
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		Item magic = getMagic(stack).getItem();
+		return Magics.getInstance().get(magic).getUseAction(stack);
 	}
 
 	@Override
@@ -104,7 +117,7 @@ public class WizardStaffItem extends Item {
 	public CompoundNBT getShareTag(ItemStack stack) {
 		CompoundNBT result = new CompoundNBT();
 		CompoundNBT tag = super.getShareTag(stack);
-		CompoundNBT cap = getHandler(stack).serializeNBT();
+		CompoundNBT cap = WizardStaffItemHandler.get(stack).serializeNBT();
 		if (tag != null)
 			result.put("tag", tag);
 		if (cap != null)
@@ -118,7 +131,7 @@ public class WizardStaffItem extends Item {
 			stack.setTag(nbt);
 		} else {
 			stack.setTag(nbt.getCompound("tag"));
-			getHandler(stack).deserializeNBT(nbt.getCompound("cap"));
+			WizardStaffItemHandler.get(stack).deserializeNBT(nbt.getCompound("cap"));
 		}
 	}
 

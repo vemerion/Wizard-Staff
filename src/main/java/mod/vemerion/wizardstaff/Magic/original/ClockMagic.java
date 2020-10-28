@@ -2,13 +2,16 @@ package mod.vemerion.wizardstaff.Magic.original;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.UseAction;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -22,6 +25,11 @@ public class ClockMagic extends Magic {
 	@Override
 	public boolean isMagicItem(Item item) {
 		return item == Items.CLOCK;
+	}
+	
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.NONE;
 	}
 
 	@Override
@@ -39,7 +47,12 @@ public class ClockMagic extends Magic {
 	}
 
 	@Override
-	public RenderMagic renderer() {
+	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::spinMagic;
+	}
+	
+	@Override
+	public RenderThirdPersonMagic thirdPersonRenderer() {
+		return WizardStaffLayer::spinMagic;
 	}
 }

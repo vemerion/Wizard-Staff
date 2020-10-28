@@ -37,16 +37,20 @@ public class ClientModEventSubscriber {
 				});
 		RenderingRegistry.registerEntityRenderingHandler(Main.NETHER_PORTAL_ENTITY, NetherPortalRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(Main.MAGIC_WITHER_SKULL_ENTITY, MagicWitherSkullRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(Main.MAGIC_SOUL_SAND_ARM_ENTITY, MagicSoulSandArmRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(Main.MAGIC_SOUL_SAND_ARM_ENTITY,
+				MagicSoulSandArmRenderer::new);
 	}
-	
+
 	@SubscribeEvent
 	public static void onRegisterColor(ColorHandlerEvent.Item event) {
 		event.getItemColors().register((stack, tint) -> {
 			return tint > 0 ? -1 : ((IDyeableArmorItem) stack.getItem()).getColor(stack);
-		}, Main.WIZARD_HAT_ITEM);
+		}, Main.WIZARD_HAT_ITEM, Main.WIZARD_BOOTS_ITEM, Main.WIZARD_CHESTPLATE_ITEM, Main.WIZARD_LEGGINGS_ITEM,
+				Main.DRUID_HELMET_ITEM, Main.DRUID_BOOTS_ITEM, Main.DRUID_CHESTPLATE_ITEM, Main.DRUID_LEGGINGS_ITEM,
+				Main.WARLOCK_BOOTS_ITEM, Main.WARLOCK_CHESTPLATE_ITEM, Main.WARLOCK_HELMET_ITEM,
+				Main.WARLOCK_LEGGINGS_ITEM);
 	}
-	
+
 	@SubscribeEvent
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
 		Minecraft.getInstance().particles.registerFactory(Main.MAGIC_SMOKE_PARTICLE_TYPE,
@@ -57,7 +61,7 @@ public class ClientModEventSubscriber {
 				sprite -> new RedstoneParticle.Factory(sprite));
 
 	}
-	
+
 	public static <T extends IForgeRegistryEntry<T>> T setup(final T entry, final String name) {
 		return setup(entry, new ResourceLocation(Main.MODID, name));
 	}

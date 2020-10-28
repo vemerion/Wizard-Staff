@@ -1,8 +1,12 @@
 package mod.vemerion.wizardstaff.Magic;
 
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
 
 public class NoMagic extends Magic {
 
@@ -17,8 +21,18 @@ public class NoMagic extends Magic {
 	}
 
 	@Override
-	public RenderMagic renderer() {
-		return (a, b, c, d, e, f, g, h, i, j) -> {};
+	public RenderFirstPersonMagic firstPersonRenderer() {
+		return WizardStaffTileEntityRenderer::noRender;
+	}
+
+	@Override
+	public RenderThirdPersonMagic thirdPersonRenderer() {
+		return WizardStaffLayer::noRender;
+	}
+
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.NONE;
 	}
 
 }

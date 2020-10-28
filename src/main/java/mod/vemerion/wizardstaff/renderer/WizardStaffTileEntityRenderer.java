@@ -10,6 +10,7 @@ import mod.vemerion.wizardstaff.model.AbstractWizardStaffModel;
 import mod.vemerion.wizardstaff.model.NetherWizardStaffModel;
 import mod.vemerion.wizardstaff.model.WizardStaffModel;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
+import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -21,6 +22,7 @@ import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.common.util.LazyOptional;
 
 public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 	private final WizardStaffModel WIZARD_STAFF = new WizardStaffModel();
@@ -29,6 +31,8 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 	@Override
 	public void func_239207_a_(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 			int combinedLightIn, int combinedOverlayIn) {
+		if (!shouldRender(itemStackIn))
+			return;
 		renderOnlyStaffNoPop(itemStackIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		renderOnlyMagic(itemStackIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.pop();
@@ -37,9 +41,16 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 	protected AbstractWizardStaffModel getModel(ItemStack itemStackIn) {
 		return itemStackIn.getItem() == Main.WIZARD_STAFF_ITEM ? WIZARD_STAFF : NETHER_WIZARD_STAFF;
 	}
+	
+	private boolean shouldRender(ItemStack staff) {
+		LazyOptional<WizardStaffItemHandler> optHandler = WizardStaffItemHandler.getOptional(staff);
+		return optHandler.isPresent() && optHandler.orElse(null).isVisible();
+	}
 
 	protected void renderOnlyStaffNoPop(ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 			int combinedLightIn, int combinedOverlayIn) {
+		if (!shouldRender(itemStackIn))
+			return;
 		matrixStackIn.push();
 		matrixStackIn.scale(1.0F, -1.0F, -1.0F);
 		matrixStackIn.scale(0.5f, 0.5f, 0.5f);
@@ -52,6 +63,9 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 	protected void renderOnlyMagic(ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
 			int combinedLightIn, int combinedOverlayIn) {
 		ItemStack magic = WizardStaffItem.getMagic(itemStackIn);
+		if (!shouldRender(itemStackIn))
+			return;
+
 		float ageInTicks = Minecraft.getInstance().player.ticksExisted
 				+ Minecraft.getInstance().getRenderPartialTicks();
 		matrixStackIn.push();
@@ -200,9 +214,15 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
+	
+	public static void noRender(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
+			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
+			float partialTicks, HandSide hand) {
+		
+	}
 
 	@FunctionalInterface
-	public static interface RenderMagic {
+	public static interface RenderFirstPersonMagic {
 		public void render(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration, ItemStack stack,
 				MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn, float partialTicks,
 				HandSide hand);

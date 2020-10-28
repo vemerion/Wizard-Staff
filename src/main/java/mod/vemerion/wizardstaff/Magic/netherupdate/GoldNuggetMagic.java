@@ -3,13 +3,16 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 import java.util.List;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.ai.brain.BrainUtil;
 import net.minecraft.entity.monster.piglin.PiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootParameters;
@@ -38,11 +41,6 @@ public class GoldNuggetMagic extends Magic {
 	}
 
 	@Override
-	public RenderMagic renderer() {
-		return WizardStaffTileEntityRenderer::buildupMagic;
-	}
-
-	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote) {
 			int barterCount = 0;
@@ -64,6 +62,21 @@ public class GoldNuggetMagic extends Magic {
 				playSoundServer(world, player, SoundEvents.ENTITY_PIGLIN_ADMIRING_ITEM, 1, soundPitch(player));
 		}
 		return super.magicFinish(world, player, staff);
+	}
+
+	@Override
+	public RenderFirstPersonMagic firstPersonRenderer() {
+		return WizardStaffTileEntityRenderer::buildupMagic;
+	}
+
+	@Override
+	public RenderThirdPersonMagic thirdPersonRenderer() {
+		return WizardStaffLayer::spinMagic;
+	}
+
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.NONE;
 	}
 
 }

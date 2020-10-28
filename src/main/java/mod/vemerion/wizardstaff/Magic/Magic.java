@@ -1,14 +1,15 @@
 package mod.vemerion.wizardstaff.Magic;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.capability.Experience;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
+import mod.vemerion.wizardstaff.item.MagicArmorItem;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.item.UseAction;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -37,9 +38,7 @@ public abstract class Magic {
 	}
 
 	private double discount(PlayerEntity player) {
-		return player.inventory.armorInventory.get(EquipmentSlotType.HEAD.getIndex()).getItem() == Main.WIZARD_HAT_ITEM
-				? 0.9
-				: 1;
+		return 1 - 0.1 * MagicArmorItem.countMagicArmorPieces(player);
 	}
 
 	private double debt(PlayerEntity player, double amount) {
@@ -56,7 +55,11 @@ public abstract class Magic {
 
 	public abstract boolean isMagicItem(Item item);
 
-	public abstract RenderMagic renderer();
+	public abstract RenderFirstPersonMagic firstPersonRenderer();
+
+	public abstract RenderThirdPersonMagic thirdPersonRenderer();
+
+	public abstract UseAction getUseAction(ItemStack stack);
 
 	public void magicStart(World world, PlayerEntity player, ItemStack staff) {
 	}

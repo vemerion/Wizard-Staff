@@ -2,13 +2,16 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
+import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -25,11 +28,6 @@ public class NetheriteIngotMagic extends Magic {
 	public boolean isMagicItem(Item item) {
 		return ItemTags.getCollection().getTagByID(NETHERITE_INGOT).contains(item);
 	}
-
-	@Override
-	public RenderMagic renderer() {
-		return WizardStaffTileEntityRenderer::buildupMagic;
-	}
 	
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
@@ -42,6 +40,21 @@ public class NetheriteIngotMagic extends Magic {
 			handler.insertItem(0, netherWizardStaff, false);
 		}
 		return super.magicFinish(world, player, staff);
+	}
+
+	@Override
+	public RenderFirstPersonMagic firstPersonRenderer() {
+		return WizardStaffTileEntityRenderer::buildupMagic;
+	}
+
+	@Override
+	public RenderThirdPersonMagic thirdPersonRenderer() {
+		return WizardStaffLayer::spinMagic;
+	}
+
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.NONE;
 	}
 
 }
