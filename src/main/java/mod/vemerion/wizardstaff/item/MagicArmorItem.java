@@ -74,7 +74,7 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 		model.isChild = _default.isChild;
 		model.rightArmPose = _default.rightArmPose;
 		model.leftArmPose = _default.leftArmPose;
-
+		
 		return (A) model;
 	}
 
