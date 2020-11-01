@@ -205,6 +205,15 @@ public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T>
 				Math.max(bipedLeftLeg.rotateAngleX, bipedRightLeg.rotateAngleX) + Math.toRadians(15));
 		dressFront.rotateAngleX = (float) Math.min(Math.toRadians(-20),
 				Math.min(bipedLeftLeg.rotateAngleX, bipedRightLeg.rotateAngleX) - Math.toRadians(15));
+		if (isSneak) {
+			dress.rotateAngleX = (float) Math.toRadians(-30);
+			dress.rotationPointY = 9f;
+			dressBack.rotateAngleX += Math.toRadians(20);
+			dressFront.rotateAngleX -= Math.toRadians(20);
+		} else {
+			dress.rotationPointY = 10.5f;
+			dress.rotateAngleX = 0;
+		}
 		super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	}
 

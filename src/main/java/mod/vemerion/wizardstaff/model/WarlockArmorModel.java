@@ -1,5 +1,8 @@
 package mod.vemerion.wizardstaff.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -229,6 +232,25 @@ public class WarlockArmorModel<T extends LivingEntity> extends MagicArmorModel<T
 		this.bipedRightLeg.addChild(this.rightShoe1);
 		this.dress.addChild(this.dressFront);
 		this.cowlBack1.addChild(this.cowlBack2);
+	}
+
+	@Override
+	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
+			float red, float green, float blue, float alpha) {
+		dressBack.rotateAngleX = (float) Math.max(Math.toRadians(20),
+				Math.max(bipedLeftLeg.rotateAngleX, bipedRightLeg.rotateAngleX) + Math.toRadians(15));
+		dressFront.rotateAngleX = (float) Math.min(Math.toRadians(-20),
+				Math.min(bipedLeftLeg.rotateAngleX, bipedRightLeg.rotateAngleX) - Math.toRadians(15));
+		if (isSneak) {
+			dress.rotateAngleX = (float) Math.toRadians(-30);
+			dress.rotationPointY = 9f;
+			dressBack.rotateAngleX += Math.toRadians(20);
+			dressFront.rotateAngleX -= Math.toRadians(20);
+		} else {
+			dress.rotationPointY = 10.5f;
+			dress.rotateAngleX = 0;
+		}
+		super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	}
 
 	/**
