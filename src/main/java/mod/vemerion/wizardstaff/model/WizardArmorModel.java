@@ -121,13 +121,13 @@ public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T>
 		this.leftArm3.setRotationPoint(0.0F, -3.0F, -0.5F);
 		this.leftArm3.addBox(-1.0F, -3.0F, -1.0F, 2.0F, 3.0F, 2.0F, 0.0F, 0.0F, 0.0F);
 		this.rightShoe1 = new ModelRenderer(this, 36, 82);
-		this.rightShoe1.setRotationPoint(0.0F, 9.0F, 0.0F);
+		this.rightShoe1.setRotationPoint(0.0F, 9.01F, 0.0F);
 		this.rightShoe1.addBox(-2.5F, 0.0F, -3.5F, 5.0F, 3.0F, 6.0F, 0.0F, 0.0F, 0.0F);
 		this.rightArm2 = new ModelRenderer(this, 24, 112);
 		this.rightArm2.setRotationPoint(0.0F, 6.0F, 3.5F);
 		this.rightArm2.addBox(-1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
 		this.leftShoe1 = new ModelRenderer(this, 36, 82);
-		this.leftShoe1.setRotationPoint(0.0F, 9.0F, 0.0F);
+		this.leftShoe1.setRotationPoint(0.0F, 9.01F, 0.0F);
 		this.leftShoe1.addBox(-2.5F, 0.0F, -3.5F, 5.0F, 3.0F, 6.0F, 0.0F, 0.0F, 0.0F);
 		this.leftArm2 = new ModelRenderer(this, 24, 112);
 		this.leftArm2.setRotationPoint(0.0F, 6.0F, 3.5F);
