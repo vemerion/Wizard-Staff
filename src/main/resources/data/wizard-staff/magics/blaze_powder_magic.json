@@ -1,0 +1,13 @@
+{
+  "cost": 0.3,
+  "duration": -1,
+  "magic": "blaze_powder_magic",
+  "ingredient": [
+    {
+      "tag": "forge:cobblestone"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    }
+  ]
+}
