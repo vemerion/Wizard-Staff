@@ -3,16 +3,13 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
@@ -21,17 +18,6 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 
 public class NetherBrickMagic extends Magic {
-	private static final ResourceLocation NETHER_BRICK = new ResourceLocation("forge", "ingots/nether_brick");
-
-	@Override
-	public int getUseDuration(ItemStack staff) {
-		return 20;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return ItemTags.getCollection().get(NETHER_BRICK).contains(item);
-	}
 
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
@@ -53,7 +39,7 @@ public class NetherBrickMagic extends Magic {
 		if (world.getDimension().getType() == DimensionType.THE_NETHER) {
 			player.playSound(Main.WARP_SOUND, 0.8f, soundPitch(player));
 			if (!world.isRemote) {
-				cost(player, 60);
+				cost(player);
 				BlockPos fortressPos = ((ServerWorld) world).findNearestStructure("Fortress", player.getPosition(), 100,
 						false);
 				if (fortressPos != null) {

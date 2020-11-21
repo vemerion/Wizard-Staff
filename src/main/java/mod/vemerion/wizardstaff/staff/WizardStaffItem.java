@@ -45,8 +45,7 @@ public class WizardStaffItem extends Item {
 			return ActionResult.resultSuccess(itemstack);
 		} else { // Use staff
 			playerIn.setActiveHand(handIn);
-			ItemStack magicStack = getMagic(itemstack);
-			Item magic = magicStack.getItem();
+			ItemStack magic = getMagic(itemstack);
 			Magics.getInstance().get(magic).magicStart(worldIn, playerIn, itemstack);
 		}
 		return ActionResult.resultPass(itemstack);
@@ -68,19 +67,19 @@ public class WizardStaffItem extends Item {
 	
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
-		Item magic = getMagic(stack).getItem();
+		ItemStack magic = getMagic(stack);
 		return Magics.getInstance().get(magic).getUseAction(stack);
 	}
 
 	@Override
 	public int getUseDuration(ItemStack stack) {
-		Item magic = getMagic(stack).getItem();
+		ItemStack magic = getMagic(stack);
 		return Magics.getInstance().get(magic).getUseDuration(stack);
 	}
 
 	@Override
 	public void onUse(World worldIn, LivingEntity livingEntityIn, ItemStack stack, int count) {
-		Item magic = getMagic(stack).getItem();
+		ItemStack magic = getMagic(stack);
 		if (livingEntityIn instanceof PlayerEntity) {
 			Magics.getInstance().get(magic).magicTick(worldIn, (PlayerEntity) livingEntityIn, stack, count);
 		}
@@ -88,7 +87,7 @@ public class WizardStaffItem extends Item {
 
 	@Override
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
-		Item magic = getMagic(stack).getItem();
+		ItemStack magic = getMagic(stack);
 		if (entityLiving instanceof PlayerEntity) {
 			return Magics.getInstance().get(magic).magicFinish(worldIn, (PlayerEntity) entityLiving, stack);
 		}

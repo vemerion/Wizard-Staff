@@ -4,17 +4,15 @@ import java.util.List;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import mod.vemerion.wizardstaff.sound.WizardStaffTickableSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -25,16 +23,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 
 public class JukeboxMagic extends Magic {
-
-	@Override
-	public int getUseDuration(ItemStack staff) {
-		return HOUR;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return item == Items.JUKEBOX;
-	}
 	
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
@@ -73,8 +61,8 @@ public class JukeboxMagic extends Magic {
 					living.limbSwingAmount = 1 + player.getRNG().nextFloat() - 0.5f;
 			}
 		}
-		if (!world.isRemote)
-			cost(player, 2 + entities.size());
+		if (!world.isRemote && !entities.isEmpty())
+			cost(player);
 	}
 	
 	@Override

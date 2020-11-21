@@ -1,23 +1,34 @@
 package mod.vemerion.wizardstaff.Magic;
 
+import java.util.stream.Stream;
+
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
+import net.minecraft.item.crafting.Ingredient;
 
 public class NoMagic extends Magic {
 
-	@Override
-	public int getUseDuration(ItemStack stack) {
-		return 0;
+	public NoMagic() {
+		this.init(0, 0, new Ingredient(Stream.empty()) {
+			@Override
+			public boolean test(ItemStack p_test_1_) {
+				return true;
+			}
+		});
 	}
 
 	@Override
-	public boolean isMagicItem(Item item) {
-		return true;
+	public void init(float cost, int duration, Ingredient ingredient) {
+		super.init(0, 0, new Ingredient(Stream.empty()) {
+			@Override
+			public boolean test(ItemStack p_test_1_) {
+				return true;
+			}
+		});
 	}
 
 	@Override

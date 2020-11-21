@@ -11,6 +11,7 @@ import mod.vemerion.wizardstaff.item.DruidArmorItem;
 import mod.vemerion.wizardstaff.item.WarlockArmorItem;
 import mod.vemerion.wizardstaff.item.WizardArmorItem;
 import mod.vemerion.wizardstaff.network.Network;
+import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.EntityClassification;
@@ -129,6 +130,9 @@ public class ModEventSubscriber {
 
 		Network.INSTANCE.registerMessage(0, ScreenAnimations.class, ScreenAnimations::encode, ScreenAnimations::decode,
 				ScreenAnimations::handle);
+		Network.INSTANCE.registerMessage(1, UpdateMagicsMessage.class, UpdateMagicsMessage::encode, UpdateMagicsMessage::decode,
+				UpdateMagicsMessage::handle);
+
 
 		Magics.init();
 

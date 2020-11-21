@@ -37,7 +37,7 @@ public class WizardStaffLayer
 			return;
 
 		WizardStaffTileEntityRenderer renderer = (WizardStaffTileEntityRenderer) item.getItemStackTileEntityRenderer();
-		Item magic = ((WizardStaffItem) item).getMagic(activeItem).getItem();
+		ItemStack magic = ((WizardStaffItem) item).getMagic(activeItem);
 		int maxDuration = activeItem.getUseDuration();
 		float duration = (float) maxDuration - ((float) player.getItemInUseCount() - partialTicks + 1.0f);
 		HandSide side = player.getActiveHand() == Hand.MAIN_HAND ? player.getPrimaryHand()

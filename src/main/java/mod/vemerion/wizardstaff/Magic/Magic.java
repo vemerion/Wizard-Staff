@@ -5,9 +5,9 @@ import mod.vemerion.wizardstaff.item.MagicArmorItem;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -15,7 +15,17 @@ import net.minecraft.world.World;
 
 public abstract class Magic {
 
-	protected static final int HOUR = 72000;
+	public static final int HOUR = 72000;
+	
+	private float cost;
+	private int duration;
+	private Ingredient ingredient;
+	
+	public void init(float cost, int duration, Ingredient ingredient) {
+		this.cost = cost;
+		this.duration = duration;
+		this.ingredient = ingredient;
+	}
 
 	protected float soundPitch(PlayerEntity player) {
 		return 0.8f + player.getRNG().nextFloat() * 0.4f;
@@ -26,8 +36,8 @@ public abstract class Magic {
 				volume, pitch);
 	}
 
-	protected void cost(PlayerEntity player, double amount) {
-		int whole = Experience.add(player, amount * discount(player));
+	protected final void cost(PlayerEntity player) {
+		int whole = Experience.add(player, cost * discount(player));
 		double debt = debt(player, whole);
 		player.giveExperiencePoints(-whole);
 		if (debt > 0)
@@ -49,9 +59,13 @@ public abstract class Magic {
 		return amount;
 	}
 
-	public abstract int getUseDuration(ItemStack staff);
+	public final int getUseDuration(ItemStack staff) {
+		return duration;
+	}
 
-	public abstract boolean isMagicItem(Item item);
+	public final boolean isMagicItem(ItemStack stack) {
+		return ingredient.test(stack);
+	}
 
 	public abstract RenderFirstPersonMagic firstPersonRenderer();
 

@@ -1,10 +1,9 @@
 package mod.vemerion.wizardstaff.Magic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,79 +28,83 @@ import mod.vemerion.wizardstaff.Magic.original.GoldMagic;
 import mod.vemerion.wizardstaff.Magic.original.JukeboxMagic;
 import mod.vemerion.wizardstaff.Magic.original.WizardStaffMagic;
 import mod.vemerion.wizardstaff.Magic.original.WritableBookMagic;
+import mod.vemerion.wizardstaff.network.Network;
+import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class Magics extends JsonReloadListener {
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 
 	private static Magics instance;
 
-	private List<Magic> magics;
-	private Map<Item, Integer> cache;
+	private Map<String, Supplier<Magic>> magicNames;
+	private Map<ResourceLocation, Magic> magics;
+	private Map<Item, ResourceLocation> cache;
 	private final NoMagic NO_MAGIC = new NoMagic();
 
 	private Magics() {
 		super(GSON, "magics");
-		this.magics = new ArrayList<>();
+		this.magicNames = new HashMap<>();
+		this.magics = new HashMap<>();
 		this.cache = new HashMap<>();
-		this.addMagics();
+		this.initMagicNames();
 	}
 
-	public Magic get(Item item) {
-		if (cache.containsKey(item)) {
+	public Magic get(ItemStack stack) {
+		Item item = stack.getItem();
+		if (cache.containsKey(item) && magics.get(cache.get(item)).isMagicItem(stack)) {
 			return magics.get(cache.get(item));
 		} else {
-			for (int i = 0; i < magics.size(); i++) {
-				if (magics.get(i).isMagicItem(item)) {
-					cache.put(item, i);
-					return magics.get(i);
+			for (Entry<ResourceLocation, Magic> entry : magics.entrySet()) {
+				if (entry.getValue().isMagicItem(stack)) {
+					Magic magic = entry.getValue();
+					cache.put(stack.getItem(), entry.getKey());
+					return magic;
 				}
 			}
 		}
 		return NO_MAGIC;
 	}
 
-	private void addMagics() {
-		magics.add(new BlazePowderMagic());
-		magics.add(new CarvedPumpkinMagic());
-		magics.add(new ClockMagic());
-		magics.add(new EggMagic());
-		magics.add(new ElytraMagic());
-		magics.add(new GoldMagic());
-		magics.add(new JukeboxMagic());
-		magics.add(new WizardStaffMagic());
-		magics.add(new WritableBookMagic());
-		magics.add(new ObsidianMagic());
-		magics.add(new GlowstoneDustMagic());
-		magics.add(new NetherrackMagic());
-		magics.add(new WitherSkullMagic());
-		magics.add(new GhastTearMagic());
-		magics.add(new NetherBrickMagic());
-		magics.add(new SoulSandMagic());
-
-		magics.add(new FashionMagic(Items.LEATHER_BOOTS, Main.WIZARD_BOOTS_ITEM));
-		magics.add(new FashionMagic(Items.LEATHER_CHESTPLATE, Main.WIZARD_CHESTPLATE_ITEM));
-		magics.add(new FashionMagic(Items.LEATHER_HELMET, Main.WIZARD_HAT_ITEM));
-		magics.add(new FashionMagic(Items.LEATHER_LEGGINGS, Main.WIZARD_LEGGINGS_ITEM));
-		magics.add(new FashionMagic(Items.GOLDEN_BOOTS, Main.DRUID_BOOTS_ITEM));
-		magics.add(new FashionMagic(Items.GOLDEN_CHESTPLATE, Main.DRUID_CHESTPLATE_ITEM));
-		magics.add(new FashionMagic(Items.GOLDEN_HELMET, Main.DRUID_HELMET_ITEM));
-		magics.add(new FashionMagic(Items.GOLDEN_LEGGINGS, Main.DRUID_LEGGINGS_ITEM));
-		magics.add(new FashionMagic(Items.IRON_BOOTS, Main.WARLOCK_BOOTS_ITEM));
-		magics.add(new FashionMagic(Items.IRON_CHESTPLATE, Main.WARLOCK_CHESTPLATE_ITEM));
-		magics.add(new FashionMagic(Items.IRON_HELMET, Main.WARLOCK_HELMET_ITEM));
-		magics.add(new FashionMagic(Items.IRON_LEGGINGS, Main.WARLOCK_LEGGINGS_ITEM));
-
-		// This should be last
-		magics.add(new NoMagic());
+	private void initMagicNames() {
+		magicNames.put("blaze_powder_magic", () -> new BlazePowderMagic());
+		magicNames.put("carved_pumpkin_magic", () -> new CarvedPumpkinMagic());
+		magicNames.put("clock_magic", () -> new ClockMagic());
+		magicNames.put("egg_magic", () -> new EggMagic());
+		magicNames.put("elytra_magic", () -> new ElytraMagic());
+		magicNames.put("gold_magic", () -> new GoldMagic());
+		magicNames.put("jukebox_magic", () -> new JukeboxMagic());
+		magicNames.put("wizard_staff_magic", () -> new WizardStaffMagic());
+		magicNames.put("writable_book_magic", () -> new WritableBookMagic());
+		magicNames.put("obsidian_magic", () -> new ObsidianMagic());
+		magicNames.put("glowstone_dust_magic", () -> new GlowstoneDustMagic());
+		magicNames.put("netherrack_magic", () -> new NetherrackMagic());
+		magicNames.put("wither_skull_magic", () -> new WitherSkullMagic());
+		magicNames.put("ghast_tear_magic", () -> new GhastTearMagic());
+		magicNames.put("nether_brick_magic", () -> new NetherBrickMagic());
+		magicNames.put("soul_sand_magic", () -> new SoulSandMagic());
+		magicNames.put("fashion_magic_wizard_boots", () -> new FashionMagic(Main.WIZARD_BOOTS_ITEM));
+		magicNames.put("fashion_magic_wizard_chestplate", () -> new FashionMagic(Main.WIZARD_CHESTPLATE_ITEM));
+		magicNames.put("fashion_magic_wizard_helmet", () -> new FashionMagic(Main.WIZARD_HAT_ITEM));
+		magicNames.put("fashion_magic_wizard_leggings", () -> new FashionMagic(Main.WIZARD_LEGGINGS_ITEM));
+		magicNames.put("fashion_magic_druid_boots", () -> new FashionMagic(Main.DRUID_BOOTS_ITEM));
+		magicNames.put("fashion_magic_druid_chestplate", () -> new FashionMagic(Main.DRUID_CHESTPLATE_ITEM));
+		magicNames.put("fashion_magic_druid_helmet", () -> new FashionMagic(Main.DRUID_HELMET_ITEM));
+		magicNames.put("fashion_magic_druid_leggings", () -> new FashionMagic(Main.DRUID_LEGGINGS_ITEM));
+		magicNames.put("fashion_magic_warlock_boots", () -> new FashionMagic(Main.WARLOCK_BOOTS_ITEM));
+		magicNames.put("fashion_magic_warloc_chestplate", () -> new FashionMagic(Main.WARLOCK_CHESTPLATE_ITEM));
+		magicNames.put("fashion_magic_warloc_helmet", () -> new FashionMagic(Main.WARLOCK_HELMET_ITEM));
+		magicNames.put("fashion_magic_warloc_leggings", () -> new FashionMagic(Main.WARLOCK_LEGGINGS_ITEM));
+		magicNames.put("no_magic", () -> NO_MAGIC);
 	}
 
 	public static Magics getInstance() {
@@ -115,21 +118,65 @@ public class Magics extends JsonReloadListener {
 	@Override
 	protected void apply(Map<ResourceLocation, JsonObject> objectIn, IResourceManager resourceManagerIn,
 			IProfiler profilerIn) {
+		Map<ResourceLocation, MagicParams> magicParams = new HashMap<>();
 		for (Entry<ResourceLocation, JsonObject> entry : objectIn.entrySet()) {
 			JsonObject json = entry.getValue();
-			System.out.println(entry.getKey());
 			float cost = JSONUtils.getFloat(json, "cost");
-			if (cost < 0) 
+			if (cost < 0)
 				throw new JsonSyntaxException("The cost of a magic can not be negative");
 			int duration = JSONUtils.getInt(json, "duration");
 			String magic = JSONUtils.getString(json, "magic");
+			if (!magicNames.containsKey(magic))
+				throw new JsonSyntaxException("The magic " + magic + " does not exist");
 			Ingredient ingredient = Ingredient.deserialize(json.get("ingredient"));
-			System.out.println(cost);
-			System.out.println(duration);
-			System.out.println(magic);
-			System.out.println(ingredient.test(new ItemStack(Items.COBBLESTONE)));
-			System.out.println(ingredient.test(new ItemStack(Items.BLAZE_POWDER)));
-			System.out.println(ingredient.test(new ItemStack(Items.ACACIA_BOAT)));
+			magicParams.put(entry.getKey(), new MagicParams(cost, duration, magic, ingredient));
+		}
+
+		addMagics(magicParams);
+		sendMagicMessage(magicParams);
+		System.out.println("MAGIC MAGIC");
+	}
+
+	private void sendMagicMessage(Map<ResourceLocation, MagicParams> magicParams) {
+		Network.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateMagicsMessage(magicParams));
+	}
+
+	public void addMagics(Map<ResourceLocation, MagicParams> magicParams) {
+		cache = new HashMap<>();
+		for (Entry<ResourceLocation, MagicParams> entry : magicParams.entrySet()) {
+			magics.put(entry.getKey(), entry.getValue().createMagic());
+		}
+	}
+
+	public static class MagicParams {
+		private float cost;
+		private int duration;
+		private String magicKey;
+		private Ingredient ingredient;
+
+		public MagicParams(float cost, int duration, String magicKey, Ingredient ingredient) {
+			this.cost = cost;
+			this.duration = duration;
+			this.magicKey = magicKey;
+			this.ingredient = ingredient;
+		}
+
+		public Magic createMagic() {
+			Magic magic = getInstance().magicNames.get(magicKey).get();
+			magic.init(cost, duration == -1 ? Magic.HOUR : duration, ingredient);
+			return magic;
+		}
+
+		public static MagicParams decode(PacketBuffer buffer) {
+			return new MagicParams(buffer.readFloat(), buffer.readInt(), buffer.readString(100),
+					Ingredient.read(buffer));
+		}
+
+		public void encode(PacketBuffer buffer) {
+			buffer.writeFloat(cost);
+			buffer.writeInt(duration);
+			buffer.writeString(magicKey);
+			ingredient.write(buffer);
 		}
 	}
 }

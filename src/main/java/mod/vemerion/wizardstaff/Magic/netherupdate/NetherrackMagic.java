@@ -2,16 +2,14 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.SoundEvents;
@@ -22,25 +20,15 @@ import net.minecraft.world.World;
 public class NetherrackMagic extends Magic {
 
 	@Override
-	public int getUseDuration(ItemStack staff) {
-		return HOUR;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return item == Items.NETHERRACK;
-	}
-
-	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::swinging;
 	}
-	
+
 	@Override
 	public RenderThirdPersonMagic thirdPersonRenderer() {
 		return WizardStaffLayer::swinging;
 	}
-	
+
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.NONE;
@@ -49,16 +37,16 @@ public class NetherrackMagic extends Magic {
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (!world.isRemote && player.ticksExisted % 10 == 0) {
-			int cost = rackify(world, player);
-			cost(player, cost);
-			if (cost > 0)
+			if (rackify(world, player)) {
+				cost(player);
 				playSoundServer(world, player, SoundEvents.BLOCK_STONE_PLACE, 1, soundPitch(player));
+			}
 		}
 	}
 
 	// Derived from FrostWalkerEnchantment.freezeNearby()
-	private int rackify(World world, PlayerEntity player) {
-		int i = 0;
+	private boolean rackify(World world, PlayerEntity player) {
+		boolean hasRackified = false;
 		if (player.onGround) {
 			BlockState netherrack = Blocks.NETHERRACK.getDefaultState();
 			float range = 2;
@@ -72,12 +60,12 @@ public class NetherrackMagic extends Magic {
 											world.getBlockState(pos)),
 									net.minecraft.util.Direction.UP)) {
 						world.setBlockState(pos, netherrack);
-						i++;
+						hasRackified = true;
 					}
 				}
 			}
 		}
-		return i;
+		return hasRackified;
 	}
 
 	private boolean canBeRackified(World world, BlockPos pos) {

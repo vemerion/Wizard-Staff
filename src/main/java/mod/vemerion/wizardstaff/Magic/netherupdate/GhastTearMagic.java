@@ -9,9 +9,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
@@ -23,16 +21,6 @@ import net.minecraft.world.server.ServerWorld;
 public class GhastTearMagic extends Magic {
 
 	@Override
-	public int getUseDuration(ItemStack staff) {
-		return HOUR;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return item == Items.GHAST_TEAR;
-	}
-
-	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::spinMagic;
 	}
@@ -42,7 +30,7 @@ public class GhastTearMagic extends Magic {
 		if (count % 13 == 0)
 			player.playSound(Main.SNIFFLE_SOUND, 0.6f, soundPitch(player) * 2);
 		if (!world.isRemote) {
-			cost(player, 0.5);
+			cost(player);
 			player.extinguish();
 			if (player.ticksExisted % 15 == 0)
 				player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 20, 0, true, false, false));
