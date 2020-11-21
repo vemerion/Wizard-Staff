@@ -134,7 +134,6 @@ public class Magics extends JsonReloadListener {
 
 		addMagics(magicParams);
 		sendMagicMessage(magicParams);
-		System.out.println("MAGIC MAGIC");
 	}
 
 	private void sendMagicMessage(Map<ResourceLocation, MagicParams> magicParams) {
