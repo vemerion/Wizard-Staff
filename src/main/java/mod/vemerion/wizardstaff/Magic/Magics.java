@@ -162,7 +162,7 @@ public class Magics extends JsonReloadListener {
 
 		public Magic createMagic() {
 			Magic magic = getInstance().magicNames.get(magicKey).get();
-			magic.init(cost, duration == -1 ? Magic.HOUR : duration, ingredient);
+			magic.init(cost, duration < 0 ? Magic.HOUR : duration, ingredient);
 			return magic;
 		}
 
