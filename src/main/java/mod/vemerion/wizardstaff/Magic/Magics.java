@@ -29,6 +29,7 @@ import mod.vemerion.wizardstaff.Magic.original.JukeboxMagic;
 import mod.vemerion.wizardstaff.Magic.original.WizardStaffMagic;
 import mod.vemerion.wizardstaff.Magic.original.WritableBookMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.BlueDyeMagic;
+import mod.vemerion.wizardstaff.Magic.suggestions.BricksMagic;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import net.minecraft.client.resources.JsonReloadListener;
@@ -106,6 +107,7 @@ public class Magics extends JsonReloadListener {
 		magicNames.put("warlock_helmet_fashion_magic", () -> new FashionMagic(Main.WARLOCK_HELMET_ITEM));
 		magicNames.put("warlock_leggings_fashion_magic", () -> new FashionMagic(Main.WARLOCK_LEGGINGS_ITEM));
 		magicNames.put("blue_dye_magic", () -> new BlueDyeMagic());
+		magicNames.put("bricks_magic", () -> new BricksMagic());
 		magicNames.put("no_magic", () -> NO_MAGIC);
 	}
 
