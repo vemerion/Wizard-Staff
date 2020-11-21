@@ -92,18 +92,18 @@ public class Magics extends JsonReloadListener {
 		magicNames.put("ghast_tear_magic", () -> new GhastTearMagic());
 		magicNames.put("nether_brick_magic", () -> new NetherBrickMagic());
 		magicNames.put("soul_sand_magic", () -> new SoulSandMagic());
-		magicNames.put("fashion_magic_wizard_boots", () -> new FashionMagic(Main.WIZARD_BOOTS_ITEM));
-		magicNames.put("fashion_magic_wizard_chestplate", () -> new FashionMagic(Main.WIZARD_CHESTPLATE_ITEM));
-		magicNames.put("fashion_magic_wizard_helmet", () -> new FashionMagic(Main.WIZARD_HAT_ITEM));
-		magicNames.put("fashion_magic_wizard_leggings", () -> new FashionMagic(Main.WIZARD_LEGGINGS_ITEM));
-		magicNames.put("fashion_magic_druid_boots", () -> new FashionMagic(Main.DRUID_BOOTS_ITEM));
-		magicNames.put("fashion_magic_druid_chestplate", () -> new FashionMagic(Main.DRUID_CHESTPLATE_ITEM));
-		magicNames.put("fashion_magic_druid_helmet", () -> new FashionMagic(Main.DRUID_HELMET_ITEM));
-		magicNames.put("fashion_magic_druid_leggings", () -> new FashionMagic(Main.DRUID_LEGGINGS_ITEM));
-		magicNames.put("fashion_magic_warlock_boots", () -> new FashionMagic(Main.WARLOCK_BOOTS_ITEM));
-		magicNames.put("fashion_magic_warloc_chestplate", () -> new FashionMagic(Main.WARLOCK_CHESTPLATE_ITEM));
-		magicNames.put("fashion_magic_warloc_helmet", () -> new FashionMagic(Main.WARLOCK_HELMET_ITEM));
-		magicNames.put("fashion_magic_warloc_leggings", () -> new FashionMagic(Main.WARLOCK_LEGGINGS_ITEM));
+		magicNames.put("wizard_boots_fashion_magic", () -> new FashionMagic(Main.WIZARD_BOOTS_ITEM));
+		magicNames.put("wizard_chestplate_fashion_magic", () -> new FashionMagic(Main.WIZARD_CHESTPLATE_ITEM));
+		magicNames.put("wizard_helmet_fashion_magic", () -> new FashionMagic(Main.WIZARD_HAT_ITEM));
+		magicNames.put("wizard_leggings_fashion_magic", () -> new FashionMagic(Main.WIZARD_LEGGINGS_ITEM));
+		magicNames.put("druid_boots_fashion_magic", () -> new FashionMagic(Main.DRUID_BOOTS_ITEM));
+		magicNames.put("druid_chestplate_fashion_magic", () -> new FashionMagic(Main.DRUID_CHESTPLATE_ITEM));
+		magicNames.put("druid_helmet_fashion_magic", () -> new FashionMagic(Main.DRUID_HELMET_ITEM));
+		magicNames.put("druid_leggings_fashion_magic", () -> new FashionMagic(Main.DRUID_LEGGINGS_ITEM));
+		magicNames.put("warlock_boots_fashion_magic", () -> new FashionMagic(Main.WARLOCK_BOOTS_ITEM));
+		magicNames.put("warlock_chestplate_fashion_magic", () -> new FashionMagic(Main.WARLOCK_CHESTPLATE_ITEM));
+		magicNames.put("warlock_helmet_fashion_magic", () -> new FashionMagic(Main.WARLOCK_HELMET_ITEM));
+		magicNames.put("warlock_leggings_fashion_magic", () -> new FashionMagic(Main.WARLOCK_LEGGINGS_ITEM));
 		magicNames.put("no_magic", () -> NO_MAGIC);
 	}
 
@@ -115,6 +115,7 @@ public class Magics extends JsonReloadListener {
 		instance = new Magics();
 	}
 
+	// FIXME: Add json for the 1.16 exlusive spells
 	@Override
 	protected void apply(Map<ResourceLocation, JsonObject> objectIn, IResourceManager resourceManagerIn,
 			IProfiler profilerIn) {

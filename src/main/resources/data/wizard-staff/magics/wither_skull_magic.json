@@ -1,0 +1,8 @@
+{
+  "cost": 20,
+  "duration": 15,
+  "magic": "wither_skull_magic",
+  "ingredient": {
+    "item": "minecraft:wither_skeleton_skull"
+  }
+}

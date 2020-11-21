@@ -4,9 +4,6 @@
   "magic": "blaze_powder_magic",
   "ingredient": [
     {
-      "tag": "forge:cobblestone"
-    },
-    {
       "item": "minecraft:blaze_powder"
     }
   ]

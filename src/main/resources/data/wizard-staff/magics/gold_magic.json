@@ -1,0 +1,8 @@
+{
+  "cost": 50,
+  "duration": 25,
+  "magic": "gold_magic",
+  "ingredient": {
+    "tag": "forge:ingots/gold"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "cost": 30,
+  "duration": 20,
+  "magic": "wizard_chestplate_fashion_magic",
+  "ingredient": {
+    "item": "minecraft:leather_chestplate"
+  }
+}

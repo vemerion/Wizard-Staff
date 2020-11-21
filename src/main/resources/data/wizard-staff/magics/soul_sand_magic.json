@@ -1,0 +1,8 @@
+{
+  "cost": 40,
+  "duration": 40,
+  "magic": "soul_sand_magic",
+  "ingredient": {
+    "item": "minecraft:soul_sand"
+  }
+}

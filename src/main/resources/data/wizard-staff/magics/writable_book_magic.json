@@ -1,0 +1,8 @@
+{
+  "cost": 10,
+  "duration": 20,
+  "magic": "writable_book_magic",
+  "ingredient": {
+    "item": "minecraft:writable_book"
+  }
+}
