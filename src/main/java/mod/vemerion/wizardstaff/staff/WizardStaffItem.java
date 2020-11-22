@@ -50,7 +50,7 @@ public class WizardStaffItem extends Item {
 		}
 		return ActionResult.resultPass(itemstack);
 	}
-	
+
 	@Override
 	public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
 		return oldStack == newStack;
@@ -64,7 +64,7 @@ public class WizardStaffItem extends Item {
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
 		return new WizardStaffCapabilityProvider();
 	}
-	
+
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		ItemStack magic = getMagic(stack);
@@ -92,6 +92,14 @@ public class WizardStaffItem extends Item {
 			return Magics.getInstance().get(magic).magicFinish(worldIn, (PlayerEntity) entityLiving, stack);
 		}
 		return stack;
+	}
+
+	@Override
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+		ItemStack magic = getMagic(stack);
+		if (entityLiving instanceof PlayerEntity) {
+			Magics.getInstance().get(magic).magicCancel(worldIn, (PlayerEntity) entityLiving, stack, timeLeft);
+		}
 	}
 
 	@Override

@@ -16,11 +16,11 @@ import net.minecraft.world.World;
 public abstract class Magic {
 
 	public static final int HOUR = 72000;
-	
+
 	private float cost;
 	private int duration;
 	private Ingredient ingredient;
-	
+
 	public void init(float cost, int duration, Ingredient ingredient) {
 		this.cost = cost;
 		this.duration = duration;
@@ -81,5 +81,8 @@ public abstract class Magic {
 
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		return staff;
+	}
+
+	public void magicCancel(World world, PlayerEntity player, ItemStack staff, int timeLeft) {
 	}
 }

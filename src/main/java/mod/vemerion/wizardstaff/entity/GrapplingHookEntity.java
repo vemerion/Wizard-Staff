@@ -1,29 +1,34 @@
 package mod.vemerion.wizardstaff.entity;
 
+import java.util.Optional;
 import java.util.UUID;
 
+import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class GrapplingHookEntity extends Entity {
 
-	private UUID shooter;
+	private static final DataParameter<Optional<UUID>> SHOOTER = EntityDataManager.createKey(PlayerEntity.class,
+			DataSerializers.OPTIONAL_UNIQUE_ID);
 
 	public GrapplingHookEntity(EntityType<? extends GrapplingHookEntity> entityTypeIn, World worldIn) {
 		super(entityTypeIn, worldIn);
 		setNoGravity(true);
 	}
 
-	public GrapplingHookEntity(EntityType<? extends GrapplingHookEntity> entityTypeIn, World worldIn,
-			PlayerEntity shooter) {
-		super(entityTypeIn, worldIn);
-		this.shooter = shooter.getUniqueID();
-		setNoGravity(true);
+	public GrapplingHookEntity(World worldIn, PlayerEntity shooter) {
+		this(Main.GRAPPLING_HOOK_ENTITY, worldIn);
+		this.setShooter(shooter);
 	}
 
 	@Override
@@ -31,19 +36,26 @@ public class GrapplingHookEntity extends Entity {
 		super.tick();
 
 		if (!world.isRemote) {
-			if (getShooter() == null)
+			PlayerEntity shooter = getShooter();
+			if (shooter == null || this.getDistanceSq(shooter) < 3 || !(shooter.getActiveItemStack().getItem() instanceof WizardStaffItem))
 				remove();
 		}
 	}
 
-	private PlayerEntity getShooter() {
-		if (shooter == null)
+	public void setShooter(PlayerEntity shooter) {
+		dataManager.set(SHOOTER, Optional.of(shooter.getUniqueID()));
+	}
+
+	public PlayerEntity getShooter() {
+		Optional<UUID> shooter = dataManager.get(SHOOTER);
+		if (!shooter.isPresent())
 			return null;
-		return world.getPlayerByUuid(shooter);
+		return world.getPlayerByUuid(shooter.get());
 	}
 
 	@Override
 	protected void registerData() {
+		dataManager.register(SHOOTER, Optional.empty());
 	}
 
 	@Override
