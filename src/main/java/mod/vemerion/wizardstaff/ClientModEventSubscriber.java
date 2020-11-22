@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff;
 
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
+import mod.vemerion.wizardstaff.renderer.GrapplingHookRenderer;
 import mod.vemerion.wizardstaff.renderer.MagicSoulSandArmRenderer;
 import mod.vemerion.wizardstaff.renderer.MagicWitherSkullRenderer;
 import mod.vemerion.wizardstaff.renderer.NetherPortalRenderer;
@@ -39,6 +40,7 @@ public class ClientModEventSubscriber {
 		RenderingRegistry.registerEntityRenderingHandler(Main.MAGIC_WITHER_SKULL_ENTITY, MagicWitherSkullRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(Main.MAGIC_SOUL_SAND_ARM_ENTITY,
 				MagicSoulSandArmRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(Main.GRAPPLING_HOOK_ENTITY, GrapplingHookRenderer::new);
 	}
 
 	@SubscribeEvent

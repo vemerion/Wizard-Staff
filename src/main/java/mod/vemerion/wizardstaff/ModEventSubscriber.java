@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff;
 import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
+import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
@@ -43,12 +44,12 @@ public class ModEventSubscriber {
 		event.getRegistry().register(setup(new DruidArmorItem(EquipmentSlotType.CHEST), "druid_chestplate_item"));
 		event.getRegistry().register(setup(new DruidArmorItem(EquipmentSlotType.LEGS), "druid_leggings_item"));
 		event.getRegistry().register(setup(new DruidArmorItem(EquipmentSlotType.FEET), "druid_boots_item"));
-		
+
 		event.getRegistry().register(setup(new WarlockArmorItem(EquipmentSlotType.HEAD), "warlock_helmet_item"));
 		event.getRegistry().register(setup(new WarlockArmorItem(EquipmentSlotType.CHEST), "warlock_chestplate_item"));
 		event.getRegistry().register(setup(new WarlockArmorItem(EquipmentSlotType.LEGS), "warlock_leggings_item"));
 		event.getRegistry().register(setup(new WarlockArmorItem(EquipmentSlotType.FEET), "warlock_boots_item"));
-		
+
 		event.getRegistry().register(setup(new WizardArmorItem(EquipmentSlotType.HEAD), "wizard_hat_item"));
 		event.getRegistry().register(setup(new WizardArmorItem(EquipmentSlotType.CHEST), "wizard_chestplate_item"));
 		event.getRegistry().register(setup(new WizardArmorItem(EquipmentSlotType.LEGS), "wizard_leggings_item"));
@@ -82,6 +83,12 @@ public class ModEventSubscriber {
 				.<MagicSoulSandArmEntity>create(MagicSoulSandArmEntity::new, EntityClassification.MISC).size(1, 1)
 				.immuneToFire().build("magic_soul_sand_arm_entity");
 		event.getRegistry().register(setup(magicSoulSandArmEntity, "magic_soul_sand_arm_entity"));
+
+		EntityType<GrapplingHookEntity> grapplingHookEntity = EntityType.Builder
+				.<GrapplingHookEntity>create(GrapplingHookEntity::new, EntityClassification.MISC).size(0.3f, 0.3f)
+				.build("grappling_hook_entity");
+		event.getRegistry().register(setup(grapplingHookEntity, "grappling_hook_entity"));
+
 	}
 
 	@SubscribeEvent
@@ -130,9 +137,8 @@ public class ModEventSubscriber {
 
 		Network.INSTANCE.registerMessage(0, ScreenAnimations.class, ScreenAnimations::encode, ScreenAnimations::decode,
 				ScreenAnimations::handle);
-		Network.INSTANCE.registerMessage(1, UpdateMagicsMessage.class, UpdateMagicsMessage::encode, UpdateMagicsMessage::decode,
-				UpdateMagicsMessage::handle);
-
+		Network.INSTANCE.registerMessage(1, UpdateMagicsMessage.class, UpdateMagicsMessage::encode,
+				UpdateMagicsMessage::decode, UpdateMagicsMessage::handle);
 
 		Magics.init();
 

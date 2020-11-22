@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
@@ -81,6 +82,10 @@ public class Main {
 	
 	@ObjectHolder(Main.MODID + ":magic_soul_sand_arm_entity")
 	public static final EntityType<MagicSoulSandArmEntity> MAGIC_SOUL_SAND_ARM_ENTITY = null;
+	
+	@ObjectHolder(Main.MODID + ":grappling_hook_entity")
+	public static final EntityType<GrapplingHookEntity> GRAPPLING_HOOK_ENTITY = null;
+
 	
 	@ObjectHolder(Main.MODID + ":magic_smoke_particle_type")
 	public static final BasicParticleType MAGIC_SMOKE_PARTICLE_TYPE = null;
