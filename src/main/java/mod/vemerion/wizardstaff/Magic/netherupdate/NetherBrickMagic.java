@@ -54,7 +54,7 @@ public class NetherBrickMagic extends Magic {
 			player.playSound(Main.WARP_SOUND, 0.8f, soundPitch(player));
 			if (!world.isRemote) {
 				cost(player, 60);
-				BlockPos fortressPos = ((ServerWorld) world).func_241117_a_(Structure.field_236378_n_, new BlockPos(player.getPositionVec()), 100,
+				BlockPos fortressPos = ((ServerWorld) world).func_241117_a_(Structure.FORTRESS, new BlockPos(player.getPositionVec()), 100,
 						false);
 				if (fortressPos != null) {
 					player.lookAt(EntityAnchorArgument.Type.EYES, Vector3d.copy(fortressPos));

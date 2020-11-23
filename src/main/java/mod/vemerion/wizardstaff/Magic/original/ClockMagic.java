@@ -40,7 +40,7 @@ public class ClockMagic extends Magic {
 			cost(player, 1);
 		}
 		if (!world.isRemote) {
-			((ServerWorld) world).func_241114_a_(world.getDayTime() + 40);
+			((ServerWorld) world).setDayTime(world.getDayTime() + 40);
 		} else {
 			((ClientWorld) world).setDayTime(world.getDayTime() + 40);
 		}
