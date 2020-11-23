@@ -28,36 +28,46 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class Wizard {
 	@CapabilityInject(Wizard.class)
 	public static final Capability<Wizard> CAPABILITY = null;
-	
+
 	GrapplingHookEntity grapplingHook;
 
 	public Wizard() {
 
 	}
-	
+
 	public boolean throwGrapplingHook(World world, PlayerEntity player) {
-		Vec3d start = player.getEyePosition(0.5f);
-		Vec3d end = start.add(Vec3d.fromPitchYaw(player.getPitchYaw()).scale(10));
-		BlockRayTraceResult raytrace = world
-				.rayTraceBlocks(new RayTraceContext(start, end, BlockMode.OUTLINE, FluidMode.NONE, player));
-		if (raytrace.getType() == Type.BLOCK) {
-			GrapplingHookEntity hook = new GrapplingHookEntity(world, player);
-			Vec3d pos = raytrace.getHitVec().subtract(end.subtract(start).normalize().scale(0.07));
-			hook.setLocationAndAngles(pos.x, pos.y, pos.z, player.rotationYaw, player.rotationPitch);
-			world.addEntity(hook);
-			grapplingHook = hook;
-			return true;
+		if (!world.isRemote) {
+			Vec3d start = player.getEyePosition(0.5f);
+			Vec3d end = start.add(Vec3d.fromPitchYaw(player.getPitchYaw()).scale(10));
+			BlockRayTraceResult raytrace = world
+					.rayTraceBlocks(new RayTraceContext(start, end, BlockMode.OUTLINE, FluidMode.NONE, player));
+			if (raytrace.getType() == Type.BLOCK) {
+				GrapplingHookEntity hook = new GrapplingHookEntity(world, player);
+				Vec3d pos = raytrace.getHitVec().subtract(end.subtract(start).normalize().scale(0.07));
+				hook.setLocationAndAngles(pos.x, pos.y, pos.z, player.rotationYaw, player.rotationPitch);
+				world.addEntity(hook);
+				grapplingHook = hook;
+				return true;
+			}
 		}
 		return false;
 	}
 
-	// TODO: Actually move player
-	public void reelGrapplingHook(PlayerEntity player) {
+	public void reelGrapplingHook(World world, PlayerEntity player) {
 		if (grapplingHook != null && grapplingHook.isAlive()) {
-			grapplingHook.remove();
+			Vec3d direction = grapplingHook.getPositionVec().subtract(player.getPositionVec()).normalize().scale(1.2);
+			Vec3d motion = player.getMotion().add(direction);
+			player.setMotion(motion);
+
+			if (!world.isRemote)
+				grapplingHook.remove();
 		}
 	}
-	
+
+	public void setGrapplingHook(GrapplingHookEntity hook) {
+		this.grapplingHook = hook;
+	}
+
 	public static LazyOptional<Wizard> getWizard(PlayerEntity player) {
 		return player.getCapability(CAPABILITY);
 	}

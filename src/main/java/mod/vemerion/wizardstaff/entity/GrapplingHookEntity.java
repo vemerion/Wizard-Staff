@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -23,7 +24,8 @@ public class GrapplingHookEntity extends Entity {
 
 	public GrapplingHookEntity(EntityType<? extends GrapplingHookEntity> entityTypeIn, World worldIn) {
 		super(entityTypeIn, worldIn);
-		setNoGravity(true);
+		this.setNoGravity(true);
+		this.ignoreFrustumCheck = true;
 	}
 
 	public GrapplingHookEntity(World worldIn, PlayerEntity shooter) {
@@ -37,9 +39,18 @@ public class GrapplingHookEntity extends Entity {
 
 		if (!world.isRemote) {
 			PlayerEntity shooter = getShooter();
-			if (shooter == null || this.getDistanceSq(shooter) < 3 || !(shooter.getActiveItemStack().getItem() instanceof WizardStaffItem))
+			if (shooter == null || this.getDistanceSq(shooter) > 100
+					|| !(shooter.getActiveItemStack().getItem() instanceof WizardStaffItem))
 				remove();
 		}
+
+		if (getShooter() != null && isAlive()) {
+			Wizard.getWizard(getShooter()).ifPresent(wizard -> wizard.setGrapplingHook(this));
+		}
+	}
+
+	public boolean isInRangeToRenderDist(double distance) {
+		return distance < 4096;
 	}
 
 	public void setShooter(PlayerEntity shooter) {

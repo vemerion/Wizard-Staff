@@ -28,27 +28,24 @@ public class GrapplingHookMagic extends Magic {
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BLOCK;
 	}
-	
+
 	@Override
 	public void magicStart(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
-			Wizard.getWizard(player).ifPresent(wizard -> {
-				if (wizard.throwGrapplingHook(world, player)) {
+		Wizard.getWizard(player).ifPresent(wizard -> {
+			if (wizard.throwGrapplingHook(world, player)) {
+				if (!world.isRemote) {
 					cost(player);
 					playSoundServer(world, player, SoundEvents.ENTITY_FISHING_BOBBER_THROW, 1, soundPitch(player));
-
 				}
-			});
-		}
+			}
+		});
 	}
-	
+
 	@Override
 	public void magicCancel(World world, PlayerEntity player, ItemStack staff, int timeLeft) {
-		if (!world.isRemote) {
-			Wizard.getWizard(player).ifPresent(wizard -> {
-				wizard.reelGrapplingHook(player);
-			});
-		}
+		Wizard.getWizard(player).ifPresent(wizard -> {
+			wizard.reelGrapplingHook(world, player);
+		});
 	}
 
 }
