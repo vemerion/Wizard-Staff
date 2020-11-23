@@ -30,6 +30,7 @@ import mod.vemerion.wizardstaff.Magic.original.WizardStaffMagic;
 import mod.vemerion.wizardstaff.Magic.original.WritableBookMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.BlueDyeMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.BricksMagic;
+import mod.vemerion.wizardstaff.Magic.suggestions.FeatherMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.GrapplingHookMagic;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
@@ -115,6 +116,7 @@ public class Magics extends JsonReloadListener {
 		magicNames.put("blue_dye_magic", () -> new BlueDyeMagic());
 		magicNames.put("bricks_magic", () -> new BricksMagic());
 		magicNames.put("grappling_hook_magic", () -> new GrapplingHookMagic());
+		magicNames.put("feather_magic", () -> new FeatherMagic());
 		magicNames.put("no_magic", () -> NO_MAGIC);
 	}
 
