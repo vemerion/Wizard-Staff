@@ -34,6 +34,7 @@ import mod.vemerion.wizardstaff.Magic.suggestions.GrapplingHookMagic;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import net.minecraft.client.resources.JsonReloadListener;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -51,6 +52,9 @@ public class Magics extends JsonReloadListener {
 
 	private Map<String, Supplier<Magic>> magicNames;
 	private Map<ResourceLocation, Magic> magics;
+	
+	// Save all the magic params on server to send to client at login
+	private Map<ResourceLocation, MagicParams> magicParams;
 	private Map<Item, ResourceLocation> cache;
 	private final NoMagic NO_MAGIC = new NoMagic();
 
@@ -59,6 +63,7 @@ public class Magics extends JsonReloadListener {
 		this.magicNames = new HashMap<>();
 		this.magics = new HashMap<>();
 		this.cache = new HashMap<>();
+		this.magicParams = new HashMap<>();
 		this.initMagicNames();
 	}
 
@@ -125,7 +130,7 @@ public class Magics extends JsonReloadListener {
 	@Override
 	protected void apply(Map<ResourceLocation, JsonObject> objectIn, IResourceManager resourceManagerIn,
 			IProfiler profilerIn) {
-		Map<ResourceLocation, MagicParams> magicParams = new HashMap<>();
+		Map<ResourceLocation, MagicParams> params = new HashMap<>();
 		for (Entry<ResourceLocation, JsonObject> entry : objectIn.entrySet()) {
 			JsonObject json = entry.getValue();
 			float cost = JSONUtils.getFloat(json, "cost");
@@ -136,20 +141,25 @@ public class Magics extends JsonReloadListener {
 			if (!magicNames.containsKey(magic))
 				throw new JsonSyntaxException("The magic " + magic + " does not exist");
 			Ingredient ingredient = Ingredient.deserialize(json.get("ingredient"));
-			magicParams.put(entry.getKey(), new MagicParams(cost, duration, magic, ingredient));
+			params.put(entry.getKey(), new MagicParams(cost, duration, magic, ingredient));
 		}
 
-		addMagics(magicParams);
-		sendMagicMessage(magicParams);
+		magicParams.putAll(params);
+		addMagics(params);
+		sendMagicMessage(params);
 	}
 
-	private void sendMagicMessage(Map<ResourceLocation, MagicParams> magicParams) {
-		Network.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateMagicsMessage(magicParams));
+	private void sendMagicMessage(Map<ResourceLocation, MagicParams> params) {
+		Network.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateMagicsMessage(params));
 	}
 
-	public void addMagics(Map<ResourceLocation, MagicParams> magicParams) {
+	public void sendAllMagicMessage(ServerPlayerEntity reciever) {
+		Network.INSTANCE.send(PacketDistributor.PLAYER.with(() -> reciever), new UpdateMagicsMessage(magicParams));
+	}
+
+	public void addMagics(Map<ResourceLocation, MagicParams> params) {
 		cache = new HashMap<>();
-		for (Entry<ResourceLocation, MagicParams> entry : magicParams.entrySet()) {
+		for (Entry<ResourceLocation, MagicParams> entry : params.entrySet()) {
 			magics.put(entry.getKey(), entry.getValue().createMagic());
 		}
 	}
