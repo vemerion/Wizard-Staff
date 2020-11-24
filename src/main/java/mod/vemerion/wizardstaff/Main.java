@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
+import mod.vemerion.wizardstaff.entity.MushroomCloudEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.DruidArmorItem;
@@ -85,6 +86,9 @@ public class Main {
 	
 	@ObjectHolder(Main.MODID + ":grappling_hook_entity")
 	public static final EntityType<GrapplingHookEntity> GRAPPLING_HOOK_ENTITY = null;
+	
+	@ObjectHolder(Main.MODID + ":mushroom_cloud_entity")
+	public static final EntityType<MushroomCloudEntity> MUSHROOM_CLOUD_ENTITY = null;
 
 	
 	@ObjectHolder(Main.MODID + ":magic_smoke_particle_type")
@@ -133,5 +137,4 @@ public class Main {
 	public static final SoundEvent WARP_SOUND = null;
 	
 	public static final WizardStaffItemGroup WIZARD_STAFF_ITEM_GROUP = new WizardStaffItemGroup();
-
 }

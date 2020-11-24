@@ -7,6 +7,7 @@ import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
+import mod.vemerion.wizardstaff.entity.MushroomCloudEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.DruidArmorItem;
@@ -89,6 +90,11 @@ public class ModEventSubscriber {
 				.<GrapplingHookEntity>create(GrapplingHookEntity::new, EntityClassification.MISC).size(0.3f, 0.3f)
 				.build("grappling_hook_entity");
 		event.getRegistry().register(setup(grapplingHookEntity, "grappling_hook_entity"));
+
+		EntityType<MushroomCloudEntity> mushroomCloudEntity = EntityType.Builder
+				.<MushroomCloudEntity>create(MushroomCloudEntity::new, EntityClassification.MISC).size(3, 3)
+				.build("mushroom_cloud_entity");
+		event.getRegistry().register(setup(mushroomCloudEntity, "mushroom_cloud_entity"));
 
 	}
 
