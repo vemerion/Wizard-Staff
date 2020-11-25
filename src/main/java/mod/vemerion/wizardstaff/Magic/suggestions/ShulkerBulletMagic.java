@@ -24,12 +24,12 @@ public class ShulkerBulletMagic extends Magic {
 
 	@Override
 	public RenderThirdPersonMagic thirdPersonRenderer() {
-		return WizardStaffLayer::spinMagic;
+		return WizardStaffLayer::buildupMagic;
 	}
 
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+		return UseAction.BLOCK;
 	}
 	
 	@Override
