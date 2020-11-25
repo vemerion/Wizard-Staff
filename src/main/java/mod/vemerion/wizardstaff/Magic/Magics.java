@@ -33,6 +33,7 @@ import mod.vemerion.wizardstaff.Magic.suggestions.BricksMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.FeatherMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.GrapplingHookMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.MushroomCloudMagic;
+import mod.vemerion.wizardstaff.Magic.suggestions.ShulkerBulletMagic;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import net.minecraft.client.resources.JsonReloadListener;
@@ -119,6 +120,7 @@ public class Magics extends JsonReloadListener {
 		magicNames.put("grappling_hook_magic", () -> new GrapplingHookMagic());
 		magicNames.put("feather_magic", () -> new FeatherMagic());
 		magicNames.put("mushroom_cloud_magic", () -> new MushroomCloudMagic());
+		magicNames.put("shulker_bullet_magic", () -> new ShulkerBulletMagic());
 		magicNames.put("no_magic", () -> NO_MAGIC);
 	}
 
