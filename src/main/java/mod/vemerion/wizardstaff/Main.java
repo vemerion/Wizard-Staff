@@ -15,6 +15,7 @@ import mod.vemerion.wizardstaff.item.WizardArmorItem;
 import mod.vemerion.wizardstaff.item.WizardStaffItemGroup;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.particles.BasicParticleType;
@@ -71,6 +72,9 @@ public class Main {
 	
 	@ObjectHolder(Main.MODID + ":warlock_boots_item")
 	public static final WarlockArmorItem WARLOCK_BOOTS_ITEM = null;
+	
+	@ObjectHolder(Main.MODID + ":magic_bricks_block")
+	public static final Block MAGIC_BRICKS_BLOCK = null;
 
 	@ObjectHolder(Main.MODID + ":pumpkin_magic_entity")
 	public static final EntityType<PumpkinMagicEntity> PUMPKIN_MAGIC_ENTITY = null;

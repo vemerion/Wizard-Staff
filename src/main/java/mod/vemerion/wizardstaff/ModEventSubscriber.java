@@ -17,6 +17,9 @@ import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -56,6 +59,14 @@ public class ModEventSubscriber {
 		event.getRegistry().register(setup(new WizardArmorItem(EquipmentSlotType.CHEST), "wizard_chestplate_item"));
 		event.getRegistry().register(setup(new WizardArmorItem(EquipmentSlotType.LEGS), "wizard_leggings_item"));
 		event.getRegistry().register(setup(new WizardArmorItem(EquipmentSlotType.FEET), "wizard_boots_item"));
+	}
+
+	@SubscribeEvent
+	public static void onRegisterBlock(RegistryEvent.Register<Block> event) {
+		event.getRegistry()
+				.register(setup(new Block(
+						Block.Properties.create(Material.ROCK, MaterialColor.RED).hardnessAndResistance(2.0F, 6.0F)),
+						"magic_bricks_block"));
 	}
 
 	@SubscribeEvent

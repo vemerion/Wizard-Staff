@@ -1,11 +1,11 @@
 package mod.vemerion.wizardstaff.Magic.suggestions;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
@@ -45,7 +45,7 @@ public class BricksMagic extends Magic {
 			for (int z = -1; z < 2; z++) {
 				for (int y = 0; y < 2; y++) {
 					if ((x != 0 || z != 0) && world.isAirBlock(position.add(x, y, z))) {
-						world.setBlockState(position.add(x, y, z), Blocks.BRICKS.getDefaultState());
+						world.setBlockState(position.add(x, y, z), Main.MAGIC_BRICKS_BLOCK.getDefaultState());
 					}
 				}
 			}
