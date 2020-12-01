@@ -19,7 +19,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class GrapplingHookEntity extends Entity {
 
-	private static final DataParameter<Optional<UUID>> SHOOTER = EntityDataManager.createKey(PlayerEntity.class,
+	private static final DataParameter<Optional<UUID>> SHOOTER = EntityDataManager.createKey(GrapplingHookEntity.class,
 			DataSerializers.OPTIONAL_UNIQUE_ID);
 
 	public GrapplingHookEntity(EntityType<? extends GrapplingHookEntity> entityTypeIn, World worldIn) {
