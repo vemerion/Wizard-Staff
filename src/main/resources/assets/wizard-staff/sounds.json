@@ -106,5 +106,41 @@
         "stream": false
       }
     ]
+  },
+  "brick_sound": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "wizard-staff:brick_sound",
+        "stream": false
+      }
+    ]
+  },
+  "chirp_sound": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "wizard-staff:chirp_sound",
+        "stream": false
+      }
+    ]
+  },
+  "flap_sound": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "wizard-staff:flap_sound",
+        "stream": false
+      }
+    ]
+  },
+  "spray_sound": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "wizard-staff:spray_sound",
+        "stream": false
+      }
+    ]
   }
 }

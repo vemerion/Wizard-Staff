@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.suggestions;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.entity.MushroomCloudEntity;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -38,6 +39,7 @@ public class MushroomCloudMagic extends Magic {
 			world.addEntity(cloud);
 			cost(player);
 		}
+		player.playSound(Main.SPRAY_SOUND, 1, soundPitch(player));
 		return super.magicFinish(world, player, staff);
 	}
 

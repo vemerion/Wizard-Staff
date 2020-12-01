@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.suggestions;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -37,6 +38,9 @@ public class FeatherMagic extends Magic {
 			player.setMotion(motion);
 			if (!world.isRemote)
 				cost(player);
+			
+			if (count % 5 == 0)
+				player.playSound(Main.FLAP_SOUND, 1, soundPitch(player));
 		}
 	}
 

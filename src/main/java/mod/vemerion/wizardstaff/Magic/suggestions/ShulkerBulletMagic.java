@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.world.World;
 
@@ -41,6 +42,7 @@ public class ShulkerBulletMagic extends Magic {
 				ShulkerBulletEntity bullet = new ShulkerBulletEntity(world, player, target, Axis.Y);
 				world.addEntity(bullet);
 				cost(player);
+				playSoundServer(world, player, SoundEvents.ENTITY_SHULKER_SHOOT, 1, soundPitch(player));
 			}
 		}
 		

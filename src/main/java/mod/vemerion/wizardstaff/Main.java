@@ -140,5 +140,17 @@ public class Main {
 	@ObjectHolder(Main.MODID + ":warp_sound")
 	public static final SoundEvent WARP_SOUND = null;
 	
+	@ObjectHolder(Main.MODID + ":brick_sound")
+	public static final SoundEvent BRICK_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":chirp_sound")
+	public static final SoundEvent CHIRP_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":flap_sound")
+	public static final SoundEvent FLAP_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":spray_sound")
+	public static final SoundEvent SPRAY_SOUND = null;
+	
 	public static final WizardStaffItemGroup WIZARD_STAFF_ITEM_GROUP = new WizardStaffItemGroup();
 }

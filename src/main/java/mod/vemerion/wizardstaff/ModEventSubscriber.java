@@ -145,6 +145,14 @@ public class ModEventSubscriber {
 		event.getRegistry().register(setup(sniffle_sound, "sniffle_sound"));
 		SoundEvent warp_sound = new SoundEvent(new ResourceLocation(Main.MODID, "warp_sound"));
 		event.getRegistry().register(setup(warp_sound, "warp_sound"));
+		SoundEvent brick_sound = new SoundEvent(new ResourceLocation(Main.MODID, "brick_sound"));
+		event.getRegistry().register(setup(brick_sound, "brick_sound"));
+		SoundEvent chirp_sound = new SoundEvent(new ResourceLocation(Main.MODID, "chirp_sound"));
+		event.getRegistry().register(setup(chirp_sound, "chirp_sound"));
+		SoundEvent flap_sound = new SoundEvent(new ResourceLocation(Main.MODID, "flap_sound"));
+		event.getRegistry().register(setup(flap_sound, "flap_sound"));
+		SoundEvent spray_sound = new SoundEvent(new ResourceLocation(Main.MODID, "spray_sound"));
+		event.getRegistry().register(setup(spray_sound, "spray_sound"));
 	}
 
 	@SubscribeEvent

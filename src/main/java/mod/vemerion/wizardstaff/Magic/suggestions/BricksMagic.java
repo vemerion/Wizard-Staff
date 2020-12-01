@@ -9,7 +9,6 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFir
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -36,7 +35,7 @@ public class BricksMagic extends Magic {
 			cost(player);
 			createCage(world, player.getPosition());
 		}
-		player.playSound(SoundEvents.BLOCK_STONE_PLACE, 1, soundPitch(player));
+		player.playSound(Main.BRICK_SOUND, 0.8f, soundPitch(player));
 		return super.magicFinish(world, player, staff);
 	}
 

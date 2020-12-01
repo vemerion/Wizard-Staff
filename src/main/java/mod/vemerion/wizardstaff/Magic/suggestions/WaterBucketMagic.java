@@ -45,7 +45,6 @@ public class WaterBucketMagic extends Magic {
 			BucketItem bucket = (BucketItem) Items.WATER_BUCKET;
 			if (bucket.tryPlaceContainedLiquid(player, world, pos, (BlockRayTraceResult) raytrace)) {
 				bucket.onLiquidPlaced(world, new ItemStack(bucket), pos);
-				
 				if (!world.isRemote) {
 					cost(player);
 				}

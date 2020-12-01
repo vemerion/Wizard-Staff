@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.suggestions;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -42,6 +43,7 @@ public class BlueDyeMagic extends Magic {
 			info.setRaining(!isRaining);
 			info.setThundering(!isRaining && player.getRNG().nextDouble() < 0.3);
 		}
+		player.playSound(Main.CHIRP_SOUND, 1, soundPitch(player));
 
 		return super.magicFinish(world, player, staff);
 	}
