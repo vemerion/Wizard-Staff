@@ -51,11 +51,11 @@ remove/modify vanilla recipes. If you are unsure how to create data-packs, I rec
 consulting the Minecraft wiki.
 
 To get started, create a new folder named 'wizard-staff' in the data folder in
-the resource pack. In the 'wizard-staff' folder, create a folder called 'magics', which is
+the resource pack. In the 'wizard-staff' folder, create a folder called 'wizard-staff-magics', which is
 where you will add your json files. If you want to change the cost of the flame-thrower
 spell, you would create a new json file called 'blaze\_powder\_magic.json', and set
 the members as desired. If you instead want to completely remove the spell, set the magic
-member to "no\_magic". [This folder](src/main/resources/data/wizard-staff/magics)
+member to "no\_magic". [This folder](src/main/resources/data/wizard-staff/wizard-staff-magics)
 contains the json files for all the default spells.
 
 If you instead want to add a new magic to an item, you would create a new json file with
@@ -68,7 +68,7 @@ ingredients for different json files, only one will be applied. Avoid this.
 This section contains an example to illustrate how you could add the flying magic to the
 dirt item.
 
-'data/wizard-staff/magics/flying\_dirt.json'
+'data/wizard-staff/wizard-staff-magics/flying\_dirt.json'
 
 ```
 {

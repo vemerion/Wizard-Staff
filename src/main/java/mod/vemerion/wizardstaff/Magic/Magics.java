@@ -51,6 +51,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class Magics extends JsonReloadListener {
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
+	private static final String FOLDER_NAME = Main.MODID + "-magics";
 
 	private static Magics instance;
 
@@ -63,7 +64,7 @@ public class Magics extends JsonReloadListener {
 	private final NoMagic NO_MAGIC = new NoMagic();
 
 	private Magics() {
-		super(GSON, "magics");
+		super(GSON, FOLDER_NAME);
 		this.magicNames = new HashMap<>();
 		this.magics = new HashMap<>();
 		this.cache = new HashMap<>();
