@@ -1,6 +1,6 @@
 {
-  "cost": 50,
-  "duration": 40,
+  "cost": 30,
+  "duration": 50,
   "magic": "blue_dye_magic",
   "ingredient": {
     "tag": "forge:dyes/blue"
