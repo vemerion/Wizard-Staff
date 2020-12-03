@@ -6,7 +6,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import mod.vemerion.wizardstaff.staff.WizardStaffHandler;
+import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,7 +42,7 @@ public class FashionMagic extends Magic {
 		player.playSound(Main.PLOP_SOUND, 1, soundPitch(player));
 		if (!world.isRemote) {
 			cost(player);
-			WizardStaffHandler handler = WizardStaffHandler.get(staff);
+			WizardStaffItemHandler handler = WizardStaffItemHandler.get(staff);
 			ItemStack helmet = handler.extractItem(0, 1, false);
 			ItemStack toArmorStack = new ItemStack(toArmorPiece);
 			CompoundNBT tag = helmet.getOrCreateTag();

@@ -6,7 +6,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class WizardStaffHandler extends ItemStackHandler {
+public class WizardStaffItemHandler extends ItemStackHandler {
 
 	private boolean isVisible = true; // Used on client to determine if staff + item should render
 
@@ -36,19 +36,19 @@ public class WizardStaffHandler extends ItemStackHandler {
 		return isVisible;
 	}
 
-	public static LazyOptional<WizardStaffHandler> getOptional(ItemStack staff) {
+	public static LazyOptional<WizardStaffItemHandler> getOptional(ItemStack staff) {
 		LazyOptional<IItemHandler> itemHandlerOpt = staff.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 		if (itemHandlerOpt.isPresent()) {
 			IItemHandler handler = itemHandlerOpt.orElse(null);
-			if (handler instanceof WizardStaffHandler)
-				return LazyOptional.of(() -> (WizardStaffHandler) handler);
+			if (handler instanceof WizardStaffItemHandler)
+				return LazyOptional.of(() -> (WizardStaffItemHandler) handler);
 		}
 		return LazyOptional.empty();
 	}
 	
 	// Use this on itemstacks that are guaranteed to have capability
-	public static WizardStaffHandler get(ItemStack staff) {
+	public static WizardStaffItemHandler get(ItemStack staff) {
 		IItemHandler handler = staff.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseThrow(() -> new IllegalArgumentException("ItemStack is missing wizard staff capability"));
-		return (WizardStaffHandler) handler;
+		return (WizardStaffItemHandler) handler;
 	}
 }

@@ -12,16 +12,16 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class WizardStaffContainer extends Container {
 
-	private WizardStaffHandler handler;
+	private WizardStaffItemHandler handler;
 	private ItemStack heldItem;
 	private boolean shouldAnimate;
 
 	public static WizardStaffContainer createContainerClientSide(int id, PlayerInventory inventory,
 			PacketBuffer buffer) {
-		return new WizardStaffContainer(id, inventory, new WizardStaffHandler(), ItemStack.EMPTY, buffer.readBoolean());
+		return new WizardStaffContainer(id, inventory, new WizardStaffItemHandler(), ItemStack.EMPTY, buffer.readBoolean());
 	}
 
-	protected WizardStaffContainer(int id, PlayerInventory inventory, WizardStaffHandler handler, ItemStack heldItem, boolean shouldAnimate) {
+	protected WizardStaffContainer(int id, PlayerInventory inventory, WizardStaffItemHandler handler, ItemStack heldItem, boolean shouldAnimate) {
 		super(Main.WIZARD_STAFF_CONTAINER, id);
 		this.handler = handler;
 		this.heldItem = heldItem;

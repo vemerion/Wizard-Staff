@@ -10,7 +10,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class WizardStaffCapabilityProvider implements ICapabilitySerializable<INBT> {
 	
-	private LazyOptional<IItemHandler> instance = LazyOptional.of(WizardStaffHandler::new);
+	private LazyOptional<IItemHandler> instance = LazyOptional.of(WizardStaffItemHandler::new);
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {

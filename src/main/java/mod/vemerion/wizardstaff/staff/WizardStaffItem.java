@@ -37,7 +37,7 @@ public class WizardStaffItem extends Item {
 
 				SimpleNamedContainerProvider provider = new SimpleNamedContainerProvider(
 						(id, inventory, player) -> new WizardStaffContainer(id, inventory,
-								WizardStaffHandler.get(itemstack), itemstack, shouldAnimate),
+								WizardStaffItemHandler.get(itemstack), itemstack, shouldAnimate),
 						getDisplayName(itemstack));
 				NetworkHooks.openGui((ServerPlayerEntity) playerIn, provider,
 						(buffer) -> buffer.writeBoolean(shouldAnimate));
@@ -57,7 +57,7 @@ public class WizardStaffItem extends Item {
 	}
 
 	public ItemStack getMagic(ItemStack itemstack) {
-		return WizardStaffHandler.get(itemstack).getStackInSlot(0);
+		return WizardStaffItemHandler.get(itemstack).getStackInSlot(0);
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class WizardStaffItem extends Item {
 	public CompoundNBT getShareTag(ItemStack stack) {
 		CompoundNBT result = new CompoundNBT();
 		CompoundNBT tag = super.getShareTag(stack);
-		CompoundNBT cap = WizardStaffHandler.get(stack).serializeNBT();
+		CompoundNBT cap = WizardStaffItemHandler.get(stack).serializeNBT();
 		if (tag != null)
 			result.put("tag", tag);
 		if (cap != null)
@@ -120,7 +120,7 @@ public class WizardStaffItem extends Item {
 			stack.setTag(nbt);
 		} else {
 			stack.setTag(nbt.getCompound("tag"));
-			WizardStaffHandler.get(stack).deserializeNBT(nbt.getCompound("cap"));
+			WizardStaffItemHandler.get(stack).deserializeNBT(nbt.getCompound("cap"));
 		}
 	}
 

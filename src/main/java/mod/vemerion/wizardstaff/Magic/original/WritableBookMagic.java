@@ -6,7 +6,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import mod.vemerion.wizardstaff.staff.WizardStaffHandler;
+import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -35,7 +35,7 @@ public class WritableBookMagic extends Magic {
 		player.playSound(Main.SCRIBBLE_SOUND, 3, soundPitch(player));
 		if (!world.isRemote) {
 			cost(player);
-			WizardStaffHandler handler = WizardStaffHandler.get(staff);
+			WizardStaffItemHandler handler = WizardStaffItemHandler.get(staff);
 			ItemStack book = handler.extractItem(0, 1, false);
 			CompoundNBT tag = book.getOrCreateTag();
 			ListNBT pages = new ListNBT();

@@ -8,7 +8,7 @@ import java.util.WeakHashMap;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import mod.vemerion.wizardstaff.Main;
-import mod.vemerion.wizardstaff.staff.WizardStaffHandler;
+import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
@@ -88,7 +88,7 @@ public class HeldItemFilterLayer
 	}
 
 	private void setStaffVisibility(ItemStack itemStack, boolean visible) {
-		WizardStaffHandler.getOptional(itemStack).ifPresent(handler -> handler.setVisible(visible));
+		WizardStaffItemHandler.getOptional(itemStack).ifPresent(handler -> handler.setVisible(visible));
 	}
 
 }

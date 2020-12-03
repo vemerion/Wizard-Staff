@@ -6,7 +6,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import mod.vemerion.wizardstaff.model.WizardStaffModel;
-import mod.vemerion.wizardstaff.staff.WizardStaffHandler;
+import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -39,7 +39,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 	}
 	
 	private boolean shouldRender(ItemStack staff) {
-		LazyOptional<WizardStaffHandler> optHandler = WizardStaffHandler.getOptional(staff);
+		LazyOptional<WizardStaffItemHandler> optHandler = WizardStaffItemHandler.getOptional(staff);
 		return optHandler.isPresent() && optHandler.orElse(null).isVisible();
 	}
 
