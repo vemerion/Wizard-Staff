@@ -116,6 +116,15 @@
       }
     ]
   },
+  "brick_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:brick_sound",
+        "stream": false
+      }
+    ]
+  },
   "poof_sound": {
     "category": "player",
     "sounds": [
@@ -125,11 +134,38 @@
       }
     ]
   },
+  "chirp_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:chirp_sound",
+        "stream": false
+      }
+    ]
+  },
   "teleport_sound": {
     "category": "player",
     "sounds": [
       {
         "name": "wizard-staff:teleport_sound",
+        "stream": false
+      }
+    ]
+  },
+  "flap_sound": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "wizard-staff:flap_sound",
+        "stream": false
+      }
+    ]
+  },
+  "spray_sound": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "wizard-staff:spray_sound",
         "stream": false
       }
     ]

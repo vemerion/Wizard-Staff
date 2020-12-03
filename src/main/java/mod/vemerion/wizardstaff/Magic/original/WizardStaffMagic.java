@@ -2,12 +2,11 @@ package mod.vemerion.wizardstaff.Magic.original;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.DamageSource;
@@ -15,16 +14,6 @@ import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.World;
 
 public class WizardStaffMagic extends Magic {
-
-	@Override
-	public int getUseDuration(ItemStack staff) {
-		return 20;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return item instanceof WizardStaffItem;
-	}
 	
 	@Override
 	public UseAction getUseAction(ItemStack stack) {

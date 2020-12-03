@@ -10,7 +10,6 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFir
 import net.minecraft.entity.ai.brain.BrainUtil;
 import net.minecraft.entity.monster.piglin.PiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.loot.LootContext;
@@ -18,9 +17,7 @@ import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
@@ -28,17 +25,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public class GoldNuggetMagic extends Magic {
-	private static final ResourceLocation GOLD_NUGGER = new ResourceLocation("forge", "nuggets/gold");
-
-	@Override
-	public int getUseDuration(ItemStack staff) {
-		return 20;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return ItemTags.getCollection().getTagByID(GOLD_NUGGER).contains(item);
-	}
 
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
@@ -57,7 +43,7 @@ public class GoldNuggetMagic extends Magic {
 				}
 				piglin.swingArm(Hand.OFF_HAND);
 			}
-			cost(player, barterCount * 30);
+			cost(player);
 			if (barterCount > 0)
 				playSoundServer(world, player, SoundEvents.ENTITY_PIGLIN_ADMIRING_ITEM, 1, soundPitch(player));
 		}

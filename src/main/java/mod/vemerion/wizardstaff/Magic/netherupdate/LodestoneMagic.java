@@ -10,25 +10,14 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFir
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.world.World;
 
 public class LodestoneMagic extends Magic {
 
-	@Override
-	public int getUseDuration(ItemStack staff) {
-		return 20 * 6;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return item == Items.LODESTONE;
-	}
 
 	@Override
 	public ActionResultType magicInteractBlock(ItemUseContext context) {
@@ -50,7 +39,7 @@ public class LodestoneMagic extends Magic {
 		if (!world.isRemote) {
 			if (Wizard.getWizard(player).lodestoneTeleport((ServerPlayerEntity) player)) {
 				playSoundServer(world, player, Main.GONG_SOUND, 1, soundPitch(player));
-				cost(player, 500);
+				cost(player);
 			}
 		}
 		return super.magicFinish(world, player, staff);

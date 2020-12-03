@@ -3,8 +3,10 @@ package mod.vemerion.wizardstaff;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
+import mod.vemerion.wizardstaff.entity.MushroomCloudEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.DruidArmorItem;
@@ -13,6 +15,7 @@ import mod.vemerion.wizardstaff.item.WizardArmorItem;
 import mod.vemerion.wizardstaff.item.WizardStaffItemGroup;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.particles.BasicParticleType;
@@ -72,6 +75,9 @@ public class Main {
 
 	@ObjectHolder(Main.MODID + ":warlock_boots_item")
 	public static final WarlockArmorItem WARLOCK_BOOTS_ITEM = null;
+	
+	@ObjectHolder(Main.MODID + ":magic_bricks_block")
+	public static final Block MAGIC_BRICKS_BLOCK = null;
 
 	@ObjectHolder(Main.MODID + ":pumpkin_magic_entity")
 	public static final EntityType<PumpkinMagicEntity> PUMPKIN_MAGIC_ENTITY = null;
@@ -84,6 +90,12 @@ public class Main {
 
 	@ObjectHolder(Main.MODID + ":magic_soul_sand_arm_entity")
 	public static final EntityType<MagicSoulSandArmEntity> MAGIC_SOUL_SAND_ARM_ENTITY = null;
+
+	@ObjectHolder(Main.MODID + ":grappling_hook_entity")
+	public static final EntityType<GrapplingHookEntity> GRAPPLING_HOOK_ENTITY = null;
+	
+	@ObjectHolder(Main.MODID + ":mushroom_cloud_entity")
+	public static final EntityType<MushroomCloudEntity> MUSHROOM_CLOUD_ENTITY = null;
 
 	@ObjectHolder(Main.MODID + ":magic_smoke_particle_type")
 	public static final BasicParticleType MAGIC_SMOKE_PARTICLE_TYPE = null;
@@ -139,6 +151,17 @@ public class Main {
 	@ObjectHolder(Main.MODID + ":teleport_sound")
 	public static final SoundEvent TELEPORT_SOUND = null;
 
-	public static final WizardStaffItemGroup WIZARD_STAFF_ITEM_GROUP = new WizardStaffItemGroup();
+	@ObjectHolder(Main.MODID + ":brick_sound")
+	public static final SoundEvent BRICK_SOUND = null;
 
+	@ObjectHolder(Main.MODID + ":chirp_sound")
+	public static final SoundEvent CHIRP_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":flap_sound")
+	public static final SoundEvent FLAP_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":spray_sound")
+	public static final SoundEvent SPRAY_SOUND = null;
+	
+	public static final WizardStaffItemGroup WIZARD_STAFF_ITEM_GROUP = new WizardStaffItemGroup();
 }

@@ -38,14 +38,14 @@ public class WizardStaffLayer
 			return;
 
 		WizardStaffTileEntityRenderer renderer = (WizardStaffTileEntityRenderer) item.getItemStackTileEntityRenderer();
-		Item magic = WizardStaffItem.getMagic(activeItem).getItem();
+		ItemStack magic = WizardStaffItem.getMagic(activeItem);
 		int maxDuration = activeItem.getUseDuration();
 		float duration = (float) maxDuration - ((float) player.getItemInUseCount() - partialTicks + 1.0f);
 		HandSide side = player.getActiveHand() == Hand.MAIN_HAND ? player.getPrimaryHand()
 				: player.getPrimaryHand().opposite();
-		
-		Magics.getInstance().get(magic).thirdPersonRenderer().render(renderer, duration, maxDuration, activeItem, matrixStackIn, bufferIn, packedLightIn,
-				OverlayTexture.NO_OVERLAY, partialTicks, side);
+
+		Magics.getInstance().get(magic).thirdPersonRenderer().render(renderer, duration, maxDuration, activeItem,
+				matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, partialTicks, side);
 	}
 
 	public static void helicopter(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
@@ -92,13 +92,35 @@ public class WizardStaffLayer
 		matrix.pop();
 	}
 
+	public static void buildupMagic(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
+			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
+			float partialTicks, HandSide hand) {
+		float sideOffset = hand == HandSide.RIGHT ? 1 : -1;
+
+		float progress = duration / maxDuration;
+		Random random = new Random((int) duration % 5 + 5);
+		Vector3d offset = new Vector3d((random.nextDouble() * 0.6 - 0.3) * progress,
+				(random.nextDouble() * 0.6 - 0.3) * progress, (random.nextDouble() * 0.6 - 0.3) * progress);
+		matrix.push();
+		matrix.translate(-0.14 * sideOffset, 0.6, -0.45);
+		matrix.scale(-1, -1, 1);
+		renderer.renderOnlyStaffNoPop(stack, matrix, buffer, light, combinedOverlayIn);
+		matrix.translate(MathHelper.clampedLerp(0, offset.getX(), partialTicks),
+				MathHelper.clampedLerp(0, offset.getY(), partialTicks),
+				MathHelper.clampedLerp(0, offset.getZ(), partialTicks));
+		renderer.renderOnlyMagic(stack, matrix, buffer, light, combinedOverlayIn);
+		matrix.pop();
+		matrix.pop();
+	}
+
 	public static void swinging(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
 			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
 			float partialTicks, HandSide hand) {
 
 		matrix.push();
 		matrix.scale(-1, -1, 1);
-		matrix.rotate(new Quaternion((float) MathHelper.sin((duration / 20) * (float) Math.PI * 2) * 15 - 65, 0, 0, true));
+		matrix.rotate(
+				new Quaternion((float) MathHelper.sin((duration / 20) * (float) Math.PI * 2) * 15 - 65, 0, 0, true));
 		matrix.translate(hand == HandSide.RIGHT ? 0.4 : -0.4, -0.3, -0.65);
 		renderer.func_239207_a_(stack, TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();

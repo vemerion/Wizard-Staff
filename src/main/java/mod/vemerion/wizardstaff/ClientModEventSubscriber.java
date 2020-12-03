@@ -1,6 +1,6 @@
 package mod.vemerion.wizardstaff;
 
-import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
+import mod.vemerion.wizardstaff.renderer.GrapplingHookRenderer;
 import mod.vemerion.wizardstaff.renderer.MagicSoulSandArmRenderer;
 import mod.vemerion.wizardstaff.renderer.MagicWitherSkullRenderer;
 import mod.vemerion.wizardstaff.renderer.NetherPortalRenderer;
@@ -11,6 +11,8 @@ import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.RedstoneParticle;
 import net.minecraft.client.particle.SmokeParticle;
 import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -28,17 +30,26 @@ public class ClientModEventSubscriber {
 	public static void onRegister(FMLClientSetupEvent event) {
 		ScreenManager.registerFactory(Main.WIZARD_STAFF_CONTAINER, WizardStaffScreen::new);
 
-		RenderingRegistry.registerEntityRenderingHandler(Main.PUMPKIN_MAGIC_ENTITY,
-				(renderManager) -> new EntityRenderer<PumpkinMagicEntity>(renderManager) {
-					@Override
-					public ResourceLocation getEntityTexture(PumpkinMagicEntity entity) {
-						return null;
-					}
-				});
+		RenderingRegistry.registerEntityRenderingHandler(Main.PUMPKIN_MAGIC_ENTITY, NoRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(Main.NETHER_PORTAL_ENTITY, NetherPortalRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(Main.MAGIC_WITHER_SKULL_ENTITY, MagicWitherSkullRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(Main.MAGIC_SOUL_SAND_ARM_ENTITY,
 				MagicSoulSandArmRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(Main.GRAPPLING_HOOK_ENTITY, GrapplingHookRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(Main.MUSHROOM_CLOUD_ENTITY, NoRenderer::new);
+	}
+
+	private static class NoRenderer<T extends Entity> extends EntityRenderer<T> {
+
+		protected NoRenderer(EntityRendererManager renderManager) {
+			super(renderManager);
+		}
+
+		@Override
+		public ResourceLocation getEntityTexture(T entity) {
+			return null;
+		}
+
 	}
 
 	@SubscribeEvent

@@ -6,17 +6,23 @@ import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.capability.Wizard;
+import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
+import mod.vemerion.wizardstaff.entity.MushroomCloudEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.item.DruidArmorItem;
 import mod.vemerion.wizardstaff.item.WarlockArmorItem;
 import mod.vemerion.wizardstaff.item.WizardArmorItem;
 import mod.vemerion.wizardstaff.network.Network;
+import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -65,6 +71,14 @@ public class ModEventSubscriber {
 	}
 
 	@SubscribeEvent
+	public static void onRegisterBlock(RegistryEvent.Register<Block> event) {
+		event.getRegistry()
+				.register(setup(new Block(
+						Block.Properties.create(Material.ROCK, MaterialColor.RED).hardnessAndResistance(2.0F, 6.0F)),
+						"magic_bricks_block"));
+	}
+
+	@SubscribeEvent
 	public static void onRegisterContainer(RegistryEvent.Register<ContainerType<?>> event) {
 		event.getRegistry().register(setup(IForgeContainerType.create(WizardStaffContainer::createContainerClientSide),
 				"wizard_staff_container"));
@@ -91,6 +105,17 @@ public class ModEventSubscriber {
 				.<MagicSoulSandArmEntity>create(MagicSoulSandArmEntity::new, EntityClassification.MISC).size(1, 1)
 				.immuneToFire().build("magic_soul_sand_arm_entity");
 		event.getRegistry().register(setup(magicSoulSandArmEntity, "magic_soul_sand_arm_entity"));
+
+		EntityType<GrapplingHookEntity> grapplingHookEntity = EntityType.Builder
+				.<GrapplingHookEntity>create(GrapplingHookEntity::new, EntityClassification.MISC).size(0.3f, 0.3f)
+				.build("grappling_hook_entity");
+		event.getRegistry().register(setup(grapplingHookEntity, "grappling_hook_entity"));
+
+		EntityType<MushroomCloudEntity> mushroomCloudEntity = EntityType.Builder
+				.<MushroomCloudEntity>create(MushroomCloudEntity::new, EntityClassification.MISC).size(3, 3)
+				.build("mushroom_cloud_entity");
+		event.getRegistry().register(setup(mushroomCloudEntity, "mushroom_cloud_entity"));
+
 	}
 
 	@SubscribeEvent
@@ -139,6 +164,14 @@ public class ModEventSubscriber {
 		event.getRegistry().register(setup(poof_sound, "poof_sound"));
 		SoundEvent teleport_sound = new SoundEvent(new ResourceLocation(Main.MODID, "teleport_sound"));
 		event.getRegistry().register(setup(teleport_sound, "teleport_sound"));
+		SoundEvent brick_sound = new SoundEvent(new ResourceLocation(Main.MODID, "brick_sound"));
+		event.getRegistry().register(setup(brick_sound, "brick_sound"));
+		SoundEvent chirp_sound = new SoundEvent(new ResourceLocation(Main.MODID, "chirp_sound"));
+		event.getRegistry().register(setup(chirp_sound, "chirp_sound"));
+		SoundEvent flap_sound = new SoundEvent(new ResourceLocation(Main.MODID, "flap_sound"));
+		event.getRegistry().register(setup(flap_sound, "flap_sound"));
+		SoundEvent spray_sound = new SoundEvent(new ResourceLocation(Main.MODID, "spray_sound"));
+		event.getRegistry().register(setup(spray_sound, "spray_sound"));
 	}
 
 	@SubscribeEvent
@@ -148,9 +181,10 @@ public class ModEventSubscriber {
 		CapabilityManager.INSTANCE.register(Experience.class, new Experience.ExperienceStorage(), Experience::new);
 		CapabilityManager.INSTANCE.register(Wizard.class, new Wizard.WizardStorage(), Wizard::new);
 
-
 		Network.INSTANCE.registerMessage(0, ScreenAnimations.class, ScreenAnimations::encode, ScreenAnimations::decode,
 				ScreenAnimations::handle);
+		Network.INSTANCE.registerMessage(1, UpdateMagicsMessage.class, UpdateMagicsMessage::encode,
+				UpdateMagicsMessage::decode, UpdateMagicsMessage::handle);
 
 		Magics.init();
 

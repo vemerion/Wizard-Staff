@@ -1,0 +1,8 @@
+{
+  "cost": 200,
+  "duration": 40,
+  "magic": "egg_magic",
+  "ingredient": {
+    "item": "minecraft:egg"
+  }
+}

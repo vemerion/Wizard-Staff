@@ -6,13 +6,11 @@ import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -22,16 +20,6 @@ public class SoulSandMagic extends Magic {
 	private static final float WIDTH = 3;
 	private static final float LENGTH = 15;
 	private static final int COUNT = 10;
-
-	@Override
-	public int getUseDuration(ItemStack staff) {
-		return 40;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return item == Items.SOUL_SAND;
-	}
 
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
@@ -52,7 +40,7 @@ public class SoulSandMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		player.playSound(Main.PUMPKIN_MAGIC_SOUND, 0.2f, soundPitch(player));
 		if (!world.isRemote) {
-			cost(player, 40);
+			cost(player);
 			spawnArms(world, player);
 		}
 

@@ -5,15 +5,13 @@ import java.util.Random;
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.vector.Vector3d;
@@ -21,16 +19,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public class BlazePowderMagic extends Magic {
-
-	@Override
-	public int getUseDuration(ItemStack staff) {
-		return HOUR;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return item == Items.BLAZE_POWDER;
-	}
 	
 	@Override
 	public RenderThirdPersonMagic thirdPersonRenderer() {
@@ -49,8 +37,8 @@ public class BlazePowderMagic extends Magic {
 		if (!world.isRemote) {
 			ServerWorld serverWorld = (ServerWorld) world;
 			Random rand = player.getRNG();
-			cost(player, 0.3);
 			Vector3d offset = Vector3d.fromPitchYaw(player.getPitchYaw());
+			cost(player);
 			for (Entity e : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().grow(0.3).offset(offset),
 					(e) -> e instanceof LivingEntity)) {
 				e.attackEntityFrom(DamageSource.causePlayerDamage(player), 2);

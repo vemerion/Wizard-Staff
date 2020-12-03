@@ -4,28 +4,16 @@ import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.item.UseAction;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class WitherSkullMagic extends Magic {
-
-	@Override
-	public int getUseDuration(ItemStack staff) {
-		return 15;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return item == Items.WITHER_SKELETON_SKULL;
-	}
 
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
@@ -46,9 +34,9 @@ public class WitherSkullMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		player.playSound(Main.SKELETON_SOUND, 0.85f, soundPitch(player));
 		if (!world.isRemote) {
-			cost(player, 20);			
 			Vector3d direction = Vector3d.fromPitchYaw(player.getPitchYaw());
 			Vector3d position = player.getPositionVec().add(direction.getX() * 1, 1.2, direction.getZ() * 1);
+			cost(player);			
 			MagicWitherSkullEntity skull = new MagicWitherSkullEntity(position.getX(), position.getY(),
 					position.getZ(), world);
 			skull.setShooter(player);

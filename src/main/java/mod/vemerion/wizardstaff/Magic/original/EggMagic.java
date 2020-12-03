@@ -7,15 +7,13 @@ import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -24,16 +22,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public class EggMagic extends Magic {
-
-	@Override
-	public int getUseDuration(ItemStack staff) {
-		return 40;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return item == Items.EGG;
-	}
 	
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
@@ -83,7 +71,7 @@ public class EggMagic extends Magic {
 							new ItemStack(egg));
 					world.addEntity(eggEntity);
 					target.remove();
-					cost(player, 200);
+					cost(player);
 				}
 			}
 		}

@@ -16,22 +16,10 @@ import net.minecraft.world.World;
 
 public class FashionMagic extends Magic {
 	
-	private Item fromArmorPiece;
 	private Item toArmorPiece;
 	
-	public FashionMagic(Item fromArmorPiece, Item toArmorPiece) {
-		this.fromArmorPiece = fromArmorPiece;
+	public FashionMagic(Item toArmorPiece) {
 		this.toArmorPiece = toArmorPiece;
-	}
-
-	@Override
-	public int getUseDuration(ItemStack staff) {
-		return 20;
-	}
-
-	@Override
-	public boolean isMagicItem(Item item) {
-		return item == fromArmorPiece;
 	}
 
 	@Override
@@ -53,7 +41,7 @@ public class FashionMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		player.playSound(Main.PLOP_SOUND, 1, soundPitch(player));
 		if (!world.isRemote) {
-			cost(player, 30);
+			cost(player);
 			WizardStaffItemHandler handler = WizardStaffItemHandler.get(staff);
 			ItemStack helmet = handler.extractItem(0, 1, false);
 			ItemStack toArmorStack = new ItemStack(toArmorPiece);

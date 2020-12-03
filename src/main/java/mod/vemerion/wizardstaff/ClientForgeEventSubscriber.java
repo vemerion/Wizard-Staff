@@ -26,7 +26,7 @@ public class ClientForgeEventSubscriber {
 		float partialTicks = event.getPartialTicks();
 		if (item instanceof WizardStaffItem && player.getActiveItemStack().equals(itemStack)) {
 			event.setCanceled(true);
-			Item magic = WizardStaffItem.getMagic(itemStack).getItem();
+			ItemStack magic = WizardStaffItem.getMagic(itemStack);
 			HandSide side = event.getHand() == Hand.MAIN_HAND ? player.getPrimaryHand()
 					: player.getPrimaryHand().opposite();
 			WizardStaffTileEntityRenderer renderer = (WizardStaffTileEntityRenderer) item

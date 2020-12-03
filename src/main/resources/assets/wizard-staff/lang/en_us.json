@@ -16,6 +16,7 @@
   "item.wizard-staff.wizard_armor.description": "-10% spell cost",
   "item.wizard-staff.druid_armor.description": "-10% spell cost",
   "item.wizard-staff.warlock_armor.description": "-10% spell cost",
+  "block.wizard-staff.magic_bricks_block": "Magic Bricks",
   "gui.wizard-staff.toggle_animations": "Toggle GUI animations",
   "itemGroup.wizard-staff": "Wizard Staff"
 }
