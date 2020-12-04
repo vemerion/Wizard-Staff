@@ -1,0 +1,8 @@
+{
+  "cost": 500,
+  "duration": 120,
+  "magic": "lodestone_magic",
+  "ingredient": {
+    "item": "minecraft:lodestone"
+  }
+}

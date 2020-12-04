@@ -43,9 +43,10 @@ public class GoldNuggetMagic extends Magic {
 				}
 				piglin.swingArm(Hand.OFF_HAND);
 			}
-			cost(player);
-			if (barterCount > 0)
+			if (barterCount > 0) {
+				cost(player);
 				playSoundServer(world, player, SoundEvents.ENTITY_PIGLIN_ADMIRING_ITEM, 1, soundPitch(player));
+			}
 		}
 		return super.magicFinish(world, player, staff);
 	}

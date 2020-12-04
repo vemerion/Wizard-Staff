@@ -15,7 +15,10 @@ import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.fashionupdate.FashionMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GhastTearMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
+import mod.vemerion.wizardstaff.Magic.netherupdate.GoldNuggetMagic;
+import mod.vemerion.wizardstaff.Magic.netherupdate.LodestoneMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherBrickMagic;
+import mod.vemerion.wizardstaff.Magic.netherupdate.NetheriteIngotMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherrackMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.ObsidianMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.SoulSandMagic;
@@ -107,6 +110,9 @@ public class Magics extends JsonReloadListener {
 		magicNames.put("ghast_tear_magic", () -> new GhastTearMagic());
 		magicNames.put("nether_brick_magic", () -> new NetherBrickMagic());
 		magicNames.put("soul_sand_magic", () -> new SoulSandMagic());
+		magicNames.put("gold_nugget_magic", () -> new GoldNuggetMagic());
+		magicNames.put("lodestone_magic", () -> new LodestoneMagic());
+		magicNames.put("netherite_ingot_magic", () -> new NetheriteIngotMagic());
 		magicNames.put("wizard_boots_fashion_magic", () -> new FashionMagic(Main.WIZARD_BOOTS_ITEM));
 		magicNames.put("wizard_chestplate_fashion_magic", () -> new FashionMagic(Main.WIZARD_CHESTPLATE_ITEM));
 		magicNames.put("wizard_helmet_fashion_magic", () -> new FashionMagic(Main.WIZARD_HAT_ITEM));
@@ -137,7 +143,6 @@ public class Magics extends JsonReloadListener {
 		instance = new Magics();
 	}
 
-	// FIXME: Add json for the 1.16 exlusive spells
 	@Override
 	protected void apply(Map<ResourceLocation, JsonElement> objectIn, IResourceManager resourceManagerIn,
 			IProfiler profilerIn) {

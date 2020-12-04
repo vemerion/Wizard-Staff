@@ -1,0 +1,8 @@
+{
+  "cost": 100,
+  "duration": 40,
+  "magic": "netherite_ingot_magic",
+  "ingredient": {
+    "tag": "forge:ingots/netherite"
+  }
+}
