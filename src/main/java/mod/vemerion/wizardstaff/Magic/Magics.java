@@ -135,7 +135,6 @@ public class Magics extends JsonReloadListener {
 		instance = new Magics();
 	}
 
-	// FIXME: Add json for the 1.16 exlusive spells
 	@Override
 	protected void apply(Map<ResourceLocation, JsonObject> objectIn, IResourceManager resourceManagerIn,
 			IProfiler profilerIn) {
