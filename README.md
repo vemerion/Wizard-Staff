@@ -82,4 +82,23 @@ dirt item.
   ]
 }                   
 ```
+### Detailed Explanation
+If you still do not understand how to use the data-driven magic system, then this section
+will try to step by step go through everything:
 
+* Locate your Minecraft world folder. If you are using the vanilla launcher, you can usually find you world folder on this path: 'C:\Users\YOUR WINDOWS PROFILE\AppData\Roaming\\.minecraft\saves\YOUR WORLD NAME'.
+
+
+* In your world folder, there should be a folder called 'datapacks'. Step into that folder.
+
+
+* Now, in the 'datapacks' folder, create a new folder that will contain the datapack, as explained [on the Minecraft wiki](https://minecraft.gamepedia.com/Data_Pack). You will also need to add a pack.mcmeta file.
+
+
+* Then, create a new folder called 'data'. In that folder, create a folder called 'wizard-staff', and in the 'wizard-staff' folder, create a folder called 'wizard-staff-magics'. You path should now be something like: 'datapacks\DATAPACK NAME\data\wizard-staff\wizard-staff-magics\'.
+
+
+* The 'wizard-staff-magics' folder is where you will put the json files. If you want to change the parameters of an already existing spell, you best bet is to copy one of the default spells (found [here](src/main/resources/data/wizard-staff/wizard-staff-magics)), and then change the json members as you like.
+
+
+* That's it! You should now be able to start Minecraft and test out the spells you added/modified.
