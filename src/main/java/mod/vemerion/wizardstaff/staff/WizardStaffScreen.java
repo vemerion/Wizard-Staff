@@ -22,7 +22,7 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(Main.MODID,
 			"textures/gui/staff_screen_new.png");
 
-	private static final ResourceLocation RECIPE_BUTTON_TEXTURE = new ResourceLocation(Main.MODID,
+	private static final ResourceLocation ANIMATION_BUTTON = new ResourceLocation(Main.MODID,
 			"textures/gui/animation_button.png");
 
 	private static final int ANIMATION_BOOK_Y = 173;
@@ -40,33 +40,46 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 	private boolean buttonPressed, shouldAnimate;
 	private Button toggleAnimationsButton;
 
+	private SpellbookGui spellbook;
+
 	public WizardStaffScreen(WizardStaffContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
 		super(screenContainer, inv, titleIn);
 		shouldAnimate = container.shouldAnimate();
+		spellbook = new SpellbookGui();
 	}
 
 	@Override
 	protected void init() {
 		super.init();
+		spellbook.init(width, height);
+		guiLeft = spellbook.updatePosition(width, xSize);
+		
 		toggleAnimationsButton = addButton(
-				new ImageButton(guiLeft + xSize - 18, guiTop + 9, 9, 9, 0, 0, 9, RECIPE_BUTTON_TEXTURE, (button) -> {
+				new ImageButton(guiLeft + xSize - 18, guiTop + 9, 9, 9, 0, 0, 9, ANIMATION_BUTTON, (button) -> {
 					buttonPressed = true;
 					shouldAnimate = !shouldAnimate;
 				}));
+
+		addButton(
+				new ImageButton(guiLeft + xSize - 18, guiTop + 20, 9, 9, 0, 0, 9, ANIMATION_BUTTON, (button) -> {
+					spellbook.toggleActive();
+					guiLeft = spellbook.updatePosition(width, xSize);
+					((ImageButton) button).setPosition(guiLeft + xSize - 18, guiTop + 20);
+					((ImageButton) toggleAnimationsButton).setPosition(guiLeft + xSize - 18, guiTop + 9);
+				}));
 	}
-	
+
 	@Override
 	public void onClose() {
 		if (buttonPressed && shouldAnimate != container.shouldAnimate())
 			ScreenAnimations.sendMessage(Minecraft.getInstance().player, shouldAnimate);
 		super.onClose();
 	}
-	
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE);
-		blit(matrix, (width - xSize) / 2, (height - ySize) / 2, 0, 0, xSize, ySize);
+		blit(matrix, guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		if ((!buttonPressed && container.shouldAnimate()) || (buttonPressed && shouldAnimate))
 			animations(matrix, partialTicks);
@@ -103,6 +116,7 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		renderHoveredTooltip(matrix, mouseX, mouseY);
+		spellbook.render(matrix, mouseX, mouseY, partialTicks);
 		if (toggleAnimationsButton.isHovered())
 			renderTooltip(matrix, new TranslationTextComponent("gui.wizard-staff.toggle_animations"), mouseX, mouseY);
 	}
