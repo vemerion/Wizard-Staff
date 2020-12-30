@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -62,6 +63,7 @@ public class Magics extends JsonReloadListener {
 
 	private Map<String, Supplier<Magic>> magicNames;
 	private Map<ResourceLocation, Magic> magics;
+	private ImmutableSet<ItemStack> magicItems; // All items that have magic effect
 
 	// Save all the magic params on server to send to client at login
 	private Map<ResourceLocation, MagicParams> magicParams;
@@ -179,6 +181,17 @@ public class Magics extends JsonReloadListener {
 		for (Entry<ResourceLocation, MagicParams> entry : params.entrySet()) {
 			magics.put(entry.getKey(), entry.getValue().createMagic());
 		}
+		
+		// Build magicItems set
+		ImmutableSet.Builder<ItemStack> builder = ImmutableSet.builder();
+		for (MagicParams param : params.values())
+			for (ItemStack stack : param.ingredient.getMatchingStacks())
+				builder.add(stack);
+		magicItems = builder.build();
+	}
+	
+	public ImmutableSet<ItemStack> getMagicItems() {
+		return magicItems;
 	}
 
 	public static class MagicParams {

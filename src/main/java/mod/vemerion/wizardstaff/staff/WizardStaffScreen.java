@@ -68,6 +68,13 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 					((ImageButton) toggleAnimationsButton).setPosition(guiLeft + xSize - 18, guiTop + 9);
 				}));
 	}
+	
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (spellbook.mouseClicked(mouseX, mouseY, button))
+			return true;
+		return super.mouseClicked(mouseX, mouseY, button);
+	}
 
 	@Override
 	public void onClose() {
