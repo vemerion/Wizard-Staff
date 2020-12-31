@@ -17,7 +17,6 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 
 public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventListener {
@@ -27,20 +26,23 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 	private static final int X_SIZE = 147;
 	private static final int Y_SIZE = 166;
 	private static final int BORDER_X = 16;
-	private static final int BORDER_Y = 10;
+	private static final int BORDER_Y = 12;
 	private static final int ITEM_SIZE = 20;
 	private static final int ITEMS_PER_ROW = 6;
-	private static final int ITEMS_PER_COLUMN = 7;
+	private static final int ITEMS_PER_COLUMN = 6;
 	private static final int ITEMS_PER_PAGE = ITEMS_PER_ROW * ITEMS_PER_COLUMN;
-	private static final int BUTTON_SIZE = 10;
+	private static final int BUTTON_SIZE = 16;
 
 	private boolean isActive;
+	private int left;
+	private int top;
 	private int width;
 	private int height;
 	private List<ItemButton> buttons;
 	private Button next;
 	private Button prev;
 	private int page;
+	private SpellDescription description;
 
 	public SpellbookGui() {
 	}
@@ -48,9 +50,8 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 	public void init(int width, int height) {
 		this.width = width;
 		this.height = height;
-
-		int left = (width - X_SIZE) / 2 - X_OFFSET;
-		int top = (height - Y_SIZE) / 2;
+		left = (width - X_SIZE) / 2 - X_OFFSET;
+		top = (height - Y_SIZE) / 2;
 		int bottom = top + Y_SIZE;
 		int right = left + X_SIZE;
 
@@ -62,26 +63,32 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			i = (i + 1) % ITEMS_PER_PAGE;
 		}
 
-		next = new ImageButton(left + X_SIZE / 2 + 20, bottom - 8 - BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE, 0, 0,
+		next = new ImageButton(left + X_SIZE / 2 + 20, bottom - BORDER_Y - BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE, 0, 0,
 				0, BUTTON, (b) -> {
 					if ((page + 1) * ITEMS_PER_PAGE < buttons.size())
 						page++;
 				});
 
-		prev = new ImageButton(left + X_SIZE / 2 - 20 - BUTTON_SIZE, bottom - 8 - BUTTON_SIZE, BUTTON_SIZE,
+		prev = new ImageButton(left + X_SIZE / 2 - 20 - BUTTON_SIZE, bottom - BORDER_Y - BUTTON_SIZE, BUTTON_SIZE,
 				BUTTON_SIZE, 0, 0, 0, BUTTON, (b) -> {
 					if (page > 0)
 						page--;
 				});
+
+		if (description != null)
+			description.init(left, top);
 	}
 
 	@Override
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		if (isActive) {
-			Minecraft mc = Minecraft.getInstance();
-			mc.getTextureManager().bindTexture(GUI);
-			blit(matrixStack, (width - X_SIZE) / 2 - X_OFFSET, (height - Y_SIZE) / 2, 0, 0, X_SIZE, Y_SIZE);
+		if (!isActive)
+			return;
 
+		Minecraft mc = Minecraft.getInstance();
+		mc.getTextureManager().bindTexture(GUI);
+		blit(matrixStack, left, top, 0, 0, X_SIZE, Y_SIZE);
+
+		if (description == null) {
 			for (int i = page * ITEMS_PER_PAGE; i < Math.min(buttons.size(), (page + 1) * ITEMS_PER_PAGE); i++)
 				buttons.get(i).render(matrixStack, mouseX, mouseY, partialTicks);
 
@@ -91,23 +98,31 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			// Draw page number
 			String pageText = (page + 1) + "/" + (buttons.size() / ITEMS_PER_PAGE + 1);
 			int textWidth = mc.fontRenderer.getStringWidth(pageText);
-			mc.fontRenderer.drawString(matrixStack, pageText,
-					(width - X_SIZE) / 2f - X_OFFSET + X_SIZE / 2 - textWidth / 2f,
-					(height - Y_SIZE) / 2f + Y_SIZE - 17, -1);
-
+			mc.fontRenderer.drawString(matrixStack, pageText, left + X_SIZE / 2 - textWidth / 2f, top + Y_SIZE - 24,
+					-1);
+		} else {
+			description.render(matrixStack, mouseX, mouseY, partialTicks);
 		}
 	}
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		for (int i = page * ITEMS_PER_PAGE; i < Math.min(buttons.size(), (page + 1) * ITEMS_PER_PAGE); i++)
-			if (buttons.get(i).mouseClicked(mouseX, mouseY, button))
-				return true;
+		if (!isActive)
+			return false;
 
-		if (next.mouseClicked(mouseX, mouseY, button))
-			return true;
-		if (prev.mouseClicked(mouseX, mouseY, button))
-			return true;
+		if (description == null) {
+			for (int i = page * ITEMS_PER_PAGE; i < Math.min(buttons.size(), (page + 1) * ITEMS_PER_PAGE); i++)
+				if (buttons.get(i).mouseClicked(mouseX, mouseY, button))
+					return true;
+
+			if (next.mouseClicked(mouseX, mouseY, button))
+				return true;
+			if (prev.mouseClicked(mouseX, mouseY, button))
+				return true;
+		} else {
+			if (description.mouseClicked(mouseX, mouseY, button))
+				return true;
+		}
 
 		return false;
 	}
@@ -146,7 +161,46 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 
 		@Override
 		public void onPress() {
+			description = new SpellDescription(stack, left, top);
+		}
 
+	}
+
+	private class SpellDescription implements IRenderable, IGuiEventListener {
+		private ItemStack stack;
+		private Button back;
+		private int left;
+		private int top;
+
+		public SpellDescription(ItemStack stack, int left, int top) {
+			this.stack = stack;
+			init(left, top);
+		}
+
+		public void init(int left, int top) {
+			this.left = left;
+			this.top = top;
+
+			back = new ImageButton(left + BORDER_X, top + BORDER_Y, BUTTON_SIZE, BUTTON_SIZE, 0, 0, 0, BUTTON, (b) -> {
+				description = null;
+			});
+		}
+
+		@Override
+		public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+			back.render(matrixStack, mouseX, mouseY, partialTicks);
+
+			Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(stack, left + X_SIZE / 2 - 8,
+					top + BORDER_Y);
+
+		}
+
+		@Override
+		public boolean mouseClicked(double mouseX, double mouseY, int button) {
+			if (back.mouseClicked(mouseX, mouseY, button))
+				return true;
+
+			return false;
 		}
 
 	}
