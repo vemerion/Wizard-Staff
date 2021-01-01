@@ -24,6 +24,10 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 
 	private static final ResourceLocation ANIMATION_BUTTON = new ResourceLocation(Main.MODID,
 			"textures/gui/animation_button.png");
+	
+	private static final ResourceLocation SPELLBOOK_BUTTON = new ResourceLocation(Main.MODID,
+			"textures/gui/spellbook_button.png");
+
 
 	private static final int ANIMATION_BOOK_Y = 173;
 	private static final int BOOK_WIDTH = 50;
@@ -39,6 +43,7 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 
 	private boolean buttonPressed, shouldAnimate;
 	private Button toggleAnimationsButton;
+	private Button spellbookButton;
 
 	private SpellbookGui spellbook;
 
@@ -60,11 +65,11 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 					shouldAnimate = !shouldAnimate;
 				}));
 
-		addButton(
-				new ImageButton(guiLeft + xSize - 18, guiTop + 20, 9, 9, 0, 0, 9, ANIMATION_BUTTON, (button) -> {
+		spellbookButton = addButton(
+				new ImageButton(guiLeft + xSize / 2 - 8, (int) (guiTop + ySize * 0.37), 16, 16, 0, 0, 16, SPELLBOOK_BUTTON, (button) -> {
 					spellbook.toggleActive();
 					guiLeft = spellbook.updatePosition(width, xSize);
-					((ImageButton) button).setPosition(guiLeft + xSize - 18, guiTop + 20);
+					((ImageButton) button).setPosition(guiLeft + xSize / 2 - 8, (int) (guiTop + ySize * 0.37));
 					((ImageButton) toggleAnimationsButton).setPosition(guiLeft + xSize - 18, guiTop + 9);
 				}));
 	}
@@ -126,6 +131,9 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 		spellbook.render(matrix, mouseX, mouseY, partialTicks);
 		if (toggleAnimationsButton.isHovered())
 			renderTooltip(matrix, new TranslationTextComponent("gui.wizard-staff.toggle_animations"), mouseX, mouseY);
+		
+		if (spellbookButton.isHovered())
+			renderTooltip(matrix, new TranslationTextComponent("gui.wizard-staff.toggle_spellbook"), mouseX, mouseY);
 	}
 
 }

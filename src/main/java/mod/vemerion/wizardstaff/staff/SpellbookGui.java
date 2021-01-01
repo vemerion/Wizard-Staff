@@ -20,8 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 
 public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventListener {
-	private static final ResourceLocation GUI = new ResourceLocation("textures/gui/recipe_book.png");
-	private static final ResourceLocation BUTTON = new ResourceLocation(Main.MODID, "textures/gui/spellbook.png");
+	private static final ResourceLocation GUI = new ResourceLocation(Main.MODID, "textures/gui/spellbook.png");
 	private static final int X_OFFSET = 86;
 	private static final int X_SIZE = 147;
 	private static final int Y_SIZE = 166;
@@ -31,7 +30,7 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 	private static final int ITEMS_PER_ROW = 6;
 	private static final int ITEMS_PER_COLUMN = 6;
 	private static final int ITEMS_PER_PAGE = ITEMS_PER_ROW * ITEMS_PER_COLUMN;
-	private static final int BUTTON_SIZE = 16;
+	private static final int BUTTON_SIZE = 20;
 
 	private boolean isActive;
 	private int left;
@@ -63,14 +62,14 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			i = (i + 1) % ITEMS_PER_PAGE;
 		}
 
-		next = new ImageButton(left + X_SIZE / 2 + 20, bottom - BORDER_Y - BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE, 0, 0,
-				0, BUTTON, (b) -> {
+		next = new ImageButton(left + X_SIZE / 2 + 20, bottom - BORDER_Y - BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE, 0,
+				Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
 					if ((page + 1) * ITEMS_PER_PAGE < buttons.size())
 						page++;
 				});
 
 		prev = new ImageButton(left + X_SIZE / 2 - 20 - BUTTON_SIZE, bottom - BORDER_Y - BUTTON_SIZE, BUTTON_SIZE,
-				BUTTON_SIZE, 0, 0, 0, BUTTON, (b) -> {
+				BUTTON_SIZE, BUTTON_SIZE, Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
 					if (page > 0)
 						page--;
 				});
@@ -181,7 +180,7 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			this.left = left;
 			this.top = top;
 
-			back = new ImageButton(left + BORDER_X, top + BORDER_Y, BUTTON_SIZE, BUTTON_SIZE, 0, 0, 0, BUTTON, (b) -> {
+			back = new ImageButton(left + BORDER_X, top + BORDER_Y, BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE, Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
 				description = null;
 			});
 		}
