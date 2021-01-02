@@ -18,6 +18,10 @@ import net.minecraft.world.World;
 
 public class ShulkerBulletMagic extends Magic {
 
+	public ShulkerBulletMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::buildupMagic;

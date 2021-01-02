@@ -20,6 +20,10 @@ import net.minecraft.world.server.ServerWorld;
 
 public class BlazePowderMagic extends Magic {
 	
+	public BlazePowderMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderThirdPersonMagic thirdPersonRenderer() {
 		return WizardStaffLayer::forwardShake;

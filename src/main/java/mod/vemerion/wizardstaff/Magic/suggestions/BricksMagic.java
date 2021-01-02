@@ -14,6 +14,10 @@ import net.minecraft.world.World;
 
 public class BricksMagic extends Magic {
 
+	public BricksMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::buildupMagic;

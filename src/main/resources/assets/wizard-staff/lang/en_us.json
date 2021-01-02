@@ -19,5 +19,12 @@
   "block.wizard-staff.magic_bricks_block": "Magic Bricks",
   "gui.wizard-staff.toggle_animations": "Toggle GUI animations",
   "gui.wizard-staff.toggle_spellbook": "Toggle Spellbook",
-  "itemGroup.wizard-staff": "Wizard Staff"
+  "itemGroup.wizard-staff": "Wizard Staff",
+
+
+  "gui.wizard-staff.cost": "Cost",
+  "gui.wizard-staff.duration": "Duration",
+  "gui.wizard-staff.blaze_powder_magic.name": "Flame Thrower",
+  "gui.wizard-staff.blaze_powder_magic.description": "Incinerate your enemies!"
+
 }

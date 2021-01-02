@@ -15,6 +15,10 @@ import net.minecraft.world.server.ServerWorld;
 
 public class ClockMagic extends Magic {
 	
+	public ClockMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.NONE;

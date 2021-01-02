@@ -26,6 +26,10 @@ import net.minecraft.world.server.ServerWorld;
 
 public class GoldNuggetMagic extends Magic {
 
+	public GoldNuggetMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote) {

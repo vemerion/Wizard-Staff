@@ -15,6 +15,10 @@ import net.minecraft.world.World;
 
 public class MushroomCloudMagic extends Magic {
 
+	public MushroomCloudMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::forwardWaving;

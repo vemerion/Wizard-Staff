@@ -14,6 +14,10 @@ import net.minecraft.world.server.ServerWorld;
 
 public class BlueDyeMagic extends Magic {
 
+	public BlueDyeMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::spinMagic;

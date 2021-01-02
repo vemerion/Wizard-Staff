@@ -16,6 +16,10 @@ import net.minecraft.world.World;
 
 public class ObsidianMagic extends Magic {
 
+	public ObsidianMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::forwardWaving;

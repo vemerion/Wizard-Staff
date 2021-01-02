@@ -20,6 +20,10 @@ import net.minecraft.world.server.ServerWorld;
 
 public class GhastTearMagic extends Magic {
 
+	public GhastTearMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::spinMagic;

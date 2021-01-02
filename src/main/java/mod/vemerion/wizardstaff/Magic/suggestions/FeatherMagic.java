@@ -14,6 +14,10 @@ import net.minecraft.world.World;
 
 public class FeatherMagic extends Magic {
 
+	public FeatherMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::spinMagic;

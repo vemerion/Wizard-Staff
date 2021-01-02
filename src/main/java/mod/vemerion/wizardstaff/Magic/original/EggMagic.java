@@ -23,6 +23,10 @@ import net.minecraft.world.server.ServerWorld;
 
 public class EggMagic extends Magic {
 	
+	public EggMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BLOCK;

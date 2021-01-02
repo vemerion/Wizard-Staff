@@ -17,9 +17,14 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class SoulSandMagic extends Magic {
+
 	private static final float WIDTH = 3;
 	private static final float LENGTH = 15;
 	private static final int COUNT = 10;
+	
+	public SoulSandMagic(String name) {
+		super(name);
+	}
 
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {

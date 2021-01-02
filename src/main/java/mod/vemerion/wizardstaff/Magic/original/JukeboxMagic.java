@@ -22,6 +22,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 
 public class JukeboxMagic extends Magic {
+	public JukeboxMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.NONE;

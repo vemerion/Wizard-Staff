@@ -14,6 +14,10 @@ import net.minecraft.world.World;
 
 public class GrapplingHookMagic extends Magic {
 
+	public GrapplingHookMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::forward;

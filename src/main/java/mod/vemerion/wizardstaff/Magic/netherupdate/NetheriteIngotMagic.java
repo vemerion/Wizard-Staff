@@ -15,6 +15,10 @@ import net.minecraft.world.World;
 
 public class NetheriteIngotMagic extends Magic {
 	
+	public NetheriteIngotMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		player.playSound(Main.POOF_SOUND, 1, soundPitch(player));

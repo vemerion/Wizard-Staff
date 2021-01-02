@@ -18,7 +18,8 @@ public class FashionMagic extends Magic {
 	
 	private Item toArmorPiece;
 	
-	public FashionMagic(Item toArmorPiece) {
+	public FashionMagic(String name, Item toArmorPiece) {
+		super(name);
 		this.toArmorPiece = toArmorPiece;
 	}
 

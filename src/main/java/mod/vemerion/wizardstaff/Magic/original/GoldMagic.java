@@ -21,6 +21,10 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class GoldMagic extends Magic {
+	public GoldMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BLOCK;

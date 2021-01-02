@@ -19,6 +19,10 @@ import net.minecraft.world.World;
 
 public class NetherrackMagic extends Magic {
 
+	public NetherrackMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::swinging;

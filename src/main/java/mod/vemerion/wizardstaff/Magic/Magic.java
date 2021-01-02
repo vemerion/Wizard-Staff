@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.item.MagicArmorItem;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -13,6 +14,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public abstract class Magic {
@@ -22,6 +24,11 @@ public abstract class Magic {
 	private float cost;
 	private int duration;
 	private Ingredient ingredient;
+	private String name;
+	
+	public Magic(String name) {
+		this.name = name;
+	}
 
 	public void init(float cost, int duration, Ingredient ingredient) {
 		this.cost = cost;
@@ -90,5 +97,39 @@ public abstract class Magic {
 	}
 	
 	public void magicCancel(World world, PlayerEntity player, ItemStack staff, int timeLeft) {
+	}
+	
+	public Description getDescription() {
+		return new Description(cost, duration, name);
+	}
+	
+	public static class Description {
+		private float cost;
+		private int duration;
+		private TranslationTextComponent name;
+		private TranslationTextComponent descr;
+		
+		private Description(float cost, int duration, String magicName) {
+			this.cost = cost;
+			this.duration = duration;
+			this.name = new TranslationTextComponent("gui." + Main.MODID + "." + magicName + ".name");
+			this.descr = new TranslationTextComponent("gui." + Main.MODID + "." + magicName + ".description");
+		}
+		
+		public float getCost() {
+			return cost;
+		}
+		
+		public int getDuration() {
+			return duration;
+		}
+		
+		public TranslationTextComponent getName() {
+			return name;
+		}
+		
+		public TranslationTextComponent getDescription() {
+			return descr;
+		}
 	}
 }

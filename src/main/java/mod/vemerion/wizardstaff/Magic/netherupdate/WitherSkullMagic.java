@@ -15,6 +15,10 @@ import net.minecraft.world.World;
 
 public class WitherSkullMagic extends Magic {
 
+	public WitherSkullMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::forwardBuildup;

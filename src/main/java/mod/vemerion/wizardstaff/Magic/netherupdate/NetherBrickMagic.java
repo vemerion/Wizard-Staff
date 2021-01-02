@@ -19,6 +19,10 @@ import net.minecraft.world.server.ServerWorld;
 
 public class NetherBrickMagic extends Magic {
 
+	public NetherBrickMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::buildupMagic;

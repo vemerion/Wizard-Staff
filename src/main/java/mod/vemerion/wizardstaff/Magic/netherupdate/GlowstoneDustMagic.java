@@ -16,6 +16,10 @@ import net.minecraft.world.World;
 
 public class GlowstoneDustMagic extends Magic {
 
+	public GlowstoneDustMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::circling;

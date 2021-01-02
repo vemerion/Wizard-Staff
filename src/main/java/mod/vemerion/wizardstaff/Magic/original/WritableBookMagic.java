@@ -18,6 +18,10 @@ import net.minecraft.world.World;
 
 public class WritableBookMagic extends Magic {
 
+	public WritableBookMagic(String name) {
+		super(name);
+	}
+
 	private String[] wisdoms = { "All that glitters is gold", "Fear the old blood",
 			"Every fleeing man must be caught. Every secret must be unearthed. Such is the conceit of the self-proclaimed seeker of truth.",
 			"What we do in life echoes in eternity", "STEVEN LIVES", "What we've got here is... failure to communicate",

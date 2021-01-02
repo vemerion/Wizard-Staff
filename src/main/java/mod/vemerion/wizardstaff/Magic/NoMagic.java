@@ -13,6 +13,7 @@ import net.minecraft.item.crafting.Ingredient;
 public class NoMagic extends Magic {
 
 	public NoMagic() {
+		super("no_magic");
 		this.init(0, 0, new Ingredient(Stream.empty()) {
 			@Override
 			public boolean test(ItemStack p_test_1_) {

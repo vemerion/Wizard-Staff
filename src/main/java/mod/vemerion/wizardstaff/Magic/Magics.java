@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableSet;
@@ -96,45 +97,50 @@ public class Magics extends JsonReloadListener {
 	}
 
 	private void initMagicNames() {
-		magicNames.put("blaze_powder_magic", () -> new BlazePowderMagic());
-		magicNames.put("carved_pumpkin_magic", () -> new CarvedPumpkinMagic());
-		magicNames.put("clock_magic", () -> new ClockMagic());
-		magicNames.put("egg_magic", () -> new EggMagic());
-		magicNames.put("elytra_magic", () -> new ElytraMagic());
-		magicNames.put("gold_magic", () -> new GoldMagic());
-		magicNames.put("jukebox_magic", () -> new JukeboxMagic());
-		magicNames.put("wizard_staff_magic", () -> new WizardStaffMagic());
-		magicNames.put("writable_book_magic", () -> new WritableBookMagic());
-		magicNames.put("obsidian_magic", () -> new ObsidianMagic());
-		magicNames.put("glowstone_dust_magic", () -> new GlowstoneDustMagic());
-		magicNames.put("netherrack_magic", () -> new NetherrackMagic());
-		magicNames.put("wither_skull_magic", () -> new WitherSkullMagic());
-		magicNames.put("ghast_tear_magic", () -> new GhastTearMagic());
-		magicNames.put("nether_brick_magic", () -> new NetherBrickMagic());
-		magicNames.put("soul_sand_magic", () -> new SoulSandMagic());
-		magicNames.put("gold_nugget_magic", () -> new GoldNuggetMagic());
-		magicNames.put("lodestone_magic", () -> new LodestoneMagic());
-		magicNames.put("netherite_ingot_magic", () -> new NetheriteIngotMagic());
-		magicNames.put("wizard_boots_fashion_magic", () -> new FashionMagic(Main.WIZARD_BOOTS_ITEM));
-		magicNames.put("wizard_chestplate_fashion_magic", () -> new FashionMagic(Main.WIZARD_CHESTPLATE_ITEM));
-		magicNames.put("wizard_helmet_fashion_magic", () -> new FashionMagic(Main.WIZARD_HAT_ITEM));
-		magicNames.put("wizard_leggings_fashion_magic", () -> new FashionMagic(Main.WIZARD_LEGGINGS_ITEM));
-		magicNames.put("druid_boots_fashion_magic", () -> new FashionMagic(Main.DRUID_BOOTS_ITEM));
-		magicNames.put("druid_chestplate_fashion_magic", () -> new FashionMagic(Main.DRUID_CHESTPLATE_ITEM));
-		magicNames.put("druid_helmet_fashion_magic", () -> new FashionMagic(Main.DRUID_HELMET_ITEM));
-		magicNames.put("druid_leggings_fashion_magic", () -> new FashionMagic(Main.DRUID_LEGGINGS_ITEM));
-		magicNames.put("warlock_boots_fashion_magic", () -> new FashionMagic(Main.WARLOCK_BOOTS_ITEM));
-		magicNames.put("warlock_chestplate_fashion_magic", () -> new FashionMagic(Main.WARLOCK_CHESTPLATE_ITEM));
-		magicNames.put("warlock_helmet_fashion_magic", () -> new FashionMagic(Main.WARLOCK_HELMET_ITEM));
-		magicNames.put("warlock_leggings_fashion_magic", () -> new FashionMagic(Main.WARLOCK_LEGGINGS_ITEM));
-		magicNames.put("blue_dye_magic", () -> new BlueDyeMagic());
-		magicNames.put("bricks_magic", () -> new BricksMagic());
-		magicNames.put("grappling_hook_magic", () -> new GrapplingHookMagic());
-		magicNames.put("feather_magic", () -> new FeatherMagic());
-		magicNames.put("mushroom_cloud_magic", () -> new MushroomCloudMagic());
-		magicNames.put("shulker_bullet_magic", () -> new ShulkerBulletMagic());
-		magicNames.put("water_bucket_magic", () -> new WaterBucketMagic());
-		magicNames.put("no_magic", () -> NO_MAGIC);
+		register("blaze_powder_magic", (s) -> () -> new BlazePowderMagic(s));
+		register("blaze_powder_magic", (s) -> () -> new BlazePowderMagic(s));
+		register("carved_pumpkin_magic", (s) -> () -> new CarvedPumpkinMagic(s));
+		register("clock_magic", (s) -> () -> new ClockMagic(s));
+		register("egg_magic", (s) -> () -> new EggMagic(s));
+		register("elytra_magic", (s) -> () -> new ElytraMagic(s));
+		register("gold_magic", (s) -> () -> new GoldMagic(s));
+		register("jukebox_magic", (s) -> () -> new JukeboxMagic(s));
+		register("wizard_staff_magic", (s) -> () -> new WizardStaffMagic(s));
+		register("writable_book_magic", (s) -> () -> new WritableBookMagic(s));
+		register("obsidian_magic", (s) -> () -> new ObsidianMagic(s));
+		register("glowstone_dust_magic", (s) -> () -> new GlowstoneDustMagic(s));
+		register("netherrack_magic", (s) -> () -> new NetherrackMagic(s));
+		register("wither_skull_magic", (s) -> () -> new WitherSkullMagic(s));
+		register("ghast_tear_magic", (s) -> () -> new GhastTearMagic(s));
+		register("nether_brick_magic", (s) -> () -> new NetherBrickMagic(s));
+		register("soul_sand_magic", (s) -> () -> new SoulSandMagic(s));
+		register("gold_nugget_magic", (s) -> () -> new GoldNuggetMagic(s));
+		register("lodestone_magic", (s) -> () -> new LodestoneMagic(s));
+		register("netherite_ingot_magic", (s) -> () -> new NetheriteIngotMagic(s));
+		register("wizard_boots_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WIZARD_BOOTS_ITEM));
+		register("wizard_chestplate_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WIZARD_CHESTPLATE_ITEM));
+		register("wizard_helmet_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WIZARD_HAT_ITEM));
+		register("wizard_leggings_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WIZARD_LEGGINGS_ITEM));
+		register("druid_boots_fashion_magic", (s) -> () -> new FashionMagic(s, Main.DRUID_BOOTS_ITEM));
+		register("druid_chestplate_fashion_magic", (s) -> () -> new FashionMagic(s, Main.DRUID_CHESTPLATE_ITEM));
+		register("druid_helmet_fashion_magic", (s) -> () -> new FashionMagic(s, Main.DRUID_HELMET_ITEM));
+		register("druid_leggings_fashion_magic", (s) -> () -> new FashionMagic(s, Main.DRUID_LEGGINGS_ITEM));
+		register("warlock_boots_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WARLOCK_BOOTS_ITEM));
+		register("warlock_chestplate_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WARLOCK_CHESTPLATE_ITEM));
+		register("warlock_helmet_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WARLOCK_HELMET_ITEM));
+		register("warlock_leggings_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WARLOCK_LEGGINGS_ITEM));
+		register("blue_dye_magic", (s) -> () -> new BlueDyeMagic(s));
+		register("bricks_magic", (s) -> () -> new BricksMagic(s));
+		register("grappling_hook_magic", (s) -> () -> new GrapplingHookMagic(s));
+		register("feather_magic", (s) -> () -> new FeatherMagic(s));
+		register("mushroom_cloud_magic", (s) -> () -> new MushroomCloudMagic(s));
+		register("shulker_bullet_magic", (s) -> () -> new ShulkerBulletMagic(s));
+		register("water_bucket_magic", (s) -> () -> new WaterBucketMagic(s));
+		register("no_magic", (s) -> () -> NO_MAGIC);
+	}
+	
+	private void register(String name, Function<String, Supplier<Magic>> magic) {
+		magicNames.put(name, magic.apply(name));
 	}
 
 	public static Magics getInstance() {

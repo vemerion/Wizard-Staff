@@ -14,6 +14,10 @@ import net.minecraft.world.World;
 
 public class CarvedPumpkinMagic extends Magic {
 	
+	public CarvedPumpkinMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BLOCK;

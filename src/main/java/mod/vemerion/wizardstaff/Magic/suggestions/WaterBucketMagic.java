@@ -19,6 +19,10 @@ import net.minecraft.world.World;
 
 public class WaterBucketMagic extends Magic {
 
+	public WaterBucketMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::forwardWaving;

@@ -14,6 +14,10 @@ import net.minecraft.world.World;
 
 public class ElytraMagic extends Magic {
 	
+	public ElytraMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.SPEAR;

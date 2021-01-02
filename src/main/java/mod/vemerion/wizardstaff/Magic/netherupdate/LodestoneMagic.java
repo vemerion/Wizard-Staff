@@ -19,6 +19,10 @@ import net.minecraft.world.World;
 public class LodestoneMagic extends Magic {
 
 
+	public LodestoneMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public ActionResultType magicInteractBlock(ItemUseContext context) {
 		World world = context.getWorld();

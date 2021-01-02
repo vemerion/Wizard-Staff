@@ -15,6 +15,10 @@ import net.minecraft.world.World;
 
 public class WizardStaffMagic extends Magic {
 	
+	public WizardStaffMagic(String name) {
+		super(name);
+	}
+
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.CROSSBOW;
