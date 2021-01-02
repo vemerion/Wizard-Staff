@@ -198,6 +198,7 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			// Item
 			mc.getItemRenderer().renderItemAndEffectIntoGUI(stack, left + X_SIZE / 2 - 8, top + BORDER_Y);
 
+			// TODO: Wrap around if spell name too long
 			// Magic name
 			int textWidth = mc.fontRenderer.getStringWidth(magicDescr.getName().getString());
 			mc.fontRenderer.drawString(matrixStack, magicDescr.getName().getString(),
@@ -213,6 +214,7 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 					+ magicDescr.getDuration();
 			mc.fontRenderer.drawString(matrixStack, duration, left + BORDER_X, top + BORDER_Y + 50, -1);
 
+			// TODO: Button to scroll if description to long
 			// Description
 			List<IReorderingProcessor> lines = mc.fontRenderer.trimStringToWidth(magicDescr.getDescription(),
 					X_SIZE - BORDER_X * 2);

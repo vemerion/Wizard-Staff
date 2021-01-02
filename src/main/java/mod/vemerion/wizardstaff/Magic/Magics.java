@@ -98,7 +98,6 @@ public class Magics extends JsonReloadListener {
 
 	private void initMagicNames() {
 		register("blaze_powder_magic", (s) -> () -> new BlazePowderMagic(s));
-		register("blaze_powder_magic", (s) -> () -> new BlazePowderMagic(s));
 		register("carved_pumpkin_magic", (s) -> () -> new CarvedPumpkinMagic(s));
 		register("clock_magic", (s) -> () -> new ClockMagic(s));
 		register("egg_magic", (s) -> () -> new EggMagic(s));
