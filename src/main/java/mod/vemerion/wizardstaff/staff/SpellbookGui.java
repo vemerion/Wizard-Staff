@@ -195,24 +195,34 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			back.render(matrixStack, mouseX, mouseY, partialTicks);
 			Minecraft mc = Minecraft.getInstance();
 
-			// Item
-			mc.getItemRenderer().renderItemAndEffectIntoGUI(stack, left + X_SIZE / 2 - 8, top + BORDER_Y);
+			int y = top + BORDER_Y;
+			int textWidth = 0;
 
-			// TODO: Wrap around if spell name too long
+			// Item
+			mc.getItemRenderer().renderItemAndEffectIntoGUI(stack, left + X_SIZE / 2 - 8, y);
+			y += 20;
+
 			// Magic name
-			int textWidth = mc.fontRenderer.getStringWidth(magicDescr.getName().getString());
-			mc.fontRenderer.drawString(matrixStack, magicDescr.getName().getString(),
-					left + X_SIZE / 2 - textWidth / 2f, top + BORDER_Y + 20, -1);
+			List<IReorderingProcessor> title = mc.fontRenderer.trimStringToWidth(magicDescr.getName(),
+					X_SIZE - BORDER_X * 2);
+			for (IReorderingProcessor line : title) {
+				textWidth = mc.fontRenderer.func_243245_a(line);
+				mc.fontRenderer.func_238422_b_(matrixStack, line, left + X_SIZE / 2 - textWidth / 2f, y, -1);
+				y += mc.fontRenderer.FONT_HEIGHT;
+			}
+			y += 10;
 
 			// Cost
 			String cost = new TranslationTextComponent("gui." + Main.MODID + ".cost").getString() + ": "
 					+ magicDescr.getCost();
-			mc.fontRenderer.drawString(matrixStack, cost, left + BORDER_X, top + BORDER_Y + 35, -1);
+			mc.fontRenderer.drawString(matrixStack, cost, left + BORDER_X, y, -1);
+			y += 10;
 
 			// Duration
 			String duration = new TranslationTextComponent("gui." + Main.MODID + ".duration").getString() + ": "
 					+ magicDescr.getDuration();
-			mc.fontRenderer.drawString(matrixStack, duration, left + BORDER_X, top + BORDER_Y + 50, -1);
+			mc.fontRenderer.drawString(matrixStack, duration, left + BORDER_X, y, -1);
+			y += 20;
 
 			// TODO: Button to scroll if description to long
 			// Description
@@ -220,7 +230,7 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 					X_SIZE - BORDER_X * 2);
 			for (int i = 0; i < lines.size(); i++) {
 				mc.fontRenderer.func_238422_b_(matrixStack, lines.get(i), left + BORDER_X,
-						top + BORDER_Y + 70 + mc.fontRenderer.FONT_HEIGHT * i, -1);
+						y + mc.fontRenderer.FONT_HEIGHT * i, -1);
 			}
 		}
 
