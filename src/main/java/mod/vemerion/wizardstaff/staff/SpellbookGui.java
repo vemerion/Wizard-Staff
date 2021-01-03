@@ -171,8 +171,15 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 		private ItemStack stack;
 		private Button back;
 		private int left;
+		private Button next;
+		private Button prev;
 		private int top;
 		private Magic.Description magicDescr;
+		private int page;
+		List<IReorderingProcessor> title;
+		List<IReorderingProcessor> text;
+		private int linesPerPage;
+		private int pageCount;
 
 		public SpellDescription(ItemStack stack, int left, int top) {
 			this.stack = stack;
@@ -188,11 +195,36 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 					BUTTON_SIZE, GUI, (b) -> {
 						description = null;
 					});
+			
+			next = new ImageButton(left + X_SIZE / 2 + 20, top + Y_SIZE - BORDER_Y - BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE, 0,
+					Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
+						if (page < pageCount - 1) {
+							page++;
+						}
+					});
+
+			prev = new ImageButton(left + X_SIZE / 2 - 20 - BUTTON_SIZE, top + Y_SIZE - BORDER_Y - BUTTON_SIZE, BUTTON_SIZE,
+					BUTTON_SIZE, BUTTON_SIZE, Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
+						if (page > 0)
+							page--;
+					});
+			
+			title = Minecraft.getInstance().fontRenderer.trimStringToWidth(magicDescr.getName(),
+					X_SIZE - BORDER_X * 2);
+			text = Minecraft.getInstance().fontRenderer.trimStringToWidth(magicDescr.getDescription(),
+					X_SIZE - BORDER_X * 2);
+			linesPerPage = 7 - title.size();
+			pageCount = (int) Math.ceil(text.size() / (float) linesPerPage);
 		}
 
 		@Override
 		public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 			back.render(matrixStack, mouseX, mouseY, partialTicks);
+			if (pageCount > 1) {
+				next.render(matrixStack, mouseX, mouseY, partialTicks);
+				prev.render(matrixStack, mouseX, mouseY, partialTicks);
+			}
+			
 			Minecraft mc = Minecraft.getInstance();
 
 			int y = top + BORDER_Y;
@@ -203,8 +235,6 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			y += 20;
 
 			// Magic name
-			List<IReorderingProcessor> title = mc.fontRenderer.trimStringToWidth(magicDescr.getName(),
-					X_SIZE - BORDER_X * 2);
 			for (IReorderingProcessor line : title) {
 				textWidth = mc.fontRenderer.func_243245_a(line);
 				mc.fontRenderer.func_238422_b_(matrixStack, line, left + X_SIZE / 2 - textWidth / 2f, y, -1);
@@ -224,19 +254,21 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			mc.fontRenderer.drawString(matrixStack, duration, left + BORDER_X, y, -1);
 			y += 20;
 
-			// TODO: Button to scroll if description to long
 			// Description
-			List<IReorderingProcessor> lines = mc.fontRenderer.trimStringToWidth(magicDescr.getDescription(),
-					X_SIZE - BORDER_X * 2);
-			for (int i = 0; i < lines.size(); i++) {
-				mc.fontRenderer.func_238422_b_(matrixStack, lines.get(i), left + BORDER_X,
-						y + mc.fontRenderer.FONT_HEIGHT * i, -1);
+			for (int i = page * linesPerPage; i < Math.min(page * linesPerPage + linesPerPage, text.size()); i++) {
+				mc.fontRenderer.func_238422_b_(matrixStack, text.get(i), left + BORDER_X,
+						y, -1);
+				y += mc.fontRenderer.FONT_HEIGHT;
 			}
 		}
 
 		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
 			if (back.mouseClicked(mouseX, mouseY, button))
+				return true;
+			else if (pageCount > 1 && next.mouseClicked(mouseX, mouseY, button))
+				return true;
+			else if (pageCount > 1 && prev.mouseClicked(mouseX, mouseY, button))
 				return true;
 
 			return false;
