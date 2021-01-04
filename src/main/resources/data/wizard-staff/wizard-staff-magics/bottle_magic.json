@@ -1,0 +1,10 @@
+{
+  "cost": 15,
+  "duration": 20,
+  "magic": "bottle_magic",
+  "ingredient": [
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ]
+}
