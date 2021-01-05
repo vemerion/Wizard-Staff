@@ -1,0 +1,8 @@
+{
+  "cost": 50,
+  "duration": 40,
+  "magic": "wizard_hat_throw_magic",
+  "ingredient": {
+    "item": "wizard-staff:wizard_hat_item"
+  }
+}

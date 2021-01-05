@@ -12,6 +12,7 @@ import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.entity.MushroomCloudEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
+import mod.vemerion.wizardstaff.entity.WizardHatEntity;
 import mod.vemerion.wizardstaff.item.DruidArmorItem;
 import mod.vemerion.wizardstaff.item.WarlockArmorItem;
 import mod.vemerion.wizardstaff.item.WizardArmorItem;
@@ -116,6 +117,10 @@ public class ModEventSubscriber {
 				.build("mushroom_cloud_entity");
 		event.getRegistry().register(setup(mushroomCloudEntity, "mushroom_cloud_entity"));
 
+		EntityType<WizardHatEntity> wizardHatEntity = EntityType.Builder
+				.<WizardHatEntity>create(WizardHatEntity::new, EntityClassification.MISC).size(1, 1)
+				.build("wizard_hat_entity");
+		event.getRegistry().register(setup(wizardHatEntity, "wizard_hat_entity"));
 	}
 
 	@SubscribeEvent

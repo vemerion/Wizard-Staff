@@ -103,5 +103,7 @@
   "gui.wizard-staff.water_bucket_magic.name": "Conjure Water",
   "gui.wizard-staff.water_bucket_magic.description": "Use magic to conjure water.",
   "gui.wizard-staff.bottle_magic.name": "Store Experience",
-  "gui.wizard-staff.bottle_magic.description": "Extract some of your experience, and put it in a bottle for later use."
+  "gui.wizard-staff.bottle_magic.description": "Extract some of your experience, and put it in a bottle for later use.",
+  "gui.wizard-staff.wizard_hat_throw_magic.name": "Throw Wizard Hat!",
+  "gui.wizard-staff.wizard_hat_throw_magic.description": "Send a magic wizard hat flying, knocking back entities it hits."
 }

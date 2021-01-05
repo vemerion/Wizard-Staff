@@ -9,6 +9,7 @@ import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.entity.MushroomCloudEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
+import mod.vemerion.wizardstaff.entity.WizardHatEntity;
 import mod.vemerion.wizardstaff.item.DruidArmorItem;
 import mod.vemerion.wizardstaff.item.WarlockArmorItem;
 import mod.vemerion.wizardstaff.item.WizardArmorItem;
@@ -96,6 +97,9 @@ public class Main {
 	
 	@ObjectHolder(Main.MODID + ":mushroom_cloud_entity")
 	public static final EntityType<MushroomCloudEntity> MUSHROOM_CLOUD_ENTITY = null;
+	
+	@ObjectHolder(Main.MODID + ":wizard_hat_entity")
+	public static final EntityType<WizardHatEntity> WIZARD_HAT_ENTITY = null;
 
 	@ObjectHolder(Main.MODID + ":magic_smoke_particle_type")
 	public static final BasicParticleType MAGIC_SMOKE_PARTICLE_TYPE = null;
