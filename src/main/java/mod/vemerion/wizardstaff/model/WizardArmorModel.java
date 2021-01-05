@@ -22,11 +22,6 @@ public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T>
 	public ModelRenderer rightShoe3;
 	public ModelRenderer rightShoe4;
 	public ModelRenderer rightShoe5;
-	public ModelRenderer hat;
-	public ModelRenderer top1;
-	public ModelRenderer top2;
-	public ModelRenderer top3;
-	public ModelRenderer top4;
 	public ModelRenderer robe;
 	public ModelRenderer dress;
 	public ModelRenderer dressFront;
@@ -45,6 +40,8 @@ public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T>
 	public ModelRenderer leftShoe3;
 	public ModelRenderer leftShoe4;
 	public ModelRenderer leftShoe5;
+	
+	public WizardHatModel<T> hatModel;
 
 	public WizardArmorModel(float modelSize) {
 		super(modelSize, 0, 64, 128);
@@ -62,9 +59,6 @@ public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T>
 		this.rightShoe3.setRotationPoint(0.0F, 0.5F, -1.5F);
 		this.rightShoe3.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
 		this.setRotateAngle(rightShoe3, -0.3490658503988659F, 0.0F, 0.0F);
-		this.top1 = new ModelRenderer(this, 0, 64);
-		this.top1.setRotationPoint(0.0F, -8.0F, 0.0F);
-		this.top1.addBox(-4.0F, -4.0F, -4.0F, 8.0F, 4.0F, 8.0F, 0.0F, 0.0F, 0.0F);
 		this.rightShoulder = new ModelRenderer(this, 0, 116);
 		this.rightShoulder.mirror = true;
 		this.rightShoulder.setRotationPoint(-1.0F, 0.0F, 0.0F);
@@ -75,10 +69,6 @@ public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T>
 		this.robe = new ModelRenderer(this, 0, 100);
 		this.robe.setRotationPoint(0.0F, 0.0F, 0.0F);
 		this.robe.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, modelSize);
-		this.top3 = new ModelRenderer(this, 28, 74);
-		this.top3.setRotationPoint(0.0F, -4.0F, 0.0F);
-		this.top3.addBox(-2.0F, -4.0F, -2.0F, 4.0F, 4.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(top3, 0.17453292519943295F, 0.0F, 0.0F);
 		this.leftShoe4 = new ModelRenderer(this, 36, 84);
 		this.leftShoe4.setRotationPoint(0.0F, 0.5F, -1.5F);
 		this.leftShoe4.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
@@ -97,10 +87,6 @@ public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T>
 		this.rightShoe2.setRotationPoint(0.0F, 0.0F, -3.0F);
 		this.rightShoe2.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 2.0F, 0.0F, 0.0F, 0.0F);
 		this.setRotateAngle(rightShoe2, -0.3490658503988659F, 0.0F, 0.0F);
-		this.top2 = new ModelRenderer(this, 32, 64);
-		this.top2.setRotationPoint(0.0F, -4.0F, 0.0F);
-		this.top2.addBox(-3.0F, -4.0F, -3.0F, 6.0F, 4.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(top2, 0.17453292519943295F, 0.0F, 0.0F);
 		this.leftArm3_1 = new ModelRenderer(this, 0, 116);
 		this.leftArm3_1.setRotationPoint(0.0F, -3.0F, -0.5F);
 		this.leftArm3_1.addBox(-0.5F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
@@ -144,9 +130,6 @@ public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T>
 		this.rightShoe4.setRotationPoint(0.0F, 0.5F, -1.5F);
 		this.rightShoe4.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
 		this.setRotateAngle(rightShoe4, -0.3490658503988659F, 0.0F, 0.0F);
-		this.hat = new ModelRenderer(this, -18, 82);
-		this.hat.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.hat.addBox(-9.0F, -8.0F, -9.0F, 18.0F, 0.0F, 18.0F, 0.0F, 0.0F, 0.0F);
 		this.rightArm1 = new ModelRenderer(this, 24, 100);
 		this.rightArm1.setRotationPoint(0.0F, 4.0F, 0.0F);
 		this.rightArm1.addBox(-2.0F, -2.0F, -2.0F, 4.0F, 8.0F, 4.0F, modelSize);
@@ -159,24 +142,17 @@ public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T>
 		this.rightArm3 = new ModelRenderer(this, 15, 116);
 		this.rightArm3.setRotationPoint(0.0F, -3.0F, -0.5F);
 		this.rightArm3.addBox(-1.0F, -3.0F, -1.0F, 2.0F, 3.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.top4 = new ModelRenderer(this, 0, 64);
-		this.top4.setRotationPoint(0.0F, -4.0F, 0.0F);
-		this.top4.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(top4, 0.17453292519943295F, 0.0F, 0.0F);
 		this.rightShoe4.addChild(this.rightShoe5);
 		this.dress.addChild(this.dressBack);
 		this.rightShoe2.addChild(this.rightShoe3);
-		this.hat.addChild(this.top1);
 		this.bipedRightArm.addChild(this.rightShoulder);
 		this.dressBack.addChild(this.dressBackLeft);
 		this.bipedBody.addChild(this.robe);
-		this.top2.addChild(this.top3);
 		this.leftShoe3.addChild(this.leftShoe4);
 		this.dress.addChild(this.dressFront);
 		this.rightArm3.addChild(this.rightArm3_1);
 		this.dressFront.addChild(this.deessFrontRight);
 		this.rightShoe1.addChild(this.rightShoe2);
-		this.top1.addChild(this.top2);
 		this.leftArm3.addChild(this.leftArm3_1);
 		this.dressBack.addChild(this.dressBackRight);
 		this.bipedLeftArm.addChild(this.leftShoulder);
@@ -190,12 +166,13 @@ public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T>
 		this.leftShoe1.addChild(this.leftShoe2);
 		this.leftShoe2.addChild(this.leftShoe3);
 		this.rightShoe3.addChild(this.rightShoe4);
-		this.bipedHead.addChild(this.hat);
 		this.rightShoulder.addChild(this.rightArm1);
 		this.bipedBody.addChild(this.dress);
 		this.leftShoulder.addChild(this.leftArm1);
 		this.rightArm2.addChild(this.rightArm3);
-		this.top3.addChild(this.top4);
+		
+		hatModel = new WizardHatModel<T>(textureWidth, textureHeight);
+		this.bipedHead.addChild(hatModel.hat);
 	}
 
 	@Override
@@ -232,7 +209,7 @@ public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T>
 		leftShoulder.showModel = armorSlot == EquipmentSlotType.CHEST;
 		robe.showModel = armorSlot == EquipmentSlotType.CHEST;
 
-		hat.showModel = armorSlot == EquipmentSlotType.HEAD;
+		hatModel.setVisible(armorSlot == EquipmentSlotType.HEAD);
 
 		dress.showModel = armorSlot == EquipmentSlotType.LEGS;
 
