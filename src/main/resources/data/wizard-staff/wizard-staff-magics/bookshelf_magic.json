@@ -1,0 +1,10 @@
+{
+  "cost": 0.8,
+  "duration": -1,
+  "magic": "bookshelf_magic",
+  "ingredient": [
+    {
+      "item": "minecraft:bookshelf"
+    }
+  ]
+}

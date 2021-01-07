@@ -107,5 +107,7 @@
   "gui.wizard-staff.wizard_hat_throw_magic.name": "Throw Wizard Hat!",
   "gui.wizard-staff.wizard_hat_throw_magic.description": "Send a magic wizard hat flying, knocking back entities it hits.",
   "gui.wizard-staff.portable_crafting_magic.name": "Portable Crafting",
-  "gui.wizard-staff.portable_crafting_magic.description": "Channel your magic to access a full 3x3 crafting table."
+  "gui.wizard-staff.portable_crafting_magic.description": "Channel your magic to access a full 3x3 crafting table.",
+  "gui.wizard-staff.bookshelf_magic.name": "Book Generator",
+  "gui.wizard-staff.bookshelf_magic.description": "How many books does a bookshelf contain? Let's find out!"
 }
