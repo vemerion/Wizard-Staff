@@ -35,6 +35,7 @@ import mod.vemerion.wizardstaff.Magic.original.JukeboxMagic;
 import mod.vemerion.wizardstaff.Magic.original.WizardStaffMagic;
 import mod.vemerion.wizardstaff.Magic.original.WritableBookMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.BottleMagic;
+import mod.vemerion.wizardstaff.Magic.spellbookupdate.PortableCraftingMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.WizardHatThrowMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.BlueDyeMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.BricksMagic;
@@ -139,6 +140,7 @@ public class Magics extends JsonReloadListener {
 		register("water_bucket_magic", (s) -> () -> new WaterBucketMagic(s));
 		register("bottle_magic", (s) -> () -> new BottleMagic(s));
 		register("wizard_hat_throw_magic", (s) -> () -> new WizardHatThrowMagic(s));
+		register("portable_crafting_magic", (s) -> () -> new PortableCraftingMagic(s));
 		register("no_magic", (s) -> () -> NO_MAGIC);
 	}
 	
