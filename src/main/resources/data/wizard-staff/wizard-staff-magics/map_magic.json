@@ -1,0 +1,10 @@
+{
+  "cost": 200,
+  "duration": 40,
+  "magic": "map_magic",
+  "ingredient": [
+    {
+      "item": "minecraft:map"
+    }
+  ]
+}

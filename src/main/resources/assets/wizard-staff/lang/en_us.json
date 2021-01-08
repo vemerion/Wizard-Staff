@@ -109,5 +109,7 @@
   "gui.wizard-staff.portable_crafting_magic.name": "Portable Crafting",
   "gui.wizard-staff.portable_crafting_magic.description": "Channel your magic to access a full 3x3 crafting table.",
   "gui.wizard-staff.bookshelf_magic.name": "Book Generator",
-  "gui.wizard-staff.bookshelf_magic.description": "If you are short on leather, then this is the spell for you!"
+  "gui.wizard-staff.bookshelf_magic.description": "If you are short on leather, then this is the spell for you!",
+  "gui.wizard-staff.map_magic.name": "Treasure Map!",
+  "gui.wizard-staff.map_magic.description": "Transform the item in the staff into a treasure map."
 }
