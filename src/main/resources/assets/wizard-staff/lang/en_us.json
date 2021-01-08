@@ -105,5 +105,11 @@
   "gui.wizard-staff.bottle_magic.name": "Store Experience",
   "gui.wizard-staff.bottle_magic.description": "Extract some of your experience, and put it in a bottle for later use.",
   "gui.wizard-staff.wizard_hat_throw_magic.name": "Throw Wizard Hat!",
-  "gui.wizard-staff.wizard_hat_throw_magic.description": "Send a magic wizard hat flying, knocking back entities it hits."
+  "gui.wizard-staff.wizard_hat_throw_magic.description": "Send a magic wizard hat flying, knocking back entities it hits.",
+  "gui.wizard-staff.portable_crafting_magic.name": "Portable Crafting",
+  "gui.wizard-staff.portable_crafting_magic.description": "Channel your magic to access a full 3x3 crafting table.",
+  "gui.wizard-staff.bookshelf_magic.name": "Book Generator",
+  "gui.wizard-staff.bookshelf_magic.description": "If you are short on leather, then this is the spell for you!",
+  "gui.wizard-staff.map_magic.name": "Treasure Map!",
+  "gui.wizard-staff.map_magic.description": "Transform the item in the staff into a treasure map."
 }
