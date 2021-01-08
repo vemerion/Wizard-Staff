@@ -11,6 +11,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,7 +19,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 
 // Class for holding fraction part of experience spell cost
-public class Experience {
+public class Experience implements INBTSerializable<DoubleNBT> {
 	@CapabilityInject(Experience.class)
 	public static final Capability<Experience> CAPABILITY = null;
 
@@ -33,6 +34,16 @@ public class Experience {
 	
 	public static int add(PlayerEntity player, double value) {
 		return player.getCapability(CAPABILITY).orElse(new Experience()).add(value);
+	}
+	
+	@Override
+	public DoubleNBT serializeNBT() {
+		return DoubleNBT.valueOf(exp);
+	}
+
+	@Override
+	public void deserializeNBT(DoubleNBT nbt) {
+		exp = nbt.getDouble();
 	}
 	
 	@EventBusSubscriber(modid = Main.MODID, bus = EventBusSubscriber.Bus.FORGE)
@@ -72,14 +83,14 @@ public class Experience {
 
 		@Override
 		public INBT writeNBT(Capability<Experience> capability, Experience instance, Direction side) {
-			return DoubleNBT.valueOf(instance.exp);
+			return instance.serializeNBT();
 
 		}
 
 		@Override
 		public void readNBT(Capability<Experience> capability, Experience instance, Direction side,
 				INBT nbt) {
-			instance.exp = ((DoubleNBT) nbt).getDouble();
+			instance.deserializeNBT((DoubleNBT) nbt);
 		}
 	}
 }

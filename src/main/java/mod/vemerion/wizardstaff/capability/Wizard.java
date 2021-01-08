@@ -24,13 +24,14 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 // Class for holding data on player related to magics
-public class Wizard {
+public class Wizard implements INBTSerializable<CompoundNBT> {
 	@CapabilityInject(Wizard.class)
 	public static final Capability<Wizard> CAPABILITY = null;
 
@@ -105,7 +106,7 @@ public class Wizard {
 		this.grapplingHook = hook;
 	}
 
-	public void load(CompoundNBT compound) {
+	public void deserializeNBT(CompoundNBT compound) {
 		lodestoneTracked = compound.getBoolean("lodestoneTracked");
 		if (lodestoneTracked) {
 			lodestonePos = GlobalPos.CODEC.parse(NBTDynamicOps.INSTANCE, compound.get("lodestonePos")).result()
@@ -113,7 +114,7 @@ public class Wizard {
 		}
 	}
 
-	public CompoundNBT save() {
+	public CompoundNBT serializeNBT() {
 		CompoundNBT compound = new CompoundNBT();
 		if (lodestoneTracked) {
 			GlobalPos.CODEC.encodeStart(NBTDynamicOps.INSTANCE, lodestonePos).resultOrPartial(s -> {
@@ -161,13 +162,13 @@ public class Wizard {
 
 		@Override
 		public INBT writeNBT(Capability<Wizard> capability, Wizard instance, Direction side) {
-			return instance.save();
+			return instance.serializeNBT();
 
 		}
 
 		@Override
 		public void readNBT(Capability<Wizard> capability, Wizard instance, Direction side, INBT nbt) {
-			instance.load((CompoundNBT) nbt);
+			instance.deserializeNBT((CompoundNBT) nbt);
 		}
 	}
 }

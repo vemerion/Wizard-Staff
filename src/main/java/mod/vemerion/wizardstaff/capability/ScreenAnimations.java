@@ -15,6 +15,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,7 +23,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class ScreenAnimations {
+public class ScreenAnimations implements INBTSerializable<ByteNBT> {
 
 	@CapabilityInject(ScreenAnimations.class)
 	public static final Capability<ScreenAnimations> CAPABILITY = null;
@@ -73,6 +74,16 @@ public class ScreenAnimations {
 	public static ScreenAnimations getScreenAnimations(PlayerEntity player) {
 		return player.getCapability(CAPABILITY).orElse(new ScreenAnimations());
 	}
+	
+	@Override
+	public ByteNBT serializeNBT() {
+		return ByteNBT.valueOf(shouldAnimate);
+	}
+
+	@Override
+	public void deserializeNBT(ByteNBT nbt) {
+		shouldAnimate = nbt.getByte() == 1;
+	}
 
 	@EventBusSubscriber(modid = Main.MODID, bus = EventBusSubscriber.Bus.FORGE)
 	public static class ScreenAnimationsProvider implements ICapabilitySerializable<INBT> {
@@ -111,14 +122,14 @@ public class ScreenAnimations {
 
 		@Override
 		public INBT writeNBT(Capability<ScreenAnimations> capability, ScreenAnimations instance, Direction side) {
-			return ByteNBT.valueOf(instance.shouldAnimate());
+			return instance.serializeNBT();
 
 		}
 
 		@Override
 		public void readNBT(Capability<ScreenAnimations> capability, ScreenAnimations instance, Direction side,
 				INBT nbt) {
-			instance.setShouldAnimate(((ByteNBT) nbt).getByte() == 1);
+			instance.deserializeNBT((ByteNBT) nbt);
 		}
 	}
 }
