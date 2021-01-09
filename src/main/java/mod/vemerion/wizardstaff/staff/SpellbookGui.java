@@ -1,9 +1,11 @@
 package mod.vemerion.wizardstaff.staff;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.math.DoubleMath;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import mod.vemerion.wizardstaff.Main;
@@ -167,6 +169,15 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 
 	}
 
+	private static final TranslationTextComponent COST = new TranslationTextComponent("gui." + Main.MODID + ".cost");
+	private static final TranslationTextComponent EXP = new TranslationTextComponent("gui." + Main.MODID + ".exp");
+	private static final TranslationTextComponent DURATION = new TranslationTextComponent(
+			"gui." + Main.MODID + ".duration");
+	private static final TranslationTextComponent INFINITY = new TranslationTextComponent(
+			"gui." + Main.MODID + ".infinity");
+	private static final TranslationTextComponent SECONDS = new TranslationTextComponent(
+			"gui." + Main.MODID + ".seconds");
+
 	private class SpellDescription implements IRenderable, IGuiEventListener {
 		private ItemStack stack;
 		private Button back;
@@ -178,6 +189,7 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 		private int page;
 		List<IReorderingProcessor> title;
 		List<IReorderingProcessor> text;
+		String cost, duration;
 		private int linesPerPage;
 		private int pageCount;
 
@@ -195,26 +207,34 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 					BUTTON_SIZE, GUI, (b) -> {
 						description = null;
 					});
-			
-			next = new ImageButton(left + X_SIZE / 2 + 20, top + Y_SIZE - BORDER_Y - BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE, 0,
-					Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
+
+			next = new ImageButton(left + X_SIZE / 2 + 20, top + Y_SIZE - BORDER_Y - BUTTON_SIZE, BUTTON_SIZE,
+					BUTTON_SIZE, 0, Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
 						if (page < pageCount - 1) {
 							page++;
 						}
 					});
 
-			prev = new ImageButton(left + X_SIZE / 2 - 20 - BUTTON_SIZE, top + Y_SIZE - BORDER_Y - BUTTON_SIZE, BUTTON_SIZE,
-					BUTTON_SIZE, BUTTON_SIZE, Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
+			prev = new ImageButton(left + X_SIZE / 2 - 20 - BUTTON_SIZE, top + Y_SIZE - BORDER_Y - BUTTON_SIZE,
+					BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE, Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
 						if (page > 0)
 							page--;
 					});
-			
-			title = Minecraft.getInstance().fontRenderer.trimStringToWidth(magicDescr.getName(),
-					X_SIZE - BORDER_X * 2);
+
+			title = Minecraft.getInstance().fontRenderer.trimStringToWidth(magicDescr.getName(), X_SIZE - BORDER_X * 2);
 			text = Minecraft.getInstance().fontRenderer.trimStringToWidth(magicDescr.getDescription(),
 					X_SIZE - BORDER_X * 2);
 			linesPerPage = 7 - title.size();
 			pageCount = (int) Math.ceil(text.size() / (float) linesPerPage);
+
+			DecimalFormat decimalFormat = new DecimalFormat("#.#");
+			cost = COST.getString() + ": " + decimalFormat.format(magicDescr.getCost()) + " " + EXP.getString();
+
+			float durationSeconds = magicDescr.getDuration() / 20f;
+			String durationTime = magicDescr.getDuration() >= Magic.HOUR ? INFINITY.getString()
+					: decimalFormat.format(durationSeconds);
+			duration = DURATION.getString() + ": " + durationTime + " " + SECONDS.getString();
+
 		}
 
 		@Override
@@ -224,7 +244,7 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 				next.render(matrixStack, mouseX, mouseY, partialTicks);
 				prev.render(matrixStack, mouseX, mouseY, partialTicks);
 			}
-			
+
 			Minecraft mc = Minecraft.getInstance();
 
 			int y = top + BORDER_Y;
@@ -243,21 +263,17 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			y += 10;
 
 			// Cost
-			String cost = new TranslationTextComponent("gui." + Main.MODID + ".cost").getString() + ": "
-					+ magicDescr.getCost();
+
 			mc.fontRenderer.drawString(matrixStack, cost, left + BORDER_X, y, -1);
 			y += 10;
 
 			// Duration
-			String duration = new TranslationTextComponent("gui." + Main.MODID + ".duration").getString() + ": "
-					+ magicDescr.getDuration();
 			mc.fontRenderer.drawString(matrixStack, duration, left + BORDER_X, y, -1);
 			y += 20;
 
 			// Description
 			for (int i = page * linesPerPage; i < Math.min(page * linesPerPage + linesPerPage, text.size()); i++) {
-				mc.fontRenderer.func_238422_b_(matrixStack, text.get(i), left + BORDER_X,
-						y, -1);
+				mc.fontRenderer.func_238422_b_(matrixStack, text.get(i), left + BORDER_X, y, -1);
 				y += mc.fontRenderer.FONT_HEIGHT;
 			}
 		}

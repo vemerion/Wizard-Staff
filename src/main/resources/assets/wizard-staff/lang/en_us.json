@@ -24,6 +24,9 @@
 
   "gui.wizard-staff.cost": "Cost",
   "gui.wizard-staff.duration": "Duration",
+  "gui.wizard-staff.exp": "exp",
+  "gui.wizard-staff.infinity": "\u221E",
+  "gui.wizard-staff.seconds": "s",
   "gui.wizard-staff.no_magic.name": "No Magic",
   "gui.wizard-staff.no_magic.description": "No Magic",
   "gui.wizard-staff.blaze_powder_magic.name": "Flame Thrower",
