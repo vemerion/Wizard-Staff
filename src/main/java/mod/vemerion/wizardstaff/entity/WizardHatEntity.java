@@ -4,8 +4,10 @@ import mod.vemerion.wizardstaff.Main;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
@@ -67,6 +69,11 @@ public class WizardHatEntity extends AbstractArrowEntity {
 				Vector3d vector3d = getMotion().mul(1.0D, 0.0D, 1.0D).normalize().scale(2);
 				if (vector3d.lengthSquared() > 0.0D)
 					((LivingEntity) target).addVelocity(vector3d.x, 0.1D, vector3d.z);
+			}
+			if (rand.nextFloat() < 0.1 && target instanceof MobEntity) {
+				MobEntity mob = (MobEntity) target;
+				if (mob.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty())
+					mob.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(Main.WIZARD_HAT_ITEM));
 			}
 		}
 	}

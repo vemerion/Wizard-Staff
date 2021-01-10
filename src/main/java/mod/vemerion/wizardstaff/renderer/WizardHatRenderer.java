@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Quaternion;
 
 public class WizardHatRenderer extends EntityRenderer<WizardHatEntity> {
@@ -24,11 +23,6 @@ public class WizardHatRenderer extends EntityRenderer<WizardHatEntity> {
 
 	public WizardHatRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn);
-	}
-
-	@Override
-	protected int getBlockLight(WizardHatEntity entityIn, BlockPos pos) {
-		return 15;
 	}
 
 	@Override

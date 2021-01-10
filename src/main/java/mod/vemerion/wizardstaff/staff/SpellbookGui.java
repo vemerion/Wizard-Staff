@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.math.DoubleMath;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import mod.vemerion.wizardstaff.Main;
