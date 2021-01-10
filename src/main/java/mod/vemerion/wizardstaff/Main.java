@@ -167,5 +167,14 @@ public class Main {
 	@ObjectHolder(Main.MODID + ":spray_sound")
 	public static final SoundEvent SPRAY_SOUND = null;
 	
+	@ObjectHolder(Main.MODID + ":anvil_sound")
+	public static final SoundEvent ANVIL_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":cloth_sound")
+	public static final SoundEvent CLOTH_SOUND = null;
+
+	@ObjectHolder(Main.MODID + ":page_turn_sound")
+	public static final SoundEvent PAGE_TURN_SOUND = null; 
+	
 	public static final WizardStaffItemGroup WIZARD_STAFF_ITEM_GROUP = new WizardStaffItemGroup();
 }

@@ -177,6 +177,12 @@ public class ModEventSubscriber {
 		event.getRegistry().register(setup(flap_sound, "flap_sound"));
 		SoundEvent spray_sound = new SoundEvent(new ResourceLocation(Main.MODID, "spray_sound"));
 		event.getRegistry().register(setup(spray_sound, "spray_sound"));
+		SoundEvent anvil_sound = new SoundEvent(new ResourceLocation(Main.MODID, "anvil_sound"));
+		event.getRegistry().register(setup(anvil_sound, "anvil_sound"));
+		SoundEvent cloth_sound = new SoundEvent(new ResourceLocation(Main.MODID, "cloth_sound"));
+		event.getRegistry().register(setup(cloth_sound, "cloth_sound"));
+		SoundEvent page_turn_sound = new SoundEvent(new ResourceLocation(Main.MODID, "page_turn_sound"));
+		event.getRegistry().register(setup(page_turn_sound, "page_turn_sound"));
 	}
 
 	@SubscribeEvent

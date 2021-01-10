@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.spellbookupdate;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -51,6 +52,7 @@ public class PortableCraftingMagic extends Magic {
 					CONTAINER_NAME);
 			NetworkHooks.openGui((ServerPlayerEntity) player, provider);
 		}
+		player.playSound(Main.ANVIL_SOUND, 1, soundPitch(player));
 		return super.magicFinish(world, player, staff);
 	}
 

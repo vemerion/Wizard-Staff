@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.spellbookupdate;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.entity.WizardHatEntity;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -44,6 +45,7 @@ public class WizardHatThrowMagic extends Magic {
 			hat.func_234612_a_(player, player.rotationPitch, player.rotationYaw, 0, 1f, 0); // shoot()
 			world.addEntity(hat);
 		}
+		player.playSound(Main.CLOTH_SOUND, 1, soundPitch(player));
 		return super.magicFinish(world, player, staff);
 	}
 }

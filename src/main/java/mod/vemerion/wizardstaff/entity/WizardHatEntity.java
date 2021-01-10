@@ -11,6 +11,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -25,15 +26,19 @@ public class WizardHatEntity extends AbstractArrowEntity {
 	public WizardHatEntity(EntityType<? extends WizardHatEntity> entityTypeIn, World worldIn) {
 		super(entityTypeIn, worldIn);
 		this.setDamage(1);
+		this.setHitSound(Main.CLOTH_SOUND);
 	}
 
 	public WizardHatEntity(double x, double y, double z, World world) {
 		super(Main.WIZARD_HAT_ENTITY, x, y, z, world);
 		this.setDamage(1);
+		this.setHitSound(Main.CLOTH_SOUND);
 	}
-
-	// TODO: Hit sound
-	// this.setHitSound(soundIn);
+	
+	@Override
+	protected SoundEvent getHitEntitySound() {
+		return Main.CLOTH_SOUND;
+	}
 
 	@Override
 	public void tick() {
@@ -64,6 +69,7 @@ public class WizardHatEntity extends AbstractArrowEntity {
 			} else {
 				target.attackEntityFrom(DamageSource.MAGIC, (float) getDamage());
 			}
+			playSound(getHitEntitySound(), 1, 0.8f + rand.nextFloat() * 0.4f);
 
 			if (target instanceof LivingEntity) {
 				Vector3d vector3d = getMotion().mul(1.0D, 0.0D, 1.0D).normalize().scale(2);

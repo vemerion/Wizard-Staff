@@ -169,5 +169,29 @@
         "stream": false
       }
     ]
+  },
+  "anvil_sound": {
+    "sounds": [
+      {
+        "name": "wizard-staff:anvil_sound",
+        "stream": false
+      }
+    ]
+  },
+  "cloth_sound": {
+    "sounds": [
+      {
+        "name": "wizard-staff:cloth_sound",
+        "stream": false
+      }
+    ]
+  },
+  "page_turn_sound": {
+    "sounds": [
+      {
+        "name": "wizard-staff:page_turn_sound",
+        "stream": false
+      }
+    ]
   }
 }

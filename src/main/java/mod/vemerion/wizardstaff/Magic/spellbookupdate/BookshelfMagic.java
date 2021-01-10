@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.spellbookupdate;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -41,6 +42,7 @@ public class BookshelfMagic extends Magic {
 			cost(player);
 			if (count % 10 == 0) {
 				BrainUtil.spawnItemNearEntity(player, new ItemStack(Items.BOOK), nearbyPosition(player));
+				playSoundServer(world, player, Main.PAGE_TURN_SOUND, 1, soundPitch(player));
 			}
 		} else {
 			addParticle(world, player);

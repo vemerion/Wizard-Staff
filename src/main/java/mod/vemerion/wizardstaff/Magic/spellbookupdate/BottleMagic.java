@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
 public class BottleMagic extends Magic {
@@ -41,6 +42,7 @@ public class BottleMagic extends Magic {
 			handler.extractItem(0, 1, false);
 			handler.insertItem(0, new ItemStack(Items.EXPERIENCE_BOTTLE), false);
 		}
+		player.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, 1, soundPitch(player));
 		return super.magicFinish(world, player, staff);
 	}
 }
