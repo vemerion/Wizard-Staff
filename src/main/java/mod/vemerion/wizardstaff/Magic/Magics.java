@@ -36,6 +36,7 @@ import mod.vemerion.wizardstaff.Magic.original.WizardStaffMagic;
 import mod.vemerion.wizardstaff.Magic.original.WritableBookMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.BookshelfMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.BottleMagic;
+import mod.vemerion.wizardstaff.Magic.spellbookupdate.DeageMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.MapMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.PortableCraftingMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.WizardHatThrowMagic;
@@ -145,6 +146,7 @@ public class Magics extends JsonReloadListener {
 		register("portable_crafting_magic", (s) -> () -> new PortableCraftingMagic(s));
 		register("bookshelf_magic", (s) -> () -> new BookshelfMagic(s));
 		register("map_magic", (s) -> () -> new MapMagic(s));
+		register("deage_magic", (s) -> () -> new DeageMagic(s));
 		register("no_magic", (s) -> () -> NO_MAGIC);
 	}
 	

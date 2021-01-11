@@ -114,5 +114,7 @@
   "gui.wizard-staff.bookshelf_magic.name": "Book Generator",
   "gui.wizard-staff.bookshelf_magic.description": "If you are short on leather, then this is the spell for you!",
   "gui.wizard-staff.map_magic.name": "Treasure Map!",
-  "gui.wizard-staff.map_magic.description": "Transform the item in the staff into a treasure map."
+  "gui.wizard-staff.map_magic.description": "Transform the item in the staff into a treasure map.",
+  "gui.wizard-staff.deage_magic.name": "Deage Magic",
+  "gui.wizard-staff.deage_magic.description": "Shoot a de-age ray at an entity, turning it into a child."
 }
