@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.spellbookupdate;
 
 import java.util.Locale;
+import java.util.Random;
 
 import com.google.common.collect.ImmutableList;
 
@@ -15,7 +16,9 @@ import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -27,8 +30,7 @@ import net.minecraft.world.storage.MapDecoration;
 public class MapMagic extends Magic {
 
 	private static final ImmutableList<StructureInfo> VALID_STRUCTURES = ImmutableList.of(
-			new StructureInfo(Structure.MONUMENT, MapDecoration.Type.MONUMENT),
-			new StructureInfo(Structure.WOODLAND_MANSION, MapDecoration.Type.MANSION));
+			new StructureInfo(Structure.VILLAGE, MapDecoration.Type.MANSION));
 
 	public MapMagic(String name) {
 		super(name);
@@ -54,22 +56,29 @@ public class MapMagic extends Magic {
 		if (!world.isRemote) {
 			ServerWorld serverworld = (ServerWorld) world;
 			StructureInfo structureInfo = VALID_STRUCTURES.get(player.getRNG().nextInt(VALID_STRUCTURES.size()));
-			BlockPos pos = serverworld.func_241117_a_(structureInfo.structure, player.getPosition(), 100, true);
+			BlockPos pos = serverworld.func_241117_a_(structureInfo.structure, randPos(player), 2, true);
 			if (pos != null) {
 				cost(player);
 				playSoundServer(world, player, Main.SCRIBBLE_SOUND, 1, soundPitch(player));
 				ItemStack map = FilledMapItem.setupNewMap(serverworld, pos.getX(), pos.getZ(), (byte) 2, true, true);
 				FilledMapItem.func_226642_a_(serverworld, map);
 				MapData.addTargetDecoration(map, pos, "+", structureInfo.decoration);
-				map.setDisplayName(new TranslationTextComponent(
-						"filled_map." + structureInfo.structure.getStructureName().toLowerCase(Locale.ROOT)));
+				map.setDisplayName(Items.FILLED_MAP.getName());
 
 				WizardStaffItemHandler handler = WizardStaffItem.getHandler(staff);
 				handler.extractItem(0, 1, false);
 				handler.insertItem(0, map, false);
+			} else {
+				playSoundServer(world, player, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 1, soundPitch(player));
 			}
 		}
 		return super.magicFinish(world, player, staff);
+	}
+
+	private BlockPos randPos(PlayerEntity player) {
+		Random rand = player.getRNG();
+		return player.getPosition().add(rand.nextInt(1000) - 500, rand.nextInt(1000) - 500,
+				rand.nextInt(1000) - 500);
 	}
 
 	private static class StructureInfo {
