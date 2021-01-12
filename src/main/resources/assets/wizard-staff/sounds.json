@@ -193,5 +193,13 @@
         "stream": false
       }
     ]
+  },
+  "deage_sound": {
+    "sounds": [
+      {
+        "name": "wizard-staff:deage_sound",
+        "stream": false
+      }
+    ]
   }
 }

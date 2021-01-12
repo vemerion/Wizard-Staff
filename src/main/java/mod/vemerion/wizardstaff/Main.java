@@ -174,7 +174,10 @@ public class Main {
 	public static final SoundEvent CLOTH_SOUND = null;
 
 	@ObjectHolder(Main.MODID + ":page_turn_sound")
-	public static final SoundEvent PAGE_TURN_SOUND = null; 
+	public static final SoundEvent PAGE_TURN_SOUND = null;
+	
+	@ObjectHolder(Main.MODID + ":deage_sound")
+	public static final SoundEvent DEAGE_SOUND = null;
 	
 	public static final WizardStaffItemGroup WIZARD_STAFF_ITEM_GROUP = new WizardStaffItemGroup();
 }

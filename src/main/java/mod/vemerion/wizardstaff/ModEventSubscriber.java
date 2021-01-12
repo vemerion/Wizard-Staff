@@ -183,6 +183,8 @@ public class ModEventSubscriber {
 		event.getRegistry().register(setup(cloth_sound, "cloth_sound"));
 		SoundEvent page_turn_sound = new SoundEvent(new ResourceLocation(Main.MODID, "page_turn_sound"));
 		event.getRegistry().register(setup(page_turn_sound, "page_turn_sound"));
+		SoundEvent deage_sound = new SoundEvent(new ResourceLocation(Main.MODID, "deage_sound"));
+		event.getRegistry().register(setup(deage_sound, "deage_sound"));  
 	}
 
 	@SubscribeEvent
