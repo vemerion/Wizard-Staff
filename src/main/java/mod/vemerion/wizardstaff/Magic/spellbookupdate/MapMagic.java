@@ -1,6 +1,5 @@
 package mod.vemerion.wizardstaff.Magic.spellbookupdate;
 
-import java.util.Locale;
 import java.util.Random;
 
 import com.google.common.collect.ImmutableList;
@@ -20,7 +19,6 @@ import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
