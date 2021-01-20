@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.entity;
 import java.util.UUID;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -13,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -68,9 +68,9 @@ public class MushroomCloudEntity extends Entity {
 		PlayerEntity caster = getShooter();
 		for (LivingEntity e : world.getEntitiesWithinAABB(LivingEntity.class, getBoundingBox(), e -> e != caster && e.isAlive())) {
 			if (caster != null) {
-				e.attackEntityFrom(DamageSource.causePlayerDamage(caster), 2);
+				e.attackEntityFrom(Magic.magicDamage(this, caster), 2);
 			} else {
-				e.attackEntityFrom(DamageSource.MAGIC, 2);
+				e.attackEntityFrom(Magic.magicDamage(), 2);
 			}
 			if (e.getHealth() <= 0) {
 				spawnMushrooms(e.getEyePosition(1));

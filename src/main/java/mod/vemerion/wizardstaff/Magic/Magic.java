@@ -5,20 +5,21 @@ import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.item.MagicArmorItem;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.item.UseAction;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-// TODO: Change spells to use custom DamageSource that uses player + magic entity (EntityDamageSource / IndirectEntityDamageSource)
-// and is magical (setMagicDamage())
 public abstract class Magic {
 
 	public static final int HOUR = 72000;
@@ -27,7 +28,7 @@ public abstract class Magic {
 	private int duration;
 	private Ingredient ingredient;
 	private String name;
-	
+
 	public Magic(String name) {
 		this.name = name;
 	}
@@ -97,41 +98,56 @@ public abstract class Magic {
 	public ActionResultType magicInteractBlock(ItemUseContext context) {
 		return ActionResultType.PASS;
 	}
-	
+
 	public void magicCancel(World world, PlayerEntity player, ItemStack staff, int timeLeft) {
 	}
-	
+
 	public Description getDescription() {
 		return new Description(cost, duration, name);
 	}
-	
+
 	public static class Description {
 		private float cost;
 		private int duration;
 		private TranslationTextComponent name;
 		private TranslationTextComponent descr;
-		
+
 		private Description(float cost, int duration, String magicName) {
 			this.cost = cost;
 			this.duration = duration;
 			this.name = new TranslationTextComponent("gui." + Main.MODID + "." + magicName + ".name");
 			this.descr = new TranslationTextComponent("gui." + Main.MODID + "." + magicName + ".description");
 		}
-		
+
 		public float getCost() {
 			return cost;
 		}
-		
+
 		public int getDuration() {
 			return duration;
 		}
-		
+
 		public TranslationTextComponent getName() {
 			return name;
 		}
-		
+
 		public TranslationTextComponent getDescription() {
 			return descr;
 		}
+	}
+
+	// Damage Types
+	private static final DamageSource MAGIC = (new DamageSource(Main.MODID + ".magic")).setMagicDamage();
+
+	public static DamageSource magicDamage() {
+		return MAGIC;
+	}
+
+	public static DamageSource magicDamage(PlayerEntity player) {
+		return new EntityDamageSource(Main.MODID + ".magicplayer", player).setMagicDamage();
+	}
+
+	public static DamageSource magicDamage(Entity source, PlayerEntity player) {
+		return new IndirectEntityDamageSource(Main.MODID + ".magicindirect", source, player).setMagicDamage();
 	}
 }

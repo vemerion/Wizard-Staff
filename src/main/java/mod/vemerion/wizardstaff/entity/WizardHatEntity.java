@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.entity;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.Magic.Magic;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -10,7 +11,6 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
@@ -64,10 +64,10 @@ public class WizardHatEntity extends AbstractArrowEntity {
 		if (!world.isRemote) {
 			Entity target = result.getEntity();
 			if (func_234616_v_() != null && func_234616_v_() instanceof PlayerEntity) { // getShooter()
-				target.attackEntityFrom(DamageSource.causePlayerDamage((PlayerEntity) func_234616_v_()),
+				target.attackEntityFrom(Magic.magicDamage(this, (PlayerEntity) func_234616_v_()),
 						(float) getDamage());
 			} else {
-				target.attackEntityFrom(DamageSource.MAGIC, (float) getDamage());
+				target.attackEntityFrom(Magic.magicDamage(), (float) getDamage());
 			}
 			playSound(getHitEntitySound(), 1, 0.8f + rand.nextFloat() * 0.4f);
 

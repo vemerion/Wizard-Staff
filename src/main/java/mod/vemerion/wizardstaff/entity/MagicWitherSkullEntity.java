@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.entity;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.Magic.Magic;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -68,10 +69,10 @@ public class MagicWitherSkullEntity extends AbstractArrowEntity {
 		if (!world.isRemote) {
 			Entity target = result.getEntity();
 			if (func_234616_v_() != null && func_234616_v_() instanceof PlayerEntity) { // getShooter()
-				target.attackEntityFrom(DamageSource.causePlayerDamage((PlayerEntity) func_234616_v_()),
+				target.attackEntityFrom(Magic.magicDamage(this, (PlayerEntity) func_234616_v_()),
 						(float) getDamage());
 			} else {
-				target.attackEntityFrom(DamageSource.MAGIC, (float) getDamage());
+				target.attackEntityFrom(Magic.magicDamage(), (float) getDamage());
 			}
 
 			if (target instanceof LivingEntity) {

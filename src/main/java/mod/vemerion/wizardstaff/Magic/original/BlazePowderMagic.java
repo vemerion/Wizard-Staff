@@ -13,7 +13,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -45,7 +44,7 @@ public class BlazePowderMagic extends Magic {
 			cost(player);
 			for (Entity e : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().grow(0.3).offset(offset),
 					(e) -> e instanceof LivingEntity)) {
-				e.attackEntityFrom(DamageSource.causePlayerDamage(player), 2);
+				e.attackEntityFrom(Magic.magicDamage(player), 2);
 				e.setFire(2);
 			}
 

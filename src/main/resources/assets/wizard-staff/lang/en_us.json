@@ -20,6 +20,9 @@
   "gui.wizard-staff.toggle_animations": "Toggle GUI animations",
   "gui.wizard-staff.toggle_spellbook": "Toggle Spellbook",
   "itemGroup.wizard-staff": "Wizard Staff",
+  "death.attack.wizard-staff.magicplayer": "%1$s was magicked to death by %2$s",
+  "death.attack.wizard-staff.magicindirect": "%1$s was magicked to death by %2$s",
+  "death.attack.wizard-staff.magic": "%1$s was magicked to death",
 
 
   "gui.wizard-staff.cost": "Cost",

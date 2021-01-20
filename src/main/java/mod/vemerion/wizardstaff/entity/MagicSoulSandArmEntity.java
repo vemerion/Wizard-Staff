@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.entity;
 
+import mod.vemerion.wizardstaff.Magic.Magic;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -8,7 +9,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -44,7 +44,7 @@ public class MagicSoulSandArmEntity extends Entity {
 			if (duration % 10 == 0) {
 				for (LivingEntity e : world.getEntitiesWithinAABB(LivingEntity.class, getBoundingBox())) {
 					if (e != caster) {
-						e.attackEntityFrom(caster == null ? DamageSource.MAGIC : DamageSource.causePlayerDamage(caster), 2);
+						e.attackEntityFrom(caster == null ? Magic.magicDamage() : Magic.magicDamage(this, caster), 2);
 						e.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 30, 1));
 					}
 				}

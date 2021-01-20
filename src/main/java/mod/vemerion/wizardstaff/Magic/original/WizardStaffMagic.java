@@ -9,7 +9,6 @@ import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.World;
 
@@ -28,7 +27,7 @@ public class WizardStaffMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote) {
 			int depth = staffDepth(staff);
-			world.createExplosion(null, DamageSource.causePlayerDamage(player), null, player.getPosX(), player.getPosY(),
+			world.createExplosion(null, magicDamage(player), null, player.getPosX(), player.getPosY(),
 					player.getPosZ(), depth, true, Mode.DESTROY);
 		}
 		return ItemStack.EMPTY;

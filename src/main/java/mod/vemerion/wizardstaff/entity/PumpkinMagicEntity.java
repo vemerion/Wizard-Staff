@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.Magic.Magic;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -60,7 +61,7 @@ public class PumpkinMagicEntity extends Entity {
 		Vector3d sideways = Vector3d.fromPitchYaw(0, rotationYaw + 90);
 		Vector3d pos = getPositionVec().add(sideways.x * 3, 0, sideways.z * 3);
 		PlayerEntity shooter = getShooter();
-		DamageSource source = shooter == null ? DamageSource.MAGIC : DamageSource.causePlayerDamage(shooter);
+		DamageSource source = shooter == null ? Magic.magicDamage() : Magic.magicDamage(this, shooter);
 		for (int i = 0; i < 6; i++) {
 			for (Entity e : world.getEntitiesInAABBexcluding(shooter, new AxisAlignedBB(pos, pos).grow(1, 2, 1),
 					(e) -> e instanceof LivingEntity)) {
