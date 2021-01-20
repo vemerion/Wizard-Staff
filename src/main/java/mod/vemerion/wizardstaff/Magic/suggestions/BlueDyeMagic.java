@@ -37,11 +37,12 @@ public class BlueDyeMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote) {
 			cost(player);
-			boolean isRaining = world.isRaining();
-			int clearWeatherTime = isRaining ? 6000 : 0;
-			int rainTime = isRaining ? 0 : 6000;
-			((ServerWorld) world).func_241113_a_(clearWeatherTime, rainTime, !isRaining, !isRaining && player.getRNG().nextDouble() < 0.3);
-
+			ServerWorld serverWorld = (ServerWorld) world;
+			if (world.isRaining()) {
+				serverWorld.func_241113_a_(0, 0, false, false);
+			} else {
+				serverWorld.func_241113_a_(0, player.getRNG().nextInt(12000) + 12000, true, player.getRNG().nextDouble() < 0.3);
+			}
 		}
 		player.playSound(Main.CHIRP_SOUND, 1, soundPitch(player));
 

@@ -17,6 +17,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
+// TODO: Change spells to use custom DamageSource that uses player + magic entity (EntityDamageSource / IndirectEntityDamageSource)
+// and is magical (setMagicDamage())
 public abstract class Magic {
 
 	public static final int HOUR = 72000;
