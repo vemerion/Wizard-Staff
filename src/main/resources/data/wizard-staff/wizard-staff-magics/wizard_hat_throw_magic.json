@@ -1,8 +1,11 @@
 {
   "cost": 20,
   "duration": 25,
-  "magic": "wizard_hat_throw_magic",
+  "magic": "projectile_magic",
   "ingredient": {
     "item": "wizard-staff:wizard_hat_item"
-  }
+  },
+  "projectile": "wizard-staff:wizard_hat_entity",
+  "sound": "wizard-staff:cloth_sound",
+  "speed": 1
 }

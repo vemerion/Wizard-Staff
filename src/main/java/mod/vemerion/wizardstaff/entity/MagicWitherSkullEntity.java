@@ -25,6 +25,8 @@ public class MagicWitherSkullEntity extends AbstractArrowEntity {
 
 	public MagicWitherSkullEntity(EntityType<? extends MagicWitherSkullEntity> type, World world) {
 		super(type, world);
+		this.setNoGravity(true);
+		this.setDamage(6);
 	}
 
 	public MagicWitherSkullEntity(double x, double y, double z, World world) {
