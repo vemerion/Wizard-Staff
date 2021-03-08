@@ -1,8 +1,9 @@
 {
   "cost": 30,
   "duration": 20,
-  "magic": "warlock_leggings_fashion_magic",
+  "magic": "transmutation_magic",
   "ingredient": {
     "item": "minecraft:iron_leggings"
-  }
+  },
+  "created": "wizard-staff:warlock_leggings_item"
 }

@@ -1,10 +1,12 @@
 {
   "cost": 12,
   "duration": 15,
-  "magic": "bottle_magic",
+  "magic": "transmutation_magic",
   "ingredient": [
     {
       "item": "minecraft:glass_bottle"
     }
-  ]
+  ],
+  "created": "minecraft:experience_bottle",
+  "sound": "minecraft:block.brewing_stand.brew"
 }

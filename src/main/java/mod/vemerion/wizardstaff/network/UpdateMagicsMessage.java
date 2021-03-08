@@ -27,7 +27,7 @@ public class UpdateMagicsMessage {
 		for (Entry<ResourceLocation, Magic> entry : magics.entrySet()) {
 			Magic m = entry.getValue();
 			buffer.writeResourceLocation(entry.getKey());
-			buffer.writeString(m.getName());
+			buffer.writeString(m.getRegistryName());
 			m.encode(buffer);
 		}
 	}

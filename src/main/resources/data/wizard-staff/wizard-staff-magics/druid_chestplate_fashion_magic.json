@@ -1,8 +1,9 @@
 {
   "cost": 30,
   "duration": 20,
-  "magic": "druid_chestplate_fashion_magic",
+  "magic": "transmutation_magic",
   "ingredient": {
     "item": "minecraft:golden_chestplate"
-  }
+  },
+  "created": "wizard-staff:druid_chestplate_item"
 }

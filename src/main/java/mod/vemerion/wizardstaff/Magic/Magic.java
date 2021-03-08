@@ -32,14 +32,14 @@ public abstract class Magic {
 	protected float cost;
 	protected int duration;
 	protected Ingredient ingredient;
-	private String name;
+	private String registryName;
 
-	public Magic(String name) {
-		this.name = name;
+	public Magic(String registryName) {
+		this.registryName = registryName;
 	}
 	
-	public String getName() {
-		return name;
+	public String getRegistryName() {
+		return registryName;
 	}
 
 	public void read(JsonObject json) {
@@ -147,7 +147,7 @@ public abstract class Magic {
 	}
 
 	public Description getDescription() {
-		return new Description(cost, duration, name);
+		return new Description(cost, duration, registryName);
 	}
 
 	public static class Description {

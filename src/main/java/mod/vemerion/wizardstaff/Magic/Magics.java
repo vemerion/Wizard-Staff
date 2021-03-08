@@ -14,13 +14,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import mod.vemerion.wizardstaff.Main;
-import mod.vemerion.wizardstaff.Magic.fashionupdate.FashionMagic;
+import mod.vemerion.wizardstaff.Magic.fashionupdate.TransmutationMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GhastTearMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GoldNuggetMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.LodestoneMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherBrickMagic;
-import mod.vemerion.wizardstaff.Magic.netherupdate.NetheriteIngotMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherrackMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.ObsidianMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.SoulSandMagic;
@@ -35,7 +34,6 @@ import mod.vemerion.wizardstaff.Magic.original.JukeboxMagic;
 import mod.vemerion.wizardstaff.Magic.original.WizardStaffMagic;
 import mod.vemerion.wizardstaff.Magic.original.WritableBookMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.BookshelfMagic;
-import mod.vemerion.wizardstaff.Magic.spellbookupdate.BottleMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.DeageMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.MapMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.PortableCraftingMagic;
@@ -66,7 +64,7 @@ public class Magics extends JsonReloadListener {
 
 	private static Magics instance;
 
-	private Map<String, Supplier<Magic>> magicNames; // All possible magics, registered in initMagicNames()
+	private Map<String, Supplier<Magic>> registry; // All possible magics, registered in initMagicNames()
 	private Map<ResourceLocation, Magic> magics; // The actual magics, as determined by the json magic files
 	private ImmutableSet<ItemStack> magicItems; // All items that have magic effect (used by spellbook)
 	private Map<Item, ResourceLocation> cache; // Cache for faster lookup in get()
@@ -75,10 +73,10 @@ public class Magics extends JsonReloadListener {
 
 	private Magics() {
 		super(GSON, FOLDER_NAME);
-		this.magicNames = new HashMap<>();
+		this.registry = new HashMap<>();
 		this.magics = new HashMap<>();
 		this.cache = new HashMap<>();
-		this.initMagicNames();
+		this.registerMagics();
 	}
 
 	public Magic get(ItemStack stack) {
@@ -97,7 +95,7 @@ public class Magics extends JsonReloadListener {
 		return NO_MAGIC;
 	}
 
-	private void initMagicNames() {
+	private void registerMagics() {
 		register("blaze_powder_magic", (s) -> () -> new BlazePowderMagic(s));
 		register("carved_pumpkin_magic", (s) -> () -> new CarvedPumpkinMagic(s));
 		register("clock_magic", (s) -> () -> new ClockMagic(s));
@@ -116,19 +114,7 @@ public class Magics extends JsonReloadListener {
 		register("soul_sand_magic", (s) -> () -> new SoulSandMagic(s));
 		register("gold_nugget_magic", (s) -> () -> new GoldNuggetMagic(s));
 		register("lodestone_magic", (s) -> () -> new LodestoneMagic(s));
-		register("netherite_ingot_magic", (s) -> () -> new NetheriteIngotMagic(s));
-		register("wizard_boots_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WIZARD_BOOTS_ITEM));
-		register("wizard_chestplate_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WIZARD_CHESTPLATE_ITEM));
-		register("wizard_helmet_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WIZARD_HAT_ITEM));
-		register("wizard_leggings_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WIZARD_LEGGINGS_ITEM));
-		register("druid_boots_fashion_magic", (s) -> () -> new FashionMagic(s, Main.DRUID_BOOTS_ITEM));
-		register("druid_chestplate_fashion_magic", (s) -> () -> new FashionMagic(s, Main.DRUID_CHESTPLATE_ITEM));
-		register("druid_helmet_fashion_magic", (s) -> () -> new FashionMagic(s, Main.DRUID_HELMET_ITEM));
-		register("druid_leggings_fashion_magic", (s) -> () -> new FashionMagic(s, Main.DRUID_LEGGINGS_ITEM));
-		register("warlock_boots_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WARLOCK_BOOTS_ITEM));
-		register("warlock_chestplate_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WARLOCK_CHESTPLATE_ITEM));
-		register("warlock_helmet_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WARLOCK_HELMET_ITEM));
-		register("warlock_leggings_fashion_magic", (s) -> () -> new FashionMagic(s, Main.WARLOCK_LEGGINGS_ITEM));
+		register("transmutation_magic", (s) -> () -> new TransmutationMagic(s));
 		register("blue_dye_magic", (s) -> () -> new BlueDyeMagic(s));
 		register("bricks_magic", (s) -> () -> new BricksMagic(s));
 		register("grappling_hook_magic", (s) -> () -> new GrapplingHookMagic(s));
@@ -136,7 +122,6 @@ public class Magics extends JsonReloadListener {
 		register("mushroom_cloud_magic", (s) -> () -> new MushroomCloudMagic(s));
 		register("shulker_bullet_magic", (s) -> () -> new ShulkerBulletMagic(s));
 		register("water_bucket_magic", (s) -> () -> new WaterBucketMagic(s));
-		register("bottle_magic", (s) -> () -> new BottleMagic(s));
 		register("wizard_hat_throw_magic", (s) -> () -> new WizardHatThrowMagic(s));
 		register("portable_crafting_magic", (s) -> () -> new PortableCraftingMagic(s));
 		register("bookshelf_magic", (s) -> () -> new BookshelfMagic(s));
@@ -146,7 +131,7 @@ public class Magics extends JsonReloadListener {
 	}
 
 	private void register(String name, Function<String, Supplier<Magic>> magic) {
-		magicNames.put(name, magic.apply(name));
+		registry.put(name, magic.apply(name));
 	}
 
 	public static Magics getInstance() {
@@ -164,9 +149,9 @@ public class Magics extends JsonReloadListener {
 		for (Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet()) {
 			JsonObject json = JSONUtils.getJsonObject(entry.getValue(), "top element");
 			String magicName = JSONUtils.getString(json, "magic");
-			if (!magicNames.containsKey(magicName))
+			if (!registry.containsKey(magicName))
 				throw new JsonSyntaxException("The magic " + magicName + " does not exist");
-			Magic magic = magicNames.get(magicName).get();
+			Magic magic = registry.get(magicName).get();
 			
 			if (magic == NO_MAGIC)
 				continue;
@@ -205,7 +190,7 @@ public class Magics extends JsonReloadListener {
 	}
 
 	public Magic getFromName(String name) {
-		return magicNames.get(name).get();
+		return registry.get(name).get();
 	}
 	
 	

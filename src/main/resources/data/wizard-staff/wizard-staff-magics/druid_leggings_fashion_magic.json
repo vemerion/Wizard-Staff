@@ -1,8 +1,9 @@
 {
   "cost": 30,
   "duration": 20,
-  "magic": "druid_leggings_fashion_magic",
+  "magic": "transmutation_magic",
   "ingredient": {
     "item": "minecraft:golden_leggings"
-  }
+  },
+  "created": "wizard-staff:druid_leggings_item"
 }
