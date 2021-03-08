@@ -53,8 +53,6 @@ import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
@@ -68,13 +66,11 @@ public class Magics extends JsonReloadListener {
 
 	private static Magics instance;
 
-	private Map<String, Supplier<Magic>> magicNames;
-	private Map<ResourceLocation, Magic> magics;
-	private ImmutableSet<ItemStack> magicItems; // All items that have magic effect
+	private Map<String, Supplier<Magic>> magicNames; // All possible magics, registered in initMagicNames()
+	private Map<ResourceLocation, Magic> magics; // The actual magics, as determined by the json magic files
+	private ImmutableSet<ItemStack> magicItems; // All items that have magic effect (used by spellbook)
+	private Map<Item, ResourceLocation> cache; // Cache for faster lookup in get()
 
-	// Save all the magic params on server to send to client at login
-	private Map<ResourceLocation, MagicParams> magicParams;
-	private Map<Item, ResourceLocation> cache;
 	private final NoMagic NO_MAGIC = new NoMagic();
 
 	private Magics() {
@@ -82,7 +78,6 @@ public class Magics extends JsonReloadListener {
 		this.magicNames = new HashMap<>();
 		this.magics = new HashMap<>();
 		this.cache = new HashMap<>();
-		this.magicParams = new HashMap<>();
 		this.initMagicNames();
 	}
 
@@ -149,7 +144,7 @@ public class Magics extends JsonReloadListener {
 		register("deage_magic", (s) -> () -> new DeageMagic(s));
 		register("no_magic", (s) -> () -> NO_MAGIC);
 	}
-	
+
 	private void register(String name, Function<String, Supplier<Magic>> magic) {
 		magicNames.put(name, magic.apply(name));
 	}
@@ -165,81 +160,53 @@ public class Magics extends JsonReloadListener {
 	@Override
 	protected void apply(Map<ResourceLocation, JsonElement> objectIn, IResourceManager resourceManagerIn,
 			IProfiler profilerIn) {
-		Map<ResourceLocation, MagicParams> params = new HashMap<>();
+		Map<ResourceLocation, Magic> newMagics = new HashMap<>();
 		for (Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet()) {
 			JsonObject json = JSONUtils.getJsonObject(entry.getValue(), "top element");
-			float cost = JSONUtils.getFloat(json, "cost");
-			if (cost < 0)
-				throw new JsonSyntaxException("The cost of a magic can not be negative");
-			int duration = JSONUtils.getInt(json, "duration");
-			String magic = JSONUtils.getString(json, "magic");
-			if (!magicNames.containsKey(magic))
-				throw new JsonSyntaxException("The magic " + magic + " does not exist");
-			Ingredient ingredient = Ingredient.deserialize(json.get("ingredient"));
-			params.put(entry.getKey(), new MagicParams(cost, duration, magic, ingredient));
+			String magicName = JSONUtils.getString(json, "magic");
+			if (!magicNames.containsKey(magicName))
+				throw new JsonSyntaxException("The magic " + magicName + " does not exist");
+			Magic magic = magicNames.get(magicName).get();
+			
+			if (magic == NO_MAGIC)
+				continue;
+			
+			magic.read(json);
+			newMagics.put(entry.getKey(), magic);
 		}
 
-		magicParams.putAll(params);
-		addMagics(params);
+		addMagics(newMagics);
 		if (ServerLifecycleHooks.getCurrentServer() != null)
-			sendMagicMessage(params);
+			sendMagicMessage(newMagics);
 	}
 
-	private void sendMagicMessage(Map<ResourceLocation, MagicParams> params) {
-		Network.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateMagicsMessage(params));
+	private void sendMagicMessage(Map<ResourceLocation, Magic> newMagics) {
+		Network.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateMagicsMessage(newMagics));
 	}
 
 	public void sendAllMagicMessage(ServerPlayerEntity reciever) {
-		Network.INSTANCE.send(PacketDistributor.PLAYER.with(() -> reciever), new UpdateMagicsMessage(magicParams));
+		Network.INSTANCE.send(PacketDistributor.PLAYER.with(() -> reciever), new UpdateMagicsMessage(magics));
 	}
 
-	public void addMagics(Map<ResourceLocation, MagicParams> params) {
+	public void addMagics(Map<ResourceLocation, Magic> newMagics) {
 		cache = new HashMap<>();
-		for (Entry<ResourceLocation, MagicParams> entry : params.entrySet()) {
-			magics.put(entry.getKey(), entry.getValue().createMagic());
-		}
-		
+		magics.putAll(newMagics);
+
 		// Build magicItems set
 		ImmutableSet.Builder<ItemStack> builder = ImmutableSet.builder();
-		for (MagicParams param : params.values())
-			for (ItemStack stack : param.ingredient.getMatchingStacks())
+		for (Magic m : newMagics.values())
+			for (ItemStack stack : m.getMatchingStacks())
 				builder.add(stack);
 		magicItems = builder.build();
 	}
-	
+
 	public ImmutableSet<ItemStack> getMagicItems() {
 		return magicItems;
 	}
 
-	public static class MagicParams {
-		private float cost;
-		private int duration;
-		private String magicKey;
-		private Ingredient ingredient;
-
-		public MagicParams(float cost, int duration, String magicKey, Ingredient ingredient) {
-			this.cost = cost;
-			this.duration = duration;
-			this.magicKey = magicKey;
-			this.ingredient = ingredient;
-		}
-
-		public Magic createMagic() {
-			Magic magic = getInstance().magicNames.get(magicKey).get();
-			magic.init(cost, duration < 0 ? Magic.HOUR : duration, ingredient);
-			return magic;
-		}
-
-		public static MagicParams decode(PacketBuffer buffer) {
-			return new MagicParams(buffer.readFloat(), buffer.readInt(), buffer.readString(100),
-					Ingredient.read(buffer));
-		}
-
-		public void encode(PacketBuffer buffer) {
-			buffer.writeFloat(cost);
-			buffer.writeInt(duration);
-			buffer.writeString(magicKey);
-			ingredient.write(buffer);
-		}
+	public Magic getFromName(String name) {
+		return magicNames.get(name).get();
 	}
+	
+	
 }

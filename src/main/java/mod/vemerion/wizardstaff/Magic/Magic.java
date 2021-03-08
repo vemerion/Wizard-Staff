@@ -1,5 +1,8 @@
 package mod.vemerion.wizardstaff.Magic;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.item.MagicArmorItem;
@@ -11,10 +14,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.UseAction;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.IndirectEntityDamageSource;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -24,19 +29,58 @@ public abstract class Magic {
 
 	public static final int HOUR = 72000;
 
-	private float cost;
-	private int duration;
-	private Ingredient ingredient;
+	protected float cost;
+	protected int duration;
+	protected Ingredient ingredient;
 	private String name;
 
 	public Magic(String name) {
 		this.name = name;
 	}
+	
+	public String getName() {
+		return name;
+	}
 
-	public void init(float cost, int duration, Ingredient ingredient) {
-		this.cost = cost;
-		this.duration = duration;
-		this.ingredient = ingredient;
+	public void read(JsonObject json) {
+		cost = JSONUtils.getFloat(json, "cost");
+		if (cost < 0)
+			throw new JsonSyntaxException("The cost of a magic can not be negative");
+		duration = JSONUtils.getInt(json, "duration");
+		if (duration < 0)
+			duration = HOUR;
+		ingredient = Ingredient.deserialize(json.get("ingredient"));
+
+		readAdditional(json);
+	}
+
+	protected void readAdditional(JsonObject json) {
+	}
+
+	public void decode(PacketBuffer buffer) {
+		cost = buffer.readFloat();
+		duration = buffer.readInt();
+		if (duration < 0)
+			duration = HOUR;
+		ingredient = Ingredient.read(buffer);
+		decodeAdditional(buffer);
+	}
+
+	protected void decodeAdditional(PacketBuffer buffer) {
+	}
+
+	public void encode(PacketBuffer buffer) {
+		buffer.writeFloat(cost);
+		buffer.writeInt(duration);
+		ingredient.write(buffer);
+		encodeAdditional(buffer);
+	}
+
+	protected void encodeAdditional(PacketBuffer buffer) {
+	}
+	
+	public final ItemStack[] getMatchingStacks() {
+		return ingredient.getMatchingStacks();
 	}
 
 	protected float soundPitch(PlayerEntity player) {

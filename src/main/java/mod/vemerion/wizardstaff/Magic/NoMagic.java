@@ -14,22 +14,14 @@ public class NoMagic extends Magic {
 
 	public NoMagic() {
 		super("no_magic");
-		this.init(0, 0, new Ingredient(Stream.empty()) {
+		this.cost = 0;
+		this.duration = 0;
+		this.ingredient = new Ingredient(Stream.empty()) {
 			@Override
-			public boolean test(ItemStack p_test_1_) {
+			public boolean test(ItemStack stack) {
 				return true;
 			}
-		});
-	}
-
-	@Override
-	public void init(float cost, int duration, Ingredient ingredient) {
-		super.init(0, 0, new Ingredient(Stream.empty()) {
-			@Override
-			public boolean test(ItemStack p_test_1_) {
-				return true;
-			}
-		});
+		};
 	}
 
 	@Override

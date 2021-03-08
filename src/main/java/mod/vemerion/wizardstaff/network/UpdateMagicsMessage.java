@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
 
+import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.Magics;
-import mod.vemerion.wizardstaff.Magic.Magics.MagicParams;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,45 +16,50 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateMagicsMessage {
 
-	private Map<ResourceLocation, MagicParams> magicParams;
+	private Map<ResourceLocation, Magic> magics;
 
-	public UpdateMagicsMessage(Map<ResourceLocation, MagicParams> magicParams) {
-		this.magicParams = magicParams;
+	public UpdateMagicsMessage(Map<ResourceLocation, Magic> magics) {
+		this.magics = magics;
 	}
 
 	public void encode(final PacketBuffer buffer) {
-		buffer.writeInt(magicParams.size());
-		for (Entry<ResourceLocation, MagicParams> entry : magicParams.entrySet()) {
+		buffer.writeInt(magics.size());
+		for (Entry<ResourceLocation, Magic> entry : magics.entrySet()) {
+			Magic m = entry.getValue();
 			buffer.writeResourceLocation(entry.getKey());
-			entry.getValue().encode(buffer);
+			buffer.writeString(m.getName());
+			m.encode(buffer);
 		}
 	}
 
 	public static UpdateMagicsMessage decode(final PacketBuffer buffer) {
-		Map<ResourceLocation, MagicParams> magicParams = new HashMap<>();
+		Map<ResourceLocation, Magic> magics = new HashMap<>();
 		int size = buffer.readInt();
 		for (int i = 0; i < size; i++) {
 			ResourceLocation key = buffer.readResourceLocation();
-			magicParams.put(key, MagicParams.decode(buffer));
+			String name = buffer.readString(100);
+			Magic magic = Magics.getInstance().getFromName(name);
+			magic.decode(buffer);
+			magics.put(key, magic);
 		}
-		return new UpdateMagicsMessage(magicParams);
+		return new UpdateMagicsMessage(magics);
 	}
 
 	public void handle(final Supplier<NetworkEvent.Context> supplier) {
 		final NetworkEvent.Context context = supplier.get();
 		context.setPacketHandled(true);
-		context.enqueueWork(() -> DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> UpdateMagics.update(magicParams)));
+		context.enqueueWork(() -> DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> UpdateMagics.update(magics)));
 	}
 
 	private static class UpdateMagics {
-		private static SafeRunnable update(Map<ResourceLocation, MagicParams> magicParams) {
+		private static SafeRunnable update(Map<ResourceLocation, Magic> magics) {
 			return new SafeRunnable() {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void run() {
 					if (Magics.getInstance() != null) {
-						Magics.getInstance().addMagics(magicParams);
+						Magics.getInstance().addMagics(magics);
 					}
 				}
 			};
