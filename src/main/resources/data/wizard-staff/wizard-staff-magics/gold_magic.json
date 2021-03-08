@@ -1,8 +1,9 @@
 {
   "cost": 50,
   "duration": 25,
-  "magic": "gold_magic",
+  "magic": "transform_stone_magic",
   "ingredient": {
     "tag": "forge:ingots/gold"
-  }
+  },
+  "block": "minecraft:gold_ore"
 }

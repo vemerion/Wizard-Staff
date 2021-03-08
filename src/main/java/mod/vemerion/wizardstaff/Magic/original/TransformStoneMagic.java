@@ -1,14 +1,18 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
+import com.google.gson.JsonObject;
+
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -19,9 +23,14 @@ import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
-public class GoldMagic extends Magic {
-	public GoldMagic(String name) {
+public class TransformStoneMagic extends Magic {
+
+	private Block block;
+
+	public TransformStoneMagic(String name) {
 		super(name);
 	}
 
@@ -29,7 +38,32 @@ public class GoldMagic extends Magic {
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BLOCK;
 	}
+
+	@Override
+	protected void decodeAdditional(PacketBuffer buffer) {
+		block = MagicUtil.decode(buffer, ForgeRegistries.BLOCKS);
+	}
+
+	@Override
+	protected void encodeAdditional(PacketBuffer buffer) {
+		MagicUtil.encode(buffer, block);
+	}
+
+	@Override
+	protected void readAdditional(JsonObject json) {
+		block = MagicUtil.read(json, ForgeRegistries.BLOCKS, "block");
+	}
+
+	@Override
+	protected Object[] getNameArgs() {
+		return new Object[] { block.getTranslatedName() };
+	}
 	
+	@Override
+	protected Object[] getDescrArgs() {
+		return new Object[] { block.getTranslatedName() };
+	}
+
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote) {
@@ -38,12 +72,13 @@ public class GoldMagic extends Magic {
 			Vector3d stop = start.add(direction.scale(4.5));
 			BlockRayTraceResult result = world
 					.rayTraceBlocks(new RayTraceContext(start, stop, BlockMode.COLLIDER, FluidMode.NONE, player));
-			if (result.getType() == Type.BLOCK && world.getBlockState(result.getPos()).getBlock() == Blocks.STONE) {
+			if (result.getType() == Type.BLOCK
+					&& world.getBlockState(result.getPos()).getBlock().isIn(Tags.Blocks.STONE)) {
 				BlockPos pos = result.getPos();
 				world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_STONE_BREAK,
 						SoundCategory.PLAYERS, 1.5f, soundPitch(player));
 				cost(player);
-				world.setBlockState(pos, Blocks.GOLD_ORE.getDefaultState());
+				world.setBlockState(pos, block.getDefaultState());
 			}
 
 		}
@@ -54,7 +89,7 @@ public class GoldMagic extends Magic {
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::forwardBuildup;
 	}
-	
+
 	@Override
 	public RenderThirdPersonMagic thirdPersonRenderer() {
 		return WizardStaffLayer::forwardShake;
