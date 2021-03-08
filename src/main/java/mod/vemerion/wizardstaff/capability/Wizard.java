@@ -2,7 +2,7 @@ package mod.vemerion.wizardstaff.capability;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -52,9 +52,9 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 		return player.getCapability(CAPABILITY);
 	}
 
-	public boolean lodestoneTeleport(ServerPlayerEntity player) {
+	public boolean lodestoneTeleport(ServerPlayerEntity player, Block waypoint) {
 		if (lodestoneTracked && lodestonePos != null && player.world.getDimensionKey() == lodestonePos.getDimension()
-				&& (player.world.getBlockState(lodestonePos.getPos()).getBlock() == Blocks.LODESTONE)) {
+				&& (player.world.getBlockState(lodestonePos.getPos()).getBlock() == waypoint)) {
 			lodestoneTracked = false;
 			BlockPos destination = lodestonePos.getPos();
 			player.teleport(player.getServerWorld(), destination.getX(), destination.getY() + 1, destination.getZ(),
@@ -83,8 +83,8 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 		return false;
 	}
 
-	public void trackLodestone(World world, BlockPos pos) {
-		if (world.getBlockState(pos).getBlock() == Blocks.LODESTONE) {
+	public void trackLodestone(World world, BlockPos pos, Block waypoint) {
+		if (world.getBlockState(pos).getBlock() == waypoint) {
 			lodestoneTracked = true;
 			lodestonePos = GlobalPos.getPosition(world.getDimensionKey(), pos.toImmutable());
 		}

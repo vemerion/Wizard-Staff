@@ -68,7 +68,6 @@ public class TransmutationMagic extends Magic {
 				JSONUtils.getString(json, "sound", Main.PLOP_SOUND.getRegistryName().toString()));
 		if (ForgeRegistries.SOUND_EVENTS.containsKey(soundKey)) {
 			sound = ForgeRegistries.SOUND_EVENTS.getValue(soundKey);
-			System.out.println(sound);
 		} else {
 			throw new JsonParseException("Invalid sound name " + soundKey);
 		}

@@ -67,7 +67,7 @@
   "gui.wizard-staff.gold_nugget_magic.name": "Magic Bartering",
   "gui.wizard-staff.gold_nugget_magic.description": "Use magic compel nearby Piglins to give you their items.",
   "gui.wizard-staff.lodestone_magic.name": "Magical Translocator",
-  "gui.wizard-staff.lodestone_magic.description": "Right click a lodestone with the staff, binding you to the lodestone. Then, activating the staff anywhere in the world will return you to the lodestone, consuming it in the process.",
+  "gui.wizard-staff.lodestone_magic.description": "Right click a %s block with the staff, setting your waypoint to that block. Then, activating the staff anywhere in the world will return you to the waypoint, consuming the block in the process.",
   "gui.wizard-staff.transmutation_magic.name": "Conjure %s",
   "gui.wizard-staff.transmutation_magic.description": "Transmutate the item in the staff into the item %s.",
   "gui.wizard-staff.blue_dye_magic.name": "Weather Controller",

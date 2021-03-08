@@ -4,5 +4,6 @@
   "magic": "lodestone_magic",
   "ingredient": {
     "item": "minecraft:lodestone"
-  }
+  },
+  "waypoint": "minecraft:lodestone"
 }
