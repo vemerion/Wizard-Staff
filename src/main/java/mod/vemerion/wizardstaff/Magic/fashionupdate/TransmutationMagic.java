@@ -75,6 +75,16 @@ public class TransmutationMagic extends Magic {
 	}
 
 	@Override
+	protected Object[] getNameArgs() {
+		return new Object[] { created.getDisplayName(created.getDefaultInstance()) };
+	}
+
+	@Override
+	protected Object[] getDescrArgs() {
+		return new Object[] { created.getDisplayName(created.getDefaultInstance()) };
+	}
+
+	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		player.playSound(sound, 1, soundPitch(player));
 		if (!world.isRemote) {

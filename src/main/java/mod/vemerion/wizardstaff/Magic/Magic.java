@@ -54,6 +54,7 @@ public abstract class Magic {
 		readAdditional(json);
 	}
 
+	// Override to read additional parameters from the json file
 	protected void readAdditional(JsonObject json) {
 	}
 
@@ -66,6 +67,7 @@ public abstract class Magic {
 		decodeAdditional(buffer);
 	}
 
+	// Override to read additional parameters from the packet
 	protected void decodeAdditional(PacketBuffer buffer) {
 	}
 
@@ -76,6 +78,7 @@ public abstract class Magic {
 		encodeAdditional(buffer);
 	}
 
+	// Override to write additional parameters to the packet
 	protected void encodeAdditional(PacketBuffer buffer) {
 	}
 	
@@ -147,20 +150,33 @@ public abstract class Magic {
 	}
 
 	public Description getDescription() {
-		return new Description(cost, duration, registryName);
+		return new Description(cost, duration, registryName, getNameArgs(), getDescrArgs());
+	}
+
+	// Override to provide args to the spellbook magic name
+	protected Object[] getDescrArgs() {
+		return Description.NO_ARGS;
+	}
+
+	// Override to provide args to the spellbook magic description
+	protected Object[] getNameArgs() {
+		return Description.NO_ARGS;
 	}
 
 	public static class Description {
+		
+		private static final Object[] NO_ARGS = new Object[0];
+
 		private float cost;
 		private int duration;
 		private TranslationTextComponent name;
 		private TranslationTextComponent descr;
 
-		private Description(float cost, int duration, String magicName) {
+		private Description(float cost, int duration, String magicName, Object[] nameArgs, Object[] descrArgs) {
 			this.cost = cost;
 			this.duration = duration;
-			this.name = new TranslationTextComponent("gui." + Main.MODID + "." + magicName + ".name");
-			this.descr = new TranslationTextComponent("gui." + Main.MODID + "." + magicName + ".description");
+			this.name = new TranslationTextComponent("gui." + Main.MODID + "." + magicName + ".name", nameArgs);
+			this.descr = new TranslationTextComponent("gui." + Main.MODID + "." + magicName + ".description", descrArgs);
 		}
 
 		public float getCost() {
