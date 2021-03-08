@@ -54,6 +54,7 @@ import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
@@ -145,17 +146,21 @@ public class Magics extends JsonReloadListener {
 			IProfiler profilerIn) {
 		Map<ResourceLocation, Magic> newMagics = new HashMap<>();
 		for (Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet()) {
+			ResourceLocation key = entry.getKey();
+			if (!ModList.get().isLoaded(key.getNamespace())) // Skip magics from mods that are not present
+				continue;
+
 			JsonObject json = JSONUtils.getJsonObject(entry.getValue(), "top element");
 			String magicName = JSONUtils.getString(json, "magic");
 			if (!registry.containsKey(magicName))
 				throw new JsonSyntaxException("The magic " + magicName + " does not exist");
 			Magic magic = registry.get(magicName).get();
-			
+
 			if (magic == NO_MAGIC)
 				continue;
-			
+
 			magic.read(json);
-			newMagics.put(entry.getKey(), magic);
+			newMagics.put(key, magic);
 		}
 
 		addMagics(newMagics);
@@ -190,6 +195,5 @@ public class Magics extends JsonReloadListener {
 	public Magic getFromName(String name) {
 		return registry.get(name).get();
 	}
-	
-	
+
 }
