@@ -1,10 +1,10 @@
 package mod.vemerion.wizardstaff.Magic.fashionupdate;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -17,7 +17,6 @@ import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -49,28 +48,19 @@ public class TransmutationMagic extends Magic {
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
 		created = buffer.readItemStack().getItem();
-		int soundKeyLen = buffer.readInt();
-		sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(buffer.readString(soundKeyLen)));
+		sound = MagicUtil.decode(buffer, ForgeRegistries.SOUND_EVENTS);
 	}
 
 	@Override
 	protected void encodeAdditional(PacketBuffer buffer) {
 		buffer.writeItemStack(created.getDefaultInstance());
-		String soundKey = sound.getRegistryName().toString();
-		buffer.writeInt(soundKey.length());
-		buffer.writeString(soundKey);
+		MagicUtil.encode(buffer, sound);
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
 		created = JSONUtils.getItem(json, "created");
-		ResourceLocation soundKey = new ResourceLocation(
-				JSONUtils.getString(json, "sound", Main.PLOP_SOUND.getRegistryName().toString()));
-		if (ForgeRegistries.SOUND_EVENTS.containsKey(soundKey)) {
-			sound = ForgeRegistries.SOUND_EVENTS.getValue(soundKey);
-		} else {
-			throw new JsonParseException("Invalid sound name " + soundKey);
-		}
+		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound", Main.PLOP_SOUND);
 	}
 
 	@Override
