@@ -1,8 +1,8 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
+import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -29,7 +29,7 @@ public class CarvedPumpkinMagic extends Magic {
 		player.playSound(ModSounds.PUMPKIN_MAGIC_SOUND, 0.2f, soundPitch(player));
 		if (!world.isRemote) {
 			cost(player);
-			PumpkinMagicEntity entity = new PumpkinMagicEntity(Main.PUMPKIN_MAGIC_ENTITY, world, player);
+			PumpkinMagicEntity entity = new PumpkinMagicEntity(ModEntities.PUMPKIN_MAGIC_ENTITY, world, player);
 			entity.setPositionAndRotation(player.getPosX(), player.getPosY() + 2, player.getPosZ(), player.rotationYaw,
 					0);
 			world.addEntity(entity);

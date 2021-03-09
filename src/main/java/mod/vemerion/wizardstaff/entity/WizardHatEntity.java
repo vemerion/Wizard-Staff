@@ -1,7 +1,8 @@
 package mod.vemerion.wizardstaff.entity;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModEntities;
+import mod.vemerion.wizardstaff.init.ModItems;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -31,7 +32,7 @@ public class WizardHatEntity extends AbstractArrowEntity {
 	}
 
 	public WizardHatEntity(double x, double y, double z, World world) {
-		super(Main.WIZARD_HAT_ENTITY, x, y, z, world);
+		super(ModEntities.WIZARD_HAT_ENTITY, x, y, z, world);
 		this.setDamage(1);
 		this.setHitSound(ModSounds.CLOTH_SOUND);
 	}
@@ -80,7 +81,7 @@ public class WizardHatEntity extends AbstractArrowEntity {
 			if (rand.nextFloat() < 0.1 && target instanceof MobEntity) {
 				MobEntity mob = (MobEntity) target;
 				if (mob.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty())
-					mob.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(Main.WIZARD_HAT_ITEM));
+					mob.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(ModItems.WIZARD_HAT_ITEM));
 			}
 		}
 	}

@@ -1,8 +1,8 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
+import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -45,7 +45,7 @@ public class ObsidianMagic extends Magic {
 			BlockPos pos = new BlockPos(spawnPos);
 			if (!world.getBlockState(pos).isSolid() && !world.getBlockState(pos.up()).isSolid()) {
 				cost(player);
-				NetherPortalEntity portal = new NetherPortalEntity(Main.NETHER_PORTAL_ENTITY, world);
+				NetherPortalEntity portal = new NetherPortalEntity(ModEntities.NETHER_PORTAL_ENTITY, world);
 				portal.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, player.rotationYaw, 0);
 				world.addEntity(portal);
 				playSoundServer(world, player, ModSounds.PORTAL_SOUND, 1, soundPitch(player));

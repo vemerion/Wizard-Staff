@@ -3,8 +3,8 @@ package mod.vemerion.wizardstaff.entity;
 import java.util.Optional;
 import java.util.UUID;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.capability.Wizard;
+import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -29,7 +29,7 @@ public class GrapplingHookEntity extends Entity {
 	}
 
 	public GrapplingHookEntity(World worldIn, PlayerEntity shooter) {
-		this(Main.GRAPPLING_HOOK_ENTITY, worldIn);
+		this(ModEntities.GRAPPLING_HOOK_ENTITY, worldIn);
 		this.setShooter(shooter);
 	}
 

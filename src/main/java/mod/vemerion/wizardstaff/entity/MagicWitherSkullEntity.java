@@ -1,7 +1,7 @@
 package mod.vemerion.wizardstaff.entity;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModEntities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -30,7 +30,7 @@ public class MagicWitherSkullEntity extends AbstractArrowEntity {
 	}
 
 	public MagicWitherSkullEntity(double x, double y, double z, World world) {
-		super(Main.MAGIC_WITHER_SKULL_ENTITY, x, y, z, world);
+		super(ModEntities.MAGIC_WITHER_SKULL_ENTITY, x, y, z, world);
 		this.setNoGravity(true);
 		this.setDamage(6);
 	}

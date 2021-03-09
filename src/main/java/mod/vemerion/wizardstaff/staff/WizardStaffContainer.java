@@ -1,6 +1,6 @@
 package mod.vemerion.wizardstaff.staff;
 
-import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.init.ModContainers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -22,7 +22,7 @@ public class WizardStaffContainer extends Container {
 	}
 
 	protected WizardStaffContainer(int id, PlayerInventory inventory, WizardStaffItemHandler handler, ItemStack heldItem, boolean shouldAnimate) {
-		super(Main.WIZARD_STAFF_CONTAINER, id);
+		super(ModContainers.WIZARD_STAFF_CONTAINER, id);
 		this.handler = handler;
 		this.heldItem = heldItem;
 		this.shouldAnimate = shouldAnimate;

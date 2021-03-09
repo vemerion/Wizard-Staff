@@ -2,9 +2,9 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 
 import java.util.Random;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
+import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -64,7 +64,7 @@ public class SoulSandMagic extends Magic {
 					direction.z * distance + side.z * offset);
 			position = findValidPosition(position, world);
 			if (position != null) {
-				MagicSoulSandArmEntity arm = new MagicSoulSandArmEntity(Main.MAGIC_SOUL_SAND_ARM_ENTITY, world, player);
+				MagicSoulSandArmEntity arm = new MagicSoulSandArmEntity(ModEntities.MAGIC_SOUL_SAND_ARM_ENTITY, world, player);
 				arm.setPosition(position.x, position.y, position.z);
 				world.addEntity(arm);
 			}

@@ -1,7 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.suggestions;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModBlocks;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -49,7 +49,7 @@ public class BricksMagic extends Magic {
 			for (int z = -1; z < 2; z++) {
 				for (int y = 0; y < 2; y++) {
 					if ((x != 0 || z != 0) && world.isAirBlock(position.add(x, y, z))) {
-						world.setBlockState(position.add(x, y, z), Main.MAGIC_BRICKS_BLOCK.getDefaultState());
+						world.setBlockState(position.add(x, y, z), ModBlocks.MAGIC_BRICKS_BLOCK.getDefaultState());
 					}
 				}
 			}

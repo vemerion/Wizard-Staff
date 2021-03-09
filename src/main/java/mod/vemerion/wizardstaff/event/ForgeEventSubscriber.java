@@ -1,5 +1,6 @@
-package mod.vemerion.wizardstaff;
+package mod.vemerion.wizardstaff.event;
 
+import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;

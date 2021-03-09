@@ -2,8 +2,8 @@ package mod.vemerion.wizardstaff.Magic.original;
 
 import java.util.Random;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModParticles;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -54,7 +54,7 @@ public class BlazePowderMagic extends Magic {
 				Vector3d direction = Vector3d.fromPitchYaw(player.rotationPitch + rand.nextFloat() * 30 - 15,
 						player.rotationYaw + rand.nextFloat() * 30 - 15);
 				Vector3d particlePos = player.getPositionVec().add(0, 1.5, 0).add(direction.scale(distance));
-				serverWorld.spawnParticle(Main.MAGIC_FLAME_PARTICLE_TYPE, particlePos.x, particlePos.y, particlePos.z,
+				serverWorld.spawnParticle(ModParticles.MAGIC_FLAME_PARTICLE_TYPE, particlePos.x, particlePos.y, particlePos.z,
 						0, 0, 0, 0, 1);
 			}
 		}

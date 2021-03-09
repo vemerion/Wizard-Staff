@@ -2,8 +2,8 @@ package mod.vemerion.wizardstaff.entity;
 
 import java.util.UUID;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -30,7 +30,7 @@ public class MushroomCloudEntity extends Entity {
 	}
 
 	public MushroomCloudEntity(World worldIn, PlayerEntity shooter) {
-		this(Main.MUSHROOM_CLOUD_ENTITY, worldIn);
+		this(ModEntities.MUSHROOM_CLOUD_ENTITY, worldIn);
 		this.shooter = shooter.getUniqueID();
 	}
 

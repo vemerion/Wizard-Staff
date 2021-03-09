@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.item;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.init.ModItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ public class WizardStaffItemGroup extends ItemGroup {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(Main.WIZARD_HAT_ITEM);
+		return new ItemStack(ModItems.WIZARD_HAT_ITEM);
 	}
 
 	@Override

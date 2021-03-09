@@ -5,7 +5,7 @@ import java.util.Random;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.init.ModItems;
 import mod.vemerion.wizardstaff.model.AbstractWizardStaffModel;
 import mod.vemerion.wizardstaff.model.NetherWizardStaffModel;
 import mod.vemerion.wizardstaff.model.WizardStaffModel;
@@ -39,7 +39,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 	}
 
 	protected AbstractWizardStaffModel getModel(ItemStack itemStackIn) {
-		return itemStackIn.getItem() == Main.WIZARD_STAFF_ITEM ? WIZARD_STAFF : NETHER_WIZARD_STAFF;
+		return itemStackIn.getItem() == ModItems.WIZARD_STAFF_ITEM ? WIZARD_STAFF : NETHER_WIZARD_STAFF;
 	}
 	
 	private boolean shouldRender(ItemStack staff) {

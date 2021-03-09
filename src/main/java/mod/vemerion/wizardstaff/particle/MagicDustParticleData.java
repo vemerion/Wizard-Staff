@@ -1,6 +1,6 @@
 package mod.vemerion.wizardstaff.particle;
 
-import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.init.ModParticles;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.RedstoneParticleData;
 
@@ -12,7 +12,7 @@ public class MagicDustParticleData extends RedstoneParticleData {
 	
 	@Override
 	public ParticleType<RedstoneParticleData> getType() {
-		return Main.MAGIC_DUST_PARTICLE_TYPE;
+		return ModParticles.MAGIC_DUST_PARTICLE_TYPE;
 	}
 
 }
