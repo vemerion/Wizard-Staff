@@ -23,14 +23,14 @@ import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class TransformStoneMagic extends Magic {
+public class TransformBlockMagic extends Magic {
 
-	private Block block;
+	private Block from;
+	private Block to;
 
-	public TransformStoneMagic(String name) {
+	public TransformBlockMagic(String name) {
 		super(name);
 	}
 
@@ -41,27 +41,30 @@ public class TransformStoneMagic extends Magic {
 
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
-		block = MagicUtil.decode(buffer, ForgeRegistries.BLOCKS);
+		from = MagicUtil.decode(buffer, ForgeRegistries.BLOCKS);
+		to = MagicUtil.decode(buffer, ForgeRegistries.BLOCKS);
 	}
 
 	@Override
 	protected void encodeAdditional(PacketBuffer buffer) {
-		MagicUtil.encode(buffer, block);
+		MagicUtil.encode(buffer, from);
+		MagicUtil.encode(buffer, to);
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		block = MagicUtil.read(json, ForgeRegistries.BLOCKS, "block");
+		from = MagicUtil.read(json, ForgeRegistries.BLOCKS, "from");
+		to = MagicUtil.read(json, ForgeRegistries.BLOCKS, "to");
 	}
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { block.getTranslatedName() };
+		return new Object[] { from.getTranslatedName(), to.getTranslatedName() };
 	}
-	
+
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { block.getTranslatedName() };
+		return new Object[] { from.getTranslatedName(), to.getTranslatedName() };
 	}
 
 	@Override
@@ -72,13 +75,12 @@ public class TransformStoneMagic extends Magic {
 			Vector3d stop = start.add(direction.scale(4.5));
 			BlockRayTraceResult result = world
 					.rayTraceBlocks(new RayTraceContext(start, stop, BlockMode.COLLIDER, FluidMode.NONE, player));
-			if (result.getType() == Type.BLOCK
-					&& world.getBlockState(result.getPos()).getBlock().isIn(Tags.Blocks.STONE)) {
+			if (result.getType() == Type.BLOCK && world.getBlockState(result.getPos()).getBlock() == from) {
 				BlockPos pos = result.getPos();
 				world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_STONE_BREAK,
 						SoundCategory.PLAYERS, 1.5f, soundPitch(player));
 				cost(player);
-				world.setBlockState(pos, block.getDefaultState());
+				world.setBlockState(pos, to.getDefaultState());
 			}
 
 		}
