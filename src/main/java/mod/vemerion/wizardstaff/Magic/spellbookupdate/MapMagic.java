@@ -4,8 +4,8 @@ import java.util.Random;
 
 import com.google.common.collect.ImmutableList;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -57,7 +57,7 @@ public class MapMagic extends Magic {
 			BlockPos pos = serverworld.func_241117_a_(structureInfo.structure, randPos(player), 2, true);
 			if (pos != null) {
 				cost(player);
-				playSoundServer(world, player, Main.SCRIBBLE_SOUND, 1, soundPitch(player));
+				playSoundServer(world, player, ModSounds.SCRIBBLE_SOUND, 1, soundPitch(player));
 				ItemStack map = FilledMapItem.setupNewMap(serverworld, pos.getX(), pos.getZ(), (byte) 2, true, true);
 				FilledMapItem.func_226642_a_(serverworld, map);
 				MapData.addTargetDecoration(map, pos, "+", structureInfo.decoration);

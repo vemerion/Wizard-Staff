@@ -34,7 +34,6 @@ import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
@@ -137,55 +136,7 @@ public class ModEventSubscriber {
 
 	}
 
-	@SubscribeEvent
-	public static void onRegisterSound(RegistryEvent.Register<SoundEvent> event) {
-		SoundEvent clock_sound = new SoundEvent(new ResourceLocation(Main.MODID, "clock_sound"));
-		event.getRegistry().register(setup(clock_sound, "clock_sound"));
-		SoundEvent plop_sound = new SoundEvent(new ResourceLocation(Main.MODID, "plop_sound"));
-		event.getRegistry().register(setup(plop_sound, "plop_sound"));
-		SoundEvent pumpkin_magic_sound = new SoundEvent(new ResourceLocation(Main.MODID, "pumpkin_magic_sound"));
-		event.getRegistry().register(setup(pumpkin_magic_sound, "pumpkin_magic_sound"));
-		SoundEvent ray_sound = new SoundEvent(new ResourceLocation(Main.MODID, "ray_sound"));
-		event.getRegistry().register(setup(ray_sound, "ray_sound"));
-		SoundEvent scribble_sound = new SoundEvent(new ResourceLocation(Main.MODID, "scribble_sound"));
-		event.getRegistry().register(setup(scribble_sound, "scribble_sound"));
-		SoundEvent woosh_sound = new SoundEvent(new ResourceLocation(Main.MODID, "woosh_sound"));
-		event.getRegistry().register(setup(woosh_sound, "woosh_sound"));
-		SoundEvent burning_sound = new SoundEvent(new ResourceLocation(Main.MODID, "burning_sound"));
-		event.getRegistry().register(setup(burning_sound, "burning_sound"));
-		SoundEvent portal_sound = new SoundEvent(new ResourceLocation(Main.MODID, "portal_sound"));
-		event.getRegistry().register(setup(portal_sound, "portal_sound"));
-		SoundEvent radar_sound = new SoundEvent(new ResourceLocation(Main.MODID, "radar_sound"));
-		event.getRegistry().register(setup(radar_sound, "radar_sound"));
-		SoundEvent skeleton_sound = new SoundEvent(new ResourceLocation(Main.MODID, "skeleton_sound"));
-		event.getRegistry().register(setup(skeleton_sound, "skeleton_sound"));
-		SoundEvent sniffle_sound = new SoundEvent(new ResourceLocation(Main.MODID, "sniffle_sound"));
-		event.getRegistry().register(setup(sniffle_sound, "sniffle_sound"));
-		SoundEvent warp_sound = new SoundEvent(new ResourceLocation(Main.MODID, "warp_sound"));
-		event.getRegistry().register(setup(warp_sound, "warp_sound"));
-		SoundEvent gong_sound = new SoundEvent(new ResourceLocation(Main.MODID, "gong_sound"));
-		event.getRegistry().register(setup(gong_sound, "gong_sound"));
-		SoundEvent poof_sound = new SoundEvent(new ResourceLocation(Main.MODID, "poof_sound"));
-		event.getRegistry().register(setup(poof_sound, "poof_sound"));
-		SoundEvent teleport_sound = new SoundEvent(new ResourceLocation(Main.MODID, "teleport_sound"));
-		event.getRegistry().register(setup(teleport_sound, "teleport_sound"));
-		SoundEvent brick_sound = new SoundEvent(new ResourceLocation(Main.MODID, "brick_sound"));
-		event.getRegistry().register(setup(brick_sound, "brick_sound"));
-		SoundEvent chirp_sound = new SoundEvent(new ResourceLocation(Main.MODID, "chirp_sound"));
-		event.getRegistry().register(setup(chirp_sound, "chirp_sound"));
-		SoundEvent flap_sound = new SoundEvent(new ResourceLocation(Main.MODID, "flap_sound"));
-		event.getRegistry().register(setup(flap_sound, "flap_sound"));
-		SoundEvent spray_sound = new SoundEvent(new ResourceLocation(Main.MODID, "spray_sound"));
-		event.getRegistry().register(setup(spray_sound, "spray_sound"));
-		SoundEvent anvil_sound = new SoundEvent(new ResourceLocation(Main.MODID, "anvil_sound"));
-		event.getRegistry().register(setup(anvil_sound, "anvil_sound"));
-		SoundEvent cloth_sound = new SoundEvent(new ResourceLocation(Main.MODID, "cloth_sound"));
-		event.getRegistry().register(setup(cloth_sound, "cloth_sound"));
-		SoundEvent page_turn_sound = new SoundEvent(new ResourceLocation(Main.MODID, "page_turn_sound"));
-		event.getRegistry().register(setup(page_turn_sound, "page_turn_sound"));
-		SoundEvent deage_sound = new SoundEvent(new ResourceLocation(Main.MODID, "deage_sound"));
-		event.getRegistry().register(setup(deage_sound, "deage_sound"));  
-	}
+
 
 	@SubscribeEvent
 	public static void setup(FMLCommonSetupEvent event) {

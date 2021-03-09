@@ -1,7 +1,7 @@
 package mod.vemerion.wizardstaff.Magic;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Helper.Helper;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -24,7 +24,7 @@ public abstract class RayMagic extends Magic {
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (count % 10 == 0) {
-			player.playSound(Main.RAY_SOUND, 0.6f, 0.95f + player.getRNG().nextFloat() * 0.05f);
+			player.playSound(ModSounds.RAY_SOUND, 0.6f, 0.95f + player.getRNG().nextFloat() * 0.05f);
 		}
 		if (world.isRemote) {
 			Vector3d direction = Vector3d.fromPitchYaw(player.getPitchYaw());

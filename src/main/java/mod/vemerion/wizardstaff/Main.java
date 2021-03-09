@@ -22,7 +22,6 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -110,74 +109,5 @@ public class Main {
 	@ObjectHolder(Main.MODID + ":magic_dust_particle_type")
 	public static final ParticleType<RedstoneParticleData> MAGIC_DUST_PARTICLE_TYPE = null;
 
-	@ObjectHolder("wizard-staff:clock_sound")
-	public static final SoundEvent CLOCK_SOUND = null;
-
-	@ObjectHolder("wizard-staff:plop_sound")
-	public static final SoundEvent PLOP_SOUND = null;
-
-	@ObjectHolder("wizard-staff:pumpkin_magic_sound")
-	public static final SoundEvent PUMPKIN_MAGIC_SOUND = null;
-
-	@ObjectHolder("wizard-staff:ray_sound")
-	public static final SoundEvent RAY_SOUND = null;
-
-	@ObjectHolder("wizard-staff:scribble_sound")
-	public static final SoundEvent SCRIBBLE_SOUND = null;
-
-	@ObjectHolder("wizard-staff:woosh_sound")
-	public static final SoundEvent WOOSH_SOUND = null;
-
-	@ObjectHolder("wizard-staff:burning_sound")
-	public static final SoundEvent BURNING_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":portal_sound")
-	public static final SoundEvent PORTAL_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":radar_sound")
-	public static final SoundEvent RADAR_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":skeleton_sound")
-	public static final SoundEvent SKELETON_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":sniffle_sound")
-	public static final SoundEvent SNIFFLE_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":warp_sound")
-	public static final SoundEvent WARP_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":gong_sound")
-	public static final SoundEvent GONG_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":poof_sound")
-	public static final SoundEvent POOF_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":teleport_sound")
-	public static final SoundEvent TELEPORT_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":brick_sound")
-	public static final SoundEvent BRICK_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":chirp_sound")
-	public static final SoundEvent CHIRP_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":flap_sound")
-	public static final SoundEvent FLAP_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":spray_sound")
-	public static final SoundEvent SPRAY_SOUND = null;
-	
-	@ObjectHolder(Main.MODID + ":anvil_sound")
-	public static final SoundEvent ANVIL_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":cloth_sound")
-	public static final SoundEvent CLOTH_SOUND = null;
-
-	@ObjectHolder(Main.MODID + ":page_turn_sound")
-	public static final SoundEvent PAGE_TURN_SOUND = null;
-	
-	@ObjectHolder(Main.MODID + ":deage_sound")
-	public static final SoundEvent DEAGE_SOUND = null;
-	
 	public static final WizardStaffItemGroup WIZARD_STAFF_ITEM_GROUP = new WizardStaffItemGroup();
 }

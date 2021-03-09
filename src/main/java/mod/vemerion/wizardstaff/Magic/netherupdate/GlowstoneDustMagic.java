@@ -1,7 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -38,7 +38,7 @@ public class GlowstoneDustMagic extends Magic {
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (count % 11 == 0)
-			player.playSound(Main.RADAR_SOUND, 0.35f, 1);
+			player.playSound(ModSounds.RADAR_SOUND, 0.35f, 1);
 		super.magicTick(world, player, staff, count);
 	}
 

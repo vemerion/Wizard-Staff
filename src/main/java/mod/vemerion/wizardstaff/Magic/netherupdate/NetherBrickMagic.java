@@ -1,7 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -41,7 +41,7 @@ public class NetherBrickMagic extends Magic {
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (world.getDimensionKey() == World.THE_NETHER) {
-			player.playSound(Main.WARP_SOUND, 0.8f, soundPitch(player));
+			player.playSound(ModSounds.WARP_SOUND, 0.8f, soundPitch(player));
 			if (!world.isRemote) {
 				BlockPos fortressPos = ((ServerWorld) world).func_241117_a_(Structure.FORTRESS,
 						new BlockPos(player.getPositionVec()), 100, false);

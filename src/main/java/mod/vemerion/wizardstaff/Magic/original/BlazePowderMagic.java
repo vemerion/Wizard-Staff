@@ -4,6 +4,7 @@ import java.util.Random;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -36,7 +37,7 @@ public class BlazePowderMagic extends Magic {
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (count % 7 == 0)
-			player.playSound(Main.BURNING_SOUND, 1, soundPitch(player));
+			player.playSound(ModSounds.BURNING_SOUND, 1, soundPitch(player));
 		if (!world.isRemote) {
 			ServerWorld serverWorld = (ServerWorld) world;
 			Random rand = player.getRNG();

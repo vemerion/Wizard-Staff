@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.Magic.suggestions;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -39,7 +40,7 @@ public class BricksMagic extends Magic {
 			cost(player);
 			createCage(world, player.getPosition());
 		}
-		player.playSound(Main.BRICK_SOUND, 0.8f, soundPitch(player));
+		player.playSound(ModSounds.BRICK_SOUND, 0.8f, soundPitch(player));
 		return super.magicFinish(world, player, staff);
 	}
 

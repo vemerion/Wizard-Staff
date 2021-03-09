@@ -1,7 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -26,7 +26,7 @@ public class ElytraMagic extends Magic {
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (count % 5 == 0)
-			player.playSound(Main.WOOSH_SOUND, 1, soundPitch(player));
+			player.playSound(ModSounds.WOOSH_SOUND, 1, soundPitch(player));
 		if (!world.isRemote) {
 			Vector3d motion = player.getMotion();
 			cost(player);

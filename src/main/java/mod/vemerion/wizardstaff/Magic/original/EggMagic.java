@@ -2,8 +2,8 @@ package mod.vemerion.wizardstaff.Magic.original;
 
 import java.util.Random;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
@@ -21,7 +21,7 @@ public class EggMagic extends RayMagic {
 
 	@Override
 	public void hitEntity(World world, PlayerEntity player, Entity target) {
-		target.playSound(Main.PLOP_SOUND, 1, soundPitch(player));
+		target.playSound(ModSounds.PLOP_SOUND, 1, soundPitch(player));
 		SpawnEggItem egg = null;
 		for (SpawnEggItem e : SpawnEggItem.getEggs()) {
 			if (e.getType(null) == target.getType()) {

@@ -2,9 +2,9 @@ package mod.vemerion.wizardstaff.Magic.fashionupdate;
 
 import com.google.gson.JsonObject;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -60,7 +60,7 @@ public class TransmutationMagic extends Magic {
 	@Override
 	protected void readAdditional(JsonObject json) {
 		created = JSONUtils.getItem(json, "created");
-		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound", Main.PLOP_SOUND);
+		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound", ModSounds.PLOP_SOUND);
 	}
 
 	@Override

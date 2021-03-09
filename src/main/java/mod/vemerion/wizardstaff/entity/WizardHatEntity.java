@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.entity;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -26,18 +27,18 @@ public class WizardHatEntity extends AbstractArrowEntity {
 	public WizardHatEntity(EntityType<? extends WizardHatEntity> entityTypeIn, World worldIn) {
 		super(entityTypeIn, worldIn);
 		this.setDamage(1);
-		this.setHitSound(Main.CLOTH_SOUND);
+		this.setHitSound(ModSounds.CLOTH_SOUND);
 	}
 
 	public WizardHatEntity(double x, double y, double z, World world) {
 		super(Main.WIZARD_HAT_ENTITY, x, y, z, world);
 		this.setDamage(1);
-		this.setHitSound(Main.CLOTH_SOUND);
+		this.setHitSound(ModSounds.CLOTH_SOUND);
 	}
 	
 	@Override
 	protected SoundEvent getHitEntitySound() {
-		return Main.CLOTH_SOUND;
+		return ModSounds.CLOTH_SOUND;
 	}
 
 	@Override
