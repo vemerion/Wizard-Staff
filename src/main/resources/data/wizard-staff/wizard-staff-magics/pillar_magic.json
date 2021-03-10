@@ -1,0 +1,11 @@
+{
+  "cost": 1,
+  "duration": -1,
+  "magic": "pillar_magic",
+  "ingredient": [
+    {
+      "item": "minecraft:dirt"
+    }
+  ],
+  "block": "minecraft:dirt"
+}

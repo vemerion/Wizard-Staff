@@ -100,5 +100,7 @@
   "gui.wizard-staff.deage_magic.name": "Deage Magic",
   "gui.wizard-staff.deage_magic.description": "Shoot a de-age ray at an entity, turning it into a child.",
   "gui.wizard-staff.smelting_magic.name": "Magical %s",
-  "gui.wizard-staff.smelting_magic.description": "Magical item processing, replicating the functionality of the %s."
+  "gui.wizard-staff.smelting_magic.description": "Magical item processing, replicating the functionality of the %s.",
+  "gui.wizard-staff.pillar_magic.name": "%s Pillar",
+  "gui.wizard-staff.pillar_magic.description": "Stand still and use the staff to automatically propel yourself upwards, while creating a %s tower below you."
 }
