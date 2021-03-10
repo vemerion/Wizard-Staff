@@ -1,0 +1,14 @@
+{
+  "cost": 0.1,
+  "duration": -1,
+  "magic": "smelting_magic",
+  "ingredient": [
+    {
+      "item": "minecraft:stonecutter"
+    }
+  ],
+  "recipe_type": "minecraft:stonecutting",
+  "smelt_interval": 2,
+  "sound": "minecraft:ui.stonecutter.take_result",
+  "recipe_name": "block.minecraft.stonecutter"
+}

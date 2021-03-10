@@ -98,5 +98,7 @@
   "gui.wizard-staff.map_magic.name": "Treasure Map!",
   "gui.wizard-staff.map_magic.description": "Transform the item in the staff into a treasure map.",
   "gui.wizard-staff.deage_magic.name": "Deage Magic",
-  "gui.wizard-staff.deage_magic.description": "Shoot a de-age ray at an entity, turning it into a child."
+  "gui.wizard-staff.deage_magic.description": "Shoot a de-age ray at an entity, turning it into a child.",
+  "gui.wizard-staff.smelting_magic.name": "Magical %s",
+  "gui.wizard-staff.smelting_magic.description": "Magical item processing, replicating the functionality of the %s."
 }
