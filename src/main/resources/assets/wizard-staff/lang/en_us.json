@@ -104,5 +104,10 @@
   "gui.wizard-staff.pillar_magic.name": "%s Pillar",
   "gui.wizard-staff.pillar_magic.description": "Stand still and use the staff to automatically propel yourself upwards, while creating a %s tower below you.",
   "gui.wizard-staff.surface_magic.name": "Magic Surface Builder",
-  "gui.wizard-staff.surface_magic.description": "Click on two blocks in the world with the staff, and then use the staff to automatically build a surface between those two blocks. Only works for axis-aligned surfaces, so no diagonals! It will build the surface using blocks from your inventory, of the same type as the block you clicked first. Costs experience based on amount of blocks placed."
+  "gui.wizard-staff.surface_magic.description": "Click on two blocks in the world with the staff, and then use the staff to automatically build a surface between those two blocks. Only works for axis-aligned surfaces, so no diagonals! It will build the surface using blocks from your inventory, of the same type as the block you clicked first. Costs experience based on amount of blocks placed.",
+  "gui.wizard-staff.potion_magic.name": "Potion: %s %s",
+  "gui.wizard-staff.potion_magic.description": "Apply %s %s for %s seconds to%s%s.",
+  "gui.wizard-staff.potion_magic.affect_caster": " yourself%s",
+  "gui.wizard-staff.potion_magic.glue": " and",
+  "gui.wizard-staff.potion_magic.affect_others": " others around you"
 }

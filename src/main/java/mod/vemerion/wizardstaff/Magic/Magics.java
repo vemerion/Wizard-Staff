@@ -34,6 +34,7 @@ import mod.vemerion.wizardstaff.Magic.original.TransformBlockMagic;
 import mod.vemerion.wizardstaff.Magic.original.WizardStaffMagic;
 import mod.vemerion.wizardstaff.Magic.original.WritableBookMagic;
 import mod.vemerion.wizardstaff.Magic.restructuring.PillarMagic;
+import mod.vemerion.wizardstaff.Magic.restructuring.PotionMagic;
 import mod.vemerion.wizardstaff.Magic.restructuring.SmeltingMagic;
 import mod.vemerion.wizardstaff.Magic.restructuring.SurfaceMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.BookshelfMagic;
@@ -132,6 +133,7 @@ public class Magics extends JsonReloadListener {
 		register("smelting_magic", (s) -> () -> new SmeltingMagic(s));
 		register("pillar_magic", (s) -> () -> new PillarMagic(s));
 		register("surface_magic", (s) -> () -> new SurfaceMagic(s));
+		register("potion_magic", (s) -> () -> new PotionMagic(s));
 		register("no_magic", (s) -> () -> NO_MAGIC);
 	}
 
