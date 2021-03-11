@@ -1,16 +1,28 @@
 package mod.vemerion.wizardstaff.capability;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.DirectionalPlaceContext;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.NBTDynamicOps;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.GlobalPos;
@@ -38,6 +50,7 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 	private GlobalPos lodestonePos;
 	private boolean lodestoneTracked;
 	private GrapplingHookEntity grapplingHook;
+	private BlockPos surfaceStart, surfaceStop;
 
 	public Wizard() {
 
@@ -104,6 +117,79 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 
 	public void setGrapplingHook(GrapplingHookEntity hook) {
 		this.grapplingHook = hook;
+	}
+
+	public void setSurfacePos(BlockPos pos) {
+		if (pos.equals(surfaceStart)) {
+			surfaceStart = null;
+		} else if (pos.equals(surfaceStop)) {
+			surfaceStop = null;
+		} else if (surfaceStart != null && surfaceStop != null) {
+			surfaceStart = pos;
+			surfaceStop = null;
+		} else if (surfaceStart == null) {
+			surfaceStart = pos;
+		} else {
+			surfaceStop = pos;
+		}
+	}
+
+	public int createSurface(World world, PlayerEntity player) {
+		BlockPos start = surfaceStart == null ? null : new BlockPos(surfaceStart);
+		BlockPos stop = surfaceStop == null ? null : new BlockPos(surfaceStop);
+		surfaceStart = null;
+		surfaceStop = null;
+
+		if (start == null || stop == null)
+			return 0;
+
+		// Too far away
+		if (!player.getPosition().withinDistance(start, 100) || !player.getPosition().withinDistance(stop, 100))
+			return 0;
+
+		if (world.isAirBlock(start) || world.isAirBlock(stop))
+			return 0;
+
+		AxisAlignedBB surface = new AxisAlignedBB(start, stop);
+
+		// Not a 2d surface
+		if (surface.getXSize() > 1.1 && surface.getYSize() > 1.1 && surface.getZSize() > 1.1)
+			return 0;
+
+		Item item = world.getBlockState(start).getBlock().asItem();
+
+		if (item == Items.AIR || !(item instanceof BlockItem))
+			return 0;
+
+		List<BlockPos> positions = BlockPos.getAllInBox(surface).map(b -> b.toImmutable()).collect(Collectors.toList());
+
+		// Placement of surface blocks
+		int count = 0;
+		PlayerInventory inv = player.inventory;
+		for (int i = 0; i < inv.getSizeInventory(); i++) {
+			if (inv.getStackInSlot(i).getItem() != item)
+				continue;
+			ItemStack stack = inv.removeStackFromSlot(i);
+			while (!positions.isEmpty()) {
+				if (stack.isEmpty())
+					break;
+
+				BlockPos p = positions.remove(0);
+				if (!world.isAirBlock(p))
+					continue;
+
+				BlockItemUseContext context = new DirectionalPlaceContext(world, p, Direction.NORTH, stack,
+						Direction.DOWN);
+				if (((BlockItem) item).tryPlace(context) == ActionResultType.FAIL)
+					continue;
+
+				count++;
+			}
+
+			inv.addItemStackToInventory(stack);
+		}
+
+		return count;
 	}
 
 	public void deserializeNBT(CompoundNBT compound) {

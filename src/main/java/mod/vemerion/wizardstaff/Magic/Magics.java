@@ -33,19 +33,20 @@ import mod.vemerion.wizardstaff.Magic.original.JukeboxMagic;
 import mod.vemerion.wizardstaff.Magic.original.TransformBlockMagic;
 import mod.vemerion.wizardstaff.Magic.original.WizardStaffMagic;
 import mod.vemerion.wizardstaff.Magic.original.WritableBookMagic;
-import mod.vemerion.wizardstaff.Magic.restructuring.SmeltingMagic;
 import mod.vemerion.wizardstaff.Magic.restructuring.PillarMagic;
+import mod.vemerion.wizardstaff.Magic.restructuring.SmeltingMagic;
+import mod.vemerion.wizardstaff.Magic.restructuring.SurfaceMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.BookshelfMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.DeageMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.MapMagic;
 import mod.vemerion.wizardstaff.Magic.spellbookupdate.PortableCraftingMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.BlueDyeMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.BricksMagic;
+import mod.vemerion.wizardstaff.Magic.suggestions.BucketMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.FeatherMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.GrapplingHookMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.MushroomCloudMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.ShulkerBulletMagic;
-import mod.vemerion.wizardstaff.Magic.suggestions.BucketMagic;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import net.minecraft.client.resources.JsonReloadListener;
@@ -130,6 +131,7 @@ public class Magics extends JsonReloadListener {
 		register("deage_magic", (s) -> () -> new DeageMagic(s));
 		register("smelting_magic", (s) -> () -> new SmeltingMagic(s));
 		register("pillar_magic", (s) -> () -> new PillarMagic(s));
+		register("surface_magic", (s) -> () -> new SurfaceMagic(s));
 		register("no_magic", (s) -> () -> NO_MAGIC);
 	}
 

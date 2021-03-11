@@ -95,13 +95,16 @@ public abstract class Magic {
 				volume, pitch);
 	}
 
-	protected final void cost(PlayerEntity player) {
-		int whole = Experience.add(player, cost * discount(player));
+	protected final void cost(PlayerEntity player, int multiplier) {
+		int whole = Experience.add(player, multiplier * cost * discount(player));
 		double debt = debt(player, whole);
 		player.giveExperiencePoints(-whole);
 		if (debt > 0)
 			player.attackEntityFrom(DamageSource.MAGIC, (float) debt);
-
+	}
+	
+	protected final void cost(PlayerEntity player) {
+		cost(player, 1);
 	}
 
 	private double discount(PlayerEntity player) {
