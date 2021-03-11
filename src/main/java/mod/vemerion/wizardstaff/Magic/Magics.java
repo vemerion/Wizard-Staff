@@ -45,7 +45,7 @@ import mod.vemerion.wizardstaff.Magic.suggestions.FeatherMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.GrapplingHookMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.MushroomCloudMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.ShulkerBulletMagic;
-import mod.vemerion.wizardstaff.Magic.suggestions.WaterBucketMagic;
+import mod.vemerion.wizardstaff.Magic.suggestions.BucketMagic;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import net.minecraft.client.resources.JsonReloadListener;
@@ -123,7 +123,7 @@ public class Magics extends JsonReloadListener {
 		register("feather_magic", (s) -> () -> new FeatherMagic(s));
 		register("mushroom_cloud_magic", (s) -> () -> new MushroomCloudMagic(s));
 		register("shulker_bullet_magic", (s) -> () -> new ShulkerBulletMagic(s));
-		register("water_bucket_magic", (s) -> () -> new WaterBucketMagic(s));
+		register("bucket_magic", (s) -> () -> new BucketMagic(s));
 		register("portable_crafting_magic", (s) -> () -> new PortableCraftingMagic(s));
 		register("bookshelf_magic", (s) -> () -> new BookshelfMagic(s));
 		register("map_magic", (s) -> () -> new MapMagic(s));

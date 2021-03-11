@@ -1,8 +1,9 @@
 {
   "cost": 5,
   "duration": 10,
-  "magic": "water_bucket_magic",
+  "magic": "bucket_magic",
   "ingredient": {
     "item": "minecraft:water_bucket"
-  }
+  },
+  "bucket": "minecraft:water_bucket"
 }
