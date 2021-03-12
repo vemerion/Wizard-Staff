@@ -1,11 +1,15 @@
 package mod.vemerion.wizardstaff.Magic;
 
+import java.util.Optional;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.serialization.JsonOps;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -67,4 +71,15 @@ public class MagicUtil {
 		return registry.getOrDefault(new ResourceLocation(buffer.readString(keyLen)));
 	}
 	// ---
+	
+	
+	// Other
+	public static BlockPos readBlockPos(JsonObject json, String member) {
+		Optional<BlockPos> pos = BlockPos.CODEC.parse(JsonOps.INSTANCE, json.get(member)).result();
+		if (!pos.isPresent()) {
+			throw new JsonParseException("Missing or invalid BlockPos for member " + member);
+		} else {
+			return pos.get();
+		}
+	}
 }

@@ -33,6 +33,7 @@ import mod.vemerion.wizardstaff.Magic.original.JukeboxMagic;
 import mod.vemerion.wizardstaff.Magic.original.TransformBlockMagic;
 import mod.vemerion.wizardstaff.Magic.original.WizardStaffMagic;
 import mod.vemerion.wizardstaff.Magic.original.WritableBookMagic;
+import mod.vemerion.wizardstaff.Magic.restructuring.BuilderMagic;
 import mod.vemerion.wizardstaff.Magic.restructuring.PillarMagic;
 import mod.vemerion.wizardstaff.Magic.restructuring.PotionMagic;
 import mod.vemerion.wizardstaff.Magic.restructuring.SmeltingMagic;
@@ -62,6 +63,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
+// TODO: Fix so that client does not overwrite server magics when singleplayer
 public class Magics extends JsonReloadListener {
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 	private static final String FOLDER_NAME = Main.MODID + "-magics";
@@ -134,6 +136,7 @@ public class Magics extends JsonReloadListener {
 		register("pillar_magic", (s) -> () -> new PillarMagic(s));
 		register("surface_magic", (s) -> () -> new SurfaceMagic(s));
 		register("potion_magic", (s) -> () -> new PotionMagic(s));
+		register("builder_magic", (s) -> () -> new BuilderMagic(s));
 		register("no_magic", (s) -> () -> NO_MAGIC);
 	}
 
