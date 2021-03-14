@@ -22,12 +22,12 @@ public class ForgeEventSubscriber {
 
 	@SubscribeEvent
 	public static void addMagicsReloadListener(AddReloadListenerEvent event) {
-		event.addListener(Magics.getInstance());
+		event.addListener(Magics.getInstance(false));
 	}
 
 	@SubscribeEvent
 	public static void synchMagics(PlayerLoggedInEvent event) {
-		Magics.getInstance().sendAllMagicMessage((ServerPlayerEntity) event.getPlayer());
+		Magics.getInstance(false).sendAllMagicMessage((ServerPlayerEntity) event.getPlayer());
 	}
 	
 	@SubscribeEvent

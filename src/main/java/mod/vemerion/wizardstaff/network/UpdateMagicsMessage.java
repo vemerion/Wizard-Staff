@@ -38,7 +38,7 @@ public class UpdateMagicsMessage {
 		for (int i = 0; i < size; i++) {
 			ResourceLocation key = buffer.readResourceLocation();
 			String name = buffer.readString(100);
-			Magic magic = Magics.getInstance().getFromName(name);
+			Magic magic = Magics.getInstance(true).getFromName(name);
 			magic.decode(buffer);
 			magics.put(key, magic);
 		}
@@ -58,8 +58,8 @@ public class UpdateMagicsMessage {
 
 				@Override
 				public void run() {
-					if (Magics.getInstance() != null) {
-						Magics.getInstance().addMagics(magics);
+					if (Magics.getInstance(true) != null) {
+						Magics.getInstance(true).addMagics(magics);
 					}
 				}
 			};

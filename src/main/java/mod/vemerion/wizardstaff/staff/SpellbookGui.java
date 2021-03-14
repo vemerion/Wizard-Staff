@@ -59,7 +59,7 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 
 		this.buttons = new ArrayList<>();
 		int i = 0;
-		for (ItemStack stack : Magics.getInstance().getMagicItems()) {
+		for (ItemStack stack : Magics.getInstance(true).getMagicItems()) {
 			buttons.add(new ItemButton(left + BORDER_X + (i % ITEMS_PER_ROW) * ITEM_SIZE,
 					top + BORDER_Y + (i / ITEMS_PER_ROW) * ITEM_SIZE, ITEM_SIZE, ITEM_SIZE, stack));
 			i = (i + 1) % ITEMS_PER_PAGE;
@@ -194,7 +194,7 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 
 		public SpellDescription(ItemStack stack, int left, int top) {
 			this.stack = stack;
-			this.magicDescr = Magics.getInstance().get(stack).getDescription();
+			this.magicDescr = Magics.getInstance(true).get(stack).getDescription();
 			init(left, top);
 		}
 

@@ -18,6 +18,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -46,7 +47,7 @@ public class WizardStaffItem extends Item {
 		} else { // Use staff
 			playerIn.setActiveHand(handIn);
 			ItemStack magic = getMagic(itemstack);
-			Magics.getInstance().get(magic).magicStart(worldIn, playerIn, itemstack);
+			Magics.getInstance(worldIn).get(magic).magicStart(worldIn, playerIn, itemstack);
 		}
 		return ActionResult.resultPass(itemstack);
 	}
@@ -61,12 +62,11 @@ public class WizardStaffItem extends Item {
 	public static ItemStack getMagic(ItemStack itemstack) {
 		return getHandler(itemstack).getStackInSlot(0);
 	}
-	
+
 	@Override
 	public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
 		return oldStack == newStack;
 	}
-
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
@@ -76,20 +76,20 @@ public class WizardStaffItem extends Item {
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		ItemStack magic = getMagic(stack);
-		return Magics.getInstance().get(magic).getUseAction(stack);
+		return Magics.getInstance(EffectiveSide.get().isClient()).get(magic).getUseAction(stack);
 	}
 
 	@Override
 	public int getUseDuration(ItemStack stack) {
 		ItemStack magic = getMagic(stack);
-		return Magics.getInstance().get(magic).getUseDuration(stack);
+		return Magics.getInstance(EffectiveSide.get().isClient()).get(magic).getUseDuration(stack);
 	}
 
 	@Override
 	public void onUse(World worldIn, LivingEntity livingEntityIn, ItemStack stack, int count) {
 		ItemStack magic = getMagic(stack);
 		if (livingEntityIn instanceof PlayerEntity) {
-			Magics.getInstance().get(magic).magicTick(worldIn, (PlayerEntity) livingEntityIn, stack, count);
+			Magics.getInstance(worldIn).get(magic).magicTick(worldIn, (PlayerEntity) livingEntityIn, stack, count);
 		}
 	}
 
@@ -97,18 +97,18 @@ public class WizardStaffItem extends Item {
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, LivingEntity entityLiving) {
 		ItemStack magic = getMagic(stack);
 		if (entityLiving instanceof PlayerEntity) {
-			return Magics.getInstance().get(magic).magicFinish(worldIn, (PlayerEntity) entityLiving, stack);
+			return Magics.getInstance(worldIn).get(magic).magicFinish(worldIn, (PlayerEntity) entityLiving, stack);
 		}
 		return stack;
 	}
-	
+
 	@Override
 	public ActionResultType onItemUse(ItemUseContext context) {
 		ItemStack magic = getMagic(context.getItem());
 		if (context.getPlayer() == null) {
 			return ActionResultType.PASS;
 		} else {
-			return Magics.getInstance().get(magic).magicInteractBlock(context);
+			return Magics.getInstance(context.getWorld()).get(magic).magicInteractBlock(context);
 		}
 	}
 
@@ -116,7 +116,7 @@ public class WizardStaffItem extends Item {
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
 		ItemStack magic = getMagic(stack);
 		if (entityLiving instanceof PlayerEntity) {
-			Magics.getInstance().get(magic).magicCancel(worldIn, (PlayerEntity) entityLiving, stack, timeLeft);
+			Magics.getInstance(worldIn).get(magic).magicCancel(worldIn, (PlayerEntity) entityLiving, stack, timeLeft);
 		}
 	}
 

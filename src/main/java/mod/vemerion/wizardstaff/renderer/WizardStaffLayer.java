@@ -44,7 +44,7 @@ public class WizardStaffLayer
 		HandSide side = player.getActiveHand() == Hand.MAIN_HAND ? player.getPrimaryHand()
 				: player.getPrimaryHand().opposite();
 
-		Magics.getInstance().get(magic).thirdPersonRenderer().render(renderer, duration, maxDuration, activeItem,
+		Magics.getInstance(true).get(magic).thirdPersonRenderer().render(renderer, duration, maxDuration, activeItem,
 				matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, partialTicks, side);
 	}
 

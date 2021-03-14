@@ -59,16 +59,17 @@ import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
-// TODO: Fix so that client does not overwrite server magics when singleplayer
 public class Magics extends JsonReloadListener {
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 	private static final String FOLDER_NAME = Main.MODID + "-magics";
 
-	private static Magics instance;
+	private static Magics clientInstance;
+	private static Magics serverInstance;
 
 	private Map<String, Supplier<Magic>> registry; // All possible magics, registered in initMagicNames()
 	private Map<ResourceLocation, Magic> magics; // The actual magics, as determined by the json magic files
@@ -144,12 +145,17 @@ public class Magics extends JsonReloadListener {
 		registry.put(name, magic.apply(name));
 	}
 
-	public static Magics getInstance() {
-		return instance;
+	public static Magics getInstance(boolean isRemote) {
+		return isRemote ? clientInstance :serverInstance;
+	}
+	
+	public static Magics getInstance(World world) {
+		return getInstance(world.isRemote);
 	}
 
 	public static void init() {
-		instance = new Magics();
+		clientInstance = new Magics();
+		serverInstance = new Magics();
 	}
 
 	@Override
