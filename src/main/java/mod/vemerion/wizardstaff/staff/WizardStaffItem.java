@@ -73,10 +73,16 @@ public class WizardStaffItem extends Item {
 		return new WizardStaffCapabilityProvider();
 	}
 
+	// We only want this for the third person visual effect,
+	// hence NONE on server
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
+		if (EffectiveSide.get().isClient()) {
 		ItemStack magic = getMagic(stack);
-		return Magics.getInstance(EffectiveSide.get().isClient()).get(magic).getUseAction(stack);
+		return Magics.getInstance(true).get(magic).getUseAction(stack);
+		} else {
+			return UseAction.NONE;
+		}
 	}
 
 	@Override
