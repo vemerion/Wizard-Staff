@@ -14,7 +14,6 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFir
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.Mirror;
@@ -57,30 +56,6 @@ public class BuilderMagic extends Magic {
 			throw new JsonParseException("Direction must be horizontal for front attribute");
 		center = MagicUtil.readBlockPos(json, "center");
 		playerOffset = MagicUtil.readBlockPos(json, "player_offset");
-	}
-
-	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
-		int templateLength = buffer.readInt();
-		templateRL = new ResourceLocation(buffer.readString(templateLength));
-		int frontLength = buffer.readInt();
-		front = Direction.byName(buffer.readString(frontLength));
-		center = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
-		playerOffset = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
-	}
-
-	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
-		buffer.writeInt(templateRL.toString().length());
-		buffer.writeString(templateRL.toString());
-		buffer.writeInt(front.getName2().length());
-		buffer.writeString(front.getName2());
-		buffer.writeInt(center.getX());
-		buffer.writeInt(center.getY());
-		buffer.writeInt(center.getZ());
-		buffer.writeInt(playerOffset.getX());
-		buffer.writeInt(playerOffset.getY());
-		buffer.writeInt(playerOffset.getZ());
 	}
 
 	@Override
