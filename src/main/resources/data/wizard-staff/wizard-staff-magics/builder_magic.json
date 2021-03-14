@@ -1,6 +1,6 @@
 {
-  "cost": 30,
-  "duration": 20,
+  "cost": 400,
+  "duration": 80,
   "magic": "builder_magic",
   "ingredient": {
     "item": "minecraft:cobblestone"

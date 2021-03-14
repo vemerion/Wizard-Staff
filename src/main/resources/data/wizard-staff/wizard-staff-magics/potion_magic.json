@@ -1,6 +1,6 @@
 {
-  "cost": 50,
-  "duration": 30,
+  "cost": 25,
+  "duration": 25,
   "magic": "potion_magic",
   "ingredient": {
     "item": "minecraft:wooden_pickaxe"
