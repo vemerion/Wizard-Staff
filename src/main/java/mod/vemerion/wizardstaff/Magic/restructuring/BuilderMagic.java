@@ -32,7 +32,6 @@ import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
 import net.minecraft.world.server.ServerWorld;
 
-// TODO: Create custom building
 // TODO: Fix name/description
 public class BuilderMagic extends Magic {
 

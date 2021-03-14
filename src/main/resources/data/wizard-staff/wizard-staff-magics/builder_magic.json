@@ -5,8 +5,8 @@
   "ingredient": {
     "item": "minecraft:cobblestone"
   },
-  "template": "minecraft:igloo/top",
-  "front": "north",
-  "center": [3, 5, 5],
-  "player_offset": [0, 0, 10]
+  "template": "wizard-staff:wizard_home",
+  "front": "south",
+  "center": [3, 3, 3],
+  "player_offset": [0, 0, 5]
 }
