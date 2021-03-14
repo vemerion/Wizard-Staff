@@ -7,6 +7,7 @@ import com.mojang.serialization.Codec;
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -31,7 +32,6 @@ import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
 import net.minecraft.world.server.ServerWorld;
 
-// TODO: Add sound
 // TODO: Create custom building
 // TODO: Fix name/description
 public class BuilderMagic extends Magic {
@@ -77,6 +77,7 @@ public class BuilderMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote && generateStructure((ServerWorld) world, player)) {
 			cost(player);
+			playSoundServer(world, player, ModSounds.BUILDING_SOUND, 1, soundPitch(player));
 		}
 		return super.magicFinish(world, player, staff);
 	}

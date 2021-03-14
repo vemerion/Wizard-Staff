@@ -36,6 +36,7 @@ public class ModSounds {
 	public static final SoundEvent CLOTH_SOUND = null;
 	public static final SoundEvent PAGE_TURN_SOUND = null;
 	public static final SoundEvent DEAGE_SOUND = null;
+	public static final SoundEvent BUILDING_SOUND = null;
 
 	@SubscribeEvent
 	public static void onRegisterSound(RegistryEvent.Register<SoundEvent> event) {
@@ -85,6 +86,8 @@ public class ModSounds {
 		event.getRegistry().register(Init.setup(page_turn_sound, "page_turn_sound"));
 		SoundEvent deage_sound = new SoundEvent(new ResourceLocation(Main.MODID, "deage_sound"));
 		event.getRegistry().register(Init.setup(deage_sound, "deage_sound"));
+		SoundEvent building_sound = new SoundEvent(new ResourceLocation(Main.MODID, "building_sound"));
+		event.getRegistry().register(Init.setup(building_sound, "building_sound"));
 	}
 
 }

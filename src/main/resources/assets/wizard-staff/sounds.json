@@ -201,5 +201,13 @@
         "stream": false
       }
     ]
+  },
+  "building_sound": {
+    "sounds": [
+      {
+        "name": "wizard-staff:building_sound",
+        "stream": false
+      }
+    ]
   }
 }
