@@ -15,6 +15,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFir
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.Mirror;
@@ -22,6 +23,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
@@ -32,10 +34,9 @@ import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
 import net.minecraft.world.server.ServerWorld;
 
-// TODO: Fix name/description
 public class BuilderMagic extends Magic {
 
-	private ResourceLocation templateRL;
+	private ResourceLocation name;
 	private Direction front;
 	private BlockPos center;
 	private BlockPos playerOffset;
@@ -46,7 +47,7 @@ public class BuilderMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		templateRL = new ResourceLocation(JSONUtils.getString(json, "template"));
+		name = new ResourceLocation(JSONUtils.getString(json, "template"));
 		String direction = JSONUtils.getString(json, "front");
 		front = Direction.byName(direction);
 		if (front == null)
@@ -55,6 +56,28 @@ public class BuilderMagic extends Magic {
 			throw new JsonParseException("Direction must be horizontal for front attribute");
 		center = MagicUtil.readBlockPos(json, "center");
 		playerOffset = MagicUtil.readBlockPos(json, "player_offset");
+	}
+
+	@Override
+	protected void decodeAdditional(PacketBuffer buffer) {
+		int len = buffer.readInt();
+		name = new ResourceLocation(buffer.readString(len));
+	}
+
+	@Override
+	protected void encodeAdditional(PacketBuffer buffer) {
+		buffer.writeInt(name.toString().length());
+		buffer.writeString(name.toString());
+	}
+
+	@Override
+	protected Object[] getNameArgs() {
+		return new Object[] { new StringTextComponent(name.getPath()) };
+	}
+
+	@Override
+	protected Object[] getDescrArgs() {
+		return new Object[] { new StringTextComponent(name.getPath()) };
 	}
 
 	@Override
@@ -82,7 +105,12 @@ public class BuilderMagic extends Magic {
 	}
 
 	private boolean generateStructure(ServerWorld world, PlayerEntity player) {
-		Template template = world.getStructureTemplateManager().getTemplate(templateRL);
+		Template template = world.getStructureTemplateManager().getTemplate(name);
+		if (template == null) {
+			Main.LOGGER.error("Invalid template name " + name);
+			return false;
+		}
+
 		Direction direction = getDirection(player);
 		BlockPos offset = BlockPos.ZERO.offset(direction, playerOffset.getZ())
 				.offset(direction.rotateY(), playerOffset.getX()).offset(Direction.UP, playerOffset.getY());

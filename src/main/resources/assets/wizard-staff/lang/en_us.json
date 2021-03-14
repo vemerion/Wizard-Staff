@@ -109,5 +109,7 @@
   "gui.wizard-staff.potion_magic.description": "Apply %s %s for %s seconds to%s%s.",
   "gui.wizard-staff.potion_magic.affect_caster": " yourself%s",
   "gui.wizard-staff.potion_magic.glue": " and",
-  "gui.wizard-staff.potion_magic.affect_others": " others around you"
+  "gui.wizard-staff.potion_magic.affect_others": " others around you",
+  "gui.wizard-staff.builder_magic.name": "Build '%s'",
+  "gui.wizard-staff.builder_magic.description": "Use the magic of the staff to construct a '%s' building in a flash of an eye."
 }
