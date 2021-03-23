@@ -48,7 +48,7 @@ public class MagicUtil {
 	// Vanilla Registries
 	public static <T> T read(JsonObject json, Registry<T> registry, String member) {
 		ResourceLocation key = new ResourceLocation(JSONUtils.getString(json, member));
-		if (registry.containsKey(key)) {
+		if (registry.containsKey(key)) { // FIXME: containsKey() is client only (sigh...)
 			return registry.getOrDefault(key);
 		} else {
 			throw new JsonParseException("Invalid registry key " + key + " for registry "

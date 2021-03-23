@@ -153,7 +153,7 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 		AxisAlignedBB surface = new AxisAlignedBB(start, stop);
 
 		// Not a 2d surface
-		if (surface.getXSize() > 1.1 && surface.getYSize() > 1.1 && surface.getZSize() > 1.1)
+		if (surface.getXSize() > 0.1 && surface.getYSize() > 0.1 && surface.getZSize() > 0.1)
 			return 0;
 
 		Item item = world.getBlockState(start).getBlock().asItem();
