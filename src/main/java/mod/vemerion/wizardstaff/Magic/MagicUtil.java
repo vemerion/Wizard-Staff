@@ -48,8 +48,9 @@ public class MagicUtil {
 	// Vanilla Registries
 	public static <T> T read(JsonObject json, Registry<T> registry, String member) {
 		ResourceLocation key = new ResourceLocation(JSONUtils.getString(json, member));
-		if (registry.containsKey(key)) { // FIXME: containsKey() is client only (sigh...)
-			return registry.getOrDefault(key);
+		Optional<T> value = registry.getOptional(key);
+		if (value.isPresent()) {
+			return value.get();
 		} else {
 			throw new JsonParseException("Invalid registry key " + key + " for registry "
 					+ registry.getRegistryKey().getLocation().getPath());
@@ -71,8 +72,7 @@ public class MagicUtil {
 		return registry.getOrDefault(new ResourceLocation(buffer.readString(keyLen)));
 	}
 	// ---
-	
-	
+
 	// Other
 	public static BlockPos readBlockPos(JsonObject json, String member) {
 		Optional<BlockPos> pos = BlockPos.CODEC.parse(JsonOps.INSTANCE, json.get(member)).result();
