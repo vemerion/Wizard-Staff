@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+// FIXME: Helmets and headwear clipping
 public abstract class MagicArmorItem extends DyeableArmorItem {
 	protected static final int[] MAX_DAMAGE_ARRAY = new int[] { 13, 15, 16, 11 };
 	protected static final int[] PROTECTION_ARRAY = new int[] { 1, 2, 3, 1 };

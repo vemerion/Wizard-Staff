@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.capability;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,8 +50,12 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 
 	private GlobalPos lodestonePos;
 	private boolean lodestoneTracked;
+
 	private GrapplingHookEntity grapplingHook;
+
 	private BlockPos surfaceStart, surfaceStop;
+
+	private LinkedList<GlobalPos> revertPositions = new LinkedList<>();
 
 	public Wizard() {
 
@@ -63,6 +68,24 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 
 	public static LazyOptional<Wizard> getWizardOptional(PlayerEntity player) {
 		return player.getCapability(CAPABILITY);
+	}
+
+	public void tick(PlayerEntity player) {
+		if (!player.world.isRemote) {
+			if (player.ticksExisted % 20 == 0) {
+				revertPositions.addFirst(GlobalPos.getPosition(player.world.getDimensionKey(), player.getPosition()));
+				if (revertPositions.size() > 5)
+					revertPositions.removeLast();
+			}
+		}
+	}
+
+	public BlockPos revertPosition(PlayerEntity player) {
+		if (revertPositions.size() < 5)
+			return null;
+
+		GlobalPos pos = revertPositions.getLast();
+		return pos.getDimension() == player.world.getDimensionKey() ? pos.getPos() : null;
 	}
 
 	public boolean lodestoneTeleport(ServerPlayerEntity player, Block waypoint) {

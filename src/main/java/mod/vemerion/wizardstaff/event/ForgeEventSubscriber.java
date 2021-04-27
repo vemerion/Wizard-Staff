@@ -11,6 +11,7 @@ import net.minecraft.nbt.INBT;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,7 +30,13 @@ public class ForgeEventSubscriber {
 	public static void synchMagics(PlayerLoggedInEvent event) {
 		Magics.getInstance(false).sendAllMagicMessage((ServerPlayerEntity) event.getPlayer());
 	}
-	
+
+	@SubscribeEvent
+	public static void tickWizard(PlayerTickEvent event) {
+		PlayerEntity player = event.player;
+		Wizard.getWizardOptional(player).ifPresent(w -> w.tick(player));
+	}
+
 	@SubscribeEvent
 	public static void cloneCapabilities(PlayerEvent.Clone event) {
 		PlayerEntity original = event.getOriginal();
@@ -38,8 +45,9 @@ public class ForgeEventSubscriber {
 		copyCap(player, original, ScreenAnimations.CAPABILITY);
 		copyCap(player, original, Wizard.CAPABILITY);
 	}
-	
-	private static <T extends INBT> void copyCap(PlayerEntity dest, PlayerEntity src, Capability<? extends INBTSerializable<T>> cap) {
+
+	private static <T extends INBT> void copyCap(PlayerEntity dest, PlayerEntity src,
+			Capability<? extends INBTSerializable<T>> cap) {
 		src.getCapability(cap).ifPresent(c1 -> {
 			dest.getCapability(cap).ifPresent(c2 -> {
 				c2.deserializeNBT(c1.serializeNBT());

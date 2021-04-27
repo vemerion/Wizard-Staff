@@ -49,6 +49,7 @@ import mod.vemerion.wizardstaff.Magic.suggestions.FeatherMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.GrapplingHookMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.MushroomCloudMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.ShulkerBulletMagic;
+import mod.vemerion.wizardstaff.Magic.suggestions2.RevertPositionMagic;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import net.minecraft.client.resources.JsonReloadListener;
@@ -60,7 +61,6 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
@@ -138,6 +138,7 @@ public class Magics extends JsonReloadListener {
 		register("surface_magic", (s) -> () -> new SurfaceMagic(s));
 		register("potion_magic", (s) -> () -> new PotionMagic(s));
 		register("builder_magic", (s) -> () -> new BuilderMagic(s));
+		register("revert_position_magic", (s) -> () -> new RevertPositionMagic(s));
 		register("no_magic", (s) -> () -> NO_MAGIC);
 	}
 
@@ -146,9 +147,9 @@ public class Magics extends JsonReloadListener {
 	}
 
 	public static Magics getInstance(boolean isRemote) {
-		return isRemote ? clientInstance :serverInstance;
+		return isRemote ? clientInstance : serverInstance;
 	}
-	
+
 	public static Magics getInstance(World world) {
 		return getInstance(world.isRemote);
 	}
