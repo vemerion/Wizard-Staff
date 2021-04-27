@@ -164,8 +164,6 @@ public class Magics extends JsonReloadListener {
 		Map<ResourceLocation, Magic> newMagics = new HashMap<>();
 		for (Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet()) {
 			ResourceLocation key = entry.getKey();
-			if (!ModList.get().isLoaded(key.getNamespace())) // Skip magics from mods that are not present
-				continue;
 
 			JsonObject json = JSONUtils.getJsonObject(entry.getValue(), "top element");
 			String magicName = JSONUtils.getString(json, "magic");
