@@ -49,6 +49,7 @@ import mod.vemerion.wizardstaff.Magic.suggestions.FeatherMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.GrapplingHookMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.MushroomCloudMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.ShulkerBulletMagic;
+import mod.vemerion.wizardstaff.Magic.suggestions2.PushBlockMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.RevertPositionMagic;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
@@ -139,6 +140,7 @@ public class Magics extends JsonReloadListener {
 		register("potion_magic", (s) -> () -> new PotionMagic(s));
 		register("builder_magic", (s) -> () -> new BuilderMagic(s));
 		register("revert_position_magic", (s) -> () -> new RevertPositionMagic(s));
+		register("push_block_magic", (s) -> () -> new PushBlockMagic(s));
 		register("no_magic", (s) -> () -> NO_MAGIC);
 	}
 
