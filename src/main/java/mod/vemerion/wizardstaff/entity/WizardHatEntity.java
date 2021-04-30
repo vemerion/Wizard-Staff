@@ -28,18 +28,18 @@ public class WizardHatEntity extends AbstractArrowEntity {
 	public WizardHatEntity(EntityType<? extends WizardHatEntity> entityTypeIn, World worldIn) {
 		super(entityTypeIn, worldIn);
 		this.setDamage(1);
-		this.setHitSound(ModSounds.CLOTH_SOUND);
+		this.setHitSound(ModSounds.CLOTH);
 	}
 
 	public WizardHatEntity(double x, double y, double z, World world) {
-		super(ModEntities.WIZARD_HAT_ENTITY, x, y, z, world);
+		super(ModEntities.WIZARD_HAT, x, y, z, world);
 		this.setDamage(1);
-		this.setHitSound(ModSounds.CLOTH_SOUND);
+		this.setHitSound(ModSounds.CLOTH);
 	}
 	
 	@Override
 	protected SoundEvent getHitEntitySound() {
-		return ModSounds.CLOTH_SOUND;
+		return ModSounds.CLOTH;
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class WizardHatEntity extends AbstractArrowEntity {
 			if (rand.nextFloat() < 0.1 && target instanceof MobEntity) {
 				MobEntity mob = (MobEntity) target;
 				if (mob.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty())
-					mob.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(ModItems.WIZARD_HAT_ITEM));
+					mob.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(ModItems.WIZARD_HAT));
 			}
 		}
 	}

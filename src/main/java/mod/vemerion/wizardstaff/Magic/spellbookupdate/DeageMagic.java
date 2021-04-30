@@ -30,7 +30,7 @@ public class DeageMagic extends RayMagic {
 	@Override
 	protected void hitEntity(World world, PlayerEntity player, Entity target) {
 		if (target instanceof MobEntity) {
-			target.playSound(ModSounds.DEAGE_SOUND, 1, soundPitch(player));
+			target.playSound(ModSounds.DEAGE, 1, soundPitch(player));
 			cost(player);
 			MobEntity mob = (MobEntity) target;
 			mob.setChild(true);

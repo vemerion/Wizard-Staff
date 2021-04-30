@@ -14,11 +14,11 @@ import net.minecraftforge.registries.ObjectHolder;
 @EventBusSubscriber(bus = Bus.MOD, modid = Main.MODID)
 public class ModContainers {
 
-	public static final ContainerType<WizardStaffContainer> WIZARD_STAFF_CONTAINER = null;
+	public static final ContainerType<WizardStaffContainer> WIZARD_STAFF = null;
 
 	@SubscribeEvent
 	public static void onRegisterContainer(RegistryEvent.Register<ContainerType<?>> event) {
 		event.getRegistry().register(Init.setup(IForgeContainerType.create(WizardStaffContainer::createContainerClientSide),
-				"wizard_staff_container"));
+				"wizard_staff"));
 	}
 }

@@ -30,7 +30,7 @@ public class MushroomCloudEntity extends Entity {
 	}
 
 	public MushroomCloudEntity(World worldIn, PlayerEntity shooter) {
-		this(ModEntities.MUSHROOM_CLOUD_ENTITY, worldIn);
+		this(ModEntities.MUSHROOM_CLOUD, worldIn);
 		this.shooter = shooter.getUniqueID();
 	}
 

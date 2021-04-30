@@ -44,7 +44,7 @@ public class SoulSandMagic extends Magic {
 
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		player.playSound(ModSounds.PUMPKIN_MAGIC_SOUND, 0.2f, soundPitch(player));
+		player.playSound(ModSounds.PUMPKIN_MAGIC, 0.2f, soundPitch(player));
 		if (!world.isRemote) {
 			cost(player);
 			spawnArms(world, player);
@@ -64,7 +64,7 @@ public class SoulSandMagic extends Magic {
 					direction.z * distance + side.z * offset);
 			position = findValidPosition(position, world);
 			if (position != null) {
-				MagicSoulSandArmEntity arm = new MagicSoulSandArmEntity(ModEntities.MAGIC_SOUL_SAND_ARM_ENTITY, world, player);
+				MagicSoulSandArmEntity arm = new MagicSoulSandArmEntity(ModEntities.MAGIC_SOUL_SAND_ARM, world, player);
 				arm.setPosition(position.x, position.y, position.z);
 				world.addEntity(arm);
 			}

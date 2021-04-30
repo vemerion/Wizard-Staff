@@ -88,9 +88,9 @@ public class PushBlockMagic extends Magic {
 				}
 
 				if (p.equals(start)) {
-					playSoundServer(world, player, ModSounds.POOF_SOUND, 1, soundPitch(player));
+					playSoundServer(world, player, ModSounds.POOF, 1, soundPitch(player));
 				} else {
-					playSoundServer(world, player, ModSounds.WARP_SOUND, 1, soundPitch(player));
+					playSoundServer(world, player, ModSounds.WARP, 1, soundPitch(player));
 					cost(player);
 					world.setBlockState(p, state);
 					if (tileEntity != null) {
@@ -102,7 +102,7 @@ public class PushBlockMagic extends Magic {
 					world.setBlockState(start, Blocks.AIR.getDefaultState());
 				}
 			} else {
-				playSoundServer(world, player, ModSounds.POOF_SOUND, 1, soundPitch(player));
+				playSoundServer(world, player, ModSounds.POOF, 1, soundPitch(player));
 			}
 		}
 		return super.magicFinish(world, player, staff);

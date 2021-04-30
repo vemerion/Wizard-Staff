@@ -37,7 +37,7 @@ public class BlazePowderMagic extends Magic {
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (count % 7 == 0)
-			player.playSound(ModSounds.BURNING_SOUND, 1, soundPitch(player));
+			player.playSound(ModSounds.BURNING, 1, soundPitch(player));
 		if (!world.isRemote) {
 			ServerWorld serverWorld = (ServerWorld) world;
 			Random rand = player.getRNG();
@@ -54,7 +54,7 @@ public class BlazePowderMagic extends Magic {
 				Vector3d direction = Vector3d.fromPitchYaw(player.rotationPitch + rand.nextFloat() * 30 - 15,
 						player.rotationYaw + rand.nextFloat() * 30 - 15);
 				Vector3d particlePos = player.getPositionVec().add(0, 1.5, 0).add(direction.scale(distance));
-				serverWorld.spawnParticle(ModParticles.MAGIC_FLAME_PARTICLE_TYPE, particlePos.x, particlePos.y, particlePos.z,
+				serverWorld.spawnParticle(ModParticles.MAGIC_FLAME_PARTICLE, particlePos.x, particlePos.y, particlePos.z,
 						0, 0, 0, 0, 1);
 			}
 		}

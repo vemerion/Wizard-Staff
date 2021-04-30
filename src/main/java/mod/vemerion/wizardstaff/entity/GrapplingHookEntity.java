@@ -29,7 +29,7 @@ public class GrapplingHookEntity extends Entity {
 	}
 
 	public GrapplingHookEntity(World worldIn, PlayerEntity shooter) {
-		this(ModEntities.GRAPPLING_HOOK_ENTITY, worldIn);
+		this(ModEntities.GRAPPLING_HOOK, worldIn);
 		this.setShooter(shooter);
 	}
 

@@ -3,9 +3,9 @@
   "duration": 25,
   "magic": "projectile_magic",
   "ingredient": {
-    "item": "wizard-staff:wizard_hat_item"
+    "item": "wizard-staff:wizard_hat"
   },
-  "projectile": "wizard-staff:wizard_hat_entity",
-  "sound": "wizard-staff:cloth_sound",
+  "projectile": "wizard-staff:wizard_hat",
+  "sound": "wizard-staff:cloth",
   "speed": 1
 }

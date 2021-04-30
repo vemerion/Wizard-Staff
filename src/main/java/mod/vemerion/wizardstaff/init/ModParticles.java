@@ -16,21 +16,21 @@ import net.minecraftforge.registries.ObjectHolder;
 @EventBusSubscriber(bus = Bus.MOD, modid = Main.MODID)
 public class ModParticles {
 
-	public static final BasicParticleType MAGIC_SMOKE_PARTICLE_TYPE = null;
-	public static final BasicParticleType MAGIC_FLAME_PARTICLE_TYPE = null;
-	public static final ParticleType<RedstoneParticleData> MAGIC_DUST_PARTICLE_TYPE = null;
+	public static final BasicParticleType MAGIC_SMOKE_PARTICLE = null;
+	public static final BasicParticleType MAGIC_FLAME_PARTICLE = null;
+	public static final ParticleType<RedstoneParticleData> MAGIC_DUST_PARTICLE = null;
 
 	@SubscribeEvent
 	public static void onIParticleTypeRegistration(RegistryEvent.Register<ParticleType<?>> event) {
-		event.getRegistry().register(Init.setup(new BasicParticleType(true), "magic_smoke_particle_type"));
-		event.getRegistry().register(Init.setup(new BasicParticleType(true), "magic_flame_particle_type"));
+		event.getRegistry().register(Init.setup(new BasicParticleType(true), "magic_smoke_particle"));
+		event.getRegistry().register(Init.setup(new BasicParticleType(true), "magic_flame_particle"));
 		event.getRegistry()
 				.register(Init.setup(new ParticleType<RedstoneParticleData>(true, RedstoneParticleData.DESERIALIZER) {
 					@Override
 					public Codec<RedstoneParticleData> func_230522_e_() {
 						return RedstoneParticleData.field_239802_b_;
 					}
-				}, "magic_dust_particle_type"));
+				}, "magic_dust_particle"));
 
 	}
 }

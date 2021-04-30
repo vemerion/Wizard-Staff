@@ -60,7 +60,7 @@ public class TransmutationMagic extends Magic {
 	@Override
 	protected void readAdditional(JsonObject json) {
 		created = JSONUtils.getItem(json, "created");
-		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound", ModSounds.PLOP_SOUND);
+		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound", ModSounds.PLOP);
 	}
 
 	@Override

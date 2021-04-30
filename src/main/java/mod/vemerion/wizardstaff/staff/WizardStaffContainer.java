@@ -22,7 +22,7 @@ public class WizardStaffContainer extends Container {
 	}
 
 	protected WizardStaffContainer(int id, PlayerInventory inventory, WizardStaffItemHandler handler, ItemStack heldItem, boolean shouldAnimate) {
-		super(ModContainers.WIZARD_STAFF_CONTAINER, id);
+		super(ModContainers.WIZARD_STAFF, id);
 		this.handler = handler;
 		this.heldItem = heldItem;
 		this.shouldAnimate = shouldAnimate;

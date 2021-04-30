@@ -53,7 +53,7 @@ public class SurfaceMagic extends Magic {
 				if (count > 0)
 					cost(player, count);
 				else
-					playSoundServer(world, player, ModSounds.POOF_SOUND, 1, soundPitch(player));
+					playSoundServer(world, player, ModSounds.POOF, 1, soundPitch(player));
 			});
 		return super.magicFinish(world, player, staff);
 	}

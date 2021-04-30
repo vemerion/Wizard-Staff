@@ -39,7 +39,7 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 	}
 
 	protected AbstractWizardStaffModel getModel(ItemStack itemStackIn) {
-		return itemStackIn.getItem() == ModItems.WIZARD_STAFF_ITEM ? WIZARD_STAFF : NETHER_WIZARD_STAFF;
+		return itemStackIn.getItem() == ModItems.WIZARD_STAFF ? WIZARD_STAFF : NETHER_WIZARD_STAFF;
 	}
 	
 	private boolean shouldRender(ItemStack staff) {

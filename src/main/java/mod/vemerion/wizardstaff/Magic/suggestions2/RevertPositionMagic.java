@@ -46,7 +46,7 @@ public class RevertPositionMagic extends Magic {
 					((ServerPlayerEntity) player).teleport((ServerWorld) world, revert.getX(), revert.getY(),
 							revert.getZ(), player.rotationYaw, player.rotationPitch);
 				} else {
-					playSoundServer(world, player, ModSounds.POOF_SOUND, 1, soundPitch(player));
+					playSoundServer(world, player, ModSounds.POOF, 1, soundPitch(player));
 				}
 			});
 		}

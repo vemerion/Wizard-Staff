@@ -24,7 +24,7 @@ public abstract class RayMagic extends Magic {
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (count % 10 == 0) {
-			player.playSound(ModSounds.RAY_SOUND, 0.6f, 0.95f + player.getRNG().nextFloat() * 0.05f);
+			player.playSound(ModSounds.RAY, 0.6f, 0.95f + player.getRNG().nextFloat() * 0.05f);
 		}
 		if (world.isRemote) {
 			Vector3d direction = Vector3d.fromPitchYaw(player.getPitchYaw());

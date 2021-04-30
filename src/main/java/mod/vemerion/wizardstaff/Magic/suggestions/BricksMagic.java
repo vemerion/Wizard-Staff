@@ -40,7 +40,7 @@ public class BricksMagic extends Magic {
 			cost(player);
 			createCage(world, player.getPosition());
 		}
-		player.playSound(ModSounds.BRICK_SOUND, 0.8f, soundPitch(player));
+		player.playSound(ModSounds.BRICK, 0.8f, soundPitch(player));
 		return super.magicFinish(world, player, staff);
 	}
 
@@ -49,7 +49,7 @@ public class BricksMagic extends Magic {
 			for (int z = -1; z < 2; z++) {
 				for (int y = 0; y < 2; y++) {
 					if ((x != 0 || z != 0) && world.isAirBlock(position.add(x, y, z))) {
-						world.setBlockState(position.add(x, y, z), ModBlocks.MAGIC_BRICKS_BLOCK.getDefaultState());
+						world.setBlockState(position.add(x, y, z), ModBlocks.MAGIC_BRICKS.getDefaultState());
 					}
 				}
 			}

@@ -85,7 +85,7 @@ public class PumpkinMagicEntity extends Entity {
 			for (int j = 0; j < 50; j++) {
 				Vector3d offset = Vector3d.fromPitchYaw(random.nextFloat() * 360, rotationYaw + 90)
 						.scale((radius + random.nextDouble() * 0.4 - 0.2) * random.nextDouble());
-				serverWorld.spawnParticle(ModParticles.MAGIC_SMOKE_PARTICLE_TYPE, pos.x + offset.x, pos.y + offset.y, pos.z + offset.z, 1,
+				serverWorld.spawnParticle(ModParticles.MAGIC_SMOKE_PARTICLE, pos.x + offset.x, pos.y + offset.y, pos.z + offset.z, 1,
 						0, 0, 0, 0);
 			}
 		}
@@ -93,7 +93,7 @@ public class PumpkinMagicEntity extends Entity {
 		// Mouth
 		Vector3d pos = getPositionVec().add(sideways.x * 3, -1, sideways.z * 3);
 		for (int i = 0; i < 50; i++) {
-			serverWorld.spawnParticle(ModParticles.MAGIC_SMOKE_PARTICLE_TYPE, pos.x, pos.y + random.nextDouble() - 0.5, pos.z, 1, 0, 0, 0,
+			serverWorld.spawnParticle(ModParticles.MAGIC_SMOKE_PARTICLE, pos.x, pos.y + random.nextDouble() - 0.5, pos.z, 1, 0, 0, 0,
 					0);
 			pos = pos.add(-sideways.x * 0.12, 0, -sideways.z * 0.12);
 		}

@@ -99,7 +99,7 @@ public class BuilderMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote && generateStructure((ServerWorld) world, player)) {
 			cost(player);
-			playSoundServer(world, player, ModSounds.BUILDING_SOUND, 1, soundPitch(player));
+			playSoundServer(world, player, ModSounds.BUILDING, 1, soundPitch(player));
 		}
 		return super.magicFinish(world, player, staff);
 	}

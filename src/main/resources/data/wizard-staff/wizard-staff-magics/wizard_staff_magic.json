@@ -3,6 +3,6 @@
   "duration": 20,
   "magic": "wizard_staff_magic",
   "ingredient": {
-    "item": "wizard-staff:wizard_staff_item"
+    "item": "wizard-staff:wizard_staff"
   }
 }

@@ -26,7 +26,7 @@ public class ElytraMagic extends Magic {
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (count % 5 == 0)
-			player.playSound(ModSounds.WOOSH_SOUND, 1, soundPitch(player));
+			player.playSound(ModSounds.WOOSH, 1, soundPitch(player));
 		if (!world.isRemote) {
 			Vector3d motion = player.getMotion();
 			cost(player);

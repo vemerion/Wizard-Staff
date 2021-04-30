@@ -12,7 +12,7 @@ public class MagicDustParticleData extends RedstoneParticleData {
 	
 	@Override
 	public ParticleType<RedstoneParticleData> getType() {
-		return ModParticles.MAGIC_DUST_PARTICLE_TYPE;
+		return ModParticles.MAGIC_DUST_PARTICLE;
 	}
 
 }

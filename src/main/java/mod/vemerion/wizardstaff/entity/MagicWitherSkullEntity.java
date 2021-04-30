@@ -30,7 +30,7 @@ public class MagicWitherSkullEntity extends AbstractArrowEntity {
 	}
 
 	public MagicWitherSkullEntity(double x, double y, double z, World world) {
-		super(ModEntities.MAGIC_WITHER_SKULL_ENTITY, x, y, z, world);
+		super(ModEntities.MAGIC_WITHER_SKULL, x, y, z, world);
 		this.setNoGravity(true);
 		this.setDamage(6);
 	}

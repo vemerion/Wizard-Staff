@@ -42,7 +42,7 @@ public class BookshelfMagic extends Magic {
 			cost(player);
 			if (count % 10 == 0) {
 				BrainUtil.spawnItemNearEntity(player, new ItemStack(Items.BOOK), nearbyPosition(player));
-				playSoundServer(world, player, ModSounds.PAGE_TURN_SOUND, 1, soundPitch(player));
+				playSoundServer(world, player, ModSounds.PAGE_TURN, 1, soundPitch(player));
 			}
 		} else {
 			addParticle(world, player);

@@ -48,7 +48,7 @@ public class NetherPortalEntity extends Entity {
 			Vector3d pos = getPositionVec().add(sideways.x * MathHelper.cos(rotation) * (0.5 + offset),
 					1 + MathHelper.sin(rotation) * (1 + offset),
 					sideways.z * MathHelper.cos(rotation) * (0.5 + offset));
-			serverWorld.spawnParticle(ModParticles.MAGIC_SMOKE_PARTICLE_TYPE, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
+			serverWorld.spawnParticle(ModParticles.MAGIC_SMOKE_PARTICLE, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
 		}
 	}
 

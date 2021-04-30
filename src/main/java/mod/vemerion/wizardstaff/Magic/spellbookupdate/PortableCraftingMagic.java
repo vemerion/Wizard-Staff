@@ -52,7 +52,7 @@ public class PortableCraftingMagic extends Magic {
 					CONTAINER_NAME);
 			NetworkHooks.openGui((ServerPlayerEntity) player, provider);
 		}
-		player.playSound(ModSounds.ANVIL_SOUND, 1, soundPitch(player));
+		player.playSound(ModSounds.ANVIL, 1, soundPitch(player));
 		return super.magicFinish(world, player, staff);
 	}
 

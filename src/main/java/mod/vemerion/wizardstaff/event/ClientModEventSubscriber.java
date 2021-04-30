@@ -33,21 +33,21 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientModEventSubscriber {
 	@SubscribeEvent
 	public static void onRegister(FMLClientSetupEvent event) {
-		ScreenManager.registerFactory(ModContainers.WIZARD_STAFF_CONTAINER, WizardStaffScreen::new);
+		ScreenManager.registerFactory(ModContainers.WIZARD_STAFF, WizardStaffScreen::new);
 
 		registerEntityRenderer();
 	}
 
 	private static void registerEntityRenderer() {
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.PUMPKIN_MAGIC_ENTITY, NoRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.NETHER_PORTAL_ENTITY, NetherPortalRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.MAGIC_WITHER_SKULL_ENTITY,
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.PUMPKIN_MAGIC, NoRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.NETHER_PORTAL, NetherPortalRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.MAGIC_WITHER_SKULL,
 				MagicWitherSkullRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.MAGIC_SOUL_SAND_ARM_ENTITY,
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.MAGIC_SOUL_SAND_ARM,
 				MagicSoulSandArmRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.GRAPPLING_HOOK_ENTITY, GrapplingHookRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.MUSHROOM_CLOUD_ENTITY, NoRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntities.WIZARD_HAT_ENTITY, WizardHatRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.GRAPPLING_HOOK, GrapplingHookRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.MUSHROOM_CLOUD, NoRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.WIZARD_HAT, WizardHatRenderer::new);
 	}
 
 	private static class NoRenderer<T extends Entity> extends EntityRenderer<T> {
@@ -67,19 +67,19 @@ public class ClientModEventSubscriber {
 	public static void onRegisterColor(ColorHandlerEvent.Item event) {
 		event.getItemColors().register((stack, tint) -> {
 			return tint > 0 ? -1 : ((IDyeableArmorItem) stack.getItem()).getColor(stack);
-		}, ModItems.WIZARD_HAT_ITEM, ModItems.WIZARD_BOOTS_ITEM, ModItems.WIZARD_CHESTPLATE_ITEM,
-				ModItems.WIZARD_LEGGINGS_ITEM, ModItems.DRUID_HELMET_ITEM, ModItems.DRUID_BOOTS_ITEM,
-				ModItems.DRUID_CHESTPLATE_ITEM, ModItems.DRUID_LEGGINGS_ITEM, ModItems.WARLOCK_BOOTS_ITEM,
-				ModItems.WARLOCK_CHESTPLATE_ITEM, ModItems.WARLOCK_HELMET_ITEM, ModItems.WARLOCK_LEGGINGS_ITEM);
+		}, ModItems.WIZARD_HAT, ModItems.WIZARD_BOOTS, ModItems.WIZARD_CHESTPLATE,
+				ModItems.WIZARD_LEGGINGS, ModItems.DRUID_HELMET, ModItems.DRUID_BOOTS,
+				ModItems.DRUID_CHESTPLATE, ModItems.DRUID_LEGGINGS, ModItems.WARLOCK_BOOTS,
+				ModItems.WARLOCK_CHESTPLATE, ModItems.WARLOCK_HELMET, ModItems.WARLOCK_LEGGINGS);
 	}
 
 	@SubscribeEvent
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
-		Minecraft.getInstance().particles.registerFactory(ModParticles.MAGIC_SMOKE_PARTICLE_TYPE,
+		Minecraft.getInstance().particles.registerFactory(ModParticles.MAGIC_SMOKE_PARTICLE,
 				sprite -> new SmokeParticle.Factory(sprite));
-		Minecraft.getInstance().particles.registerFactory(ModParticles.MAGIC_FLAME_PARTICLE_TYPE,
+		Minecraft.getInstance().particles.registerFactory(ModParticles.MAGIC_FLAME_PARTICLE,
 				sprite -> new FlameParticle.Factory(sprite));
-		Minecraft.getInstance().particles.registerFactory(ModParticles.MAGIC_DUST_PARTICLE_TYPE,
+		Minecraft.getInstance().particles.registerFactory(ModParticles.MAGIC_DUST_PARTICLE,
 				sprite -> new RedstoneParticle.Factory(sprite));
 
 	}

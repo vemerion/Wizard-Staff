@@ -32,7 +32,7 @@ public class GhastTearMagic extends Magic {
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (count % 13 == 0)
-			player.playSound(ModSounds.SNIFFLE_SOUND, 0.6f, soundPitch(player) * 2);
+			player.playSound(ModSounds.SNIFFLE, 0.6f, soundPitch(player) * 2);
 		if (!world.isRemote) {
 			cost(player);
 			player.extinguish();

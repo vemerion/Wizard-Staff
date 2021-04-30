@@ -5,7 +5,7 @@
   "ingredient": {
     "item": "minecraft:wither_skeleton_skull"
   },
-  "projectile": "wizard-staff:magic_wither_skull_entity",
-  "sound": "wizard-staff:skeleton_sound",
+  "projectile": "wizard-staff:magic_wither_skull",
+  "sound": "wizard-staff:skeleton",
   "speed": 0.5
 }

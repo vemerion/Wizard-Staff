@@ -45,10 +45,10 @@ public class ObsidianMagic extends Magic {
 			BlockPos pos = new BlockPos(spawnPos);
 			if (!world.getBlockState(pos).isSolid() && !world.getBlockState(pos.up()).isSolid()) {
 				cost(player);
-				NetherPortalEntity portal = new NetherPortalEntity(ModEntities.NETHER_PORTAL_ENTITY, world);
+				NetherPortalEntity portal = new NetherPortalEntity(ModEntities.NETHER_PORTAL, world);
 				portal.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, player.rotationYaw, 0);
 				world.addEntity(portal);
-				playSoundServer(world, player, ModSounds.PORTAL_SOUND, 1, soundPitch(player));
+				playSoundServer(world, player, ModSounds.PORTAL, 1, soundPitch(player));
 			}
 		}
 		return super.magicFinish(world, player, staff);

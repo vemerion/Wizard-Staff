@@ -46,7 +46,7 @@ public class EggMagic extends RayMagic {
 	@Override
 	public void hitEntity(World world, PlayerEntity player, Entity target) {
 		if (blacklist.contains(target.getType())) {
-			target.playSound(ModSounds.POOF_SOUND, 1, soundPitch(player));
+			target.playSound(ModSounds.POOF, 1, soundPitch(player));
 			return;
 		}
 
@@ -58,14 +58,14 @@ public class EggMagic extends RayMagic {
 			}
 		}
 		if (egg != null) {
-			target.playSound(ModSounds.PLOP_SOUND, 1, soundPitch(player));
+			target.playSound(ModSounds.PLOP, 1, soundPitch(player));
 			ItemEntity eggEntity = new ItemEntity(world, target.getPosX(), target.getPosY(), target.getPosZ(),
 					new ItemStack(egg));
 			world.addEntity(eggEntity);
 			target.remove();
 			cost(player);
 		} else {
-			target.playSound(ModSounds.POOF_SOUND, 1, soundPitch(player));
+			target.playSound(ModSounds.POOF, 1, soundPitch(player));
 		}
 	}
 

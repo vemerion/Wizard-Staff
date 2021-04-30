@@ -44,7 +44,7 @@ public class FeatherMagic extends Magic {
 				cost(player);
 			
 			if (count % 5 == 0)
-				player.playSound(ModSounds.FLAP_SOUND, 1, soundPitch(player));
+				player.playSound(ModSounds.FLAP, 1, soundPitch(player));
 		}
 	}
 

@@ -1,211 +1,192 @@
 {
-  "clock_sound": {
-    "category": "player",
+  "clock": {
     "sounds": [
       {
-        "name": "wizard-staff:clock_sound",
+        "name": "wizard-staff:clock",
         "stream": false
       }
     ]
   },
-  "plop_sound": {
-    "category": "player",
+  "plop": {
     "sounds": [
       {
-        "name": "wizard-staff:plop_sound",
+        "name": "wizard-staff:plop",
         "stream": false
       }
     ]
   },
-  "pumpkin_magic_sound": {
-    "category": "player",
+  "pumpkin_magic": {
     "sounds": [
       {
-        "name": "wizard-staff:pumpkin_magic_sound",
+        "name": "wizard-staff:pumpkin_magic",
         "stream": false
       }
     ]
   },
-  "ray_sound": {
-    "category": "player",
+  "ray": {
     "sounds": [
       {
-        "name": "wizard-staff:ray_sound",
+        "name": "wizard-staff:ray",
         "stream": false
       }
     ]
   },
-  "scribble_sound": {
-    "category": "player",
+  "scribble": {
     "sounds": [
       {
-        "name": "wizard-staff:scribble_sound",
+        "name": "wizard-staff:scribble",
         "stream": false
       }
     ]
   },
-  "woosh_sound": {
-    "category": "player",
+  "woosh": {
     "sounds": [
       {
-        "name": "wizard-staff:woosh_sound",
+        "name": "wizard-staff:woosh",
         "stream": false
       }
     ]
   },
-  "burning_sound": {
-    "category": "player",
+  "burning": {
     "sounds": [
       {
-        "name": "wizard-staff:burning_sound",
+        "name": "wizard-staff:burning",
         "stream": false
       }
     ]
   },
-  "portal_sound": {
-    "category": "player",
+  "portal": {
     "sounds": [
       {
-        "name": "wizard-staff:portal_sound",
+        "name": "wizard-staff:portal",
         "stream": false
       }
     ]
   },
-  "radar_sound": {
-    "category": "player",
+  "radar": {
     "sounds": [
       {
-        "name": "wizard-staff:radar_sound",
+        "name": "wizard-staff:radar",
         "stream": false
       }
     ]
   },
-  "skeleton_sound": {
-    "category": "player",
+  "skeleton": {
     "sounds": [
       {
-        "name": "wizard-staff:skeleton_sound",
+        "name": "wizard-staff:skeleton",
         "stream": false
       }
     ]
   },
-  "sniffle_sound": {
-    "category": "player",
+  "sniffle": {
     "sounds": [
       {
-        "name": "wizard-staff:sniffle_sound",
+        "name": "wizard-staff:sniffle",
         "stream": false
       }
     ]
   },
-  "warp_sound": {
-    "category": "player",
+  "warp": {
     "sounds": [
       {
-        "name": "wizard-staff:warp_sound",
+        "name": "wizard-staff:warp",
         "stream": false
       }
     ]
   },
-  "gong_sound": {
-    "category": "player",
+  "gong": {
     "sounds": [
       {
-        "name": "wizard-staff:gong_sound",
+        "name": "wizard-staff:gong",
         "stream": false
       }
     ]
   },
-  "brick_sound": {
-    "category": "player",
+  "brick": {
     "sounds": [
       {
-        "name": "wizard-staff:brick_sound",
+        "name": "wizard-staff:brick",
         "stream": false
       }
     ]
   },
-  "poof_sound": {
-    "category": "player",
+  "poof": {
     "sounds": [
       {
-        "name": "wizard-staff:poof_sound",
+        "name": "wizard-staff:poof",
         "stream": false
       }
     ]
   },
-  "chirp_sound": {
-    "category": "player",
+  "chirp": {
     "sounds": [
       {
-        "name": "wizard-staff:chirp_sound",
+        "name": "wizard-staff:chirp",
         "stream": false
       }
     ]
   },
-  "teleport_sound": {
-    "category": "player",
+  "teleport": {
     "sounds": [
       {
-        "name": "wizard-staff:teleport_sound",
+        "name": "wizard-staff:teleport",
         "stream": false
       }
     ]
   },
-  "flap_sound": {
-    "category": "player",
+  "flap": {
     "sounds": [
       {
-        "name": "wizard-staff:flap_sound",
+        "name": "wizard-staff:flap",
         "stream": false
       }
     ]
   },
-  "spray_sound": {
-    "category": "hostile",
+  "spray": {
     "sounds": [
       {
-        "name": "wizard-staff:spray_sound",
+        "name": "wizard-staff:spray",
         "stream": false
       }
     ]
   },
-  "anvil_sound": {
+  "anvil": {
     "sounds": [
       {
-        "name": "wizard-staff:anvil_sound",
+        "name": "wizard-staff:anvil",
         "stream": false
       }
     ]
   },
-  "cloth_sound": {
+  "cloth": {
     "sounds": [
       {
-        "name": "wizard-staff:cloth_sound",
+        "name": "wizard-staff:cloth",
         "stream": false
       }
     ]
   },
-  "page_turn_sound": {
+  "page_turn": {
     "sounds": [
       {
-        "name": "wizard-staff:page_turn_sound",
+        "name": "wizard-staff:page_turn",
         "stream": false
       }
     ]
   },
-  "deage_sound": {
+  "deage": {
     "sounds": [
       {
-        "name": "wizard-staff:deage_sound",
+        "name": "wizard-staff:deage",
         "stream": false
       }
     ]
   },
-  "building_sound": {
+  "building": {
     "sounds": [
       {
-        "name": "wizard-staff:building_sound",
+        "name": "wizard-staff:building",
         "stream": false
       }
     ]

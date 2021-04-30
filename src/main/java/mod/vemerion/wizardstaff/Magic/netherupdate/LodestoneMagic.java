@@ -54,7 +54,7 @@ public class LodestoneMagic extends Magic {
 		World world = context.getWorld();
 		PlayerEntity player = context.getPlayer();
 		if (world.getBlockState(context.getPos()).getBlock() == waypoint) {
-			player.playSound(ModSounds.GONG_SOUND, 1, soundPitch(player));
+			player.playSound(ModSounds.GONG, 1, soundPitch(player));
 			if (!world.isRemote) {
 				Wizard.getWizard(player).trackLodestone(world, context.getPos(), waypoint);
 			}
@@ -68,7 +68,7 @@ public class LodestoneMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote) {
 			if (Wizard.getWizard(player).lodestoneTeleport((ServerPlayerEntity) player, waypoint)) {
-				playSoundServer(world, player, ModSounds.GONG_SOUND, 1, soundPitch(player));
+				playSoundServer(world, player, ModSounds.GONG, 1, soundPitch(player));
 				cost(player);
 			}
 		}
@@ -78,7 +78,7 @@ public class LodestoneMagic extends Magic {
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (count % 10 == 0)
-			player.playSound(ModSounds.TELEPORT_SOUND, 1, soundPitch(player));
+			player.playSound(ModSounds.TELEPORT, 1, soundPitch(player));
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public class BlueDyeMagic extends Magic {
 				serverWorld.func_241113_a_(0, player.getRNG().nextInt(12000) + 12000, true, player.getRNG().nextDouble() < 0.3);
 			}
 		}
-		player.playSound(ModSounds.CHIRP_SOUND, 1, soundPitch(player));
+		player.playSound(ModSounds.CHIRP, 1, soundPitch(player));
 
 		return super.magicFinish(world, player, staff);
 	}

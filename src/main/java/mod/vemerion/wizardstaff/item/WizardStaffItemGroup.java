@@ -16,7 +16,7 @@ public class WizardStaffItemGroup extends ItemGroup {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(ModItems.WIZARD_HAT_ITEM);
+		return new ItemStack(ModItems.WIZARD_HAT);
 	}
 
 	@Override

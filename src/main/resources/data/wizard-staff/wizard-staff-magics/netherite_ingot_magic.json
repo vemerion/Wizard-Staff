@@ -5,6 +5,6 @@
   "ingredient": {
     "tag": "forge:ingots/netherite"
   },
-  "created": "wizard-staff:nether_wizard_staff_item",
-  "sound": "wizard-staff:poof_sound"
+  "created": "wizard-staff:nether_wizard_staff",
+  "sound": "wizard-staff:poof"
 }
