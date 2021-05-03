@@ -1,0 +1,9 @@
+{
+  "cost": 10.0,
+  "duration": 20,
+  "magic": "wizard-staff:remove_fluid_magic",
+  "ingredient": {
+    "item": "minecraft:sponge"
+  },
+  "fluid": "minecraft:water"
+}

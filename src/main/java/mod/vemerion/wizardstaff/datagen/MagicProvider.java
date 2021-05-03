@@ -27,6 +27,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -135,6 +136,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.PROJECTILE_MAGIC.create().setAdditionalParams(ModEntities.WIZARD_HAT, ModSounds.CLOTH, 1).setParams(20, 25, ing(ModItems.WIZARD_HAT)), "wizard_hat_throw_magic");
 		c.accept(ModMagics.WIZARD_STAFF_MAGIC.create().setParams(0, 20, ing(ModItems.WIZARD_STAFF)), "");
 		c.accept(ModMagics.WRITABLE_BOOK_MAGIC.create().setParams(10, 20, ing(Items.WRITABLE_BOOK)), "");
+		c.accept(ModMagics.REMOVE_FLUID_MAGIC.create().setAdditionalParams(Fluids.WATER).setParams(10, 20, ing(Items.SPONGE)), "remove_water_magic");
 	}
 	
 	private void magicArmor(BiConsumer<Magic, String> c, Item from, Item created) {
