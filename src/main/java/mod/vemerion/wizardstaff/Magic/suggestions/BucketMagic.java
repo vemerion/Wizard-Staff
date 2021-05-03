@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -27,8 +28,8 @@ public class BucketMagic extends Magic {
 
 	private BucketItem bucket;
 
-	public BucketMagic(String name) {
-		super(name);
+	public BucketMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

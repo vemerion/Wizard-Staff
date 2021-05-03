@@ -7,6 +7,7 @@ import java.util.Set;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
@@ -26,8 +27,8 @@ public class EggMagic extends RayMagic {
 
 	private Set<EntityType<?>> blacklist;
 
-	public EggMagic(String name) {
-		super(name);
+	public EggMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -32,14 +33,14 @@ public abstract class Magic {
 	protected float cost;
 	protected int duration;
 	protected Ingredient ingredient;
-	private String registryName;
+	private MagicType type;
 
-	public Magic(String registryName) {
-		this.registryName = registryName;
+	public Magic(MagicType type) {
+		this.type = type;
 	}
-	
-	public String getRegistryName() {
-		return registryName;
+
+	public ResourceLocation getRegistryName() {
+		return type.getRegistryName();
 	}
 
 	public void read(JsonObject json) {
@@ -81,7 +82,7 @@ public abstract class Magic {
 	// Override to write additional parameters to the packet
 	protected void encodeAdditional(PacketBuffer buffer) {
 	}
-	
+
 	public final ItemStack[] getMatchingStacks() {
 		return ingredient.getMatchingStacks();
 	}
@@ -102,7 +103,7 @@ public abstract class Magic {
 		if (debt > 0)
 			player.attackEntityFrom(DamageSource.MAGIC, (float) debt);
 	}
-	
+
 	protected final void cost(PlayerEntity player) {
 		cost(player, 1);
 	}
@@ -153,7 +154,7 @@ public abstract class Magic {
 	}
 
 	public Description getDescription() {
-		return new Description(cost, duration, registryName, getNameArgs(), getDescrArgs());
+		return new Description(cost, duration, getRegistryName(), getNameArgs(), getDescrArgs());
 	}
 
 	// Override to provide args to the spellbook magic name
@@ -167,7 +168,7 @@ public abstract class Magic {
 	}
 
 	public static class Description {
-		
+
 		private static final Object[] NO_ARGS = new Object[0];
 
 		private float cost;
@@ -175,11 +176,12 @@ public abstract class Magic {
 		private TranslationTextComponent name;
 		private TranslationTextComponent descr;
 
-		private Description(float cost, int duration, String magicName, Object[] nameArgs, Object[] descrArgs) {
+		private Description(float cost, int duration, ResourceLocation magicName, Object[] nameArgs, Object[] descrArgs) {
 			this.cost = cost;
 			this.duration = duration;
-			this.name = new TranslationTextComponent("gui." + Main.MODID + "." + magicName + ".name", nameArgs);
-			this.descr = new TranslationTextComponent("gui." + Main.MODID + "." + magicName + ".description", descrArgs);
+			this.name = new TranslationTextComponent("gui." + magicName.getNamespace() + "." + magicName.getPath() + ".name", nameArgs);
+			this.descr = new TranslationTextComponent("gui." + magicName.getNamespace() + "." + magicName.getPath() + ".description",
+					descrArgs);
 		}
 
 		public float getCost() {

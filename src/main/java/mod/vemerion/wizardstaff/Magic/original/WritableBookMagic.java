@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -18,8 +19,8 @@ import net.minecraft.world.World;
 
 public class WritableBookMagic extends Magic {
 
-	public WritableBookMagic(String name) {
-		super(name);
+	public WritableBookMagic(MagicType type) {
+		super(type);
 	}
 
 	private String[] wisdoms = { "All that glitters is gold", "Fear the old blood",

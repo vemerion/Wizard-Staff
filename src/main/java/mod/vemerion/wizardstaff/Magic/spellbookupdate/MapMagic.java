@@ -5,6 +5,7 @@ import java.util.Random;
 import com.google.common.collect.ImmutableList;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -30,8 +31,8 @@ public class MapMagic extends Magic {
 	private static final ImmutableList<StructureInfo> VALID_STRUCTURES = ImmutableList.of(
 			new StructureInfo(Structure.VILLAGE, MapDecoration.Type.MANSION));
 
-	public MapMagic(String name) {
-		super(name);
+	public MapMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

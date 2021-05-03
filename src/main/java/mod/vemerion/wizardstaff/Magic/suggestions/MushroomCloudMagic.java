@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.suggestions;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.entity.MushroomCloudEntity;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -15,8 +16,8 @@ import net.minecraft.world.World;
 
 public class MushroomCloudMagic extends Magic {
 
-	public MushroomCloudMagic(String name) {
-		super(name);
+	public MushroomCloudMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

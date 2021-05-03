@@ -12,8 +12,8 @@ import net.minecraft.item.crafting.Ingredient;
 
 public class NoMagic extends Magic {
 
-	public NoMagic() {
-		super("no_magic");
+	public NoMagic(MagicType type) {
+		super(type);
 		this.cost = 0;
 		this.duration = 0;
 		this.ingredient = new Ingredient(Stream.empty()) {

@@ -17,8 +17,8 @@ import net.minecraft.world.World;
 
 public abstract class RayMagic extends Magic {
 
-	public RayMagic(String name) {
-		super(name);
+	public RayMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

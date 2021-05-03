@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.suggestions2;
 import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -34,8 +35,8 @@ public class PushBlockMagic extends Magic {
 
 	private Block block;
 
-	public PushBlockMagic(String name) {
-		super(name);
+	public PushBlockMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

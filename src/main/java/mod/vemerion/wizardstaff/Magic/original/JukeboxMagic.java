@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.original;
 import java.util.List;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -22,8 +23,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 
 public class JukeboxMagic extends Magic {
-	public JukeboxMagic(String name) {
-		super(name);
+	public JukeboxMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

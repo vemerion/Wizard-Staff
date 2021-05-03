@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -14,8 +15,8 @@ import net.minecraft.world.World;
 
 public class ElytraMagic extends Magic {
 	
-	public ElytraMagic(String name) {
-		super(name);
+	public ElytraMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

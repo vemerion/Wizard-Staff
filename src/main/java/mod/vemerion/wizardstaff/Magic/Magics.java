@@ -3,8 +3,6 @@ package mod.vemerion.wizardstaff.Magic;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
@@ -14,43 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import mod.vemerion.wizardstaff.Main;
-import mod.vemerion.wizardstaff.Magic.fashionupdate.TransmutationMagic;
-import mod.vemerion.wizardstaff.Magic.netherupdate.GhastTearMagic;
-import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
-import mod.vemerion.wizardstaff.Magic.netherupdate.GoldNuggetMagic;
-import mod.vemerion.wizardstaff.Magic.netherupdate.LodestoneMagic;
-import mod.vemerion.wizardstaff.Magic.netherupdate.NetherBrickMagic;
-import mod.vemerion.wizardstaff.Magic.netherupdate.NetherrackMagic;
-import mod.vemerion.wizardstaff.Magic.netherupdate.ObsidianMagic;
-import mod.vemerion.wizardstaff.Magic.netherupdate.ProjectileMagic;
-import mod.vemerion.wizardstaff.Magic.netherupdate.SoulSandMagic;
-import mod.vemerion.wizardstaff.Magic.original.BlazePowderMagic;
-import mod.vemerion.wizardstaff.Magic.original.CarvedPumpkinMagic;
-import mod.vemerion.wizardstaff.Magic.original.ClockMagic;
-import mod.vemerion.wizardstaff.Magic.original.EggMagic;
-import mod.vemerion.wizardstaff.Magic.original.ElytraMagic;
-import mod.vemerion.wizardstaff.Magic.original.JukeboxMagic;
-import mod.vemerion.wizardstaff.Magic.original.TransformBlockMagic;
-import mod.vemerion.wizardstaff.Magic.original.WizardStaffMagic;
-import mod.vemerion.wizardstaff.Magic.original.WritableBookMagic;
-import mod.vemerion.wizardstaff.Magic.restructuring.BuilderMagic;
-import mod.vemerion.wizardstaff.Magic.restructuring.PillarMagic;
-import mod.vemerion.wizardstaff.Magic.restructuring.PotionMagic;
-import mod.vemerion.wizardstaff.Magic.restructuring.SmeltingMagic;
-import mod.vemerion.wizardstaff.Magic.restructuring.SurfaceMagic;
-import mod.vemerion.wizardstaff.Magic.spellbookupdate.BookshelfMagic;
-import mod.vemerion.wizardstaff.Magic.spellbookupdate.DeageMagic;
-import mod.vemerion.wizardstaff.Magic.spellbookupdate.MapMagic;
-import mod.vemerion.wizardstaff.Magic.spellbookupdate.PortableCraftingMagic;
-import mod.vemerion.wizardstaff.Magic.suggestions.BlueDyeMagic;
-import mod.vemerion.wizardstaff.Magic.suggestions.BricksMagic;
-import mod.vemerion.wizardstaff.Magic.suggestions.BucketMagic;
-import mod.vemerion.wizardstaff.Magic.suggestions.FeatherMagic;
-import mod.vemerion.wizardstaff.Magic.suggestions.GrapplingHookMagic;
-import mod.vemerion.wizardstaff.Magic.suggestions.MushroomCloudMagic;
-import mod.vemerion.wizardstaff.Magic.suggestions.ShulkerBulletMagic;
-import mod.vemerion.wizardstaff.Magic.suggestions2.PushBlockMagic;
-import mod.vemerion.wizardstaff.Magic.suggestions2.RevertPositionMagic;
+import mod.vemerion.wizardstaff.init.ModMagics;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import net.minecraft.client.resources.JsonReloadListener;
@@ -72,19 +34,14 @@ public class Magics extends JsonReloadListener {
 	private static Magics clientInstance;
 	private static Magics serverInstance;
 
-	private Map<String, Supplier<Magic>> registry; // All possible magics, registered in initMagicNames()
 	private Map<ResourceLocation, Magic> magics; // The actual magics, as determined by the json magic files
 	private ImmutableSet<ItemStack> magicItems; // All items that have magic effect (used by spellbook)
 	private Map<Item, ResourceLocation> cache; // Cache for faster lookup in get()
 
-	private final NoMagic NO_MAGIC = new NoMagic();
-
 	private Magics() {
 		super(GSON, FOLDER_NAME);
-		this.registry = new HashMap<>();
 		this.magics = new HashMap<>();
 		this.cache = new HashMap<>();
-		this.registerMagics();
 	}
 
 	public Magic get(ItemStack stack) {
@@ -100,52 +57,7 @@ public class Magics extends JsonReloadListener {
 				}
 			}
 		}
-		return NO_MAGIC;
-	}
-
-	private void registerMagics() {
-		register("blaze_powder_magic", (s) -> () -> new BlazePowderMagic(s));
-		register("carved_pumpkin_magic", (s) -> () -> new CarvedPumpkinMagic(s));
-		register("clock_magic", (s) -> () -> new ClockMagic(s));
-		register("egg_magic", (s) -> () -> new EggMagic(s));
-		register("elytra_magic", (s) -> () -> new ElytraMagic(s));
-		register("transform_block_magic", (s) -> () -> new TransformBlockMagic(s));
-		register("jukebox_magic", (s) -> () -> new JukeboxMagic(s));
-		register("wizard_staff_magic", (s) -> () -> new WizardStaffMagic(s));
-		register("writable_book_magic", (s) -> () -> new WritableBookMagic(s));
-		register("obsidian_magic", (s) -> () -> new ObsidianMagic(s));
-		register("glowstone_dust_magic", (s) -> () -> new GlowstoneDustMagic(s));
-		register("netherrack_magic", (s) -> () -> new NetherrackMagic(s));
-		register("projectile_magic", (s) -> () -> new ProjectileMagic(s));
-		register("ghast_tear_magic", (s) -> () -> new GhastTearMagic(s));
-		register("nether_brick_magic", (s) -> () -> new NetherBrickMagic(s));
-		register("soul_sand_magic", (s) -> () -> new SoulSandMagic(s));
-		register("gold_nugget_magic", (s) -> () -> new GoldNuggetMagic(s));
-		register("lodestone_magic", (s) -> () -> new LodestoneMagic(s));
-		register("transmutation_magic", (s) -> () -> new TransmutationMagic(s));
-		register("blue_dye_magic", (s) -> () -> new BlueDyeMagic(s));
-		register("bricks_magic", (s) -> () -> new BricksMagic(s));
-		register("grappling_hook_magic", (s) -> () -> new GrapplingHookMagic(s));
-		register("feather_magic", (s) -> () -> new FeatherMagic(s));
-		register("mushroom_cloud_magic", (s) -> () -> new MushroomCloudMagic(s));
-		register("shulker_bullet_magic", (s) -> () -> new ShulkerBulletMagic(s));
-		register("bucket_magic", (s) -> () -> new BucketMagic(s));
-		register("portable_crafting_magic", (s) -> () -> new PortableCraftingMagic(s));
-		register("bookshelf_magic", (s) -> () -> new BookshelfMagic(s));
-		register("map_magic", (s) -> () -> new MapMagic(s));
-		register("deage_magic", (s) -> () -> new DeageMagic(s));
-		register("smelting_magic", (s) -> () -> new SmeltingMagic(s));
-		register("pillar_magic", (s) -> () -> new PillarMagic(s));
-		register("surface_magic", (s) -> () -> new SurfaceMagic(s));
-		register("potion_magic", (s) -> () -> new PotionMagic(s));
-		register("builder_magic", (s) -> () -> new BuilderMagic(s));
-		register("revert_position_magic", (s) -> () -> new RevertPositionMagic(s));
-		register("push_block_magic", (s) -> () -> new PushBlockMagic(s));
-		register("no_magic", (s) -> () -> NO_MAGIC);
-	}
-
-	private void register(String name, Function<String, Supplier<Magic>> magic) {
-		registry.put(name, magic.apply(name));
+		return ModMagics.NO_MAGIC.create();
 	}
 
 	public static Magics getInstance(boolean isRemote) {
@@ -169,14 +81,15 @@ public class Magics extends JsonReloadListener {
 			ResourceLocation key = entry.getKey();
 
 			JsonObject json = JSONUtils.getJsonObject(entry.getValue(), "top element");
-			String magicName = JSONUtils.getString(json, "magic");
-			if (!registry.containsKey(magicName))
-				throw new JsonSyntaxException("The magic " + magicName + " does not exist");
-			Magic magic = registry.get(magicName).get();
+			ResourceLocation magicKey = toResourceLocation(JSONUtils.getString(json, "magic"));
+			if (!ModMagics.REGISTRY.containsKey(magicKey))
+				throw new JsonSyntaxException("The magic " + magicKey + " does not exist");
+			MagicType type = ModMagics.REGISTRY.getValue(magicKey);
 
-			if (magic == NO_MAGIC)
+			if (type == ModMagics.NO_MAGIC)
 				continue;
 
+			Magic magic = type.create();
 			magic.read(json);
 			newMagics.put(key, magic);
 		}
@@ -184,6 +97,13 @@ public class Magics extends JsonReloadListener {
 		addMagics(newMagics);
 		if (ServerLifecycleHooks.getCurrentServer() != null)
 			sendMagicMessage(newMagics);
+	}
+
+	private ResourceLocation toResourceLocation(String string) {
+		if (string.contains(":"))
+			return new ResourceLocation(string);
+		else
+			return new ResourceLocation(Main.MODID, string);
 	}
 
 	private void sendMagicMessage(Map<ResourceLocation, Magic> newMagics) {
@@ -209,9 +129,4 @@ public class Magics extends JsonReloadListener {
 	public ImmutableSet<ItemStack> getMagicItems() {
 		return magicItems;
 	}
-
-	public Magic getFromName(String name) {
-		return registry.get(name).get();
-	}
-
 }

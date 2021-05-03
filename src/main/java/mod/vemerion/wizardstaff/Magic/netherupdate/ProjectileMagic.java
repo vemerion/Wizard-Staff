@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -27,8 +28,8 @@ public class ProjectileMagic extends Magic {
 	private SoundEvent sound;
 	private float speed;
 
-	public ProjectileMagic(String name) {
-		super(name);
+	public ProjectileMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

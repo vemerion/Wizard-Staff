@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.restructuring;
 import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -34,10 +35,9 @@ public class PotionMagic extends Magic {
 	private boolean affectCaster;
 	private SoundEvent sound;
 
-	public PotionMagic(String registryName) {
-		super(registryName);
+	public PotionMagic(MagicType type) {
+		super(type);
 	}
-
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::buildupMagic;

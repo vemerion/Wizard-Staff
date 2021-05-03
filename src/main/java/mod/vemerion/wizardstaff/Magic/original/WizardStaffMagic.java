@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -14,8 +15,8 @@ import net.minecraft.world.World;
 
 public class WizardStaffMagic extends Magic {
 	
-	public WizardStaffMagic(String name) {
-		super(name);
+	public WizardStaffMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModSounds;
@@ -15,8 +16,8 @@ import net.minecraft.world.World;
 
 public class CarvedPumpkinMagic extends Magic {
 	
-	public CarvedPumpkinMagic(String name) {
-		super(name);
+	public CarvedPumpkinMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

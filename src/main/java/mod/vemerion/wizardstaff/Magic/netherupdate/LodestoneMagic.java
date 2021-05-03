@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.init.ModSounds;
@@ -25,8 +26,8 @@ public class LodestoneMagic extends Magic {
 
 	private Block waypoint;
 
-	public LodestoneMagic(String name) {
-		super(name);
+	public LodestoneMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

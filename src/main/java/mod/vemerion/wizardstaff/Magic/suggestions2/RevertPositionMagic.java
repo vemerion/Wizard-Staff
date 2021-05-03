@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.suggestions2;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -17,8 +18,8 @@ import net.minecraft.world.server.ServerWorld;
 
 public class RevertPositionMagic extends Magic {
 
-	public RevertPositionMagic(String name) {
-		super(name);
+	public RevertPositionMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.spellbookupdate;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -24,8 +25,8 @@ public class PortableCraftingMagic extends Magic {
 
 	private static final ITextComponent CONTAINER_NAME = new TranslationTextComponent("container.crafting");
 
-	public PortableCraftingMagic(String name) {
-		super(name);
+	public PortableCraftingMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.original;
 import java.util.Random;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.init.ModParticles;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -20,8 +21,8 @@ import net.minecraft.world.server.ServerWorld;
 
 public class BlazePowderMagic extends Magic {
 	
-	public BlazePowderMagic(String name) {
-		super(name);
+	public BlazePowderMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

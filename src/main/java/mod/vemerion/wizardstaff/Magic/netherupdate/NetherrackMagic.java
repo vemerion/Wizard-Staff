@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -19,8 +20,8 @@ import net.minecraft.world.World;
 
 public class NetherrackMagic extends Magic {
 
-	public NetherrackMagic(String name) {
-		super(name);
+	public NetherrackMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

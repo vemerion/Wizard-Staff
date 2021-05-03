@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModSounds;
@@ -17,8 +18,8 @@ import net.minecraft.world.World;
 
 public class ObsidianMagic extends Magic {
 
-	public ObsidianMagic(String name) {
-		super(name);
+	public ObsidianMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

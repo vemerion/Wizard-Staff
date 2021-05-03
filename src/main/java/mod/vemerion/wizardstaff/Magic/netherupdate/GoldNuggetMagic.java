@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 import java.util.List;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -26,8 +27,8 @@ import net.minecraft.world.server.ServerWorld;
 
 public class GoldNuggetMagic extends Magic {
 
-	public GoldNuggetMagic(String name) {
-		super(name);
+	public GoldNuggetMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

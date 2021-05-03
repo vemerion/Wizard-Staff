@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.original;
 import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -30,10 +31,9 @@ public class TransformBlockMagic extends Magic {
 	private Block from;
 	private Block to;
 
-	public TransformBlockMagic(String name) {
-		super(name);
+	public TransformBlockMagic(MagicType type) {
+		super(type);
 	}
-
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BLOCK;

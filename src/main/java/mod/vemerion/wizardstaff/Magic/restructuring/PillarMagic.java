@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.restructuring;
 import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -23,8 +24,8 @@ public class PillarMagic extends Magic {
 
 	private Block block;
 
-	public PillarMagic(String registryName) {
-		super(registryName);
+	public PillarMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

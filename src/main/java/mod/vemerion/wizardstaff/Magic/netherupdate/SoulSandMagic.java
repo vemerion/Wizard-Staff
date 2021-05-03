@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 import java.util.Random;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModSounds;
@@ -23,8 +24,8 @@ public class SoulSandMagic extends Magic {
 	private static final float LENGTH = 15;
 	private static final int COUNT = 10;
 	
-	public SoulSandMagic(String name) {
-		super(name);
+	public SoulSandMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

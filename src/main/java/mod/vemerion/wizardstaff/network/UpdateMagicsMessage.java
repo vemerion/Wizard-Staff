@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.Magics;
+import mod.vemerion.wizardstaff.init.ModMagics;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -27,7 +28,7 @@ public class UpdateMagicsMessage {
 		for (Entry<ResourceLocation, Magic> entry : magics.entrySet()) {
 			Magic m = entry.getValue();
 			buffer.writeResourceLocation(entry.getKey());
-			buffer.writeString(m.getRegistryName());
+			buffer.writeResourceLocation(m.getRegistryName());
 			m.encode(buffer);
 		}
 	}
@@ -37,8 +38,8 @@ public class UpdateMagicsMessage {
 		int size = buffer.readInt();
 		for (int i = 0; i < size; i++) {
 			ResourceLocation key = buffer.readResourceLocation();
-			String name = buffer.readString(100);
-			Magic magic = Magics.getInstance(true).getFromName(name);
+			ResourceLocation name = buffer.readResourceLocation();
+			Magic magic = ModMagics.REGISTRY.getValue(name).create();
 			magic.decode(buffer);
 			magics.put(key, magic);
 		}

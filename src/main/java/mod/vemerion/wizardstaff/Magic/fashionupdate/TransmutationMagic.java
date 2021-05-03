@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.fashionupdate;
 import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -26,8 +27,8 @@ public class TransmutationMagic extends Magic {
 	private Item created;
 	private SoundEvent sound;
 
-	public TransmutationMagic(String name) {
-		super(name);
+	public TransmutationMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

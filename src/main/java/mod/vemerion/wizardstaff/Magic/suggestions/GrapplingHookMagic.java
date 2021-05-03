@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.suggestions;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -14,8 +15,8 @@ import net.minecraft.world.World;
 
 public class GrapplingHookMagic extends Magic {
 
-	public GrapplingHookMagic(String name) {
-		super(name);
+	public GrapplingHookMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.Magic.spellbookupdate;
 
 import java.util.Random;
 
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
@@ -14,8 +15,8 @@ import net.minecraft.world.World;
 
 public class DeageMagic extends RayMagic {
 
-	public DeageMagic(String name) {
-		super(name);
+	public DeageMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

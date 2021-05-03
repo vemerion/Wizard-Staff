@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -16,8 +17,8 @@ import net.minecraft.world.World;
 
 public class GlowstoneDustMagic extends Magic {
 
-	public GlowstoneDustMagic(String name) {
-		super(name);
+	public GlowstoneDustMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

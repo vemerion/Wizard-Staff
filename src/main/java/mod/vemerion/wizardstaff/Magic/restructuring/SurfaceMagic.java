@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.restructuring;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -17,8 +18,8 @@ import net.minecraft.world.World;
 
 public class SurfaceMagic extends Magic {
 
-	public SurfaceMagic(String registryName) {
-		super(registryName);
+	public SurfaceMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

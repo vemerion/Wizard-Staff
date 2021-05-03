@@ -6,6 +6,7 @@ import java.util.Random;
 import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -35,8 +36,8 @@ public class SmeltingMagic extends Magic {
 	private SoundEvent sound;
 	private String recipeName;
 
-	public SmeltingMagic(String registryName) {
-		super(registryName);
+	public SmeltingMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override

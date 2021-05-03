@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
+import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -41,8 +42,8 @@ public class BuilderMagic extends Magic {
 	private BlockPos center;
 	private BlockPos playerOffset;
 
-	public BuilderMagic(String registryName) {
-		super(registryName);
+	public BuilderMagic(MagicType type) {
+		super(type);
 	}
 
 	@Override
