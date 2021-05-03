@@ -21,7 +21,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class GhastTearMagic extends Magic {
 
-	public GhastTearMagic(MagicType type) {
+	public GhastTearMagic(MagicType<? extends GhastTearMagic> type) {
 		super(type);
 	}
 

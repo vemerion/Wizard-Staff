@@ -31,13 +31,21 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class SmeltingMagic extends Magic {
 
-	private IRecipeType<IRecipe<IInventory>> recipeType;
+	private IRecipeType<? extends IRecipe<IInventory>> recipeType;
 	private int interval;
 	private SoundEvent sound;
 	private String recipeName;
 
-	public SmeltingMagic(MagicType type) {
+	public SmeltingMagic(MagicType<? extends SmeltingMagic> type) {
 		super(type);
+	}
+	
+	public SmeltingMagic setAdditionalParams(IRecipeType<? extends IRecipe<IInventory>> recipeType, int interval, SoundEvent sound, String recipeName) {
+		this.recipeType = recipeType;
+		this.interval = interval;
+		this.sound = sound;
+		this.recipeName = recipeName;
+		return this;
 	}
 
 	@Override
@@ -82,6 +90,14 @@ public class SmeltingMagic extends Magic {
 		interval = JSONUtils.getInt(json, "smelt_interval");
 		recipeName = JSONUtils.getString(json, "recipe_name");
 	}
+	
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		MagicUtil.write(json, recipeType, Registry.RECIPE_TYPE, "recipe_type");
+		MagicUtil.write(json, sound, "sound");
+		json.addProperty("smelt_interval", interval);
+		json.addProperty("recipe_name", recipeName);
+	}
 
 	@Override
 	protected Object[] getNameArgs() {
@@ -106,7 +122,7 @@ public class SmeltingMagic extends Magic {
 
 				ItemEntity itemEntity = entities.get(rand.nextInt(entities.size()));
 				IInventory inv = new Inventory(itemEntity.getItem());
-				List<IRecipe<IInventory>> recipes = world.getRecipeManager().getRecipes(recipeType, inv, world);
+				List<? extends IRecipe<IInventory>> recipes = world.getRecipeManager().getRecipes(recipeType, inv, world);
 				if (!recipes.isEmpty()) {
 					playSoundServer(world, player, sound, 1, soundPitch(player));
 					cost(player);
@@ -118,7 +134,7 @@ public class SmeltingMagic extends Magic {
 		}
 	}
 	
-	private List<IRecipe<IInventory>> getRecipes(World world, ItemEntity itemEntity) {
+	private List<? extends IRecipe<IInventory>> getRecipes(World world, ItemEntity itemEntity) {
 		IInventory inv = new Inventory(itemEntity.getItem());
 		return world.getRecipeManager().getRecipes(recipeType, inv, world);
 	}

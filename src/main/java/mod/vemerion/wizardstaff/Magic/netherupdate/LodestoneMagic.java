@@ -26,8 +26,13 @@ public class LodestoneMagic extends Magic {
 
 	private Block waypoint;
 
-	public LodestoneMagic(MagicType type) {
+	public LodestoneMagic(MagicType<? extends LodestoneMagic> type) {
 		super(type);
+	}
+	
+	public LodestoneMagic setAdditionalParams(Block waypoint) {
+		this.waypoint = waypoint;
+		return this;
 	}
 
 	@Override
@@ -43,6 +48,11 @@ public class LodestoneMagic extends Magic {
 	@Override
 	protected void readAdditional(JsonObject json) {
 		waypoint = MagicUtil.read(json, ForgeRegistries.BLOCKS, "waypoint");
+	}
+	
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		MagicUtil.write(json, waypoint, "waypoint");
 	}
 	
 	@Override

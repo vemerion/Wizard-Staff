@@ -35,13 +35,23 @@ public class PushBlockMagic extends Magic {
 
 	private Block block;
 
-	public PushBlockMagic(MagicType type) {
+	public PushBlockMagic(MagicType<? extends PushBlockMagic> type) {
 		super(type);
+	}
+	
+	public PushBlockMagic setAdditionalParams(Block block) {
+		this.block = block;
+		return this;
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
 		block = MagicUtil.read(json, ForgeRegistries.BLOCKS, "block");
+	}
+	
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		MagicUtil.write(json, block, "block");
 	}
 
 	@Override

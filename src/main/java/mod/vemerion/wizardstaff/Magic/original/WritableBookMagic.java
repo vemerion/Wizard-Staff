@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class WritableBookMagic extends Magic {
 
-	public WritableBookMagic(MagicType type) {
+	public WritableBookMagic(MagicType<? extends WritableBookMagic> type) {
 		super(type);
 	}
 

@@ -4,15 +4,16 @@ import java.util.function.Function;
 
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class MagicType extends ForgeRegistryEntry<MagicType> {
+public class MagicType<T extends Magic> extends ForgeRegistryEntry<MagicType<T>> {
 
-	private Function<MagicType, Magic> factory;
+	private Function<MagicType<T>, T> factory;
 
-	public MagicType(Function<MagicType, Magic> factory) {
+	public MagicType(Function<MagicType<T>, T> factory) {
 		this.factory = factory;
 	}
 
-	public Magic create() {
+	public T create() {
 		return factory.apply(this);
 	}
+	
 }

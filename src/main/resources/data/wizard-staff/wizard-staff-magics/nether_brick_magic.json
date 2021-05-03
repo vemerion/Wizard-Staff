@@ -1,8 +1,0 @@
-{
-  "cost": 60,
-  "duration": 20,
-  "magic": "nether_brick_magic",
-  "ingredient": {
-    "tag": "forge:ingots/nether_brick"
-  }
-}

@@ -33,6 +33,11 @@ public class MagicUtil {
 		return json.has(member) ? read(json, registry, member) : fallback;
 	}
 
+	public static <T extends IForgeRegistryEntry<T>> void write(JsonObject json, T obj, String member) {
+		String key = obj.getRegistryName().toString();
+		json.addProperty(member, key);
+	}
+
 	public static <T extends IForgeRegistryEntry<T>> void encode(PacketBuffer buffer, T obj) {
 		String key = obj.getRegistryName().toString();
 		buffer.writeInt(key.length());
@@ -60,6 +65,10 @@ public class MagicUtil {
 	public static <T> T read(JsonObject json, Registry<T> registry, String member, T fallback) {
 		return json.has(member) ? read(json, registry, member) : fallback;
 	}
+	
+	public static <T> void write(JsonObject json, T obj, Registry<T> registry, String member) {
+		json.addProperty(member, registry.getKey(obj).toString());
+	}
 
 	public static <T> void encode(PacketBuffer buffer, T obj, Registry<T> registry) {
 		String key = registry.getKey(obj).toString();
@@ -81,5 +90,9 @@ public class MagicUtil {
 		} else {
 			return pos.get();
 		}
+	}
+
+	public static void writeBlockPos(JsonObject json, String member, BlockPos pos) {
+		BlockPos.CODEC.encodeStart(JsonOps.INSTANCE, pos).result().ifPresent(elem -> json.add(member, elem));
 	}
 }

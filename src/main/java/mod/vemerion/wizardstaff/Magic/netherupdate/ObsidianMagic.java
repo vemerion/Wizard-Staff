@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class ObsidianMagic extends Magic {
 
-	public ObsidianMagic(MagicType type) {
+	public ObsidianMagic(MagicType<? extends ObsidianMagic> type) {
 		super(type);
 	}
 

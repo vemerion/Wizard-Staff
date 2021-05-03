@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class CarvedPumpkinMagic extends Magic {
 	
-	public CarvedPumpkinMagic(MagicType type) {
+	public CarvedPumpkinMagic(MagicType<? extends CarvedPumpkinMagic> type) {
 		super(type);
 	}
 

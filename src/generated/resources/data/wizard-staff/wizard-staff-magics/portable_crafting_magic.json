@@ -1,0 +1,8 @@
+{
+  "cost": 10.0,
+  "duration": 10,
+  "magic": "wizard-staff:portable_crafting_magic",
+  "ingredient": {
+    "item": "minecraft:crafting_table"
+  }
+}

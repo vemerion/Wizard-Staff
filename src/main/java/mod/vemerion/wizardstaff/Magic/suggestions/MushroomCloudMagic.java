@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class MushroomCloudMagic extends Magic {
 
-	public MushroomCloudMagic(MagicType type) {
+	public MushroomCloudMagic(MagicType<? extends MushroomCloudMagic> type) {
 		super(type);
 	}
 

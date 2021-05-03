@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class NetherrackMagic extends Magic {
 
-	public NetherrackMagic(MagicType type) {
+	public NetherrackMagic(MagicType<? extends NetherrackMagic> type) {
 		super(type);
 	}
 

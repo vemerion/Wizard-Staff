@@ -1,0 +1,12 @@
+{
+  "cost": 1.0,
+  "duration": -1,
+  "magic": "wizard-staff:smelting_magic",
+  "ingredient": {
+    "item": "minecraft:furnace"
+  },
+  "recipe_type": "minecraft:smelting",
+  "sound": "minecraft:block.furnace.fire_crackle",
+  "smelt_interval": 20,
+  "recipe_name": "block.minecraft.furnace"
+}

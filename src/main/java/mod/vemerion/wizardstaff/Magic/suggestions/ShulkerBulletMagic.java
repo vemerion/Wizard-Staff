@@ -13,13 +13,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.Direction.Axis;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
 public class ShulkerBulletMagic extends Magic {
 
-	public ShulkerBulletMagic(MagicType type) {
+	public ShulkerBulletMagic(MagicType<? extends ShulkerBulletMagic> type) {
 		super(type);
 	}
 

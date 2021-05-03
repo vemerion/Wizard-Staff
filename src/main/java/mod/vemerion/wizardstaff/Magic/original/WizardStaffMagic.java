@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class WizardStaffMagic extends Magic {
 	
-	public WizardStaffMagic(MagicType type) {
+	public WizardStaffMagic(MagicType<? extends WizardStaffMagic> type) {
 		super(type);
 	}
 

@@ -21,7 +21,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class BlazePowderMagic extends Magic {
 	
-	public BlazePowderMagic(MagicType type) {
+	public BlazePowderMagic(MagicType<? extends BlazePowderMagic> type) {
 		super(type);
 	}
 

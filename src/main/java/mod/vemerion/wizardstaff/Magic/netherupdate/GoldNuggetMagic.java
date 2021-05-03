@@ -27,7 +27,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class GoldNuggetMagic extends Magic {
 
-	public GoldNuggetMagic(MagicType type) {
+	public GoldNuggetMagic(MagicType<? extends GoldNuggetMagic> type) {
 		super(type);
 	}
 

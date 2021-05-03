@@ -1,8 +1,0 @@
-{
-  "cost": 50,
-  "duration": 40,
-  "magic": "carved_pumpkin_magic",
-  "ingredient": {
-    "item": "minecraft:carved_pumpkin"
-  }
-}

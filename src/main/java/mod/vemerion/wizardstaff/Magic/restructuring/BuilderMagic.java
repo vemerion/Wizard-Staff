@@ -42,8 +42,16 @@ public class BuilderMagic extends Magic {
 	private BlockPos center;
 	private BlockPos playerOffset;
 
-	public BuilderMagic(MagicType type) {
+	public BuilderMagic(MagicType<? extends BuilderMagic> type) {
 		super(type);
+	}
+	
+	public BuilderMagic setAdditionalParams(ResourceLocation name, Direction front, BlockPos center, BlockPos playerOffset) {
+		this.name = name;
+		this.front = front;
+		this.center = center;
+		this.playerOffset = playerOffset;
+		return this;
 	}
 
 	@Override
@@ -57,6 +65,14 @@ public class BuilderMagic extends Magic {
 			throw new JsonParseException("Direction must be horizontal for front attribute");
 		center = MagicUtil.readBlockPos(json, "center");
 		playerOffset = MagicUtil.readBlockPos(json, "player_offset");
+	}
+	
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		json.addProperty("template", name.toString());
+		json.addProperty("front", front.getName2());
+		MagicUtil.writeBlockPos(json, "center", center);
+		MagicUtil.writeBlockPos(json, "player_offset", playerOffset);
 	}
 
 	@Override

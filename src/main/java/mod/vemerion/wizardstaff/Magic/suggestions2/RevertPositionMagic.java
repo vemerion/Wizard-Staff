@@ -18,7 +18,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class RevertPositionMagic extends Magic {
 
-	public RevertPositionMagic(MagicType type) {
+	public RevertPositionMagic(MagicType<? extends RevertPositionMagic> type) {
 		super(type);
 	}
 

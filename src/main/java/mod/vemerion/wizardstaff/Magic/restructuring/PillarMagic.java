@@ -24,8 +24,13 @@ public class PillarMagic extends Magic {
 
 	private Block block;
 
-	public PillarMagic(MagicType type) {
+	public PillarMagic(MagicType<? extends PillarMagic> type) {
 		super(type);
+	}
+	
+	public PillarMagic setAdditionalParams(Block block) {
+		this.block = block;
+		return this;
 	}
 
 	@Override
@@ -41,6 +46,11 @@ public class PillarMagic extends Magic {
 	@Override
 	protected void readAdditional(JsonObject json) {
 		block = MagicUtil.read(json, ForgeRegistries.BLOCKS, "block");
+	}
+	
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		MagicUtil.write(json, block, "block");
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class FeatherMagic extends Magic {
 
-	public FeatherMagic(MagicType type) {
+	public FeatherMagic(MagicType<? extends FeatherMagic> type) {
 		super(type);
 	}
 

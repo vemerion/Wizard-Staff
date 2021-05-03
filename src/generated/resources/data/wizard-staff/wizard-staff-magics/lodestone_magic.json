@@ -1,0 +1,9 @@
+{
+  "cost": 500.0,
+  "duration": 120,
+  "magic": "wizard-staff:lodestone_magic",
+  "ingredient": {
+    "item": "minecraft:lodestone"
+  },
+  "waypoint": "minecraft:lodestone"
+}

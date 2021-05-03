@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class BricksMagic extends Magic {
 
-	public BricksMagic(MagicType type) {
+	public BricksMagic(MagicType<? extends BricksMagic> type) {
 		super(type);
 	}
 

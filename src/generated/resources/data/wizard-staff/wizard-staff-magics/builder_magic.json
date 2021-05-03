@@ -1,0 +1,20 @@
+{
+  "cost": 400.0,
+  "duration": 80,
+  "magic": "wizard-staff:builder_magic",
+  "ingredient": {
+    "item": "minecraft:cobblestone"
+  },
+  "template": "wizard-staff:wizard_home",
+  "front": "south",
+  "center": [
+    3,
+    3,
+    3
+  ],
+  "player_offset": [
+    0,
+    0,
+    5
+  ]
+}

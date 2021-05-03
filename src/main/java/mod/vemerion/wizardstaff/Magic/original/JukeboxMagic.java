@@ -23,7 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 
 public class JukeboxMagic extends Magic {
-	public JukeboxMagic(MagicType type) {
+	public JukeboxMagic(MagicType<? extends JukeboxMagic> type) {
 		super(type);
 	}
 

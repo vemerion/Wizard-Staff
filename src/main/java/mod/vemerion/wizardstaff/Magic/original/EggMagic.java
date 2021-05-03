@@ -12,7 +12,6 @@ import mod.vemerion.wizardstaff.Magic.RayMagic;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -21,14 +20,18 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class EggMagic extends RayMagic {
 
-	private Set<EntityType<?>> blacklist;
+	private Set<ResourceLocation> blacklist;
 
-	public EggMagic(MagicType type) {
+	public EggMagic(MagicType<? extends EggMagic> type) {
 		super(type);
+	}
+	
+	public EggMagic setAdditionalParams(Set<ResourceLocation> blacklist) {
+		this.blacklist = blacklist;
+		return this;
 	}
 
 	@Override
@@ -37,16 +40,21 @@ public class EggMagic extends RayMagic {
 		JsonArray array = JSONUtils.getJsonArray(json, "blacklist");
 		for (int i = 0; i < array.size(); i++) {
 			String name = JSONUtils.getString(array.get(i), "entity name");
-			ResourceLocation key = new ResourceLocation(name);
-			if (ForgeRegistries.ENTITIES.containsKey(key)) {
-				blacklist.add(ForgeRegistries.ENTITIES.getValue(key));
-			}
+			blacklist.add(new ResourceLocation(name));
 		}
+	}
+	
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		JsonArray array = new JsonArray();
+		for (ResourceLocation type : blacklist)
+			array.add(type.toString());
+		json.add("blacklist", array);
 	}
 
 	@Override
 	public void hitEntity(World world, PlayerEntity player, Entity target) {
-		if (blacklist.contains(target.getType())) {
+		if (blacklist.contains(target.getType().getRegistryName())) {
 			target.playSound(ModSounds.POOF, 1, soundPitch(player));
 			return;
 		}

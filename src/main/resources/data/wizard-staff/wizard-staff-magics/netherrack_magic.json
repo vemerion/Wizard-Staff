@@ -1,8 +1,0 @@
-{
-  "cost": 3,
-  "duration": -1,
-  "magic": "netherrack_magic",
-  "ingredient": {
-    "item": "minecraft:netherrack"
-  }
-}

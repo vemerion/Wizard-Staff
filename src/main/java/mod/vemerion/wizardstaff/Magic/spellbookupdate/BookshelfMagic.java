@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class BookshelfMagic extends Magic {
 
-	public BookshelfMagic(MagicType type) {
+	public BookshelfMagic(MagicType<? extends BookshelfMagic> type) {
 		super(type);
 	}
 

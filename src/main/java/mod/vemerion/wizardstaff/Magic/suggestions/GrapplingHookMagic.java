@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class GrapplingHookMagic extends Magic {
 
-	public GrapplingHookMagic(MagicType type) {
+	public GrapplingHookMagic(MagicType<? extends GrapplingHookMagic> type) {
 		super(type);
 	}
 

@@ -29,7 +29,7 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class Magics extends JsonReloadListener {
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
-	private static final String FOLDER_NAME = Main.MODID + "-magics";
+	public static final String FOLDER_NAME = Main.MODID + "-magics";
 
 	private static Magics clientInstance;
 	private static Magics serverInstance;
@@ -84,7 +84,7 @@ public class Magics extends JsonReloadListener {
 			ResourceLocation magicKey = toResourceLocation(JSONUtils.getString(json, "magic"));
 			if (!ModMagics.REGISTRY.containsKey(magicKey))
 				throw new JsonSyntaxException("The magic " + magicKey + " does not exist");
-			MagicType type = ModMagics.REGISTRY.getValue(magicKey);
+			MagicType<?> type = ModMagics.REGISTRY.getValue(magicKey);
 
 			if (type == ModMagics.NO_MAGIC)
 				continue;

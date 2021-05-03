@@ -1,0 +1,14 @@
+{
+  "cost": 25.0,
+  "duration": 25,
+  "magic": "wizard-staff:potion_magic",
+  "ingredient": {
+    "item": "minecraft:wooden_pickaxe"
+  },
+  "level": 2,
+  "potion_time": 600,
+  "radius": 2.0,
+  "potion": "minecraft:haste",
+  "affect_caster": true,
+  "sound": "minecraft:block.brewing_stand.brew"
+}

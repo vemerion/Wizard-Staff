@@ -35,9 +35,20 @@ public class PotionMagic extends Magic {
 	private boolean affectCaster;
 	private SoundEvent sound;
 
-	public PotionMagic(MagicType type) {
+	public PotionMagic(MagicType<? extends PotionMagic> type) {
 		super(type);
 	}
+	
+	public PotionMagic setAdditionalParams(int level, int potionTime, float radius, Effect potion, boolean affectCaster, SoundEvent sound) {
+		this.level = level;
+		this.potionTime = potionTime;
+		this.radius = radius;
+		this.potion = potion;
+		this.affectCaster = affectCaster;
+		this.sound = sound;
+		return this;
+	}
+	
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::buildupMagic;
@@ -61,6 +72,16 @@ public class PotionMagic extends Magic {
 		potion = MagicUtil.read(json, ForgeRegistries.POTIONS, "potion");
 		affectCaster = JSONUtils.getBoolean(json, "affect_caster");
 		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound");
+	}
+	
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		json.addProperty("level", level);
+		json.addProperty("potion_time", potionTime);
+		json.addProperty("radius", radius);
+		MagicUtil.write(json, potion, "potion");
+		json.addProperty("affect_caster", affectCaster);
+		MagicUtil.write(json, sound, "sound");
 	}
 
 	@Override

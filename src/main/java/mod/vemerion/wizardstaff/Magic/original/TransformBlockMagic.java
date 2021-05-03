@@ -31,12 +31,18 @@ public class TransformBlockMagic extends Magic {
 	private Block from;
 	private Block to;
 
-	public TransformBlockMagic(MagicType type) {
+	public TransformBlockMagic(MagicType<? extends TransformBlockMagic> type) {
 		super(type);
 	}
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BLOCK;
+	}
+	
+	public TransformBlockMagic setAdditionalParams(Block from, Block to) {
+		this.from = from;
+		this.to = to;
+		return this;
 	}
 
 	@Override
@@ -55,6 +61,12 @@ public class TransformBlockMagic extends Magic {
 	protected void readAdditional(JsonObject json) {
 		from = MagicUtil.read(json, ForgeRegistries.BLOCKS, "from");
 		to = MagicUtil.read(json, ForgeRegistries.BLOCKS, "to");
+	}
+	
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		MagicUtil.write(json, from, "from");
+		MagicUtil.write(json, to, "to");
 	}
 
 	@Override

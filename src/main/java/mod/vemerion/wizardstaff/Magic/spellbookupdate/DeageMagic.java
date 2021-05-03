@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class DeageMagic extends RayMagic {
 
-	public DeageMagic(MagicType type) {
+	public DeageMagic(MagicType<? extends DeageMagic> type) {
 		super(type);
 	}
 

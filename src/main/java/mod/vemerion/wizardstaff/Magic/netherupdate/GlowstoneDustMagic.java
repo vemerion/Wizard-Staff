@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public class GlowstoneDustMagic extends Magic {
 
-	public GlowstoneDustMagic(MagicType type) {
+	public GlowstoneDustMagic(MagicType<? extends GlowstoneDustMagic> type) {
 		super(type);
 	}
 

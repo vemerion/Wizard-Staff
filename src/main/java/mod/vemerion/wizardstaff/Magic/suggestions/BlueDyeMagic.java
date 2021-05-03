@@ -15,7 +15,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class BlueDyeMagic extends Magic {
 
-	public BlueDyeMagic(MagicType type) {
+	public BlueDyeMagic(MagicType<? extends BlueDyeMagic> type) {
 		super(type);
 	}
 

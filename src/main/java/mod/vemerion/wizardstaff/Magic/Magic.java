@@ -33,10 +33,17 @@ public abstract class Magic {
 	protected float cost;
 	protected int duration;
 	protected Ingredient ingredient;
-	private MagicType type;
+	private MagicType<?> type;
 
-	public Magic(MagicType type) {
+	public Magic(MagicType<?> type) {
 		this.type = type;
+	}
+	
+	public Magic setParams(float cost, int duration, Ingredient ingredient) {
+		this.cost = cost;
+		this.duration = duration;
+		this.ingredient = ingredient;
+		return this;
 	}
 
 	public ResourceLocation getRegistryName() {
@@ -57,6 +64,21 @@ public abstract class Magic {
 
 	// Override to read additional parameters from the json file
 	protected void readAdditional(JsonObject json) {
+	}
+
+	public JsonObject write() {
+		JsonObject json = new JsonObject();
+		json.addProperty("cost", cost);
+		json.addProperty("duration", duration);
+		json.addProperty("magic", getRegistryName().toString());
+		json.add("ingredient", ingredient.serialize());
+		
+		writeAdditional(json);
+		return json;
+	}
+
+	// Override to write additional parameters to the json file
+	protected void writeAdditional(JsonObject json) {
 	}
 
 	public void decode(PacketBuffer buffer) {
@@ -176,12 +198,14 @@ public abstract class Magic {
 		private TranslationTextComponent name;
 		private TranslationTextComponent descr;
 
-		private Description(float cost, int duration, ResourceLocation magicName, Object[] nameArgs, Object[] descrArgs) {
+		private Description(float cost, int duration, ResourceLocation magicName, Object[] nameArgs,
+				Object[] descrArgs) {
 			this.cost = cost;
 			this.duration = duration;
-			this.name = new TranslationTextComponent("gui." + magicName.getNamespace() + "." + magicName.getPath() + ".name", nameArgs);
-			this.descr = new TranslationTextComponent("gui." + magicName.getNamespace() + "." + magicName.getPath() + ".description",
-					descrArgs);
+			this.name = new TranslationTextComponent(
+					"gui." + magicName.getNamespace() + "." + magicName.getPath() + ".name", nameArgs);
+			this.descr = new TranslationTextComponent(
+					"gui." + magicName.getNamespace() + "." + magicName.getPath() + ".description", descrArgs);
 		}
 
 		public float getCost() {

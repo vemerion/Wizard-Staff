@@ -1,9 +1,0 @@
-{
-  "cost": 30,
-  "duration": 20,
-  "magic": "transmutation_magic",
-  "ingredient": {
-    "item": "minecraft:iron_helmet"
-  },
-  "created": "wizard-staff:warlock_helmet"
-}

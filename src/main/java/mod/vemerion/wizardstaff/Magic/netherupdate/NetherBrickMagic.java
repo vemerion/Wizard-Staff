@@ -20,7 +20,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class NetherBrickMagic extends Magic {
 
-	public NetherBrickMagic(MagicType type) {
+	public NetherBrickMagic(MagicType<? extends NetherBrickMagic> type) {
 		super(type);
 	}
 

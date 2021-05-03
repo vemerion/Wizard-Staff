@@ -28,8 +28,15 @@ public class ProjectileMagic extends Magic {
 	private SoundEvent sound;
 	private float speed;
 
-	public ProjectileMagic(MagicType type) {
+	public ProjectileMagic(MagicType<? extends ProjectileMagic> type) {
 		super(type);
+	}
+	
+	public ProjectileMagic setAdditionalParams(EntityType<?> projectileType, SoundEvent sound, float speed) {
+		this.projectileType = projectileType;
+		this.sound = sound;
+		this.speed = speed;
+		return this;
 	}
 
 	@Override
@@ -52,6 +59,13 @@ public class ProjectileMagic extends Magic {
 		projectileType = MagicUtil.read(json, ForgeRegistries.ENTITIES, "projectile");
 		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound");
 		speed = JSONUtils.getFloat(json, "speed");
+	}
+	
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		MagicUtil.write(json, projectileType, "projectile");
+		MagicUtil.write(json, sound, "sound");
+		json.addProperty("speed", speed);
 	}
 
 	@Override

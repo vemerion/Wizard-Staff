@@ -1,8 +1,0 @@
-{
-  "cost": 0.5,
-  "duration": 20,
-  "magic": "surface_magic",
-  "ingredient": {
-    "item": "minecraft:stone"
-  }
-}

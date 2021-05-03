@@ -27,8 +27,14 @@ public class TransmutationMagic extends Magic {
 	private Item created;
 	private SoundEvent sound;
 
-	public TransmutationMagic(MagicType type) {
+	public TransmutationMagic(MagicType<? extends TransmutationMagic> type) {
 		super(type);
+	}
+	
+	public TransmutationMagic setAdditionalParams(Item created, SoundEvent sound) {
+		this.created = created;
+		this.sound = sound;
+		return this;
 	}
 
 	@Override
@@ -62,6 +68,12 @@ public class TransmutationMagic extends Magic {
 	protected void readAdditional(JsonObject json) {
 		created = JSONUtils.getItem(json, "created");
 		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound", ModSounds.PLOP);
+	}
+	
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		MagicUtil.write(json, created, "created");
+		MagicUtil.write(json, sound, "sound");
 	}
 
 	@Override

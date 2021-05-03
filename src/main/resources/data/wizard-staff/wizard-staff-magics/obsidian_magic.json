@@ -1,8 +1,0 @@
-{
-  "cost": 100,
-  "duration": 60,
-  "magic": "obsidian_magic",
-  "ingredient": {
-    "item": "minecraft:obsidian"
-  }
-}

@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class ElytraMagic extends Magic {
 	
-	public ElytraMagic(MagicType type) {
+	public ElytraMagic(MagicType<? extends ElytraMagic> type) {
 		super(type);
 	}
 

@@ -1,0 +1,8 @@
+{
+  "cost": 0.5,
+  "duration": -1,
+  "magic": "wizard-staff:ghast_tear_magic",
+  "ingredient": {
+    "item": "minecraft:ghast_tear"
+  }
+}

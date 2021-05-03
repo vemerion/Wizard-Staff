@@ -28,8 +28,13 @@ public class BucketMagic extends Magic {
 
 	private BucketItem bucket;
 
-	public BucketMagic(MagicType type) {
+	public BucketMagic(MagicType<? extends BucketMagic> type) {
 		super(type);
+	}
+	
+	public BucketMagic setAdditionalParams(BucketItem bucket) {
+		this.bucket = bucket;
+		return this;
 	}
 
 	@Override
@@ -54,6 +59,11 @@ public class BucketMagic extends Magic {
 			bucket = (BucketItem) item;
 		else
 			throw new JsonParseException("bucket attribute must be instance of BucketItem");
+	}
+	
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		MagicUtil.write(json, bucket, "bucket");
 	}
 
 	@Override

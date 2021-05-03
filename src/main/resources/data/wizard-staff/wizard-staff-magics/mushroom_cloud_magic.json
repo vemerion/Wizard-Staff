@@ -1,8 +1,0 @@
-{
-  "cost": 50,
-  "duration": 40,
-  "magic": "mushroom_cloud_magic",
-  "ingredient": {
-    "item": "minecraft:mycelium"
-  }
-}

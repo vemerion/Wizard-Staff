@@ -25,7 +25,7 @@ public class PortableCraftingMagic extends Magic {
 
 	private static final ITextComponent CONTAINER_NAME = new TranslationTextComponent("container.crafting");
 
-	public PortableCraftingMagic(MagicType type) {
+	public PortableCraftingMagic(MagicType<? extends PortableCraftingMagic> type) {
 		super(type);
 	}
 

@@ -1,0 +1,8 @@
+{
+  "cost": 0.5,
+  "duration": 20,
+  "magic": "wizard-staff:surface_magic",
+  "ingredient": {
+    "item": "minecraft:stone"
+  }
+}

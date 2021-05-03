@@ -1,0 +1,8 @@
+{
+  "cost": 6.0,
+  "duration": -1,
+  "magic": "wizard-staff:jukebox_magic",
+  "ingredient": {
+    "item": "minecraft:jukebox"
+  }
+}

@@ -16,7 +16,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class ClockMagic extends Magic {
 	
-	public ClockMagic(MagicType type) {
+	public ClockMagic(MagicType<? extends ClockMagic> type) {
 		super(type);
 	}
 

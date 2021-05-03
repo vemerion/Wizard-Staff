@@ -1,0 +1,9 @@
+{
+  "cost": 20.0,
+  "duration": 20,
+  "magic": "wizard-staff:push_block_magic",
+  "ingredient": {
+    "item": "minecraft:mossy_cobblestone"
+  },
+  "block": "minecraft:spawner"
+}

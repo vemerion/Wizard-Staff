@@ -31,7 +31,7 @@ public class MapMagic extends Magic {
 	private static final ImmutableList<StructureInfo> VALID_STRUCTURES = ImmutableList.of(
 			new StructureInfo(Structure.VILLAGE, MapDecoration.Type.MANSION));
 
-	public MapMagic(MagicType type) {
+	public MapMagic(MagicType<? extends MapMagic> type) {
 		super(type);
 	}
 

@@ -5,8 +5,8 @@ import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
+import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class SurfaceMagic extends Magic {
 
-	public SurfaceMagic(MagicType type) {
+	public SurfaceMagic(MagicType<? extends SurfaceMagic> type) {
 		super(type);
 	}
 

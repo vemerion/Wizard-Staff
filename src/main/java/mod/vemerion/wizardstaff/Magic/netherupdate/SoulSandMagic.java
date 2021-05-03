@@ -24,7 +24,7 @@ public class SoulSandMagic extends Magic {
 	private static final float LENGTH = 15;
 	private static final int COUNT = 10;
 	
-	public SoulSandMagic(MagicType type) {
+	public SoulSandMagic(MagicType<? extends SoulSandMagic> type) {
 		super(type);
 	}
 
