@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.Magic.suggestions2;
 
 import com.google.gson.JsonObject;
 
+import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
@@ -21,11 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceContext.BlockMode;
-import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -120,11 +117,7 @@ public class PushBlockMagic extends Magic {
 	}
 
 	private BlockPos ray(World world, PlayerEntity player) {
-		Vector3d direction = Vector3d.fromPitchYaw(player.getPitchYaw());
-		Vector3d start = player.getPositionVec().add(0, 1.5, 0).add(direction.scale(0.2));
-		Vector3d stop = start.add(direction.scale(5));
-		BlockRayTraceResult result = world
-				.rayTraceBlocks(new RayTraceContext(start, stop, BlockMode.COLLIDER, FluidMode.NONE, player));
+		BlockRayTraceResult result = Helper.blockRay(world, player, 5);
 		if (result.getType() == Type.BLOCK && world.getBlockState(result.getPos()).getBlock() == block)
 			return result.getPos();
 
