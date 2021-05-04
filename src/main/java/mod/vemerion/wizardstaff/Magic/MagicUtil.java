@@ -1,7 +1,12 @@
 package mod.vemerion.wizardstaff.Magic;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.serialization.JsonOps;
@@ -65,7 +70,7 @@ public class MagicUtil {
 	public static <T> T read(JsonObject json, Registry<T> registry, String member, T fallback) {
 		return json.has(member) ? read(json, registry, member) : fallback;
 	}
-	
+
 	public static <T> void write(JsonObject json, T obj, Registry<T> registry, String member) {
 		json.addProperty(member, registry.getKey(obj).toString());
 	}
@@ -94,5 +99,19 @@ public class MagicUtil {
 
 	public static void writeBlockPos(JsonObject json, String member, BlockPos pos) {
 		BlockPos.CODEC.encodeStart(JsonOps.INSTANCE, pos).result().ifPresent(elem -> json.add(member, elem));
+	}
+
+	public static <T> List<T> readList(JsonObject json, String member, Function<JsonElement, T> f) {
+		ArrayList<T> list = new ArrayList<>();
+		JsonArray array = JSONUtils.getJsonArray(json, member);
+		array.forEach(e -> list.add(f.apply(e)));
+		return list;
+	}
+
+	public static <T> void writeList(JsonObject json, String member, List<T> list, Function<T, JsonElement> f) {
+		JsonArray array = new JsonArray();
+		for (T t : list)
+			array.add(f.apply(t));
+		json.add(member, array);
 	}
 }

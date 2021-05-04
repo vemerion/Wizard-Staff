@@ -10,6 +10,7 @@ import java.util.function.BiConsumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -138,6 +139,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.WRITABLE_BOOK_MAGIC.create().setParams(10, 20, ing(Items.WRITABLE_BOOK)), "");
 		c.accept(ModMagics.REMOVE_FLUID_MAGIC.create().setAdditionalParams(Fluids.WATER).setParams(10, 20, ing(Items.SPONGE)), "remove_water_magic");
 		c.accept(ModMagics.PUSH_BUTTON_MAGIC.create().setParams(1f, -1, ing(Items.STONE_BUTTON)), "");
+		c.accept(ModMagics.NAME_TAG_MAGIC.create().setAdditionalParams(ImmutableList.of("ig", "nite", "syl", "la", "bles", "di", "vide", "un", "ex", "am", "ples", "dif", "fer", "ence", "re", "main", "der")).setParams(10, 20, ing(Items.NAME_TAG)), "");
 	}
 	
 	private void magicArmor(BiConsumer<Magic, String> c, Item from, Item created) {
