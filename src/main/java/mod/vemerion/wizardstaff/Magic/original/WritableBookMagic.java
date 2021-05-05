@@ -1,7 +1,14 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
+import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -15,19 +22,31 @@ import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.world.World;
 
 public class WritableBookMagic extends Magic {
+
+	private List<String> wisdoms;
 
 	public WritableBookMagic(MagicType<? extends WritableBookMagic> type) {
 		super(type);
 	}
 
-	private String[] wisdoms = { "All that glitters is gold", "Fear the old blood",
-			"Every fleeing man must be caught. Every secret must be unearthed. Such is the conceit of the self-proclaimed seeker of truth.",
-			"What we do in life echoes in eternity", "STEVEN LIVES", "What we've got here is... failure to communicate",
-			"All those moments will be lost in time, like tears in rain",
-			"A wizard is never late, nor is he early. He arrives precisely when he means to." };
+	public WritableBookMagic setAdditionalParams(List<String> wisdoms) {
+		this.wisdoms = wisdoms;
+		return this;
+	}
+
+	@Override
+	protected void readAdditional(JsonObject json) {
+		wisdoms = MagicUtil.readColl(json, "wisdoms", e -> JSONUtils.getString(e, "wisdom"), new ArrayList<>());
+	}
+
+	@Override
+	protected void writeAdditional(JsonObject json) {
+		MagicUtil.writeColl(json, "wisdoms", wisdoms, JsonPrimitive::new);
+	}
 
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
@@ -36,7 +55,7 @@ public class WritableBookMagic extends Magic {
 
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		String wisdom = wisdoms[player.getRNG().nextInt(wisdoms.length)];
+		String wisdom = wisdoms.get(player.getRNG().nextInt(wisdoms.size()));
 		player.playSound(ModSounds.SCRIBBLE, 1, soundPitch(player));
 		if (!world.isRemote) {
 			cost(player);

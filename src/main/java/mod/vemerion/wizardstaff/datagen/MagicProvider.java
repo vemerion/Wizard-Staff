@@ -136,7 +136,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.PROJECTILE_MAGIC.create().setAdditionalParams(ModEntities.MAGIC_WITHER_SKULL, ModSounds.SKELETON, 0.5f).setParams(20, 15, ing(Items.WITHER_SKELETON_SKULL)), "wither_skull_magic");
 		c.accept(ModMagics.PROJECTILE_MAGIC.create().setAdditionalParams(ModEntities.WIZARD_HAT, ModSounds.CLOTH, 1).setParams(20, 25, ing(ModItems.WIZARD_HAT)), "wizard_hat_throw_magic");
 		c.accept(ModMagics.WIZARD_STAFF_MAGIC.create().setParams(0, 20, ing(ModItems.WIZARD_STAFF)), "");
-		c.accept(ModMagics.WRITABLE_BOOK_MAGIC.create().setParams(10, 20, ing(Items.WRITABLE_BOOK)), "");
+		c.accept(ModMagics.WRITABLE_BOOK_MAGIC.create().setAdditionalParams(ImmutableList.of("All that glitters is gold", "Fear the old blood", "Every fleeing man must be caught. Every secret must be unearthed. Such is the conceit of the self-proclaimed seeker of truth.", "What we do in life echoes in eternity", "STEVEN LIVES", "What we've got here is... failure to communicate", "All those moments will be lost in time, like tears in rain", "A wizard is never late, nor is he early. He arrives precisely when he means to.")).setParams(10, 20, ing(Items.WRITABLE_BOOK)), "");
 		c.accept(ModMagics.REMOVE_FLUID_MAGIC.create().setAdditionalParams(Fluids.WATER).setParams(10, 20, ing(Items.SPONGE)), "remove_water_magic");
 		c.accept(ModMagics.PUSH_BUTTON_MAGIC.create().setParams(1f, -1, ing(Items.STONE_BUTTON)), "");
 		c.accept(ModMagics.NAME_TAG_MAGIC.create().setAdditionalParams(ImmutableList.of("ig", "nite", "syl", "la", "bles", "di", "vide", "un", "ex", "am", "ples", "dif", "fer", "ence", "re", "main", "der")).setParams(10, 20, ing(Items.NAME_TAG)), "");

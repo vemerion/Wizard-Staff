@@ -1,7 +1,6 @@
 package mod.vemerion.wizardstaff.Magic;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -101,16 +100,16 @@ public class MagicUtil {
 		BlockPos.CODEC.encodeStart(JsonOps.INSTANCE, pos).result().ifPresent(elem -> json.add(member, elem));
 	}
 
-	public static <T> List<T> readList(JsonObject json, String member, Function<JsonElement, T> f) {
-		ArrayList<T> list = new ArrayList<>();
+	public static <T, C extends Collection<T>> C readColl(JsonObject json, String member, Function<JsonElement, T> f,
+			C coll) {
 		JsonArray array = JSONUtils.getJsonArray(json, member);
-		array.forEach(e -> list.add(f.apply(e)));
-		return list;
+		array.forEach(e -> coll.add(f.apply(e)));
+		return coll;
 	}
 
-	public static <T> void writeList(JsonObject json, String member, List<T> list, Function<T, JsonElement> f) {
+	public static <T> void writeColl(JsonObject json, String member, Collection<T> coll, Function<T, JsonElement> f) {
 		JsonArray array = new JsonArray();
-		for (T t : list)
+		for (T t : coll)
 			array.add(f.apply(t));
 		json.add(member, array);
 	}

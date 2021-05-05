@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 
 public class NameTagMagic extends Magic {
 
-	private List<String> syllables = new ArrayList<>();
+	private List<String> syllables;
 
 	public NameTagMagic(MagicType<? extends NameTagMagic> type) {
 		super(type);
@@ -41,12 +41,12 @@ public class NameTagMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		syllables = MagicUtil.readList(json, "syllables", e -> JSONUtils.getString(e, "syllable"));
+		syllables = MagicUtil.readColl(json, "syllables", e -> JSONUtils.getString(e, "syllable"), new ArrayList<>());
 	}
 
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.writeList(json, "syllables", syllables, s -> new JsonPrimitive(s));
+		MagicUtil.writeColl(json, "syllables", syllables, s -> new JsonPrimitive(s));
 	}
 
 	@Override
