@@ -18,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.init.ModEntities;
@@ -28,6 +29,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
@@ -141,6 +143,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.PUSH_BUTTON_MAGIC.create().setParams(1f, -1, ing(Items.STONE_BUTTON)), "");
 		c.accept(ModMagics.NAME_TAG_MAGIC.create().setAdditionalParams(ImmutableList.of("ig", "nite", "syl", "la", "bles", "di", "vide", "un", "ex", "am", "ples", "dif", "fer", "ence", "re", "main", "der")).setParams(10, 20, ing(Items.NAME_TAG)), "");
 		c.accept(ModMagics.LOCATE_SPAWN_MAGIC.create().setParams(20, 20, ing(Items.COMPASS)), "");
+		c.accept(ModMagics.TRANSFORM_ENTITY_MAGIC.create().setAdditionalParams(EntityType.COW, EntityType.MOOSHROOM, Helper.color(200, 100, 100, 255)).setParams(20, 20, ing(Items.BROWN_MUSHROOM)), "cow_to_mooshroom_magic");
 	}
 	
 	private void magicArmor(BiConsumer<Magic, String> c, Item from, Item created) {

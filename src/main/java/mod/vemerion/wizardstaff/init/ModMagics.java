@@ -44,6 +44,7 @@ import mod.vemerion.wizardstaff.Magic.suggestions2.PushBlockMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.PushButtonMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.RemoveFluidMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.RevertPositionMagic;
+import mod.vemerion.wizardstaff.Magic.suggestions2.TransformEntityMagic;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -100,6 +101,7 @@ public class ModMagics {
 	public static final MagicType<PushButtonMagic> PUSH_BUTTON_MAGIC = null;
 	public static final MagicType<NameTagMagic> NAME_TAG_MAGIC = null;
 	public static final MagicType<LocateSpawnMagic> LOCATE_SPAWN_MAGIC = null;
+	public static final MagicType<TransformEntityMagic> TRANSFORM_ENTITY_MAGIC = null;
 	public static final MagicType<NoMagic> NO_MAGIC = null;
 
 	@SubscribeEvent
@@ -146,6 +148,7 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(PushButtonMagic::new), "push_button_magic"));
 		reg.register(Init.setup(new MagicType<>(NameTagMagic::new), "name_tag_magic"));
 		reg.register(Init.setup(new MagicType<>(LocateSpawnMagic::new), "locate_spawn_magic"));
+		reg.register(Init.setup(new MagicType<>(TransformEntityMagic::new), "transform_entity_magic"));
 		reg.register(Init.setup(new MagicType<>(NoMagic::new), "no_magic"));
 	}
 

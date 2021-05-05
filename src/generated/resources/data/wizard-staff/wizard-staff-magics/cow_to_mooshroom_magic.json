@@ -1,0 +1,11 @@
+{
+  "cost": 20.0,
+  "duration": 20,
+  "magic": "wizard-staff:transform_entity_magic",
+  "ingredient": {
+    "item": "minecraft:brown_mushroom"
+  },
+  "from": "minecraft:cow",
+  "to": "minecraft:mooshroom",
+  "particle_color": -3644316
+}
