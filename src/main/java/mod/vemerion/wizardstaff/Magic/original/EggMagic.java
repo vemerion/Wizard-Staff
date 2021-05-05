@@ -4,10 +4,11 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import mod.vemerion.wizardstaff.Magic.MagicType;
+import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
@@ -28,7 +29,7 @@ public class EggMagic extends RayMagic {
 	public EggMagic(MagicType<? extends EggMagic> type) {
 		super(type);
 	}
-	
+
 	public EggMagic setAdditionalParams(Set<ResourceLocation> blacklist) {
 		this.blacklist = blacklist;
 		return this;
@@ -36,20 +37,13 @@ public class EggMagic extends RayMagic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		blacklist = new HashSet<>();
-		JsonArray array = JSONUtils.getJsonArray(json, "blacklist");
-		for (int i = 0; i < array.size(); i++) {
-			String name = JSONUtils.getString(array.get(i), "entity name");
-			blacklist.add(new ResourceLocation(name));
-		}
+		blacklist = MagicUtil.readColl(json, "blacklist",
+				e -> new ResourceLocation(JSONUtils.getString(e, "entity name")), new HashSet<>());
 	}
-	
+
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		JsonArray array = new JsonArray();
-		for (ResourceLocation type : blacklist)
-			array.add(type.toString());
-		json.add("blacklist", array);
+		MagicUtil.writeColl(json, "blacklist", blacklist, r -> new JsonPrimitive(r.toString()));
 	}
 
 	@Override
