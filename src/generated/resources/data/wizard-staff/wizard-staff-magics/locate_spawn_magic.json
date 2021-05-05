@@ -1,0 +1,8 @@
+{
+  "cost": 20.0,
+  "duration": 20,
+  "magic": "wizard-staff:locate_spawn_magic",
+  "ingredient": {
+    "item": "minecraft:compass"
+  }
+}

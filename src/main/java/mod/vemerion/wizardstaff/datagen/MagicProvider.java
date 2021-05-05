@@ -140,6 +140,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.REMOVE_FLUID_MAGIC.create().setAdditionalParams(Fluids.WATER).setParams(10, 20, ing(Items.SPONGE)), "remove_water_magic");
 		c.accept(ModMagics.PUSH_BUTTON_MAGIC.create().setParams(1f, -1, ing(Items.STONE_BUTTON)), "");
 		c.accept(ModMagics.NAME_TAG_MAGIC.create().setAdditionalParams(ImmutableList.of("ig", "nite", "syl", "la", "bles", "di", "vide", "un", "ex", "am", "ples", "dif", "fer", "ence", "re", "main", "der")).setParams(10, 20, ing(Items.NAME_TAG)), "");
+		c.accept(ModMagics.LOCATE_SPAWN_MAGIC.create().setParams(20, 20, ing(Items.COMPASS)), "");
 	}
 	
 	private void magicArmor(BiConsumer<Magic, String> c, Item from, Item created) {
