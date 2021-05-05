@@ -80,6 +80,9 @@ public class TransformEntityMagic extends RayMagic {
 			if (!world.isRemote) {
 				cost(player);
 				Entity entity = to.create(world);
+				if (target.hasCustomName())
+					entity.setCustomName(target.getCustomName());
+				
 				entity.setPositionAndRotation(target.getPosX(), target.getPosY(), target.getPosZ(), target.rotationYaw,
 						target.rotationPitch);
 				world.addEntity(entity);
