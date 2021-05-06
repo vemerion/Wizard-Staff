@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -33,8 +34,30 @@ public class MagicContainer extends Container {
 		for (int i = 0; i < 9; i++)
 			addSlot(new Slot(playerInv, i, 8 + i * 18, 143));
 	}
-	
-	// TODO: Implement transferStackInSlot
+
+	@Override
+	public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+		Slot slot = inventorySlots.get(index);
+		ItemStack copy = ItemStack.EMPTY;
+		if (slot != null && slot.getHasStack()) {
+			ItemStack stack = slot.getStack();
+			copy = stack.copy();
+			if (index < Wizard.INVENTORY_SIZE) {
+				if (!mergeItemStack(stack, Wizard.INVENTORY_SIZE, inventorySlots.size(), false))
+					return ItemStack.EMPTY;
+			} else if (!mergeItemStack(stack, 0, Wizard.INVENTORY_SIZE, false)) {
+				return ItemStack.EMPTY;
+			}
+
+			if (stack.isEmpty())
+				slot.putStack(ItemStack.EMPTY);
+			else
+				slot.onSlotChanged();
+			slot.onTake(playerIn, stack);
+		}
+
+		return copy;
+	}
 
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
