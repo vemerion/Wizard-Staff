@@ -5,19 +5,15 @@
     "sls",
     " l "
   ],
-  "key":
-  {
-    "s":
-    {
+  "key": {
+    "s": {
       "tag": "forge:cobblestone"
     },
-    "l":
-    {
+    "l": {
       "tag": "forge:rods/wooden"
     }
   },
-  "result":
-  {
+  "result": {
     "item": "wizard-staff:wizard_staff"
   }
 }

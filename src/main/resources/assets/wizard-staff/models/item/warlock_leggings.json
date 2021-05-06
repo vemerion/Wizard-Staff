@@ -1,8 +1,0 @@
-{
-  "parent": "item/generated",
-  "gui_light": "front",
-  "textures": {
-    "layer0": "wizard-staff:item/warlock_skirt",
-    "layer1": "wizard-staff:item/warlock_skirt_overlay"     
-  }
-}

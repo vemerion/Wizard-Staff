@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.datagen;
 
 import mod.vemerion.wizardstaff.Main;
 import net.minecraft.data.DataGenerator;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -14,12 +15,15 @@ public class EventSubscriber {
 	public static void onGatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
 
-//		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
 		if (event.includeServer()) {
 			generator.addProvider(new MagicProvider(generator, Main.MODID));
+			generator.addProvider(new ModRecipeProvider(generator));
 		}
 		if (event.includeClient()) {
+			generator.addProvider(new ModItemModelProvider(generator, existingFileHelper));
+			generator.addProvider(new ModBlockStateProvider(generator, existingFileHelper));
 		}
 	}
 }

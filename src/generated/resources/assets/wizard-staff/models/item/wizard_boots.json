@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "wizard-staff:item/wizard_boots",
+    "layer1": "wizard-staff:item/wizard_boots_overlay"
+  }
+}

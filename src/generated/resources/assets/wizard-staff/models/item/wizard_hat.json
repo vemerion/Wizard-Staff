@@ -1,6 +1,5 @@
 {
-  "parent": "item/generated",
-  "gui_light": "front",
+  "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "wizard-staff:item/wizard_hat",
     "layer1": "wizard-staff:item/wizard_hat_overlay"
