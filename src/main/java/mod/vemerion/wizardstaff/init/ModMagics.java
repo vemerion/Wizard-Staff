@@ -38,6 +38,8 @@ import mod.vemerion.wizardstaff.Magic.suggestions.FeatherMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.GrapplingHookMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.MushroomCloudMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions.ShulkerBulletMagic;
+import mod.vemerion.wizardstaff.Magic.suggestions2.EnderChestMagic;
+import mod.vemerion.wizardstaff.Magic.suggestions2.InventoryMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.LocateSpawnMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.NameTagMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.PushBlockMagic;
@@ -102,6 +104,8 @@ public class ModMagics {
 	public static final MagicType<NameTagMagic> NAME_TAG_MAGIC = null;
 	public static final MagicType<LocateSpawnMagic> LOCATE_SPAWN_MAGIC = null;
 	public static final MagicType<TransformEntityMagic> TRANSFORM_ENTITY_MAGIC = null;
+	public static final MagicType<InventoryMagic> INVENTORY_MAGIC = null;
+	public static final MagicType<EnderChestMagic> ENDER_CHEST_MAGIC = null;
 	public static final MagicType<NoMagic> NO_MAGIC = null;
 
 	@SubscribeEvent
@@ -149,6 +153,8 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(NameTagMagic::new), "name_tag_magic"));
 		reg.register(Init.setup(new MagicType<>(LocateSpawnMagic::new), "locate_spawn_magic"));
 		reg.register(Init.setup(new MagicType<>(TransformEntityMagic::new), "transform_entity_magic"));
+		reg.register(Init.setup(new MagicType<>(InventoryMagic::new), "inventory_magic"));
+		reg.register(Init.setup(new MagicType<>(EnderChestMagic::new), "ender_chest_magic"));
 		reg.register(Init.setup(new MagicType<>(NoMagic::new), "no_magic"));
 	}
 

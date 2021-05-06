@@ -10,6 +10,7 @@ import mod.vemerion.wizardstaff.renderer.MagicSoulSandArmRenderer;
 import mod.vemerion.wizardstaff.renderer.MagicWitherSkullRenderer;
 import mod.vemerion.wizardstaff.renderer.NetherPortalRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardHatRenderer;
+import mod.vemerion.wizardstaff.screen.MagicScreen;
 import mod.vemerion.wizardstaff.staff.WizardStaffScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -34,6 +35,7 @@ public class ClientModEventSubscriber {
 	@SubscribeEvent
 	public static void onRegister(FMLClientSetupEvent event) {
 		ScreenManager.registerFactory(ModContainers.WIZARD_STAFF, WizardStaffScreen::new);
+		ScreenManager.registerFactory(ModContainers.MAGIC, MagicScreen::new);
 
 		registerEntityRenderer();
 	}

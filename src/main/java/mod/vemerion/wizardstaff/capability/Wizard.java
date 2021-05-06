@@ -42,11 +42,14 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.items.ItemStackHandler;
 
 // Class for holding data on player related to magics
 public class Wizard implements INBTSerializable<CompoundNBT> {
 	@CapabilityInject(Wizard.class)
 	public static final Capability<Wizard> CAPABILITY = null;
+	
+	public static final int INVENTORY_SIZE = 3 * 9;
 
 	private GlobalPos lodestonePos;
 	private boolean lodestoneTracked;
@@ -56,9 +59,15 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 	private BlockPos surfaceStart, surfaceStop;
 
 	private LinkedList<GlobalPos> revertPositions = new LinkedList<>();
+	
+	private ItemStackHandler inventory = new ItemStackHandler(INVENTORY_SIZE);
 
 	public Wizard() {
 
+	}
+	
+	public ItemStackHandler getInventory() {
+		return inventory;
 	}
 
 	public static Wizard getWizard(PlayerEntity player) {
@@ -221,6 +230,9 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 			lodestonePos = GlobalPos.CODEC.parse(NBTDynamicOps.INSTANCE, compound.get("lodestonePos")).result()
 					.orElse(null);
 		}
+		
+		if (compound.contains("inventory"))
+			inventory.deserializeNBT(compound.getCompound("inventory"));
 	}
 
 	public CompoundNBT serializeNBT() {
@@ -232,6 +244,9 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 			});
 		}
 		compound.putBoolean("lodestoneTracked", lodestoneTracked);
+		
+		compound.put("inventory", inventory.serializeNBT());
+		
 		return compound;
 	}
 

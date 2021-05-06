@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.staff;
 
+import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.init.ModContainers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -49,7 +50,7 @@ public class WizardStaffContainer extends Container {
 
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
-		return playerIn.getHeldItemMainhand().equals(heldItem);
+		return Helper.isHoldingStaff(playerIn);
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class WizardStaffContainer extends Container {
 		Slot slot = this.inventorySlots.get(index);
 		ItemStack stack = slot.getStack();
 		ItemStack copy = stack.copy();
-		if (slot != null && slot.getHasStack() && stack != playerIn.getHeldItemMainhand()) {
+		if (slot != null && slot.getHasStack()) {
 			if (index == 0) {
 				if (!mergeItemStack(stack, 1, 1 + 9 * 4, false))
 					return ItemStack.EMPTY;
