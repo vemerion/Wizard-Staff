@@ -58,6 +58,18 @@ public class WizardStaffLayer
 		renderer.func_239207_a_(stack, TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.pop();
 	}
+	
+	public static void surround(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
+			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
+			float partialTicks, HandSide hand) {
+		matrix.push();
+		matrix.translate(0, 0.15, 0);
+		matrix.rotate(new Quaternion(0, (duration / 15f) * 360f, 0, true));
+		matrix.rotate(new Quaternion(0, 0, (duration / 5f) * 360f, true));
+		matrix.translate(0, -0.5, -0.5);
+		renderer.func_239207_a_(stack, TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.pop();
+	}
 
 	public static void buildup(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration, ItemStack stack,
 			MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn, float partialTicks,

@@ -215,6 +215,17 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrix.pop();
 	}
 	
+	public static void surround(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
+			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
+			float partialTicks, HandSide hand) {
+		matrix.push();
+		matrix.rotate(new Quaternion(0, (duration / 40) * 360f, 0, true));
+		matrix.rotate(new Quaternion(0, 0, (duration / 5) * 360f, true));
+		matrix.translate(0, 0, -1);
+		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.pop();
+	}
+	
 	public static void noRender(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
 			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
 			float partialTicks, HandSide hand) {

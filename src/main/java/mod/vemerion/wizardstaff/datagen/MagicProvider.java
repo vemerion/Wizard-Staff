@@ -146,6 +146,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.TRANSFORM_ENTITY_MAGIC.create().setAdditionalParams(EntityType.COW, EntityType.MOOSHROOM, Helper.color(200, 100, 100, 255)).setParams(20, 20, ing(Items.BROWN_MUSHROOM)), "cow_to_mooshroom_magic");
 		c.accept(ModMagics.INVENTORY_MAGIC.create().setParams(20, 20, ing(Items.CHEST)), "");
 		c.accept(ModMagics.ENDER_CHEST_MAGIC.create().setParams(20, 20, ing(Items.ENDER_CHEST)), "");
+		c.accept(ModMagics.DEFLECT_PROJECTILE_MAGIC.create().setAdditionalParams(ImmutableSet.of()).setParams(1, -1, ing(Items.SHIELD)), "");
 	}
 	
 	private void magicArmor(BiConsumer<Magic, String> c, Item from, Item created) {
