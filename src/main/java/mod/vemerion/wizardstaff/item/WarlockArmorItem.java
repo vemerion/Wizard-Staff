@@ -32,7 +32,7 @@ public class WarlockArmorItem extends MagicArmorItem {
 	@Override
 	protected MagicArmorModel<?> getModel() {
 		if (model == null) {
-			model = new WarlockArmorModel<>(0.3f);
+			model = new WarlockArmorModel<>(0.5f);
 		}
 		return model;
 	}
