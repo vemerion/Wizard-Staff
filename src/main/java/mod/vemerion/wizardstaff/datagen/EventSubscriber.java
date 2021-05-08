@@ -24,6 +24,7 @@ public class EventSubscriber {
 		if (event.includeClient()) {
 			generator.addProvider(new ModItemModelProvider(generator, existingFileHelper));
 			generator.addProvider(new ModBlockStateProvider(generator, existingFileHelper));
+			generator.addProvider(new ModLanguageProvider(generator));
 		}
 	}
 }
