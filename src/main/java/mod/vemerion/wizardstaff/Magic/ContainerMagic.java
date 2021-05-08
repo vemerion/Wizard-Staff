@@ -12,6 +12,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -43,15 +44,20 @@ public abstract class ContainerMagic extends Magic {
 			Wizard.getWizardOptional(player).ifPresent(w -> {
 				cost(player);
 				SimpleNamedContainerProvider provider = new SimpleNamedContainerProvider(
-						(id, inventory, p) -> getContainer(id, inventory, p, world, w), getDescription().getName());
-				NetworkHooks.openGui((ServerPlayerEntity) player, provider);
+						(id, inventory, p) -> getContainer(id, inventory, p, world, staff, w),
+						getDescription().getName());
+				NetworkHooks.openGui((ServerPlayerEntity) player, provider, b -> addExtraData(b, player));
 			});
 		}
 		player.playSound(getSound(), 1, soundPitch(player));
 		return super.magicFinish(world, player, staff);
 	}
 
-	abstract protected Container getContainer(int id, PlayerInventory playerInv, PlayerEntity player, World world, Wizard wizard);
-	abstract protected SoundEvent getSound();
+	abstract protected Container getContainer(int id, PlayerInventory playerInv, PlayerEntity player, World world,
+			ItemStack staff, Wizard wizard);
 
+	abstract protected SoundEvent getSound();
+	
+	protected void addExtraData(PacketBuffer buffer, PlayerEntity player) {
+	}
 }

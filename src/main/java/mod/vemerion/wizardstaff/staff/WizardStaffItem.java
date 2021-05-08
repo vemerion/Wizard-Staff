@@ -35,13 +35,14 @@ public class WizardStaffItem extends Item {
 		if (playerIn.isCrouching()) { // Open inventory if crouching
 			if (!worldIn.isRemote) {
 				boolean shouldAnimate = ScreenAnimations.getScreenAnimations(playerIn).shouldAnimate();
-
 				SimpleNamedContainerProvider provider = new SimpleNamedContainerProvider(
 						(id, inventory, player) -> new WizardStaffContainer(id, inventory,
-								WizardStaffItemHandler.get(itemstack), itemstack, shouldAnimate),
+								WizardStaffItemHandler.get(itemstack), itemstack, shouldAnimate, handIn),
 						getDisplayName(itemstack));
-				NetworkHooks.openGui((ServerPlayerEntity) playerIn, provider,
-						(buffer) -> buffer.writeBoolean(shouldAnimate));
+				NetworkHooks.openGui((ServerPlayerEntity) playerIn, provider, (buffer) -> {
+					buffer.writeBoolean(shouldAnimate);
+					buffer.writeBoolean(handIn == Hand.MAIN_HAND);
+				});
 			}
 			return ActionResult.resultSuccess(itemstack);
 		} else { // Use staff
@@ -78,8 +79,8 @@ public class WizardStaffItem extends Item {
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		if (EffectiveSide.get().isClient()) {
-		ItemStack magic = getMagic(stack);
-		return Magics.getInstance(true).get(magic).getUseAction(stack);
+			ItemStack magic = getMagic(stack);
+			return Magics.getInstance(true).get(magic).getUseAction(stack);
 		} else {
 			return UseAction.NONE;
 		}

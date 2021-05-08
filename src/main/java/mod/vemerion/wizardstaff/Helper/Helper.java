@@ -1,10 +1,8 @@
 package mod.vemerion.wizardstaff.Helper;
 
-import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
@@ -56,12 +54,5 @@ public class Helper {
 
 	public static int alfa(int color) {
 		return color >>> 24;
-	}
-	
-	public static boolean isHoldingStaff(PlayerEntity player) {
-		for (Hand h : Hand.values())
-			if (player.getHeldItem(h).getItem() instanceof WizardStaffItem)
-				return true;
-		return false;
 	}
 }

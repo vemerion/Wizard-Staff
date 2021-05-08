@@ -8,6 +8,9 @@ import mod.vemerion.wizardstaff.init.ModSounds;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
@@ -18,14 +21,18 @@ public class InventoryMagic extends ContainerMagic {
 	}
 
 	@Override
-	protected Container getContainer(int id, PlayerInventory playerInv, PlayerEntity player, World world,
+	protected Container getContainer(int id, PlayerInventory playerInv, PlayerEntity player, World world, ItemStack staff,
 			Wizard wizard) {
-		return new MagicContainer(id, playerInv, wizard.getInventory());
+		return new MagicContainer(id, playerInv, wizard.getInventory(), staff, player.getActiveHand());
 	}
 
 	@Override
 	protected SoundEvent getSound() {
 		return ModSounds.CLOTH;
 	}
-
+	
+	@Override
+	protected void addExtraData(PacketBuffer buffer, PlayerEntity player) {
+		buffer.writeBoolean(player.getActiveHand() == Hand.MAIN_HAND);
+	}
 }

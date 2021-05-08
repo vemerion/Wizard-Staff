@@ -1,6 +1,5 @@
 package mod.vemerion.wizardstaff.container;
 
-import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.init.ModContainers;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,6 +8,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.Hand;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -16,11 +16,17 @@ import net.minecraftforge.items.SlotItemHandler;
 public class MagicContainer extends Container {
 
 	public static MagicContainer createContainerClientSide(int id, PlayerInventory inventory, PacketBuffer buffer) {
-		return new MagicContainer(id, inventory, new ItemStackHandler(Wizard.INVENTORY_SIZE));
+		Hand hand = buffer.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
+		return new MagicContainer(id, inventory, new ItemStackHandler(Wizard.INVENTORY_SIZE), ItemStack.EMPTY, hand);
 	}
 
-	public MagicContainer(int id, PlayerInventory playerInv, IItemHandler magicInv) {
+	private ItemStack staff;
+	private Hand hand;
+
+	public MagicContainer(int id, PlayerInventory playerInv, IItemHandler magicInv, ItemStack staff, Hand hand) {
 		super(ModContainers.MAGIC, id);
+		this.staff = staff;
+		this.hand = hand;
 
 		// Magic slots
 		for (int i = 0; i < Wizard.INVENTORY_SIZE; i++)
@@ -42,6 +48,10 @@ public class MagicContainer extends Container {
 		if (slot != null && slot.getHasStack()) {
 			ItemStack stack = slot.getStack();
 			copy = stack.copy();
+
+			if (stack == playerIn.getHeldItem(hand))
+				return ItemStack.EMPTY;
+
 			if (index < Wizard.INVENTORY_SIZE) {
 				if (!mergeItemStack(stack, Wizard.INVENTORY_SIZE, inventorySlots.size(), false))
 					return ItemStack.EMPTY;
@@ -60,8 +70,8 @@ public class MagicContainer extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn) {
-		return Helper.isHoldingStaff(playerIn);
+	public boolean canInteractWith(PlayerEntity player) {
+		return (player.getHeldItemMainhand() == staff || player.getHeldItemOffhand() == staff) && !staff.isEmpty();
 	}
 
 }
