@@ -40,8 +40,8 @@ public class WizardStaffItem extends Item {
 								WizardStaffItemHandler.get(itemstack), itemstack, shouldAnimate, handIn),
 						getDisplayName(itemstack));
 				NetworkHooks.openGui((ServerPlayerEntity) playerIn, provider, (buffer) -> {
-					buffer.writeBoolean(shouldAnimate);
 					buffer.writeBoolean(handIn == Hand.MAIN_HAND);
+					buffer.writeBoolean(shouldAnimate);
 				});
 			}
 			return ActionResult.resultSuccess(itemstack);
