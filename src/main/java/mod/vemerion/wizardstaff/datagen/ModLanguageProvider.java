@@ -139,7 +139,30 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicOther(ModMagics.POTION_MAGIC, "glue", " and");	
 		addMagicOther(ModMagics.POTION_MAGIC, "affect_others", " others around you");	
 		addMagicName(ModMagics.BUILDER_MAGIC, "Build '%s'");		
-		addMagicDescription(ModMagics.BUILDER_MAGIC, "Use the magic of the staff to construct a '%s' building in a flash of an eye.");	
+		addMagicDescription(ModMagics.BUILDER_MAGIC, "Use the magic of the staff to construct a '%s' building in a flash of an eye.");
+		
+		addMagicName(ModMagics.DEFLECT_PROJECTILE_MAGIC, "Deflect Projectiles");		
+		addMagicDescription(ModMagics.DEFLECT_PROJECTILE_MAGIC, "Use your staff as a protective layer around you, deflecting projectiles.");	
+		addMagicName(ModMagics.ENDER_CHEST_MAGIC, "Portable Ender Chest");		
+		addMagicDescription(ModMagics.ENDER_CHEST_MAGIC, "Use your staff to give you remote access to your ender storage.");	
+		addMagicName(ModMagics.INVENTORY_MAGIC, "Portable Chest");		
+		addMagicDescription(ModMagics.INVENTORY_MAGIC, "Gain access to magic storage.");	
+		addMagicName(ModMagics.LOCATE_SPAWN_MAGIC, "Magic Compass");		
+		addMagicDescription(ModMagics.LOCATE_SPAWN_MAGIC, "Channel your inner powers to gain a sense of which direction your spawn point lies.");	
+		addMagicName(ModMagics.NAME_TAG_MAGIC, "Random Name Generator");		
+		addMagicDescription(ModMagics.NAME_TAG_MAGIC, "Conjure a name tag with a random name.");	
+		addMagicName(ModMagics.PUSH_BLOCK_MAGIC, "%s Mover");		
+		addMagicDescription(ModMagics.PUSH_BLOCK_MAGIC, "Use your magic to push %s blocks.");	
+		addMagicName(ModMagics.PUSH_BUTTON_MAGIC, "Long Range Button Pushing");		
+		addMagicDescription(ModMagics.PUSH_BUTTON_MAGIC, "Activate buttons from a large distance.");	
+		addMagicName(ModMagics.REMOVE_FLUID_MAGIC, "Fluid Remover: '%s'");		
+		addMagicDescription(ModMagics.REMOVE_FLUID_MAGIC, "Use your magic to remove fluid of type '%s' around you.");	
+		addMagicName(ModMagics.REPAIR_ARMOR_MAGIC, "Repair Armor");		
+		addMagicDescription(ModMagics.REPAIR_ARMOR_MAGIC, "Use magic to repair the armor you are wearing.");	
+		addMagicName(ModMagics.REVERT_POSITION_MAGIC, "Revert Position");		
+		addMagicDescription(ModMagics.REVERT_POSITION_MAGIC, "Revert your position to where you were five seconds ago.");	
+		addMagicName(ModMagics.TRANSFORM_ENTITY_MAGIC, "Transform Entity");		
+		addMagicDescription(ModMagics.TRANSFORM_ENTITY_MAGIC, "Shot a transformation ray that turns %s entities into %s entities.");	
 	}
 
 	private void addMagicName(MagicType<?> type, String text) {

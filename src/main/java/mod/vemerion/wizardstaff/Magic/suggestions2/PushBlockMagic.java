@@ -75,6 +75,16 @@ public class PushBlockMagic extends Magic {
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.BLOCK;
 	}
+	
+	@Override
+	protected Object[] getNameArgs() {
+		return new Object[] { block.getTranslatedName() };
+	}
+	
+	@Override
+	protected Object[] getDescrArgs() {
+		return getNameArgs();
+	}
 
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {

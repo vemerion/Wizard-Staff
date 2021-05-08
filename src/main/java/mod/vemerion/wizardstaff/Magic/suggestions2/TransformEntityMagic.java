@@ -65,6 +65,11 @@ public class TransformEntityMagic extends RayMagic {
 	}
 
 	@Override
+	protected Object[] getDescrArgs() {
+		return new Object[] { from.getName(), to.getName() };
+	}
+
+	@Override
 	protected IParticleData generateParticle(World world, PlayerEntity player, ItemStack staff, int count) {
 		if (particleColorComponents == null) {
 			particleColorComponents = new Vector4f(Helper.red(particleColor) / 255f, Helper.green(particleColor) / 255f,

@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -68,6 +69,16 @@ public class RemoveFluidMagic extends Magic {
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.NONE;
+	}
+	
+	@Override
+	protected Object[] getNameArgs() {
+		return new Object[] { new StringTextComponent(fluid.getRegistryName().getPath()) };
+	}
+	
+	@Override
+	protected Object[] getDescrArgs() {
+		return getNameArgs();
 	}
 
 	@Override
