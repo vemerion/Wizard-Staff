@@ -37,6 +37,11 @@ public class ModSounds {
 	public static final SoundEvent PAGE_TURN = null;
 	public static final SoundEvent DEAGE = null;
 	public static final SoundEvent BUILDING = null;
+	public static final SoundEvent EVAPORATE = null;
+	public static final SoundEvent IMPACT = null;
+	public static final SoundEvent PUSH = null;
+	public static final SoundEvent REVERT = null;
+	public static final SoundEvent TRANSFORM = null;  
 
 	@SubscribeEvent
 	public static void onRegisterSound(RegistryEvent.Register<SoundEvent> event) {
@@ -88,6 +93,16 @@ public class ModSounds {
 		event.getRegistry().register(Init.setup(deage, "deage"));
 		SoundEvent building = new SoundEvent(new ResourceLocation(Main.MODID, "building"));
 		event.getRegistry().register(Init.setup(building, "building"));
+		SoundEvent evaporate = new SoundEvent(new ResourceLocation(Main.MODID, "evaporate"));
+		event.getRegistry().register(Init.setup(evaporate, "evaporate"));
+		SoundEvent impact = new SoundEvent(new ResourceLocation(Main.MODID, "impact"));
+		event.getRegistry().register(Init.setup(impact, "impact"));
+		SoundEvent push = new SoundEvent(new ResourceLocation(Main.MODID, "push"));
+		event.getRegistry().register(Init.setup(push, "push"));
+		SoundEvent revert = new SoundEvent(new ResourceLocation(Main.MODID, "revert"));
+		event.getRegistry().register(Init.setup(revert, "revert"));
+		SoundEvent transform = new SoundEvent(new ResourceLocation(Main.MODID, "transform"));
+		event.getRegistry().register(Init.setup(transform, "transform"));    
 	}
 
 }

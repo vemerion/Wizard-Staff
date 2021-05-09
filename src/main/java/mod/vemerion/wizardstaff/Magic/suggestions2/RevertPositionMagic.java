@@ -43,6 +43,7 @@ public class RevertPositionMagic extends Magic {
 			Wizard.getWizardOptional(player).ifPresent(w -> {
 				BlockPos revert = w.revertPosition(player);
 				if (revert != null) {
+					playSoundServer(world, player, ModSounds.REVERT, 1, soundPitch(player));
 					cost(player);
 					((ServerPlayerEntity) player).teleport((ServerWorld) world, revert.getX(), revert.getY(),
 							revert.getZ(), player.rotationYaw, player.rotationPitch);

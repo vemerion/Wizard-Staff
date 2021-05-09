@@ -190,5 +190,45 @@
         "stream": false
       }
     ]
-  }
+  },
+  "evaporate": {
+    "sounds": [
+      {
+        "name": "wizard-staff:evaporate",
+        "stream": false
+      }
+    ]
+  },
+  "impact": {
+    "sounds": [
+      {
+        "name": "wizard-staff:impact",
+        "stream": false
+      }
+    ]
+  },
+  "push": {
+    "sounds": [
+      {
+        "name": "wizard-staff:push",
+        "stream": false
+      }
+    ]
+  },
+  "revert": {
+    "sounds": [
+      {
+        "name": "wizard-staff:revert",
+        "stream": false
+      }
+    ]
+  },
+  "transform": {
+    "sounds": [
+      {
+        "name": "wizard-staff:transform",
+        "stream": false
+      }
+    ]
+  } 
 }

@@ -108,7 +108,7 @@ public class PushBlockMagic extends Magic {
 				if (p.equals(start)) {
 					playSoundServer(world, player, ModSounds.POOF, 1, soundPitch(player));
 				} else {
-					playSoundServer(world, player, ModSounds.WARP, 1, soundPitch(player));
+					playSoundServer(world, player, ModSounds.PUSH, 1, soundPitch(player));
 					cost(player);
 					world.setBlockState(p, state);
 					if (tileEntity != null) {

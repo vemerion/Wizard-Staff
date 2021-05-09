@@ -6,6 +6,7 @@ import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -82,6 +83,7 @@ public class TransformEntityMagic extends RayMagic {
 	@Override
 	protected void hitEntity(World world, PlayerEntity player, Entity target) {
 		if (target.getType() == from) {
+			playSoundServer(world, player, ModSounds.TRANSFORM, 0.7f, soundPitch(player));
 			if (!world.isRemote) {
 				cost(player);
 				Entity entity = to.create(world);

@@ -4,7 +4,6 @@ import mod.vemerion.wizardstaff.Magic.ContainerMagic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.container.MagicContainer;
-import mod.vemerion.wizardstaff.init.ModSounds;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -12,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
 public class InventoryMagic extends ContainerMagic {
@@ -28,7 +28,7 @@ public class InventoryMagic extends ContainerMagic {
 
 	@Override
 	protected SoundEvent getSound() {
-		return ModSounds.CLOTH;
+		return SoundEvents.BLOCK_CHEST_OPEN;
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -68,6 +69,9 @@ public class RepairArmorMagic extends Magic {
 				cost(player);
 			}
 		}
+		
+		if (count % 20 == 0)
+			player.playSound(ModSounds.ANVIL, 1, soundPitch(player));
 	}
 
 }

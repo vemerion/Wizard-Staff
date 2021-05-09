@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -95,6 +96,8 @@ public class RemoveFluidMagic extends Magic {
 				}
 			}
 			cost(player, count);
+			if (count > 0)
+				playSoundServer(world, player, ModSounds.EVAPORATE, 1, soundPitch(player));
 		}
 		return super.magicFinish(world, player, staff);
 	}

@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -54,6 +55,7 @@ public class PushButtonMagic extends Magic {
 						&& block instanceof AbstractButtonBlock) {
 					cost(player);
 					((AbstractButtonBlock) block).powerBlock(state, world, pos);
+					playSoundServer(world, player, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, 1, soundPitch(player));
 				}
 			}
 		}

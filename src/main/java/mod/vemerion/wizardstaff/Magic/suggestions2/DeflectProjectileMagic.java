@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.suggestions2;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
@@ -9,6 +10,7 @@ import com.google.gson.JsonPrimitive;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -67,10 +69,14 @@ public class DeflectProjectileMagic extends Magic {
 		if (!world.isRemote) {
 			cost(player);
 			AxisAlignedBB box = player.getBoundingBox().grow(2);
-			for (ProjectileEntity projectile : world.getEntitiesWithinAABB(ProjectileEntity.class, box,
-					this::notBlacklisted)) {
+			List<Entity> projectiles = world.getEntitiesWithinAABB(ProjectileEntity.class, box,
+					this::notBlacklisted);
+			for (Entity projectile : projectiles) {
 				projectile.remove();
 			}
+			
+			if (!projectiles.isEmpty())
+				playSoundServer(world, player, ModSounds.IMPACT, 1, soundPitch(player));
 		}
 	}
 
