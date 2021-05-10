@@ -1,6 +1,6 @@
 {
-  "cost": 20.0,
-  "duration": 20,
+  "cost": 10.0,
+  "duration": 10,
   "magic": "wizard-staff:ender_chest_magic",
   "ingredient": {
     "item": "minecraft:ender_chest"

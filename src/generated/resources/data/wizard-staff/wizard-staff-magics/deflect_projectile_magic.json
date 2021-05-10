@@ -1,5 +1,5 @@
 {
-  "cost": 1.0,
+  "cost": 0.8,
   "duration": -1,
   "magic": "wizard-staff:deflect_projectile_magic",
   "ingredient": {

@@ -127,8 +127,6 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.PILLAR_MAGIC.create().setAdditionalParams(Blocks.DIRT).setParams(0.5f, -1, ing(Items.DIRT)), "");
 		c.accept(ModMagics.PORTABLE_CRAFTING_MAGIC.create().setParams(10, 10, ing(Items.CRAFTING_TABLE)), "");
 		c.accept(ModMagics.POTION_MAGIC.create().setAdditionalParams(2, 600, 2, Effects.HASTE, true, SoundEvents.BLOCK_BREWING_STAND_BREW).setParams(25, 25, ing(Items.WOODEN_PICKAXE)), "");
-		c.accept(ModMagics.PUSH_BLOCK_MAGIC.create().setAdditionalParams(Blocks.SPAWNER).setParams(20, 20, ing(Items.MOSSY_COBBLESTONE)), "push_spawner_magic");
-		c.accept(ModMagics.REVERT_POSITION_MAGIC.create().setParams(30, 20, ing(Items.CHORUS_FRUIT)), "");
 		c.accept(ModMagics.SHULKER_BULLET_MAGIC.create().setParams(20, 25, ing(Items.SHULKER_SHELL)), "");
 		c.accept(ModMagics.SMELTING_MAGIC.create().setAdditionalParams(IRecipeType.SMELTING, 20, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, Blocks.FURNACE.getTranslationKey()).setParams(1, -1, ing(Items.FURNACE)), "");
 		c.accept(ModMagics.SOUL_SAND_MAGIC.create().setParams(40, 40, ing(Items.SOUL_SAND)), "");
@@ -139,14 +137,16 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.PROJECTILE_MAGIC.create().setAdditionalParams(ModEntities.WIZARD_HAT, ModSounds.CLOTH, 1).setParams(20, 25, ing(ModItems.WIZARD_HAT)), "wizard_hat_throw_magic");
 		c.accept(ModMagics.WIZARD_STAFF_MAGIC.create().setParams(0, 20, ing(ModItems.WIZARD_STAFF)), "");
 		c.accept(ModMagics.WRITABLE_BOOK_MAGIC.create().setAdditionalParams(ImmutableList.of("All that glitters is gold", "Fear the old blood", "Every fleeing man must be caught. Every secret must be unearthed. Such is the conceit of the self-proclaimed seeker of truth.", "What we do in life echoes in eternity", "STEVEN LIVES", "What we've got here is... failure to communicate", "All those moments will be lost in time, like tears in rain", "A wizard is never late, nor is he early. He arrives precisely when he means to.")).setParams(10, 20, ing(Items.WRITABLE_BOOK)), "");
-		c.accept(ModMagics.REMOVE_FLUID_MAGIC.create().setAdditionalParams(Fluids.WATER).setParams(10, 20, ing(Items.SPONGE)), "remove_water_magic");
-		c.accept(ModMagics.PUSH_BUTTON_MAGIC.create().setParams(1f, -1, ing(Items.STONE_BUTTON)), "");
+		c.accept(ModMagics.PUSH_BLOCK_MAGIC.create().setAdditionalParams(Blocks.SPAWNER).setParams(15, 25, ing(Items.MOSSY_COBBLESTONE)), "push_spawner_magic");
+		c.accept(ModMagics.REVERT_POSITION_MAGIC.create().setParams(15, 15, ing(Items.CHORUS_FRUIT)), "");
+		c.accept(ModMagics.REMOVE_FLUID_MAGIC.create().setAdditionalParams(Fluids.WATER).setParams(0.2f, 10, ing(Items.SPONGE)), "remove_water_magic");
+		c.accept(ModMagics.PUSH_BUTTON_MAGIC.create().setParams(1, -1, ing(Items.STONE_BUTTON)), "");
 		c.accept(ModMagics.NAME_TAG_MAGIC.create().setAdditionalParams(ImmutableList.of("ig", "nite", "syl", "la", "bles", "di", "vide", "un", "ex", "am", "ples", "dif", "fer", "ence", "re", "main", "der")).setParams(10, 20, ing(Items.NAME_TAG)), "");
-		c.accept(ModMagics.LOCATE_SPAWN_MAGIC.create().setParams(20, 20, ing(Items.COMPASS)), "");
-		c.accept(ModMagics.TRANSFORM_ENTITY_MAGIC.create().setAdditionalParams(EntityType.COW, EntityType.MOOSHROOM, Helper.color(200, 100, 100, 255)).setParams(20, 20, ing(Items.BROWN_MUSHROOM)), "cow_to_mooshroom_magic");
-		c.accept(ModMagics.INVENTORY_MAGIC.create().setParams(20, 20, ing(Items.CHEST)), "");
-		c.accept(ModMagics.ENDER_CHEST_MAGIC.create().setParams(20, 20, ing(Items.ENDER_CHEST)), "");
-		c.accept(ModMagics.DEFLECT_PROJECTILE_MAGIC.create().setAdditionalParams(ImmutableSet.of()).setParams(1, -1, ing(Items.SHIELD)), "");
+		c.accept(ModMagics.LOCATE_SPAWN_MAGIC.create().setParams(25, 20, ing(Items.COMPASS)), "");
+		c.accept(ModMagics.TRANSFORM_ENTITY_MAGIC.create().setAdditionalParams(EntityType.COW, EntityType.MOOSHROOM, Helper.color(200, 100, 100, 255)).setParams(90, 25, ing(Items.BROWN_MUSHROOM)), "cow_to_mooshroom_magic");
+		c.accept(ModMagics.INVENTORY_MAGIC.create().setParams(10, 10, ing(Items.CHEST)), "");
+		c.accept(ModMagics.ENDER_CHEST_MAGIC.create().setParams(10, 10, ing(Items.ENDER_CHEST)), "");
+		c.accept(ModMagics.DEFLECT_PROJECTILE_MAGIC.create().setAdditionalParams(ImmutableSet.of()).setParams(0.8f, -1, ing(Items.SHIELD)), "");
 		c.accept(ModMagics.REPAIR_ARMOR_MAGIC.create().setAdditionalParams(1).setParams(1, -1, ing(Items.ANVIL)), "");
 	}
 	

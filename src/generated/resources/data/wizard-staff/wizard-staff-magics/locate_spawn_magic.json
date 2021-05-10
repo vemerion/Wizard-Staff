@@ -1,5 +1,5 @@
 {
-  "cost": 20.0,
+  "cost": 25.0,
   "duration": 20,
   "magic": "wizard-staff:locate_spawn_magic",
   "ingredient": {
