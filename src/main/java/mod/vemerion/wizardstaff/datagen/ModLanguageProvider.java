@@ -41,6 +41,7 @@ public class ModLanguageProvider extends LanguageProvider {
 		add(ModEntities.NETHER_PORTAL, "Magic Nether Portal");
 		add(ModEntities.PUMPKIN_MAGIC, "Magic Pumpkin");
 		add(ModEntities.WIZARD_HAT, "Wizard Hat");
+		add(ModEntities.MAGIC_VEX, "Friendly Vex");
 		
 		add("item.wizard-staff.wizard_armor.description", "-10% spell cost");
 		add("item.wizard-staff.druid_armor.description", "-10% spell cost");
@@ -162,7 +163,9 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicName(ModMagics.REVERT_POSITION_MAGIC, "Revert Position");		
 		addMagicDescription(ModMagics.REVERT_POSITION_MAGIC, "Revert your position to where you were five seconds ago.");	
 		addMagicName(ModMagics.TRANSFORM_ENTITY_MAGIC, "Transform Entity");		
-		addMagicDescription(ModMagics.TRANSFORM_ENTITY_MAGIC, "Shot a transformation ray that turns %s entities into %s entities.");	
+		addMagicDescription(ModMagics.TRANSFORM_ENTITY_MAGIC, "Shot a transformation ray that turns %s entities into %s entities.");
+		addMagicName(ModMagics.SUMMON_ENTITY_MAGIC, "Summon %s");		
+		addMagicDescription(ModMagics.SUMMON_ENTITY_MAGIC, "Use your magic to summon %s %s entities.");
 	}
 
 	private void addMagicName(MagicType<?> type, String text) {

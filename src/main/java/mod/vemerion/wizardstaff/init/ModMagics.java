@@ -48,6 +48,7 @@ import mod.vemerion.wizardstaff.Magic.suggestions2.PushButtonMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.RemoveFluidMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.RepairArmorMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.RevertPositionMagic;
+import mod.vemerion.wizardstaff.Magic.suggestions2.SummonEntityMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.TransformEntityMagic;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -110,6 +111,7 @@ public class ModMagics {
 	public static final MagicType<EnderChestMagic> ENDER_CHEST_MAGIC = null;
 	public static final MagicType<DeflectProjectileMagic> DEFLECT_PROJECTILE_MAGIC = null;
 	public static final MagicType<RepairArmorMagic> REPAIR_ARMOR_MAGIC = null;
+	public static final MagicType<SummonEntityMagic> SUMMON_ENTITY_MAGIC = null;
 	public static final MagicType<NoMagic> NO_MAGIC = null;
 
 	@SubscribeEvent
@@ -161,6 +163,7 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(EnderChestMagic::new), "ender_chest_magic"));
 		reg.register(Init.setup(new MagicType<>(DeflectProjectileMagic::new), "deflect_projectile_magic"));
 		reg.register(Init.setup(new MagicType<>(RepairArmorMagic::new), "repair_armor_magic"));
+		reg.register(Init.setup(new MagicType<>(SummonEntityMagic::new), "summon_entity_magic"));
 		reg.register(Init.setup(new MagicType<>(NoMagic::new), "no_magic"));
 	}
 

@@ -230,5 +230,13 @@
         "stream": false
       }
     ]
+  },
+  "bell": {
+    "sounds": [
+      {
+        "name": "wizard-staff:bell",
+        "stream": false
+      }
+    ]
   } 
 }

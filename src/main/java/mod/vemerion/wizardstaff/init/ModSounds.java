@@ -41,7 +41,8 @@ public class ModSounds {
 	public static final SoundEvent IMPACT = null;
 	public static final SoundEvent PUSH = null;
 	public static final SoundEvent REVERT = null;
-	public static final SoundEvent TRANSFORM = null;  
+	public static final SoundEvent TRANSFORM = null;
+	public static final SoundEvent BELL = null;
 
 	@SubscribeEvent
 	public static void onRegisterSound(RegistryEvent.Register<SoundEvent> event) {
@@ -102,7 +103,9 @@ public class ModSounds {
 		SoundEvent revert = new SoundEvent(new ResourceLocation(Main.MODID, "revert"));
 		event.getRegistry().register(Init.setup(revert, "revert"));
 		SoundEvent transform = new SoundEvent(new ResourceLocation(Main.MODID, "transform"));
-		event.getRegistry().register(Init.setup(transform, "transform"));    
+		event.getRegistry().register(Init.setup(transform, "transform"));
+		SoundEvent bell = new SoundEvent(new ResourceLocation(Main.MODID, "bell"));
+		event.getRegistry().register(Init.setup(bell, "bell"));
 	}
 
 }

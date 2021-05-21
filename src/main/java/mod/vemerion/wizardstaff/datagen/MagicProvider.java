@@ -148,6 +148,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.ENDER_CHEST_MAGIC.create().setParams(10, 10, ing(Items.ENDER_CHEST)), "");
 		c.accept(ModMagics.DEFLECT_PROJECTILE_MAGIC.create().setAdditionalParams(ImmutableSet.of()).setParams(0.8f, -1, ing(Items.SHIELD)), "");
 		c.accept(ModMagics.REPAIR_ARMOR_MAGIC.create().setAdditionalParams(1).setParams(1, -1, ing(Items.ANVIL)), "");
+		c.accept(ModMagics.SUMMON_ENTITY_MAGIC.create().setAdditionalParams(ModEntities.MAGIC_VEX, 3).setParams(40, 40, ing(Items.TOTEM_OF_UNDYING)), "summon_friendly_vex_magic");
 	}
 	
 	private void magicArmor(BiConsumer<Magic, String> c, Item from, Item created) {

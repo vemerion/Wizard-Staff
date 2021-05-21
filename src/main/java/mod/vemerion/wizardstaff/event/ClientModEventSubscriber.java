@@ -19,6 +19,7 @@ import net.minecraft.client.particle.RedstoneParticle;
 import net.minecraft.client.particle.SmokeParticle;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.VexRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.util.ResourceLocation;
@@ -50,6 +51,7 @@ public class ClientModEventSubscriber {
 		RenderingRegistry.registerEntityRenderingHandler(ModEntities.GRAPPLING_HOOK, GrapplingHookRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntities.MUSHROOM_CLOUD, NoRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntities.WIZARD_HAT, WizardHatRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntities.MAGIC_VEX, VexRenderer::new);
 	}
 
 	private static class NoRenderer<T extends Entity> extends EntityRenderer<T> {

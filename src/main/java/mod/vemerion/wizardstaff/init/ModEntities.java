@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.init;
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
+import mod.vemerion.wizardstaff.entity.MagicVexEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
 import mod.vemerion.wizardstaff.entity.MushroomCloudEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
@@ -10,7 +11,9 @@ import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.entity.WizardHatEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.monster.VexEntity;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -27,6 +30,7 @@ public class ModEntities {
 	public static final EntityType<GrapplingHookEntity> GRAPPLING_HOOK = null;
 	public static final EntityType<MushroomCloudEntity> MUSHROOM_CLOUD = null;
 	public static final EntityType<WizardHatEntity> WIZARD_HAT = null;
+	public static final EntityType<MagicVexEntity> MAGIC_VEX = null;
 
 	@SubscribeEvent
 	public static void onRegisterEntity(RegistryEvent.Register<EntityType<?>> event) {
@@ -61,5 +65,15 @@ public class ModEntities {
 		EntityType<WizardHatEntity> wizardHatEntity = EntityType.Builder
 				.<WizardHatEntity>create(WizardHatEntity::new, EntityClassification.MISC).size(1, 1).build("");
 		event.getRegistry().register(Init.setup(wizardHatEntity, "wizard_hat"));
+
+		EntityType<MagicVexEntity> magicVexEntity = EntityType.Builder
+				.<MagicVexEntity>create(MagicVexEntity::new, EntityClassification.MONSTER).immuneToFire()
+				.size(0.4f, 0.8f).trackingRange(8).build("");
+		event.getRegistry().register(Init.setup(magicVexEntity, "magic_vex"));
+	}
+	
+	@SubscribeEvent
+	public static void onRegisterEntityAttributes(EntityAttributeCreationEvent event) {
+		event.put(MAGIC_VEX, VexEntity.func_234321_m_().create());
 	}
 }
