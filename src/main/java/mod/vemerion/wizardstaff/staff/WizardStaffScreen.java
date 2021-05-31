@@ -80,12 +80,33 @@ public class WizardStaffScreen extends ContainerScreen<WizardStaffContainer> {
 			return true;
 		return super.mouseClicked(mouseX, mouseY, button);
 	}
+	
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (spellbook.keyPressed(keyCode, scanCode, modifiers))
+			return true;
+		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+	
+	@Override
+	public boolean charTyped(char codePoint, int modifiers) {
+		if (spellbook.charTyped(codePoint, modifiers))
+			return true;
+		return super.charTyped(codePoint, modifiers);
+	}
 
 	@Override
 	public void onClose() {
 		if (buttonPressed && shouldAnimate != container.shouldAnimate())
 			ScreenAnimations.sendMessage(Minecraft.getInstance().player, shouldAnimate);
+		spellbook.onClose();
 		super.onClose();
+	}
+	
+	@Override
+	public void tick() {
+		super.tick();
+		spellbook.tick();
 	}
 
 	@Override

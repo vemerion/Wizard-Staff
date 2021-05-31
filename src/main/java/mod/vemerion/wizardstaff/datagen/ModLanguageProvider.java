@@ -60,6 +60,7 @@ public class ModLanguageProvider extends LanguageProvider {
 		addGui("exp", "exp");
 		addGui("infinity", "\u221E");
 		addGui("seconds", "s");
+		addGui("search_hint", "Search Magic...");
 		
 		magics();
 

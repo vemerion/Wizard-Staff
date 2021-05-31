@@ -17,6 +17,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
+// FIXME: The damage scales based on difficulty when attacking players, which is bad
 public class MagicVexEntity extends VexEntity {
 
 	private static Field goals;
@@ -90,7 +91,7 @@ public class MagicVexEntity extends VexEntity {
 			PlayerEntity player = vex.getCaster();
 			if (player == null)
 				return false;
-			
+
 			if (timestamp == getTimestamp(player))
 				return false;
 

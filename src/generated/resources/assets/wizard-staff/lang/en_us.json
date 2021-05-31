@@ -94,6 +94,7 @@
   "gui.wizard-staff.repair_armor_magic.name": "Repair Armor",
   "gui.wizard-staff.revert_position_magic.description": "Revert your position to where you were five seconds ago.",
   "gui.wizard-staff.revert_position_magic.name": "Revert Position",
+  "gui.wizard-staff.search_hint": "Search Magic...",
   "gui.wizard-staff.seconds": "s",
   "gui.wizard-staff.shulker_bullet_magic.description": "Use magic to replicate a shulker bullet, targeting a nearby entity.",
   "gui.wizard-staff.shulker_bullet_magic.name": "Shulker Bullet",
