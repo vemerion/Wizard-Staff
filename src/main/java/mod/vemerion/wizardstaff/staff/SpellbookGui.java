@@ -10,7 +10,6 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import mod.vemerion.wizardstaff.Main;
-import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.Magics;
 import net.minecraft.client.Minecraft;
@@ -38,14 +37,15 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 	private static final int Y_SIZE = 166;
 	private static final int BORDER_X = 16;
 	private static final int BORDER_Y = 12;
+	private static final int ITEM_BORDER_Y = 24;
 	private static final int ITEM_SIZE = 20;
 	private static final int ITEMS_PER_ROW = 6;
 	private static final int ITEMS_PER_COLUMN = 6;
 	private static final int ITEMS_PER_PAGE = ITEMS_PER_ROW * ITEMS_PER_COLUMN;
 	private static final int BUTTON_SIZE = 20;
+	private static final int BUTTON_BOTTOM_OFFSET = 26;
 	private static final int SEARCH_WIDTH = X_SIZE - BUTTON_SIZE * 2;
 	private static final int SEARCH_HEIGHT = 14;
-	private static final int WHITE = Helper.color(255, 255, 255, 255);
 
 	private boolean isActive;
 	private int left;
@@ -68,25 +68,24 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 		this.height = height;
 		left = (width - X_SIZE) / 2 - X_OFFSET;
 		top = (height - Y_SIZE) / 2;
-		int bottom = top + Y_SIZE;
 
 		this.buttons = new ArrayList<>();
 		this.searched = new ArrayList<>();
 		int i = 0;
 		for (ItemStack stack : Magics.getInstance(true).getMagicItems()) {
 			buttons.add(new ItemButton(left + BORDER_X + (i % ITEMS_PER_ROW) * ITEM_SIZE,
-					top + BORDER_Y + (i / ITEMS_PER_ROW) * ITEM_SIZE, ITEM_SIZE, ITEM_SIZE, stack));
+					top + ITEM_BORDER_Y + (i / ITEMS_PER_ROW) * ITEM_SIZE, ITEM_SIZE, ITEM_SIZE, stack));
 			i = (i + 1) % ITEMS_PER_PAGE;
 		}
 
-		next = new ImageButton(left + X_SIZE / 2 + 20, bottom - BORDER_Y - 15, BUTTON_SIZE, BUTTON_SIZE, 0, Y_SIZE,
-				BUTTON_SIZE, GUI, (b) -> {
+		next = new ImageButton(left + X_SIZE / 2 + 20, top + Y_SIZE - BUTTON_BOTTOM_OFFSET, BUTTON_SIZE, BUTTON_SIZE, 0,
+				Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
 					if ((page + 1) * ITEMS_PER_PAGE < searched.size())
 						page++;
 				});
 
-		prev = new ImageButton(left + X_SIZE / 2 - 20 - BUTTON_SIZE, bottom - BORDER_Y - 15, BUTTON_SIZE, BUTTON_SIZE,
-				BUTTON_SIZE, Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
+		prev = new ImageButton(left + X_SIZE / 2 - 20 - BUTTON_SIZE, top + Y_SIZE - BUTTON_BOTTOM_OFFSET, BUTTON_SIZE,
+				BUTTON_SIZE, BUTTON_SIZE, Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
 					if (page > 0)
 						page--;
 				});
@@ -100,13 +99,13 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 
 	private void initSearch() {
 		String text = search == null ? "" : search.getText();
-		search = new TextFieldWidget(Minecraft.getInstance().fontRenderer, left + BORDER_X * 2, top + Y_SIZE - 36,
-				SEARCH_WIDTH, SEARCH_HEIGHT, SEARCH_HINT);
+		search = new TextFieldWidget(Minecraft.getInstance().fontRenderer, left + 26, top + 13, SEARCH_WIDTH,
+				SEARCH_HEIGHT, SEARCH_HINT);
 		search.setMaxStringLength(50);
 		search.setText(text);
 		search.setEnableBackgroundDrawing(false);
 		search.setVisible(true);
-		search.setTextColor(WHITE);
+		search.setTextColor(-1);
 		filterButtons();
 	}
 
@@ -136,9 +135,9 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			prev.render(matrixStack, mouseX, mouseY, partialTicks);
 
 			// Search
-			blit(matrixStack, left + BORDER_X, top + Y_SIZE - 39, 0, 0, Y_SIZE + BUTTON_SIZE * 2, 16, 16, 256, 256);
+			blit(matrixStack, left + 12, top + 8, 0, 0, Y_SIZE + BUTTON_SIZE * 2, 16, 16, 256, 256);
 			if (!search.isFocused() && search.getText().isEmpty())
-				drawString(matrixStack, mc.fontRenderer, SEARCH_HINT, left + BORDER_X * 2, top + Y_SIZE - 36, WHITE);
+				drawString(matrixStack, mc.fontRenderer, SEARCH_HINT, left + 26, top + 13, -1);
 			else
 				search.render(matrixStack, mouseX, mouseY, partialTicks);
 
@@ -195,7 +194,7 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			if (b.stack.getDisplayName().getString().toLowerCase().contains(filter)) {
 				searched.add(b);
 				b.x = left + BORDER_X + (i % ITEMS_PER_ROW) * ITEM_SIZE;
-				b.y = top + BORDER_Y + (i / ITEMS_PER_ROW) * ITEM_SIZE;
+				b.y = top + ITEM_BORDER_Y + (i / ITEMS_PER_ROW) * ITEM_SIZE;
 				i = (i + 1) % ITEMS_PER_PAGE;
 			}
 		page = 0;
@@ -288,14 +287,14 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 						description = null;
 					});
 
-			next = new ImageButton(left + X_SIZE / 2 + 20, top + Y_SIZE - BORDER_Y - BUTTON_SIZE, BUTTON_SIZE,
+			next = new ImageButton(left + X_SIZE / 2 + 20, top + Y_SIZE - BUTTON_BOTTOM_OFFSET, BUTTON_SIZE,
 					BUTTON_SIZE, 0, Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
 						if (page < pageCount - 1) {
 							page++;
 						}
 					});
 
-			prev = new ImageButton(left + X_SIZE / 2 - 20 - BUTTON_SIZE, top + Y_SIZE - BORDER_Y - BUTTON_SIZE,
+			prev = new ImageButton(left + X_SIZE / 2 - 20 - BUTTON_SIZE, top + Y_SIZE - BUTTON_BOTTOM_OFFSET,
 					BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE, Y_SIZE, BUTTON_SIZE, GUI, (b) -> {
 						if (page > 0)
 							page--;
