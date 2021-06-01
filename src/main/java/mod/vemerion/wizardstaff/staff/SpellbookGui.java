@@ -191,7 +191,8 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 		searched = new ArrayList<>();
 		int i = 0;
 		for (ItemButton b : buttons)
-			if (b.stack.getDisplayName().getString().toLowerCase().contains(filter)) {
+			if (b.stack.getDisplayName().getString().toLowerCase().contains(filter)
+					|| b.magicDescr.getName().getString().toLowerCase().contains(filter)) {
 				searched.add(b);
 				b.x = left + BORDER_X + (i % ITEMS_PER_ROW) * ITEM_SIZE;
 				b.y = top + ITEM_BORDER_Y + (i / ITEMS_PER_ROW) * ITEM_SIZE;
@@ -224,10 +225,12 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 	private class ItemButton extends AbstractButton {
 
 		private ItemStack stack;
+		private Magic.Description magicDescr;
 
 		public ItemButton(int x, int y, int width, int height, ItemStack stack) {
 			super(x, y, width, height, stack.getDisplayName());
 			this.stack = stack;
+			this.magicDescr = Magics.getInstance(true).get(stack).getDescription();
 		}
 
 		@Override
@@ -243,7 +246,7 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 
 		@Override
 		public void onPress() {
-			description = new SpellDescription(stack, left, top);
+			description = new SpellDescription(magicDescr, stack, left, top);
 		}
 
 	}
@@ -272,9 +275,9 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 		private int linesPerPage;
 		private int pageCount;
 
-		public SpellDescription(ItemStack stack, int left, int top) {
+		public SpellDescription(Magic.Description magicDescr, ItemStack stack, int left, int top) {
+			this.magicDescr = magicDescr;
 			this.stack = stack;
-			this.magicDescr = Magics.getInstance(true).get(stack).getDescription();
 			init(left, top);
 		}
 
