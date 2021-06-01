@@ -1,10 +1,7 @@
 package mod.vemerion.wizardstaff.datagen;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,11 +11,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Helper.Helper;
+import mod.vemerion.wizardstaff.Magic.BlockMatch;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.init.ModEntities;
@@ -37,6 +33,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -71,6 +68,7 @@ public class MagicProvider implements IDataProvider {
 		});
 	}
 
+	// @formatter:off
 	protected void registerMagics(BiConsumer<Magic, String> c) {
 		c.accept(ModMagics.BLAZE_POWDER_MAGIC.create().setParams(0.3f, -1, ing(Items.BLAZE_POWDER)), "");
 		c.accept(ModMagics.BLUE_DYE_MAGIC.create().setParams(30, 50, ing(Tags.Items.DYES_BLUE)), "");
@@ -134,10 +132,13 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.DEFLECT_PROJECTILE_MAGIC.create().setAdditionalParams(ImmutableSet.of()).setParams(0.8f, -1, ing(Items.SHIELD)), "");
 		c.accept(ModMagics.REPAIR_ARMOR_MAGIC.create().setAdditionalParams(1).setParams(1, -1, ing(Items.ANVIL)), "");
 		c.accept(ModMagics.SUMMON_ENTITY_MAGIC.create().setAdditionalParams(ModEntities.MAGIC_VEX, 3).setParams(40, 40, ing(Items.TOTEM_OF_UNDYING)), "summon_friendly_vex_magic");
+		c.accept(ModMagics.MASS_HARVEST_MAGIC.create().setAdditionalParams(new BlockMatch(BlockTags.LOGS), 20).setParams(10, 10, ing(Items.DIAMOND_PICKAXE)), "chop_tree_magic");
 	}
-	
+	// @formatter:on
+
 	private void magicArmor(BiConsumer<Magic, String> c, Item from, Item created) {
-		c.accept(ModMagics.TRANSMUTATION_MAGIC.create().setAdditionalParams(created, ModSounds.PLOP).setParams(30, 20, ing(from)), created.getRegistryName().getPath() + "_fashion_magic");
+		c.accept(ModMagics.TRANSMUTATION_MAGIC.create().setAdditionalParams(created, ModSounds.PLOP).setParams(30, 20,
+				ing(from)), created.getRegistryName().getPath() + "_fashion_magic");
 	}
 
 	private Ingredient ing(Item item) {
