@@ -58,32 +58,17 @@ public class MagicProvider implements IDataProvider {
 
 	@Override
 	public void act(DirectoryCache cache) throws IOException {
-		Path path = generator.getOutputFolder();
+		Path folder = generator.getOutputFolder();
 		registerMagics((magic, s) -> {
 			ResourceLocation key = magic.getRegistryName();
 			String name = s == null || s.isEmpty() ? key.getPath() : s;
-			saveMagic(cache, magic.write(),
-					path.resolve("data/" + modid + "/" + Magics.FOLDER_NAME + "/" + name + ".json"));
-		});
-	}
-
-	private void saveMagic(DirectoryCache cache, JsonObject json, Path path) {
-		try {
-			String content = GSON.toJson((JsonElement) json);
-			String hash = HASH_FUNCTION.hashUnencodedChars(content).toString();
-			if (!Objects.equals(cache.getPreviousHash(path), hash) || !Files.exists(path)) {
-				Files.createDirectories(path.getParent());
-
-				try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-					writer.write(content);
-				}
+			Path path = folder.resolve("data/" + modid + "/" + Magics.FOLDER_NAME + "/" + name + ".json");
+			try {
+				IDataProvider.save(GSON, cache, magic.write(), path);
+			} catch (IOException e) {
+				LOGGER.error("Couldn't save magic {}", path, e);
 			}
-
-			cache.recordHash(path, hash);
-		} catch (IOException e) {
-			LOGGER.error("Couldn't save magic {}", path, e);
-		}
-
+		});
 	}
 
 	protected void registerMagics(BiConsumer<Magic, String> c) {
