@@ -15,10 +15,11 @@ public class ModLanguageProvider extends LanguageProvider {
 		super(gen, Main.MODID, "en_us");
 	}
 
+	// @formatter:off
 	@Override
 	protected void addTranslations() {
 		add("itemGroup.wizard-staff", "Wizard Staff");
-		
+
 		add(ModItems.WARLOCK_HELMET, "Warlock Cowl");
 		add(ModItems.WARLOCK_CHESTPLATE, "Warlock Robe");
 		add(ModItems.WARLOCK_LEGGINGS, "Warlock Chainmail");
@@ -33,7 +34,7 @@ public class ModLanguageProvider extends LanguageProvider {
 		add(ModItems.WIZARD_BOOTS, "Wizard Slippers");
 		add(ModItems.WIZARD_STAFF, "Wizard Staff");
 		add(ModItems.NETHER_WIZARD_STAFF, "Nether Wizard Staff");
-		
+
 		add(ModEntities.GRAPPLING_HOOK, "Grappling Hook");
 		add(ModEntities.MAGIC_SOUL_SAND_ARM, "Magic Soul Sand Arm");
 		add(ModEntities.MAGIC_WITHER_SKULL, "Magic Wither Skull");
@@ -42,17 +43,17 @@ public class ModLanguageProvider extends LanguageProvider {
 		add(ModEntities.PUMPKIN_MAGIC, "Magic Pumpkin");
 		add(ModEntities.WIZARD_HAT, "Wizard Hat");
 		add(ModEntities.MAGIC_VEX, "Friendly Vex");
-		
+
 		add("item.wizard-staff.wizard_armor.description", "-10% spell cost");
 		add("item.wizard-staff.druid_armor.description", "-10% spell cost");
 		add("item.wizard-staff.warlock_armor.description", "-10% spell cost");
-		
+
 		add(ModBlocks.MAGIC_BRICKS, "Magic Bricks");
-		
+
 		add("death.attack.wizard-staff.magicplayer", "%1$s was magicked to death by %2$s");
 		add("death.attack.wizard-staff.magicindirect", "%1$s was magicked to death by %2$s");
 		add("death.attack.wizard-staff.magic", "%1$s was magicked to death");
-		
+
 		addGui("toggle_animations", "Toggle GUI animations");
 		addGui("toggle_spellbook", "Toggle Spellbook");
 		addGui("cost", "Cost");
@@ -61,11 +62,11 @@ public class ModLanguageProvider extends LanguageProvider {
 		addGui("infinity", "\u221E");
 		addGui("seconds", "s");
 		addGui("search_hint", "Search Magic...");
-		
+
 		magics();
 
 	}
-	
+
 	private void magics() {
 		addMagicName(ModMagics.NO_MAGIC, "No Magic");
 		addMagicDescription(ModMagics.NO_MAGIC, "No Magic");
@@ -167,16 +168,20 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.TRANSFORM_ENTITY_MAGIC, "Shot a transformation ray that turns %s entities into %s entities.");
 		addMagicName(ModMagics.SUMMON_ENTITY_MAGIC, "Summon %s");		
 		addMagicDescription(ModMagics.SUMMON_ENTITY_MAGIC, "Use your magic to summon %s %s entities.");
+		
+		addMagicName(ModMagics.MASS_HARVEST_MAGIC, "Mass Harvest %s");
+		addMagicDescription(ModMagics.MASS_HARVEST_MAGIC, "Use your magic to harvest up to %s adjacent %s.");
 	}
+	// @formatter:on
 
 	private void addMagicName(MagicType<?> type, String text) {
 		addGui(type.getRegistryName().getPath() + ".name", text);
 	}
-	
+
 	private void addMagicDescription(MagicType<?> type, String text) {
 		addGui(type.getRegistryName().getPath() + ".description", text);
 	}
-	
+
 	private void addMagicOther(MagicType<?> type, String suffix, String text) {
 		addGui(type.getRegistryName().getPath() + "." + suffix, text);
 	}

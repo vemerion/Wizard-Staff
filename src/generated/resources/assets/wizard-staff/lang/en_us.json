@@ -61,6 +61,8 @@
   "gui.wizard-staff.lodestone_magic.name": "Magical Translocator",
   "gui.wizard-staff.map_magic.description": "Transform the item in the staff into a treasure map.",
   "gui.wizard-staff.map_magic.name": "Treasure Map!",
+  "gui.wizard-staff.mass_harvest_magic.description": "Use your magic to to harvest up to %s adjacent %s.",
+  "gui.wizard-staff.mass_harvest_magic.name": "Mass Harvest %s",
   "gui.wizard-staff.mushroom_cloud_magic.description": "Create a magic poison cloud in from of you, damaging anyone that enters it, slowly turning them into mushrooms.",
   "gui.wizard-staff.mushroom_cloud_magic.name": "Mushroom Cloud",
   "gui.wizard-staff.name_tag_magic.description": "Conjure a name tag with a random name.",

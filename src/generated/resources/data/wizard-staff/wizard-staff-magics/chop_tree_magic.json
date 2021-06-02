@@ -1,12 +1,12 @@
 {
-  "cost": 10.0,
-  "duration": 10,
+  "cost": 2.0,
+  "duration": 40,
   "magic": "wizard-staff:mass_harvest_magic",
   "ingredient": {
-    "item": "minecraft:diamond_pickaxe"
+    "item": "minecraft:diamond_axe"
   },
   "block_match": {
     "tag": "minecraft:logs"
   },
-  "harvest_limit": 20
+  "harvest_limit": 40
 }

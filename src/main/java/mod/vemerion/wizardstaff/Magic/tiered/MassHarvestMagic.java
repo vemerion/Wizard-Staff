@@ -15,15 +15,19 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 public class MassHarvestMagic extends Magic {
@@ -80,23 +84,31 @@ public class MassHarvestMagic extends Magic {
 		return UseAction.BLOCK;
 	}
 
+	protected Object[] getNameArgs() {
+		return new Object[] { match.getName() };
+	}
+
+	@Override
+	protected Object[] getDescrArgs() {
+		return new Object[] { new StringTextComponent(String.valueOf(harvestLimit)), match.getName() };
+	}
+
 	@Override
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		BlockRayTraceResult result = Helper.blockRay(world, player, 4);
 		if (result.getType() == Type.BLOCK) {
 			BlockState state = world.getBlockState(result.getPos());
+			player.playSound(state.getSoundType().getBreakSound(), 1, soundPitch(player));
 			if (match.test(state.getBlock())) {
-				if (!world.isRemote) {
-					cost(player);
-					havestBlocks(result.getPos(), world);
-				}
+				if (!world.isRemote)
+					cost(player, havestBlocks(result.getPos(), world));
 			}
 		}
 
 		return super.magicFinish(world, player, staff);
 	}
 
-	private void havestBlocks(BlockPos start, World world) {
+	private int havestBlocks(BlockPos start, World world) {
 		List<BlockPos> positions = new ArrayList<>();
 		Set<BlockPos> found = new HashSet<>();
 		positions.add(start);
@@ -110,8 +122,17 @@ public class MassHarvestMagic extends Magic {
 					found.add(immutable);
 				}
 			});
-			world.destroyBlock(pos, true);
+			destroyBlock(world, pos);
 		}
+		return found.size();
+	}
+
+	private void destroyBlock(World world, BlockPos pos) {
+		FluidState fluidstate = world.getFluidState(pos);
+		BlockState state = world.getBlockState(pos);
+		TileEntity tileentity = state.hasTileEntity() ? world.getTileEntity(pos) : null;
+		Block.spawnDrops(state, world, pos, tileentity, null, ItemStack.EMPTY);
+		world.setBlockState(pos, fluidstate.getBlockState());
 	}
 
 }
