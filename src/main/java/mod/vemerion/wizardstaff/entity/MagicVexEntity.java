@@ -5,15 +5,18 @@ import java.util.Set;
 import java.util.UUID;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.Magic.Magic;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.monster.VexEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
@@ -28,7 +31,7 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 		super(type, world);
 		this.experienceValue = 0;
 	}
-	
+
 	@Override
 	public UUID getCasterUUID() {
 		return caster;
@@ -37,6 +40,19 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 	@Override
 	public void setCasterUUID(UUID id) {
 		caster = id;
+	}
+
+	@Override
+	protected boolean isDespawnPeaceful() {
+		return false;
+	}
+
+	@Override
+	public boolean attackEntityAsMob(Entity entityIn) {
+		PlayerEntity caster = getCaster(world);
+		float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
+		DamageSource source = caster == null ? Magic.magicDamage() : Magic.magicDamage(this, caster);
+		return entityIn.attackEntityFrom(source, damage);
 	}
 
 	@Override
@@ -95,7 +111,8 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 				return false;
 
 			Entity target = getTarget(player);
-			if (target == null || (target instanceof MagicVexEntity && ((MagicVexEntity) target).getCaster(vex.world) == player))
+			if (target == null
+					|| (target instanceof MagicVexEntity && ((MagicVexEntity) target).getCaster(vex.world) == player))
 				return false;
 
 			return true;
