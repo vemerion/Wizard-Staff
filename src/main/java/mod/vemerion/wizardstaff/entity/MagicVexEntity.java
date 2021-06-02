@@ -20,7 +20,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-// FIXME: The damage scales based on difficulty when attacking players, which is bad
 public class MagicVexEntity extends VexEntity implements ICasted {
 
 	private static Field goals;

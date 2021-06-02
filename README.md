@@ -52,6 +52,12 @@ additional json members to make them more configurable. For instance, for the lo
 magic ([link](src/generated/resources/data/wizard-staff/wizard-staff-magics/lodestone_magic.json)) you can
 now specify the block to bind the teleportation to, via the 'waypoint' json member.
 
+You might see a member called 'block\_match' in some json files (for example in the
+[chop tree magic](src/generated/resources/data/wizard-staff/wizard-staff-magics/chop_tree_magic.json)).
+This member works similar to how ingredient works, but for blocks (however it is not as complex and
+versatile as ingredient). It is an object that expects one member, which must be either 'block' or
+'tag'.
+
 ### Modifying/removing/adding magics
 To modify or remove spells, the process is similar to how data-packs can be used to
 remove/modify vanilla recipes. If you are unsure how to create data-packs, I recommend
