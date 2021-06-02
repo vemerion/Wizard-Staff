@@ -1,28 +1,21 @@
 package mod.vemerion.wizardstaff.entity;
 
-import java.util.UUID;
-
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
 
-public class MushroomCloudEntity extends Entity {
+public class MushroomCloudEntity extends MagicEntity {
 	private static final int DURATION = 20 * 10;
 
-	private UUID shooter;
 
 	public MushroomCloudEntity(EntityType<? extends MushroomCloudEntity> entityTypeIn, World worldIn) {
 		super(entityTypeIn, worldIn);
@@ -31,7 +24,7 @@ public class MushroomCloudEntity extends Entity {
 
 	public MushroomCloudEntity(World worldIn, PlayerEntity shooter) {
 		this(ModEntities.MUSHROOM_CLOUD, worldIn);
-		this.shooter = shooter.getUniqueID();
+		this.setCaster(shooter);
 	}
 
 	@Override
@@ -65,7 +58,7 @@ public class MushroomCloudEntity extends Entity {
 	}
 
 	private void damageEntities() {
-		PlayerEntity caster = getShooter();
+		PlayerEntity caster = getCaster(world);
 		for (LivingEntity e : world.getEntitiesWithinAABB(LivingEntity.class, getBoundingBox(), e -> e != caster && e.isAlive())) {
 			if (caster != null) {
 				e.attackEntityFrom(Magic.magicDamage(this, caster), 2);
@@ -87,30 +80,7 @@ public class MushroomCloudEntity extends Entity {
 		}
 	}
 
-	private PlayerEntity getShooter() {
-		if (shooter == null)
-			return null;
-		return world.getPlayerByUuid(shooter);
-	}
-
 	@Override
 	protected void registerData() {
-	}
-
-	@Override
-	protected void readAdditional(CompoundNBT compound) {
-		if (compound.hasUniqueId("shooter"))
-			shooter = compound.getUniqueId("shooter");
-	}
-
-	@Override
-	protected void writeAdditional(CompoundNBT compound) {
-		if (shooter != null)
-			compound.putUniqueId("shooter", shooter);
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

@@ -1,24 +1,20 @@
 package mod.vemerion.wizardstaff.entity;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
 
-public class MagicSoulSandArmEntity extends Entity {
+public class MagicSoulSandArmEntity extends MagicEntity {
 	private static final int MAX_DURATION = 20 * 10;
 
 	private int duration;
 	private float rotation;
-	private PlayerEntity caster;
 
 	public MagicSoulSandArmEntity(EntityType<? extends MagicSoulSandArmEntity> entityTypeIn, World worldIn) {
 		super(entityTypeIn, worldIn);
@@ -29,7 +25,7 @@ public class MagicSoulSandArmEntity extends Entity {
 	public MagicSoulSandArmEntity(EntityType<? extends MagicSoulSandArmEntity> entityTypeIn, World worldIn,
 			PlayerEntity caster) {
 		this(entityTypeIn, worldIn);
-		this.caster = caster;
+		this.setCaster(caster);
 	}
 
 	@Override
@@ -42,6 +38,7 @@ public class MagicSoulSandArmEntity extends Entity {
 				remove();
 
 			if (duration % 10 == 0) {
+				PlayerEntity caster = getCaster(world);
 				for (LivingEntity e : world.getEntitiesWithinAABB(LivingEntity.class, getBoundingBox())) {
 					if (e != caster) {
 						e.attackEntityFrom(caster == null ? Magic.magicDamage() : Magic.magicDamage(this, caster), 2);
@@ -71,17 +68,14 @@ public class MagicSoulSandArmEntity extends Entity {
 
 	@Override
 	protected void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 		if (compound.contains("duration"))
 			duration = compound.getInt("duration");
 	}
 
 	@Override
 	protected void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
 		compound.putInt("duration", duration);
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

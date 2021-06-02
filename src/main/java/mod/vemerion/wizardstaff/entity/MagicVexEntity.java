@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 // FIXME: The damage scales based on difficulty when attacking players, which is bad
-public class MagicVexEntity extends VexEntity {
+public class MagicVexEntity extends VexEntity implements ICasted {
 
 	private static Field goals;
 
@@ -28,15 +28,15 @@ public class MagicVexEntity extends VexEntity {
 		super(type, world);
 		this.experienceValue = 0;
 	}
-
-	public void setCaster(PlayerEntity caster) {
-		this.caster = caster.getUniqueID();
+	
+	@Override
+	public UUID getCasterUUID() {
+		return caster;
 	}
 
-	private PlayerEntity getCaster() {
-		if (caster == null)
-			return null;
-		return world.getPlayerByUuid(caster);
+	@Override
+	public void setCasterUUID(UUID id) {
+		caster = id;
 	}
 
 	@Override
@@ -53,15 +53,14 @@ public class MagicVexEntity extends VexEntity {
 	@Override
 	public void readAdditional(CompoundNBT compound) {
 		super.readAdditional(compound);
-		if (compound.hasUniqueId("caster"))
-			caster = compound.getUniqueId("caster");
+		if (compound.contains("shooter"))
+			loadCaster(compound.getCompound("shooter"));
 	}
 
 	@Override
 	public void writeAdditional(CompoundNBT compound) {
 		super.writeAdditional(compound);
-		if (caster != null)
-			compound.putUniqueId("caster", caster);
+		compound.put("shooter", saveCaster());
 	}
 
 	// Use reflection to clear the targetSelector, to prevent Vex from attacking
@@ -88,7 +87,7 @@ public class MagicVexEntity extends VexEntity {
 		}
 
 		public boolean shouldExecute() {
-			PlayerEntity player = vex.getCaster();
+			PlayerEntity player = vex.getCaster(vex.world);
 			if (player == null)
 				return false;
 
@@ -96,14 +95,14 @@ public class MagicVexEntity extends VexEntity {
 				return false;
 
 			Entity target = getTarget(player);
-			if (target == null || (target instanceof MagicVexEntity && ((MagicVexEntity) target).getCaster() == player))
+			if (target == null || (target instanceof MagicVexEntity && ((MagicVexEntity) target).getCaster(vex.world) == player))
 				return false;
 
 			return true;
 		}
 
 		public void startExecuting() {
-			PlayerEntity player = vex.getCaster();
+			PlayerEntity player = vex.getCaster(vex.world);
 			if (player == null)
 				return;
 			vex.setAttackTarget(getTarget(player));
@@ -160,7 +159,7 @@ public class MagicVexEntity extends VexEntity {
 
 		@Override
 		public boolean shouldExecute() {
-			PlayerEntity player = vex.getCaster();
+			PlayerEntity player = vex.getCaster(vex.world);
 			if (player == null)
 				return false;
 			return vex.getRNG().nextInt(30) == 1 && player.getDistanceSq(vex) < 2000;
@@ -168,12 +167,11 @@ public class MagicVexEntity extends VexEntity {
 
 		@Override
 		public void startExecuting() {
-			PlayerEntity player = vex.getCaster();
+			PlayerEntity player = vex.getCaster(vex.world);
 			if (player == null)
 				return;
 			vex.setBoundOrigin(player.getPosition());
 		}
 
 	}
-
 }

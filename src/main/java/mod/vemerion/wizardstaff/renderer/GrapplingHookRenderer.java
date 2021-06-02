@@ -40,8 +40,8 @@ public class GrapplingHookRenderer extends EntityRenderer<GrapplingHookEntity> {
 		matrixStackIn.push();
 
 		// The rendering of the grappling line, derived from FishRenderer
-		if (entityIn.getShooter() != null) {
-			PlayerEntity shooter = entityIn.getShooter();
+		PlayerEntity shooter = entityIn.getCaster(entityIn.world);
+		if (shooter != null) {
 			float handOffset = shooter.getPrimaryHand() == HandSide.RIGHT ? 1 : -1;
 			Vector3d shooterPos;
 			if (!(shooter.getHeldItemMainhand().getItem() instanceof WizardStaffItem))
