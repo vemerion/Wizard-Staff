@@ -1,0 +1,8 @@
+{
+  "cost": 0.1,
+  "duration": -1,
+  "magic": "wizard-staff:item_magnet_magic",
+  "ingredient": {
+    "item": "minecraft:iron_block"
+  }
+}

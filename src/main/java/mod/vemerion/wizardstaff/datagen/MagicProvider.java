@@ -134,6 +134,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.SUMMON_ENTITY_MAGIC.create().setAdditionalParams(ModEntities.MAGIC_VEX, 3).setParams(40, 40, ing(Items.TOTEM_OF_UNDYING)), "summon_friendly_vex_magic");
 		c.accept(ModMagics.MASS_HARVEST_MAGIC.create().setAdditionalParams(new BlockMatch(BlockTags.LOGS), 40).setParams(2, 40, ing(Items.DIAMOND_AXE)), "chop_tree_magic");
 		c.accept(ModMagics.MASS_HARVEST_MAGIC.create().setAdditionalParams(new BlockMatch(BlockTags.LEAVES), 50).setParams(0.1f, 20, ing(Items.SHEARS)), "clear_leaves_magic");
+		c.accept(ModMagics.ITEM_MAGNET_MAGIC.create().setParams(0.1f, -1, ing(Items.IRON_BLOCK)), "");
 	}
 	// @formatter:on
 
