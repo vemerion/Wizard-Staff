@@ -226,6 +226,25 @@ public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
 		matrix.pop();
 	}
 	
+	public static void drill(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
+			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
+			float partialTicks, HandSide hand) {
+		float offset = hand == HandSide.RIGHT ? 1 : -1;
+		float max = maxDuration > 20 ? 5 : maxDuration / 4;
+		float progress = MathHelper.clamp(duration / max, 0, 1);
+		matrix.push();
+		matrix.translate(offset, -0.5 - progress / 5, -1.2);
+		matrix.rotate(new Quaternion((float) MathHelper.clampedLerp(0, -45, progress), 0,
+				(float) MathHelper.clampedLerp(0, 35 * offset, progress), true));
+		
+		float maxRotate = maxDuration > 20 ? 20 : maxDuration;
+		float rotation = duration < maxRotate ? duration * duration : maxRotate * maxRotate + maxRotate * 2 * (duration - maxRotate);
+		matrix.rotate(new Quaternion(0, rotation, 0, true));
+
+		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.pop();
+	}
+	
 	public static void noRender(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
 			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
 			float partialTicks, HandSide hand) {

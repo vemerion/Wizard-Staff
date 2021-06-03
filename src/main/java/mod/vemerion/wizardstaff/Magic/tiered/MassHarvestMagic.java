@@ -11,6 +11,7 @@ import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.Magic.BlockMatch;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -71,7 +72,7 @@ public class MassHarvestMagic extends Magic {
 
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
-		return WizardStaffTileEntityRenderer::forwardBuildup;
+		return WizardStaffTileEntityRenderer::drill;
 	}
 
 	@Override
@@ -98,10 +99,12 @@ public class MassHarvestMagic extends Magic {
 		BlockRayTraceResult result = Helper.blockRay(world, player, 4);
 		if (result.getType() == Type.BLOCK) {
 			BlockState state = world.getBlockState(result.getPos());
-			player.playSound(state.getSoundType().getBreakSound(), 1, soundPitch(player));
 			if (match.test(state.getBlock())) {
+				player.playSound(state.getSoundType().getBreakSound(), 1, soundPitch(player));
 				if (!world.isRemote)
 					cost(player, havestBlocks(result.getPos(), world));
+			} else {
+				player.playSound(ModSounds.POOF, 1, soundPitch(player));
 			}
 		}
 
