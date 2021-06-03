@@ -171,6 +171,10 @@ public class ModLanguageProvider extends LanguageProvider {
 		
 		addMagicName(ModMagics.MASS_HARVEST_MAGIC, "Mass Harvest %s");
 		addMagicDescription(ModMagics.MASS_HARVEST_MAGIC, "Use your magic to harvest up to %s adjacent %s.");
+		addMagicName(ModMagics.FORCE_ENTITY_MAGIC, "%s %s");
+		addMagicDescription(ModMagics.FORCE_ENTITY_MAGIC, "%s %s entities with you magic.");
+		addMagicOther(ModMagics.FORCE_ENTITY_MAGIC, "repel", "Repel");
+		addMagicOther(ModMagics.FORCE_ENTITY_MAGIC, "attract", "Attract");
 	}
 	// @formatter:on
 

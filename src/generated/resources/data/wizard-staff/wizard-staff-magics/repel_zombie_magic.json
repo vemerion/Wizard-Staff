@@ -1,0 +1,10 @@
+{
+  "cost": 0.5,
+  "duration": -1,
+  "magic": "wizard-staff:force_entity_magic",
+  "ingredient": {
+    "item": "minecraft:glistering_melon_slice"
+  },
+  "entity": "minecraft:zombie",
+  "force": -0.1
+}

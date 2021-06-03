@@ -50,7 +50,7 @@ import mod.vemerion.wizardstaff.Magic.suggestions2.RepairArmorMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.RevertPositionMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.SummonEntityMagic;
 import mod.vemerion.wizardstaff.Magic.suggestions2.TransformEntityMagic;
-import mod.vemerion.wizardstaff.Magic.tiered.ItemMagnetMagic;
+import mod.vemerion.wizardstaff.Magic.tiered.ForceEntityMagic;
 import mod.vemerion.wizardstaff.Magic.tiered.MassHarvestMagic;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -115,7 +115,7 @@ public class ModMagics {
 	public static final MagicType<RepairArmorMagic> REPAIR_ARMOR_MAGIC = null;
 	public static final MagicType<SummonEntityMagic> SUMMON_ENTITY_MAGIC = null;
 	public static final MagicType<MassHarvestMagic> MASS_HARVEST_MAGIC = null;
-	public static final MagicType<ItemMagnetMagic> ITEM_MAGNET_MAGIC = null;
+	public static final MagicType<ForceEntityMagic> FORCE_ENTITY_MAGIC = null;
 	public static final MagicType<NoMagic> NO_MAGIC = null;
 
 	@SubscribeEvent
@@ -169,7 +169,7 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(RepairArmorMagic::new), "repair_armor_magic"));
 		reg.register(Init.setup(new MagicType<>(SummonEntityMagic::new), "summon_entity_magic"));
 		reg.register(Init.setup(new MagicType<>(MassHarvestMagic::new), "mass_harvest_magic"));
-		reg.register(Init.setup(new MagicType<>(ItemMagnetMagic::new), "item_magnet_magic"));
+		reg.register(Init.setup(new MagicType<>(ForceEntityMagic::new), "force_entity_magic"));
 		reg.register(Init.setup(new MagicType<>(NoMagic::new), "no_magic"));
 	}
 
