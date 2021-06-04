@@ -5,6 +5,7 @@ import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.capability.Wizard;
+import mod.vemerion.wizardstaff.network.JukeboxMagicMessage;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -26,6 +27,8 @@ public class ModEventSubscriber {
 				ScreenAnimations::handle);
 		Network.INSTANCE.registerMessage(1, UpdateMagicsMessage.class, UpdateMagicsMessage::encode,
 				UpdateMagicsMessage::decode, UpdateMagicsMessage::handle);
+		Network.INSTANCE.registerMessage(2, JukeboxMagicMessage.class, JukeboxMagicMessage::encode,
+				JukeboxMagicMessage::decode, JukeboxMagicMessage::handle);
 
 		Magics.init();
 

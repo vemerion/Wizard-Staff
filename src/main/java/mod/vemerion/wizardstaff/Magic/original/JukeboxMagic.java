@@ -4,12 +4,12 @@ import java.util.List;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
+import mod.vemerion.wizardstaff.network.JukeboxMagicMessage;
+import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import mod.vemerion.wizardstaff.sound.WizardStaffTickableSound;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,8 +19,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class JukeboxMagic extends Magic {
 	public JukeboxMagic(MagicType<? extends JukeboxMagic> type) {
@@ -31,12 +30,12 @@ public class JukeboxMagic extends Magic {
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.NONE;
 	}
-	
+
 	@Override
 	public void magicStart(World world, PlayerEntity player, ItemStack staff) {
-		if (world.isRemote) {
-			DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> PlayMusic.play(player, staff));
-		}
+		if (!world.isRemote)
+			Network.INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
+					new JukeboxMagicMessage(player.getUniqueID()));
 	}
 
 	@Override
@@ -64,24 +63,10 @@ public class JukeboxMagic extends Magic {
 	public RenderFirstPersonMagic firstPersonRenderer() {
 		return WizardStaffTileEntityRenderer::swinging;
 	}
-	
+
 	@Override
 	public RenderThirdPersonMagic thirdPersonRenderer() {
 		return WizardStaffLayer::swinging;
-	}
-
-	private static class PlayMusic {
-		private static DistExecutor.SafeRunnable play(PlayerEntity player, ItemStack staff) {
-			return new DistExecutor.SafeRunnable() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void run() {
-					WizardStaffTickableSound sound = new WizardStaffTickableSound(player, staff);
-					Minecraft.getInstance().getSoundHandler().play(sound);
-				}
-			};
-		}
 	}
 
 }

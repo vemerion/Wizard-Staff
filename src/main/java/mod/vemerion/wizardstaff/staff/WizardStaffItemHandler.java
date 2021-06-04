@@ -36,6 +36,10 @@ public class WizardStaffItemHandler extends ItemStackHandler {
 		return isVisible;
 	}
 
+	public static WizardStaffItemHandler orNull(ItemStack staff) {
+		return (WizardStaffItemHandler) staff.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
+	}
+
 	public static LazyOptional<WizardStaffItemHandler> getOptional(ItemStack staff) {
 		LazyOptional<IItemHandler> itemHandlerOpt = staff.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 		if (itemHandlerOpt.isPresent()) {
