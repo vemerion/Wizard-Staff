@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.Magic;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import com.google.gson.JsonArray;
@@ -112,5 +113,18 @@ public class MagicUtil {
 		for (T t : coll)
 			array.add(f.apply(t));
 		json.add(member, array);
+	}
+
+	public static <T, C extends Collection<T>> C decodeColl(PacketBuffer buffer, Function<PacketBuffer, T> f, C coll) {
+		int count = buffer.readInt();
+		for (int i = 0; i < count; i++)
+			coll.add(f.apply(buffer));
+		return coll;
+	}
+
+	public static <T> void encodeColl(PacketBuffer buffer, Collection<T> coll, BiConsumer<PacketBuffer, T> f) {
+		buffer.writeInt(coll.size());
+		for (T t : coll)
+			f.accept(buffer, t);
 	}
 }

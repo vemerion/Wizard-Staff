@@ -11,17 +11,18 @@ import net.minecraft.client.audio.TickableSound;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.SoundEvent;
 
 public class WizardStaffTickableSound extends TickableSound {
 
 	private UUID id;
 	private boolean started;
 
-	public WizardStaffTickableSound(UUID id) {
-		super(SoundEvents.MUSIC_DISC_STAL, SoundCategory.PLAYERS);
+	public WizardStaffTickableSound(UUID id, SoundEvent music) {
+		super(music, SoundCategory.PLAYERS);
 		this.id = id;
 		this.volume = 0;
+		this.repeat = true;
 	}
 
 	@Override

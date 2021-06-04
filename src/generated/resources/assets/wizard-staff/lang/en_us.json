@@ -57,7 +57,7 @@
   "gui.wizard-staff.infinity": "\u221E",
   "gui.wizard-staff.inventory_magic.description": "Gain access to magic storage.",
   "gui.wizard-staff.inventory_magic.name": "Portable Chest",
-  "gui.wizard-staff.jukebox_magic.description": "Emit an irresistible tune from the staff, forcing nearby enemies to dance.",
+  "gui.wizard-staff.jukebox_magic.description": "Emit an irresistible tune from the staff, forcing enemies within %s blocks to dance.",
   "gui.wizard-staff.jukebox_magic.name": "Magic Music",
   "gui.wizard-staff.locate_spawn_magic.description": "Channel your inner powers to gain a sense of which direction your spawn point lies.",
   "gui.wizard-staff.locate_spawn_magic.name": "Magic Compass",

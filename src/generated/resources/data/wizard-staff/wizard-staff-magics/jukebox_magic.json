@@ -4,5 +4,12 @@
   "magic": "wizard-staff:jukebox_magic",
   "ingredient": {
     "item": "minecraft:jukebox"
-  }
+  },
+  "blacklist": [
+    "minecraft:ender_dragon",
+    "minecraft:wither",
+    "minecraft:player"
+  ],
+  "range": 4.0,
+  "music": "minecraft:music_disc.stal"
 }

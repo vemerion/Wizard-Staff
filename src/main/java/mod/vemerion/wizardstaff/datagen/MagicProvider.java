@@ -99,7 +99,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.TRANSFORM_BLOCK_MAGIC.create().setAdditionalParams(Blocks.STONE, Blocks.GOLD_ORE).setParams(50, 25, ing(Tags.Items.INGOTS_GOLD)), "gold_magic");
 		c.accept(ModMagics.GOLD_NUGGET_MAGIC.create().setParams(50, 20, ing(Tags.Items.NUGGETS_GOLD)), "");
 		c.accept(ModMagics.GRAPPLING_HOOK_MAGIC.create().setParams(5, -1, ing(Items.FISHING_ROD)), "");
-		c.accept(ModMagics.JUKEBOX_MAGIC.create().setParams(6, -1, ing(Items.JUKEBOX)), "");
+		c.accept(ModMagics.JUKEBOX_MAGIC.create().setAdditionalParams(ImmutableSet.of(EntityType.ENDER_DRAGON.getRegistryName(), EntityType.WITHER.getRegistryName(), EntityType.PLAYER.getRegistryName()), 4, SoundEvents.MUSIC_DISC_STAL).setParams(6, -1, ing(Items.JUKEBOX)), "");
 		c.accept(ModMagics.LODESTONE_MAGIC.create().setAdditionalParams(Blocks.LODESTONE).setParams(500, 120, ing(Items.LODESTONE)), "");
 		c.accept(ModMagics.MAP_MAGIC.create().setParams(30, 40, ing(Items.MAP)), "");
 		c.accept(ModMagics.MUSHROOM_CLOUD_MAGIC.create().setParams(50, 40, ing(Items.MYCELIUM)), "");

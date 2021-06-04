@@ -83,7 +83,7 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicName(ModMagics.TRANSFORM_BLOCK_MAGIC, "Transform %s into %s");		
 		addMagicDescription(ModMagics.TRANSFORM_BLOCK_MAGIC, "Turn %s into a %s block.");	
 		addMagicName(ModMagics.JUKEBOX_MAGIC, "Magic Music");		
-		addMagicDescription(ModMagics.JUKEBOX_MAGIC, "Emit an irresistible tune from the staff, forcing nearby enemies to dance.");	
+		addMagicDescription(ModMagics.JUKEBOX_MAGIC, "Emit an irresistible tune from the staff, forcing enemies within %s blocks to dance.");	
 		addMagicName(ModMagics.WIZARD_STAFF_MAGIC, "Staff-ception");		
 		addMagicDescription(ModMagics.WIZARD_STAFF_MAGIC, "Very dangerous!");	
 		addMagicName(ModMagics.WRITABLE_BOOK_MAGIC, "Arcane Knowledge");		
