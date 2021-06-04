@@ -10,7 +10,6 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -40,19 +39,17 @@ public class JukeboxMagic extends Magic {
 
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		List<Entity> entities = world.getEntitiesInAABBexcluding(player, player.getBoundingBox().grow(4),
-				(e) -> e instanceof LivingEntity && e.isNonBoss());
-		for (Entity e : entities) {
-			LivingEntity living = (LivingEntity) e;
+		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, player.getBoundingBox().grow(4),
+				e -> e != player);
+
+		for (LivingEntity e : entities) {
 			if (!world.isRemote) {
-				living.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 2, 100));
-				if (e.ticksExisted % 5 == 0)
-					living.swingArm(Hand.MAIN_HAND);
-				if (e.ticksExisted % 7 == 0)
-					living.swingArm(Hand.OFF_HAND);
-			} else {
-				if (e.ticksExisted % 5 == 0)
-					living.limbSwingAmount = 1 + player.getRNG().nextFloat() - 0.5f;
+				if (count % 5 == 0)
+					e.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 7, 100, false, false, false));
+			} else if (e.ticksExisted % 5 == 0) {
+				e.limbSwingAmount = 1 + player.getRNG().nextFloat() - 0.5f;
+				e.swingArm(Hand.MAIN_HAND);
+				e.swingArm(Hand.OFF_HAND);
 			}
 		}
 		if (!world.isRemote && !entities.isEmpty())
