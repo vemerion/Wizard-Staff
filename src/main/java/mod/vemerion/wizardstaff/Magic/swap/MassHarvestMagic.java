@@ -1,4 +1,4 @@
-package mod.vemerion.wizardstaff.Magic.tiered;
+package mod.vemerion.wizardstaff.Magic.swap;
 
 import java.util.ArrayList;
 import java.util.HashSet;

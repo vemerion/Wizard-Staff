@@ -1,4 +1,4 @@
-package mod.vemerion.wizardstaff.Magic.tiered;
+package mod.vemerion.wizardstaff.Magic.swap;
 
 import com.google.gson.JsonObject;
 
