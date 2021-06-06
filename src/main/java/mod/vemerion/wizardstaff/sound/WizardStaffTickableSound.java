@@ -51,7 +51,7 @@ public class WizardStaffTickableSound extends TickableSound {
 	}
 
 	private static Magic getMagic(WizardStaffItemHandler handler) {
-		return Magics.getInstance(true).get(handler.getStackInSlot(0));
+		return Magics.getInstance(true).get(handler.getCurrent());
 	}
 
 }

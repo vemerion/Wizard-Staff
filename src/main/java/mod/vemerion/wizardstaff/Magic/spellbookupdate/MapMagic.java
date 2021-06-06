@@ -11,7 +11,6 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FilledMapItem;
@@ -64,9 +63,10 @@ public class MapMagic extends Magic {
 				MapData.addTargetDecoration(map, pos, "+", structureInfo.decoration);
 				map.setDisplayName(Items.FILLED_MAP.getName());
 
-				WizardStaffItemHandler handler = WizardStaffItem.getHandler(staff);
-				handler.extractItem(0, 1, false);
-				handler.insertItem(0, map, false);
+				WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
+					h.extractCurrent();
+					h.insertCurrent(map);
+				});
 			} else {
 				playSoundServer(world, player, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 1, soundPitch(player));
 			}

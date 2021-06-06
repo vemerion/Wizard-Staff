@@ -6,14 +6,14 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class WizardStaffContainer extends Container {
 
-	private WizardStaffItemHandler handler;
+	private static final int STAFF_SLOT_COUNT = WizardStaffItemHandler.SLOT_COUNT;
+
 	private ItemStack staff;
 	private Hand hand;
 	private boolean shouldAnimate;
@@ -21,20 +21,21 @@ public class WizardStaffContainer extends Container {
 	public static WizardStaffContainer createContainerClientSide(int id, PlayerInventory inventory,
 			PacketBuffer buffer) {
 		Hand hand = buffer.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
-		return new WizardStaffContainer(id, inventory, new WizardStaffItemHandler(), ItemStack.EMPTY,
+		return new WizardStaffContainer(id, inventory, new WizardStaffItemHandler(ItemStack.EMPTY), ItemStack.EMPTY,
 				buffer.readBoolean(), hand);
 	}
 
 	protected WizardStaffContainer(int id, PlayerInventory inventory, WizardStaffItemHandler handler, ItemStack staff,
 			boolean shouldAnimate, Hand hand) {
 		super(ModContainers.WIZARD_STAFF, id);
-		this.handler = handler;
 		this.staff = staff;
 		this.shouldAnimate = shouldAnimate;
 		this.hand = hand;
 
-		// Staff slot
-		addSlot(new SlotItemHandler(handler, 0, 80, 32));
+		// Staff slots
+		for (int i = 0; i < WizardStaffItemHandler.SLOT_COUNT; i++) {
+			addSlot(new SlotItemHandler(handler, i, 80 - 18 + i * 18, 32));
+		}
 
 		// Player inventory
 		for (int y = 0; y < 3; ++y) {
@@ -65,11 +66,11 @@ public class WizardStaffContainer extends Container {
 		ItemStack copy = stack.copy();
 
 		if (slot != null && slot.getHasStack() && stack != playerIn.getHeldItem(hand)) {
-			if (index == 0) {
-				if (!mergeItemStack(stack, 1, 1 + 9 * 4, false))
+			if (index < STAFF_SLOT_COUNT) {
+				if (!mergeItemStack(stack, STAFF_SLOT_COUNT, STAFF_SLOT_COUNT + 9 * 4, false))
 					return ItemStack.EMPTY;
-			} else if (index > 0 && index < 1 + 9 * 4) {
-				if (!mergeItemStack(stack, 0, 1, false))
+			} else if (index >= STAFF_SLOT_COUNT && index < STAFF_SLOT_COUNT + 9 * 4) {
+				if (!mergeItemStack(stack, 0, STAFF_SLOT_COUNT, false))
 					return ItemStack.EMPTY;
 			} else {
 				return ItemStack.EMPTY;
@@ -86,15 +87,4 @@ public class WizardStaffContainer extends Container {
 
 		return copy;
 	}
-
-	@Override
-	public void detectAndSendChanges() {
-		if (handler.isDirty()) {
-			CompoundNBT tag = staff.getOrCreateTag();
-			tag.putBoolean("dirty", !tag.getBoolean("dirty"));
-			staff.setTag(tag);
-		}
-		super.detectAndSendChanges();
-	}
-
 }

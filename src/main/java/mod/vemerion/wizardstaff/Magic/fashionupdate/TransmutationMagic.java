@@ -90,20 +90,21 @@ public class TransmutationMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		player.playSound(sound, 1, soundPitch(player));
 		if (!world.isRemote) {
-			cost(player);
-			WizardStaffItemHandler handler = WizardStaffItemHandler.get(staff);
-			ItemStack extracted = handler.extractItem(0, 1, false);
-			ItemStack createdStack = new ItemStack(created);
-			CompoundNBT tag = extracted.getOrCreateTag();
-			if (tag.contains("display")) {
-				CompoundNBT display = tag.getCompound("display");
-				int color = display.getInt("color");
+			WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
+				cost(player);
+				ItemStack extracted = h.extractCurrent();
+				ItemStack createdStack = new ItemStack(created);
+				CompoundNBT tag = extracted.getOrCreateTag();
+				if (tag.contains("display")) {
+					CompoundNBT display = tag.getCompound("display");
+					int color = display.getInt("color");
 
-				tag = createdStack.getOrCreateTag();
-				display = createdStack.getOrCreateChildTag("display");
-				display.putInt("color", color);
-			}
-			handler.insertItem(0, createdStack, false);
+					tag = createdStack.getOrCreateTag();
+					display = createdStack.getOrCreateChildTag("display");
+					display.putInt("color", color);
+				}
+				h.insertCurrent(createdStack);
+			});
 		}
 		return super.magicFinish(world, player, staff);
 	}

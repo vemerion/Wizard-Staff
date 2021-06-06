@@ -2,8 +2,11 @@ package mod.vemerion.wizardstaff.event;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magics;
+import mod.vemerion.wizardstaff.network.CycleCurrentMessage;
+import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
+import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -13,6 +16,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -38,5 +42,13 @@ public class ClientForgeEventSubscriber {
 					event.getMatrixStack(), event.getBuffers(), event.getLight(), OverlayTexture.NO_OVERLAY,
 					partialTicks, side);
 		}
+	}
+
+	@SubscribeEvent
+	public static void cycleCurrent(PlayerInteractEvent.LeftClickEmpty event) {
+		WizardStaffItemHandler.getOptional(event.getItemStack()).ifPresent(h -> {
+			h.cycleCurrent();
+			Network.INSTANCE.sendToServer(new CycleCurrentMessage());
+		});
 	}
 }

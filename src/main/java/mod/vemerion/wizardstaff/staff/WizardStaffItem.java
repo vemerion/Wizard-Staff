@@ -1,12 +1,22 @@
 package mod.vemerion.wizardstaff.staff;
 
+import java.util.UUID;
+
 import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 
 import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,16 +26,47 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 public class WizardStaffItem extends Item {
 
+	private static final AttributeModifier NO_REACH = new AttributeModifier(
+			UUID.fromString("3b1f7a9e-b4bf-495b-b947-c5f885fc54ab"), "Wizard Staff", -2,
+			AttributeModifier.Operation.MULTIPLY_TOTAL);
+	private static final AttributeModifier NO_COOLDOWN = new AttributeModifier(
+			UUID.fromString("90c1a0db-5acd-4910-9257-587fdf003642"), "Wizard Staff", 100,
+			AttributeModifier.Operation.MULTIPLY_TOTAL);
+
 	public WizardStaffItem(Item.Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+		return true;
+	}
+
+	@Override
+	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+		return true;
+	}
+
+	@Override
+	public boolean onLeftClickEntity(ItemStack stack, PlayerEntity player, Entity entity) {
+		return true;
+	}
+
+	// TODO: Remove these modifiers from tooltip
+	@Override
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+		return slot == EquipmentSlotType.MAINHAND
+				? ImmutableMultimap.of(ForgeMod.REACH_DISTANCE.get(), NO_REACH, Attributes.ATTACK_SPEED, NO_COOLDOWN)
+				: super.getAttributeModifiers(slot, stack);
 	}
 
 	@Override
@@ -47,21 +88,15 @@ public class WizardStaffItem extends Item {
 			return ActionResult.resultSuccess(itemstack);
 		} else { // Use staff
 			playerIn.setActiveHand(handIn);
-			ItemStack magic = getMagic(itemstack);
-			Magics.getInstance(worldIn).get(magic).magicStart(worldIn, playerIn, itemstack);
+			Magics.getInstance(worldIn).get(getMagic(itemstack)).magicStart(worldIn, playerIn, itemstack);
+
 		}
 		return ActionResult.resultPass(itemstack);
 	}
 
-	public static WizardStaffItemHandler getHandler(ItemStack itemstack) {
-		WizardStaffItemHandler handler = (WizardStaffItemHandler) itemstack
-				.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				.orElseThrow(() -> new IllegalArgumentException("Wizard staff item is missing capability"));
-		return handler;
-	}
-
 	public static ItemStack getMagic(ItemStack itemstack) {
-		return getHandler(itemstack).getStackInSlot(0);
+		WizardStaffItemHandler handler = WizardStaffItemHandler.get(itemstack);
+		return handler == null ? ItemStack.EMPTY : handler.getCurrent();
 	}
 
 	@Override
@@ -71,7 +106,7 @@ public class WizardStaffItem extends Item {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-		return new WizardStaffCapabilityProvider();
+		return new WizardStaffCapabilityProvider(stack);
 	}
 
 	// We only want this for the third person visual effect,

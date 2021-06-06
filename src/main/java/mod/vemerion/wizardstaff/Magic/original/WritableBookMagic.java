@@ -58,16 +58,17 @@ public class WritableBookMagic extends Magic {
 		String wisdom = wisdoms.get(player.getRNG().nextInt(wisdoms.size()));
 		player.playSound(ModSounds.SCRIBBLE, 1, soundPitch(player));
 		if (!world.isRemote) {
-			cost(player);
-			WizardStaffItemHandler handler = WizardStaffItemHandler.get(staff);
-			ItemStack book = handler.extractItem(0, 1, false);
-			CompoundNBT tag = book.getOrCreateTag();
-			ListNBT pages = new ListNBT();
-			pages.add(StringNBT.valueOf(wisdom));
-			tag.put("pages", pages);
-			book = new ItemStack(Items.WRITABLE_BOOK);
-			book.setTag(tag);
-			handler.insertItem(0, book, false);
+			WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
+				cost(player);
+				ItemStack book = h.extractCurrent();
+				CompoundNBT tag = book.getOrCreateTag();
+				ListNBT pages = new ListNBT();
+				pages.add(StringNBT.valueOf(wisdom));
+				tag.put("pages", pages);
+				book = new ItemStack(Items.WRITABLE_BOOK);
+				book.setTag(tag);
+				h.insertCurrent(book);
+			});
 		}
 		return super.magicFinish(world, player, staff);
 	}

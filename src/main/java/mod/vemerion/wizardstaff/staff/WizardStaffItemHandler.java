@@ -1,6 +1,8 @@
 package mod.vemerion.wizardstaff.staff;
 
+import mod.vemerion.wizardstaff.Main;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -8,14 +10,45 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class WizardStaffItemHandler extends ItemStackHandler {
 
+	public static final int SLOT_COUNT = 3;
+
 	private boolean isVisible = true; // Used on client to determine if staff + item should render
+	private ItemStack staff;
+	private int current;
 
-	private boolean isDirty = true;
+	public WizardStaffItemHandler(ItemStack staff) {
+		super(SLOT_COUNT);
+		this.staff = staff;
+	}
 
-	public boolean isDirty() {
-		boolean dirty = isDirty;
-		isDirty = false;
-		return dirty;
+	public void cycleCurrent() {
+		current = (current + 1) % SLOT_COUNT;
+	}
+
+	public ItemStack extractCurrent() {
+		return extractItem(current, 1, false);
+	}
+
+	public ItemStack insertCurrent(ItemStack insert) {
+		return insertItem(current, insert, false);
+	}
+
+	public ItemStack getCurrent() {
+		return getStackInSlot(current);
+	}
+
+	@Override
+	public CompoundNBT serializeNBT() {
+		CompoundNBT nbt = super.serializeNBT();
+		nbt.putInt("current", current);
+		return nbt;
+	}
+
+	@Override
+	public void deserializeNBT(CompoundNBT nbt) {
+		super.deserializeNBT(nbt);
+		if (nbt.contains("current"))
+			current = nbt.getInt("current");
 	}
 
 	@Override
@@ -25,7 +58,8 @@ public class WizardStaffItemHandler extends ItemStackHandler {
 
 	@Override
 	protected void onContentsChanged(int slot) {
-		isDirty = true;
+		CompoundNBT nbt = staff.getOrCreateTag();
+		nbt.putBoolean(Main.MODID + "-dirty", !nbt.getBoolean(Main.MODID + "-dirty"));
 	}
 
 	public void setVisible(boolean visible) {

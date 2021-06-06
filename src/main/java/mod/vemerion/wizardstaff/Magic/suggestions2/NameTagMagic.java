@@ -76,13 +76,14 @@ public class NameTagMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		player.playSound(ModSounds.SCRIBBLE, 1, soundPitch(player));
 		if (!world.isRemote) {
-			String name = randomName(player.getRNG());
-			cost(player);
-			WizardStaffItemHandler handler = WizardStaffItemHandler.get(staff);
-			ItemStack nametag = handler.extractItem(0, 1, false);
-			nametag = Items.NAME_TAG.getDefaultInstance();
-			nametag.setDisplayName(new StringTextComponent(name));
-			handler.insertItem(0, nametag, false);
+			WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
+				String name = randomName(player.getRNG());
+				cost(player);
+				ItemStack nametag = h.extractCurrent();
+				nametag = Items.NAME_TAG.getDefaultInstance();
+				nametag.setDisplayName(new StringTextComponent(name));
+				h.insertCurrent(nametag);
+			});
 		}
 		return super.magicFinish(world, player, staff);
 	}
