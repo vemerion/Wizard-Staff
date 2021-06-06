@@ -22,7 +22,10 @@ public class WizardStaffItemHandler extends ItemStackHandler {
 	}
 
 	public void cycleCurrent() {
-		current = (current + 1) % SLOT_COUNT;
+		int start = current;
+		do {
+			current = (current + 1) % SLOT_COUNT;
+		} while (getCurrent().isEmpty() && current != start);
 	}
 
 	public ItemStack extractCurrent() {
