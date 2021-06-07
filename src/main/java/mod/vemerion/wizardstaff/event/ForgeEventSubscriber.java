@@ -5,13 +5,17 @@ import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.capability.Wizard;
+import mod.vemerion.wizardstaff.staff.WizardStaffItem;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.nbt.INBT;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,5 +57,20 @@ public class ForgeEventSubscriber {
 				c2.deserializeNBT(c1.serializeNBT());
 			});
 		});
+	}
+
+	@SubscribeEvent
+	public static void updateStaffAttributes(LivingEquipmentChangeEvent event) {
+		LivingEntity entity = event.getEntityLiving();
+		if (event.getSlot() != EquipmentSlotType.MAINHAND || !(entity instanceof PlayerEntity))
+			return;
+
+		if (event.getFrom().getItem() instanceof WizardStaffItem) {
+			entity.getAttributeManager().removeModifiers(WizardStaffItem.getStaffModifiers());
+		}
+
+		if (event.getTo().getItem() instanceof WizardStaffItem) {
+			entity.getAttributeManager().reapplyModifiers(WizardStaffItem.getStaffModifiers());
+		}
 	}
 }

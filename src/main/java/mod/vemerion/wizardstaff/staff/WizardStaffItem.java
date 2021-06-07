@@ -16,7 +16,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -61,12 +60,8 @@ public class WizardStaffItem extends Item {
 		return true;
 	}
 
-	// TODO: Remove these modifiers from tooltip
-	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-		return slot == EquipmentSlotType.MAINHAND
-				? ImmutableMultimap.of(ForgeMod.REACH_DISTANCE.get(), NO_REACH, Attributes.ATTACK_SPEED, NO_COOLDOWN)
-				: super.getAttributeModifiers(slot, stack);
+	public static Multimap<Attribute, AttributeModifier> getStaffModifiers() {
+		return ImmutableMultimap.of(ForgeMod.REACH_DISTANCE.get(), NO_REACH, Attributes.ATTACK_SPEED, NO_COOLDOWN);
 	}
 
 	@Override
