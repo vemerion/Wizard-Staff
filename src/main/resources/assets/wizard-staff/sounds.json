@@ -238,5 +238,13 @@
         "stream": false
       }
     ]
-  } 
+  },
+  "swap": {
+    "sounds": [
+      {
+        "name": "wizard-staff:swap",
+        "stream": false
+      }
+    ]
+  }
 }

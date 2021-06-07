@@ -112,6 +112,8 @@
   "gui.wizard-staff.summon_entity_magic.name": "Summon %s",
   "gui.wizard-staff.surface_magic.description": "Click on two blocks in the world with the staff, and then use the staff to automatically build a surface between those two blocks. Only works for axis-aligned surfaces, so no diagonals! It will build the surface using blocks from your inventory, of the same type as the block you clicked first. Costs experience based on amount of blocks placed.",
   "gui.wizard-staff.surface_magic.name": "Magic Surface Builder",
+  "gui.wizard-staff.swap_position_magic.description": "Shoot a teleportation ray at an entity, swapping place with it.",
+  "gui.wizard-staff.swap_position_magic.name": "Swap Position",
   "gui.wizard-staff.toggle_animations": "Toggle GUI animations",
   "gui.wizard-staff.toggle_spellbook": "Toggle Spellbook",
   "gui.wizard-staff.transform_block_magic.description": "Turn %s into a %s block.",

@@ -175,6 +175,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.FORCE_ENTITY_MAGIC, "%s %s entities with you magic.");
 		addMagicOther(ModMagics.FORCE_ENTITY_MAGIC, "repel", "Repel");
 		addMagicOther(ModMagics.FORCE_ENTITY_MAGIC, "attract", "Attract");
+		addMagicName(ModMagics.SWAP_POSITION_MAGIC, "Swap Position");
+		addMagicDescription(ModMagics.SWAP_POSITION_MAGIC, "Shoot a teleportation ray at an entity, swapping place with it.");
 	}
 	// @formatter:on
 

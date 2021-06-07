@@ -20,6 +20,10 @@ public abstract class RayMagic extends Magic {
 	public RayMagic(MagicType<? extends RayMagic> type) {
 		super(type);
 	}
+	
+	protected float getRange() {
+		return 7;
+	}
 
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
@@ -28,7 +32,7 @@ public abstract class RayMagic extends Magic {
 		}
 		if (world.isRemote) {
 			Vector3d direction = Vector3d.fromPitchYaw(player.getPitchYaw());
-			Entity target = Helper.findTargetLine(player.getPositionVec().add(0, 1.5, 0), direction, 7, world, player);
+			Entity target = Helper.findTargetLine(player.getPositionVec().add(0, 1.5, 0), direction, getRange(), world, player);
 			if (target != null) {
 				Vector3d pos = player.getPositionVec().add(0, 1.5, 0).add(direction);
 				for (int i = 0; i < 25; i++) {
@@ -47,7 +51,7 @@ public abstract class RayMagic extends Magic {
 	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
 		if (!world.isRemote) {
 			Entity target = Helper.findTargetLine(player.getPositionVec().add(0, 1.5, 0),
-					Vector3d.fromPitchYaw(player.getPitchYaw()), 7, world, player);
+					Vector3d.fromPitchYaw(player.getPitchYaw()), getRange(), world, player);
 			if (target != null) {
 				hitEntity(world, player, target);
 			}
