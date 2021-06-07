@@ -53,6 +53,7 @@ import mod.vemerion.wizardstaff.Magic.suggestions2.TransformEntityMagic;
 import mod.vemerion.wizardstaff.Magic.swap.ForceEntityMagic;
 import mod.vemerion.wizardstaff.Magic.swap.MassHarvestMagic;
 import mod.vemerion.wizardstaff.Magic.swap.SwapPositionMagic;
+import mod.vemerion.wizardstaff.Magic.swap.SwapHealthFoodMagic;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -118,6 +119,7 @@ public class ModMagics {
 	public static final MagicType<MassHarvestMagic> MASS_HARVEST_MAGIC = null;
 	public static final MagicType<ForceEntityMagic> FORCE_ENTITY_MAGIC = null;
 	public static final MagicType<SwapPositionMagic> SWAP_POSITION_MAGIC = null;
+	public static final MagicType<SwapHealthFoodMagic> SWAP_HEALTH_FOOD_MAGIC = null;
 	public static final MagicType<NoMagic> NO_MAGIC = null;
 
 	@SubscribeEvent
@@ -173,6 +175,7 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(MassHarvestMagic::new), "mass_harvest_magic"));
 		reg.register(Init.setup(new MagicType<>(ForceEntityMagic::new), "force_entity_magic"));
 		reg.register(Init.setup(new MagicType<>(SwapPositionMagic::new), "swap_position_magic"));
+		reg.register(Init.setup(new MagicType<>(SwapHealthFoodMagic::new), "swap_health_food_magic"));
 		reg.register(Init.setup(new MagicType<>(NoMagic::new), "no_magic"));
 	}
 

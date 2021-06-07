@@ -137,6 +137,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.FORCE_ENTITY_MAGIC.create().setAdditionalParams(EntityType.ITEM, 0.2f).setParams(0.1f, -1, ing(Items.IRON_BLOCK)), "item_magnet_magic");
 		c.accept(ModMagics.FORCE_ENTITY_MAGIC.create().setAdditionalParams(EntityType.ZOMBIE, -0.1f).setParams(0.5f, -1, ing(Items.GLISTERING_MELON_SLICE)), "repel_zombie_magic");
 		c.accept(ModMagics.SWAP_POSITION_MAGIC.create().setAdditionalParams(ImmutableSet.of(EntityType.ENDER_DRAGON.getRegistryName(), EntityType.WITHER.getRegistryName()), 5).setParams(10, 10, ing(Items.ARMOR_STAND)), "");
+		c.accept(ModMagics.SWAP_HEALTH_FOOD_MAGIC.create().setParams(10, 20, ing(Items.COOKED_BEEF)), "");
 	}
 	// @formatter:on
 
