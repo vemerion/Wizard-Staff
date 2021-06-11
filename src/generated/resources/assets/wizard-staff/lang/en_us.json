@@ -116,6 +116,8 @@
   "gui.wizard-staff.swap_health_food_magic.name": "Swap Health and Hunger",
   "gui.wizard-staff.swap_position_magic.description": "Shoot a teleportation ray at an entity, swapping place with it.",
   "gui.wizard-staff.swap_position_magic.name": "Swap Position",
+  "gui.wizard-staff.swap_trade_magic.description": "Use your magic to compel a villager to swap the buy and sell item of trades. The swapped trades are put on cooldown in the process. Some trades can not be swapped.",
+  "gui.wizard-staff.swap_trade_magic.name": "Swap Trades",
   "gui.wizard-staff.toggle_animations": "Toggle GUI animations",
   "gui.wizard-staff.toggle_spellbook": "Toggle Spellbook",
   "gui.wizard-staff.transform_block_magic.description": "Turn %s into a %s block.",

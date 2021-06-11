@@ -179,6 +179,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.SWAP_POSITION_MAGIC, "Shoot a teleportation ray at an entity, swapping place with it.");
 		addMagicName(ModMagics.SWAP_HEALTH_FOOD_MAGIC, "Swap Health and Hunger");
 		addMagicDescription(ModMagics.SWAP_HEALTH_FOOD_MAGIC, "Magically swap your health and hunger.");
+		addMagicName(ModMagics.SWAP_TRADE_MAGIC, "Swap Trades");
+		addMagicDescription(ModMagics.SWAP_TRADE_MAGIC, "Use your magic to compel a villager to swap the buy and sell item of trades. The swapped trades are put on cooldown in the process. Some trades can not be swapped.");
 	}
 	// @formatter:on
 
