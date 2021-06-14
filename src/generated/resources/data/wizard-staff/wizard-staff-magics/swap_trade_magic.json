@@ -5,7 +5,7 @@
   "ingredient": {
     "item": "minecraft:emerald"
   },
-  "blacklist": [
-    "minecraft:bell"
-  ]
+  "blacklist_ingredient": {
+    "item": "minecraft:coal"
+  }
 }

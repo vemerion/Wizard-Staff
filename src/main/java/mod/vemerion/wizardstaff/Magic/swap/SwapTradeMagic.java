@@ -1,13 +1,8 @@
 package mod.vemerion.wizardstaff.Magic.swap;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 import mod.vemerion.wizardstaff.Magic.MagicType;
-import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import net.minecraft.entity.Entity;
@@ -16,15 +11,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MerchantOffer;
 import net.minecraft.item.MerchantOffers;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class SwapTradeMagic extends RayMagic {
 
-	private Set<ResourceLocation> blacklist;
+	private Ingredient blacklist;
 
 	public SwapTradeMagic(MagicType<? extends SwapTradeMagic> type) {
 		super(type);
@@ -35,20 +29,19 @@ public class SwapTradeMagic extends RayMagic {
 		return ParticleTypes.HAPPY_VILLAGER;
 	}
 
-	public SwapTradeMagic setAdditionalParams(Set<ResourceLocation> blacklist) {
+	public SwapTradeMagic setAdditionalParams(Ingredient blacklist) {
 		this.blacklist = blacklist;
 		return this;
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		blacklist = MagicUtil.readColl(json, "blacklist",
-				e -> new ResourceLocation(JSONUtils.getString(e, "entity name")), new HashSet<>());
+		blacklist = Ingredient.deserialize(json.get("blacklist_ingredient"));
 	}
 
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.writeColl(json, "blacklist", blacklist, r -> new JsonPrimitive(r.toString()));
+		json.add("blacklist_ingredient", blacklist.serialize());
 	}
 
 	@Override
@@ -80,7 +73,7 @@ public class SwapTradeMagic extends RayMagic {
 	}
 
 	private boolean isBlacklisted(ItemStack stack) {
-		return blacklist.contains(stack.getItem().getRegistryName());
+		return blacklist.test(stack);
 	}
 
 }
