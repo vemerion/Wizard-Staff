@@ -44,7 +44,9 @@ public class ModSounds {
 	public static final SoundEvent TRANSFORM = null;
 	public static final SoundEvent BELL = null;
 	public static final SoundEvent SWAP = null;
-
+	public static final SoundEvent MAGNET = null;
+	public static final SoundEvent HEARTBEAT = null;
+	
 	@SubscribeEvent
 	public static void onRegisterSound(RegistryEvent.Register<SoundEvent> event) {
 		SoundEvent clock = new SoundEvent(new ResourceLocation(Main.MODID, "clock"));
@@ -109,6 +111,10 @@ public class ModSounds {
 		event.getRegistry().register(Init.setup(bell, "bell"));
 		SoundEvent swap = new SoundEvent(new ResourceLocation(Main.MODID, "swap"));
 		event.getRegistry().register(Init.setup(swap, "swap"));
+		SoundEvent magnet = new SoundEvent(new ResourceLocation(Main.MODID, "magnet"));
+		event.getRegistry().register(Init.setup(magnet, "magnet"));
+		SoundEvent heartbeat = new SoundEvent(new ResourceLocation(Main.MODID, "heartbeat"));
+		event.getRegistry().register(Init.setup(heartbeat, "heartbeat"));
 	}
 
 }

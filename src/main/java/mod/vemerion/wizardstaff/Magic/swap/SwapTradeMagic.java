@@ -14,6 +14,7 @@ import net.minecraft.item.MerchantOffers;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
 public class SwapTradeMagic extends RayMagic {
@@ -69,7 +70,7 @@ public class SwapTradeMagic extends RayMagic {
 			}
 		}
 		villager.setOffers(offers);
-		playSoundServer(world, player, ModSounds.SWAP, 1, soundPitch(player));
+		playSoundServer(world, player, SoundEvents.ENTITY_VILLAGER_CELEBRATE, 1, soundPitch(player));
 	}
 
 	private boolean isBlacklisted(ItemStack stack) {

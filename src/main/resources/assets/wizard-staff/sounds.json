@@ -246,5 +246,21 @@
         "stream": false
       }
     ]
+  },
+  "heartbeat": {
+    "sounds": [
+      {
+        "name": "wizard-staff:heartbeat",
+        "stream": false
+      }
+    ]
+  },
+  "magnet": {
+    "sounds": [
+      {
+        "name": "wizard-staff:magnet",
+        "stream": false
+      }
+    ]
   }
 }

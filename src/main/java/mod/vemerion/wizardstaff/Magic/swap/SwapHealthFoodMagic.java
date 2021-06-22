@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.Magic.swap;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -40,6 +41,7 @@ public class SwapHealthFoodMagic extends Magic {
 			player.setHealth(foodLevel);
 			cost(player);
 		}
+		player.playSound(ModSounds.HEARTBEAT, 1, soundPitch(player));
 		return super.magicFinish(world, player, staff);
 	}
 
