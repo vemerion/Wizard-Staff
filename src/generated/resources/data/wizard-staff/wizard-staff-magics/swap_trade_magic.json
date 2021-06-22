@@ -1,11 +1,11 @@
 {
-  "cost": 10.0,
-  "duration": 10,
+  "cost": 400.0,
+  "duration": 40,
   "magic": "wizard-staff:swap_trade_magic",
   "ingredient": {
     "item": "minecraft:emerald"
   },
   "blacklist_ingredient": {
-    "item": "minecraft:coal"
+    "item": "minecraft:bell"
   }
 }

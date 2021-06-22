@@ -136,9 +136,9 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.MASS_HARVEST_MAGIC.create().setAdditionalParams(new BlockMatch(BlockTags.LEAVES), 50).setParams(0.1f, 20, ing(Items.SHEARS)), "clear_leaves_magic");
 		c.accept(ModMagics.FORCE_ENTITY_MAGIC.create().setAdditionalParams(EntityType.ITEM, 0.2f).setParams(0.1f, -1, ing(Items.IRON_BLOCK)), "item_magnet_magic");
 		c.accept(ModMagics.FORCE_ENTITY_MAGIC.create().setAdditionalParams(EntityType.ZOMBIE, -0.1f).setParams(0.5f, -1, ing(Items.GLISTERING_MELON_SLICE)), "repel_zombie_magic");
-		c.accept(ModMagics.SWAP_POSITION_MAGIC.create().setAdditionalParams(ImmutableSet.of(EntityType.ENDER_DRAGON.getRegistryName(), EntityType.WITHER.getRegistryName()), 5).setParams(10, 10, ing(Items.ARMOR_STAND)), "");
-		c.accept(ModMagics.SWAP_HEALTH_FOOD_MAGIC.create().setParams(10, 20, ing(Items.COOKED_BEEF)), "");
-		c.accept(ModMagics.SWAP_TRADE_MAGIC.create().setAdditionalParams(ing(Items.COAL)).setParams(10, 10, ing(Items.EMERALD)), "");
+		c.accept(ModMagics.SWAP_POSITION_MAGIC.create().setAdditionalParams(ImmutableSet.of(EntityType.ENDER_DRAGON.getRegistryName(), EntityType.WITHER.getRegistryName()), 5).setParams(25, 20, ing(Items.ARMOR_STAND)), "");
+		c.accept(ModMagics.SWAP_HEALTH_FOOD_MAGIC.create().setParams(20, 20, ing(Items.COOKED_BEEF)), "");
+		c.accept(ModMagics.SWAP_TRADE_MAGIC.create().setAdditionalParams(ing(Items.BELL)).setParams(400, 40, ing(Items.EMERALD)), "");
 	}
 	// @formatter:on
 

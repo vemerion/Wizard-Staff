@@ -14,6 +14,7 @@ import net.minecraft.item.MerchantOffers;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
@@ -23,6 +24,7 @@ public class SwapTradeMagic extends RayMagic {
 
 	public SwapTradeMagic(MagicType<? extends SwapTradeMagic> type) {
 		super(type);
+		blacklist = Ingredient.EMPTY;
 	}
 
 	@Override
@@ -37,12 +39,14 @@ public class SwapTradeMagic extends RayMagic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		blacklist = Ingredient.deserialize(json.get("blacklist_ingredient"));
+		if (JSONUtils.hasField(json, "blacklist_ingredient"))
+			blacklist = Ingredient.deserialize(json.get("blacklist_ingredient"));
 	}
 
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		json.add("blacklist_ingredient", blacklist.serialize());
+		if (blacklist != Ingredient.EMPTY)
+			json.add("blacklist_ingredient", blacklist.serialize());
 	}
 
 	@Override
@@ -74,7 +78,7 @@ public class SwapTradeMagic extends RayMagic {
 	}
 
 	private boolean isBlacklisted(ItemStack stack) {
-		return blacklist.test(stack);
+		return !stack.isEmpty() && blacklist.test(stack);
 	}
 
 }

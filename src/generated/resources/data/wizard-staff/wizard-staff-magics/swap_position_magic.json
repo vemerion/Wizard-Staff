@@ -1,6 +1,6 @@
 {
-  "cost": 10.0,
-  "duration": 10,
+  "cost": 25.0,
+  "duration": 20,
   "magic": "wizard-staff:swap_position_magic",
   "ingredient": {
     "item": "minecraft:armor_stand"
