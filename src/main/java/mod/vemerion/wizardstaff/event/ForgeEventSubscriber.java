@@ -6,17 +6,22 @@ import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
+import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.INBT;
+import net.minecraft.util.Hand;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -72,5 +77,27 @@ public class ForgeEventSubscriber {
 		if (event.getTo().getItem() instanceof WizardStaffItem) {
 			entity.getAttributeManager().reapplyModifiers(WizardStaffItem.getStaffModifiers());
 		}
+	}
+
+	// On both sides
+	@SubscribeEvent
+	public static void cycleCurrent(AttackEntityEvent event) {
+		ItemStack stack = event.getPlayer().getHeldItemMainhand();
+		if (!(stack.getItem() instanceof WizardStaffItem))
+			return;
+		WizardStaffItemHandler.getOptional(stack).ifPresent(h -> {
+			h.cycleCurrent();
+		});
+	}
+
+	// On both sides
+	@SubscribeEvent
+	public static void cycleCurrent(PlayerInteractEvent.LeftClickBlock event) {
+		ItemStack stack = event.getItemStack();
+		if (event.getHand() != Hand.MAIN_HAND || !(stack.getItem() instanceof WizardStaffItem))
+			return;
+		WizardStaffItemHandler.getOptional(stack).ifPresent(h -> {
+			h.cycleCurrent();
+		});
 	}
 }

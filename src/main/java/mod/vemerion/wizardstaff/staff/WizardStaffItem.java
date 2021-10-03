@@ -27,16 +27,12 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class WizardStaffItem extends Item {
 
-	private static final AttributeModifier NO_REACH = new AttributeModifier(
-			UUID.fromString("3b1f7a9e-b4bf-495b-b947-c5f885fc54ab"), "Wizard Staff", -2,
-			AttributeModifier.Operation.MULTIPLY_TOTAL);
 	private static final AttributeModifier NO_COOLDOWN = new AttributeModifier(
 			UUID.fromString("90c1a0db-5acd-4910-9257-587fdf003642"), "Wizard Staff", 100,
 			AttributeModifier.Operation.MULTIPLY_TOTAL);
@@ -61,7 +57,7 @@ public class WizardStaffItem extends Item {
 	}
 
 	public static Multimap<Attribute, AttributeModifier> getStaffModifiers() {
-		return ImmutableMultimap.of(ForgeMod.REACH_DISTANCE.get(), NO_REACH, Attributes.ATTACK_SPEED, NO_COOLDOWN);
+		return ImmutableMultimap.of(Attributes.ATTACK_SPEED, NO_COOLDOWN);
 	}
 
 	@Override
