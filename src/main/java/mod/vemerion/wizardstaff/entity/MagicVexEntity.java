@@ -1,6 +1,8 @@
 package mod.vemerion.wizardstaff.entity;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -8,19 +10,34 @@ import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.monster.VexEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MagicVexEntity extends VexEntity implements ICasted {
+
+	private static final ResourceLocation[] MOD_WEAPONS = new ResourceLocation[] {
+			new ResourceLocation("twilightforest", "fiery_sword"),
+			new ResourceLocation("immersiveengineering", "revolver"),
+			new ResourceLocation("iceandfire", "dragonbone_sword") };
 
 	private static Field goals;
 
@@ -29,6 +46,28 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 	public MagicVexEntity(EntityType<? extends MagicVexEntity> type, World world) {
 		super(type, world);
 		this.experienceValue = 0;
+	}
+
+	@Override
+	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason,
+			ILivingEntityData spawnDataIn, CompoundNBT dataTag) {
+		setLeftHanded(getRNG().nextBoolean());
+		giveWeapon();
+		return spawnDataIn;
+	}
+
+	private void giveWeapon() {
+		List<Item> weapons = new ArrayList<>();
+		weapons.add(Items.IRON_SWORD);
+		weapons.add(Items.DIAMOND_HOE);
+		weapons.add(Items.WOODEN_PICKAXE);
+
+		for (ResourceLocation rl : MOD_WEAPONS)
+			if (ForgeRegistries.ITEMS.containsKey(rl))
+				weapons.add(ForgeRegistries.ITEMS.getValue(rl));
+
+		setItemStackToSlot(EquipmentSlotType.OFFHAND, new ItemStack(weapons.get(getRNG().nextInt(weapons.size()))));
+		setDropChance(EquipmentSlotType.OFFHAND, 0);
 	}
 
 	@Override

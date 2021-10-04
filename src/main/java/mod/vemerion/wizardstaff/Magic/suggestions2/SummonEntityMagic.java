@@ -13,6 +13,8 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
@@ -20,6 +22,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -85,6 +88,10 @@ public class SummonEntityMagic extends Magic {
 				Entity e = entity.create(world);
 				Vector3d pos = nearby(player);
 				e.setPositionAndRotation(pos.x, pos.y, pos.z, player.getRNG().nextFloat() * 360, 0);
+
+				if (e instanceof MobEntity)
+					((MobEntity) e).onInitialSpawn((IServerWorld) world,
+							world.getDifficultyForLocation(player.getPosition()), SpawnReason.MOB_SUMMONED, null, null);
 
 				if (e instanceof MagicVexEntity) {
 					MagicVexEntity vex = (MagicVexEntity) e;
