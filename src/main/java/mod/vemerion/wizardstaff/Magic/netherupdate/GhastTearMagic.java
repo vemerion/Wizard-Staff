@@ -9,12 +9,15 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.CauldronBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -37,11 +40,23 @@ public class GhastTearMagic extends Magic {
 		if (!world.isRemote) {
 			cost(player);
 			player.extinguish();
+			if (player.ticksExisted % 40 == 0)
+				fillCauldrons(world, player);
 			if (player.ticksExisted % 15 == 0)
 				player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 20, 0, true, false, false));
 			if (player.ticksExisted % 5 == 0)
 				cry(player);
 		}
+	}
+
+	private void fillCauldrons(World world, PlayerEntity player) {
+		BlockPos.getAllInBox(player.getBoundingBox().grow(1)).forEach(p -> {
+			BlockState state = world.getBlockState(p);
+			if (state.getBlock() instanceof CauldronBlock) {
+				CauldronBlock cauldron = (CauldronBlock) state.getBlock();
+				cauldron.setWaterLevel(world, p, state, state.get(CauldronBlock.LEVEL) + 1);
+			}
+		});
 	}
 
 	private void cry(PlayerEntity player) {
@@ -63,7 +78,7 @@ public class GhastTearMagic extends Magic {
 	public RenderThirdPersonMagic thirdPersonRenderer() {
 		return WizardStaffLayer::spinMagic;
 	}
-	
+
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
 		return UseAction.NONE;
