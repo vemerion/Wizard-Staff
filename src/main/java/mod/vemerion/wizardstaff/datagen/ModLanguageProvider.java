@@ -124,8 +124,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.BUCKET_MAGIC, "Use magic to replicate the usage of a %s.");	
 		addMagicName(ModMagics.PORTABLE_CRAFTING_MAGIC, "Portable Crafting");		
 		addMagicDescription(ModMagics.PORTABLE_CRAFTING_MAGIC, "Channel your magic to access a full 3x3 crafting table.");	
-		addMagicName(ModMagics.BOOKSHELF_MAGIC, "Book Generator");		
-		addMagicDescription(ModMagics.BOOKSHELF_MAGIC, "If you are short on leather, then this is the spell for you!");	
+		addMagicName(ModMagics.BOOKSHELF_MAGIC, "%s Generator");		
+		addMagicDescription(ModMagics.BOOKSHELF_MAGIC, "Use your magic to generate %s.");	
 		addMagicName(ModMagics.MAP_MAGIC, "Treasure Map!");		
 		addMagicDescription(ModMagics.MAP_MAGIC, "Transform the item in the staff into a treasure map.");	
 		addMagicName(ModMagics.DEAGE_MAGIC, "Deage Magic");		

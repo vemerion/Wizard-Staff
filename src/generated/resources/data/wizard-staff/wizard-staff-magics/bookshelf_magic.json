@@ -4,5 +4,7 @@
   "magic": "wizard-staff:bookshelf_magic",
   "ingredient": {
     "item": "minecraft:bookshelf"
-  }
+  },
+  "generated": "minecraft:book",
+  "sound": "wizard-staff:page_turn"
 }

@@ -72,7 +72,7 @@ public class MagicProvider implements IDataProvider {
 	protected void registerMagics(BiConsumer<Magic, String> c) {
 		c.accept(ModMagics.BLAZE_POWDER_MAGIC.create().setParams(0.3f, -1, ing(Items.BLAZE_POWDER)), "");
 		c.accept(ModMagics.BLUE_DYE_MAGIC.create().setParams(30, 50, ing(Tags.Items.DYES_BLUE)), "");
-		c.accept(ModMagics.BOOKSHELF_MAGIC.create().setParams(0.8f, -1, ing(Items.BOOKSHELF)), "");
+		c.accept(ModMagics.BOOKSHELF_MAGIC.create().setAdditionalParams(Items.BOOK, ModSounds.PAGE_TURN).setParams(0.8f, -1, ing(Items.BOOKSHELF)), "");
 		c.accept(ModMagics.TRANSMUTATION_MAGIC.create().setAdditionalParams(Items.EXPERIENCE_BOTTLE, SoundEvents.BLOCK_BREWING_STAND_BREW).setParams(12, 15, ing(Items.GLASS_BOTTLE)), "bottle_magic");
 		c.accept(ModMagics.BRICKS_MAGIC.create().setParams(50, 30, ing(Items.BRICKS)), "");
 		c.accept(ModMagics.BUILDER_MAGIC.create().setAdditionalParams(new ResourceLocation(Main.MODID, "wizard_home"), Direction.SOUTH, new BlockPos(3, 3, 3), new BlockPos(0, 0, 5)).setParams(400, 80, ing(Items.COBBLESTONE)),"");
