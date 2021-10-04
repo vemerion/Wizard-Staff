@@ -111,9 +111,9 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.PORTABLE_CRAFTING_MAGIC.create().setParams(10, 10, ing(Items.CRAFTING_TABLE)), "");
 		c.accept(ModMagics.POTION_MAGIC.create().setAdditionalParams(2, 600, 2, Effects.HASTE, true, SoundEvents.BLOCK_BREWING_STAND_BREW).setParams(25, 25, ing(Items.WOODEN_PICKAXE)), "");
 		c.accept(ModMagics.SHULKER_BULLET_MAGIC.create().setParams(20, 25, ing(Items.SHULKER_SHELL)), "");
-		c.accept(ModMagics.SMELTING_MAGIC.create().setAdditionalParams(IRecipeType.SMELTING, 20, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, Blocks.FURNACE.getTranslationKey()).setParams(1, -1, ing(Items.FURNACE)), "");
+		c.accept(ModMagics.SMELTING_MAGIC.create().setAdditionalParams(IRecipeType.SMELTING, 20, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, Blocks.FURNACE.getTranslationKey(), 1).setParams(1, -1, ing(Items.FURNACE)), "");
 		c.accept(ModMagics.SOUL_SAND_MAGIC.create().setParams(40, 40, ing(Items.SOUL_SAND)), "");
-		c.accept(ModMagics.SMELTING_MAGIC.create().setAdditionalParams(IRecipeType.STONECUTTING, 2, SoundEvents.UI_STONECUTTER_TAKE_RESULT, Blocks.STONECUTTER.getTranslationKey()).setParams(0.1f, -1, ing(Items.STONECUTTER)), "stonecutting_magic");
+		c.accept(ModMagics.SMELTING_MAGIC.create().setAdditionalParams(IRecipeType.STONECUTTING, 2, SoundEvents.UI_STONECUTTER_TAKE_RESULT, Blocks.STONECUTTER.getTranslationKey(), 1).setParams(0.1f, -1, ing(Items.STONECUTTER)), "stonecutting_magic");
 		c.accept(ModMagics.SURFACE_MAGIC.create().setParams(0.5f, 20, ing(Items.STONE)), "");
 		c.accept(ModMagics.BUCKET_MAGIC.create().setAdditionalParams((BucketItem) Items.WATER_BUCKET).setParams(5, 10, ing(Items.WATER_BUCKET)), "water_bucket_magic");
 		c.accept(ModMagics.PROJECTILE_MAGIC.create().setAdditionalParams(ModEntities.MAGIC_WITHER_SKULL, ModSounds.SKELETON, 0.5f).setParams(20, 15, ing(Items.WITHER_SKELETON_SKULL)), "wither_skull_magic");

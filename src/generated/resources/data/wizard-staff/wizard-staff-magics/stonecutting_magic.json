@@ -8,5 +8,6 @@
   "recipe_type": "minecraft:stonecutting",
   "sound": "minecraft:ui.stonecutter.take_result",
   "smelt_interval": 2,
-  "recipe_name": "block.minecraft.stonecutter"
+  "recipe_name": "block.minecraft.stonecutter",
+  "item_cost": 1
 }

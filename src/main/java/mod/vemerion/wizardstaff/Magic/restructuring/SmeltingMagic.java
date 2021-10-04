@@ -20,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.SoundEvent;
@@ -35,16 +34,19 @@ public class SmeltingMagic extends Magic {
 	private int interval;
 	private SoundEvent sound;
 	private String recipeName;
+	private int itemCost;
 
 	public SmeltingMagic(MagicType<? extends SmeltingMagic> type) {
 		super(type);
 	}
-	
-	public SmeltingMagic setAdditionalParams(IRecipeType<? extends IRecipe<IInventory>> recipeType, int interval, SoundEvent sound, String recipeName) {
+
+	public SmeltingMagic setAdditionalParams(IRecipeType<? extends IRecipe<IInventory>> recipeType, int interval,
+			SoundEvent sound, String recipeName, int itemCost) {
 		this.recipeType = recipeType;
 		this.interval = interval;
 		this.sound = sound;
 		this.recipeName = recipeName;
+		this.itemCost = itemCost;
 		return this;
 	}
 
@@ -89,14 +91,16 @@ public class SmeltingMagic extends Magic {
 		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound");
 		interval = JSONUtils.getInt(json, "smelt_interval");
 		recipeName = JSONUtils.getString(json, "recipe_name");
+		itemCost = JSONUtils.getInt(json, "item_cost");
 	}
-	
+
 	@Override
 	protected void writeAdditional(JsonObject json) {
 		MagicUtil.write(json, recipeType, Registry.RECIPE_TYPE, "recipe_type");
 		MagicUtil.write(json, sound, "sound");
 		json.addProperty("smelt_interval", interval);
 		json.addProperty("recipe_name", recipeName);
+		json.addProperty("item_cost", itemCost);
 	}
 
 	@Override
@@ -116,35 +120,29 @@ public class SmeltingMagic extends Magic {
 				Random rand = player.getRNG();
 
 				List<ItemEntity> entities = world.getEntitiesWithinAABB(ItemEntity.class,
-						player.getBoundingBox().grow(2), e -> !getRecipes(world, e).isEmpty());
+						player.getBoundingBox().grow(2),
+						e -> e.getItem().getCount() >= itemCost && !getRecipes(world, e).isEmpty());
 				if (entities.isEmpty())
 					return;
 
 				ItemEntity itemEntity = entities.get(rand.nextInt(entities.size()));
 				IInventory inv = new Inventory(itemEntity.getItem());
-				List<? extends IRecipe<IInventory>> recipes = world.getRecipeManager().getRecipes(recipeType, inv, world);
+				List<? extends IRecipe<IInventory>> recipes = world.getRecipeManager().getRecipes(recipeType, inv,
+						world);
+
 				if (!recipes.isEmpty()) {
 					playSoundServer(world, player, sound, 1, soundPitch(player));
 					cost(player);
 					IRecipe<IInventory> recipe = recipes.get(rand.nextInt(recipes.size()));
-					itemEntity.getItem().shrink(getRecipeCost(recipe));
+					itemEntity.getItem().shrink(itemCost);
 					itemEntity.entityDropItem(recipe.getCraftingResult(inv));
 				}
 			}
 		}
 	}
-	
+
 	private List<? extends IRecipe<IInventory>> getRecipes(World world, ItemEntity itemEntity) {
 		IInventory inv = new Inventory(itemEntity.getItem());
 		return world.getRecipeManager().getRecipes(recipeType, inv, world);
 	}
-
-	private int getRecipeCost(IRecipe<IInventory> recipe) {
-		int cost = 0;
-		for (Ingredient ingredient : recipe.getIngredients())
-			for (ItemStack stack : ingredient.getMatchingStacks())
-				cost += stack.getCount();
-		return cost;
-	}
-
 }
