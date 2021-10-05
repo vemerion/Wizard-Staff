@@ -88,8 +88,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.WIZARD_STAFF_MAGIC, "Very dangerous!");	
 		addMagicName(ModMagics.WRITABLE_BOOK_MAGIC, "Arcane Knowledge");		
 		addMagicDescription(ModMagics.WRITABLE_BOOK_MAGIC, "What knowledge will you unveil?");	
-		addMagicName(ModMagics.OBSIDIAN_MAGIC, "Portal to Hell");		
-		addMagicDescription(ModMagics.OBSIDIAN_MAGIC, "Open a portal to the nether. WARNING: One way only!");	
+		addMagicName(ModMagics.OBSIDIAN_MAGIC, "Portal to '%s'");		
+		addMagicDescription(ModMagics.OBSIDIAN_MAGIC, "Open a portal to the dimension '%s'. WARNING: One way only!");	
 		addMagicName(ModMagics.GLOWSTONE_DUST_MAGIC, "Magic Radar");		
 		addMagicDescription(ModMagics.GLOWSTONE_DUST_MAGIC, "Locate nearby entities.");	
 		addMagicName(ModMagics.NETHERRACK_MAGIC, "Walk on Lava");		

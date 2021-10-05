@@ -4,5 +4,7 @@
   "magic": "wizard-staff:obsidian_magic",
   "ingredient": {
     "item": "minecraft:obsidian"
-  }
+  },
+  "dimension": "minecraft:the_nether",
+  "texture": "wizard-staff:textures/entity/nether_portal.png"
 }

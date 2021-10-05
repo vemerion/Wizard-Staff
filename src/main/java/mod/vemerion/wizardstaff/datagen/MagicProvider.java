@@ -39,6 +39,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.Tags;
 
 public class MagicProvider implements IDataProvider {
@@ -106,7 +107,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(ModMagics.NETHER_BRICK_MAGIC.create().setParams(60, 20, ing(Tags.Items.INGOTS_NETHER_BRICK)), "");
 		c.accept(ModMagics.TRANSMUTATION_MAGIC.create().setAdditionalParams(ModItems.NETHER_WIZARD_STAFF, ModSounds.POOF).setParams(100, 40, ing(Tags.Items.INGOTS_NETHERITE)), "netherite_ingot_magic");
 		c.accept(ModMagics.NETHERRACK_MAGIC.create().setParams(3, -1, ing(Items.NETHERRACK)), "");
-		c.accept(ModMagics.OBSIDIAN_MAGIC.create().setParams(100, 60, ing(Items.OBSIDIAN)), "");
+		c.accept(ModMagics.OBSIDIAN_MAGIC.create().setAdditionalParams(World.THE_NETHER, new ResourceLocation(Main.MODID, "textures/entity/nether_portal.png")).setParams(100, 60, ing(Items.OBSIDIAN)), "");
 		c.accept(ModMagics.PILLAR_MAGIC.create().setAdditionalParams(Blocks.DIRT).setParams(0.5f, -1, ing(Items.DIRT)), "");
 		c.accept(ModMagics.PORTABLE_CRAFTING_MAGIC.create().setParams(10, 10, ing(Items.CRAFTING_TABLE)), "");
 		c.accept(ModMagics.POTION_MAGIC.create().setAdditionalParams(2, 600, 2, Effects.HASTE, true, SoundEvents.BLOCK_BREWING_STAND_BREW).setParams(25, 25, ing(Items.WOODEN_PICKAXE)), "");

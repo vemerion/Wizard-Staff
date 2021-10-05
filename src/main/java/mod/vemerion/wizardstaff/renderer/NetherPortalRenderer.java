@@ -3,7 +3,6 @@ package mod.vemerion.wizardstaff.renderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.model.NetherPortalModel;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -15,8 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
 
 public class NetherPortalRenderer extends EntityRenderer<NetherPortalEntity> {
-	public static final ResourceLocation TEXTURES = new ResourceLocation(Main.MODID,
-			"textures/entity/nether_portal.png");
 	private final NetherPortalModel model = new NetherPortalModel();
 
 	public NetherPortalRenderer(EntityRendererManager renderManagerIn) {
@@ -52,6 +49,6 @@ public class NetherPortalRenderer extends EntityRenderer<NetherPortalEntity> {
 	 */
 	@Override
 	public ResourceLocation getEntityTexture(NetherPortalEntity entity) {
-		return TEXTURES;
+		return entity.getTexture();
 	}
 }
