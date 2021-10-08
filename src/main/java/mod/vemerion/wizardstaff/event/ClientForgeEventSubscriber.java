@@ -14,8 +14,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
+import net.minecraft.util.MovementInput;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -52,12 +54,21 @@ public class ClientForgeEventSubscriber {
 			Network.INSTANCE.sendToServer(new CycleCurrentMessage());
 		});
 	}
-	
+
 	@SubscribeEvent
 	public static void noLeftClickWithStaff(InputEvent.ClickInputEvent event) {
 		Item item = Minecraft.getInstance().player.getHeldItem(event.getHand()).getItem();
 		if (event.getHand() != Hand.MAIN_HAND || !event.isAttack() || !(item instanceof WizardStaffItem))
 			return;
 		event.setSwingHand(false);
+	}
+
+	@SubscribeEvent
+	public static void noStaffSlowdown(InputUpdateEvent event) {
+		if (!(event.getPlayer().getActiveItemStack().getItem() instanceof WizardStaffItem))
+			return;
+		MovementInput movement = event.getMovementInput();
+		movement.moveStrafe *= 1 / 0.2;
+		movement.moveForward *= 1 / 0.2;
 	}
 }
