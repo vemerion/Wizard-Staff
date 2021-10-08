@@ -183,6 +183,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.SWAP_TRADE_MAGIC, "Use your magic to compel a villager to swap the buy and sell item of trades. The swapped trades are put on cooldown in the process. Some trades can not be swapped.");
 	
 		addGui("haste_magic.name", "Work Ethic");
+		addGui("infest_stone_magic.name", "Infest %s");
+		addGui("infest_stone_magic.description", "Infest a %s block with silverfish.");
 	}
 	// @formatter:on
 

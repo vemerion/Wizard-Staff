@@ -55,6 +55,8 @@
   "gui.wizard-staff.grappling_hook_magic.description": "Use the staff as a grappling hook.",
   "gui.wizard-staff.grappling_hook_magic.name": "Grappling Hook",
   "gui.wizard-staff.haste_magic.name": "Work Ethic",
+  "gui.wizard-staff.infest_stone_magic.description": "Infest a %s block with silverfish.",
+  "gui.wizard-staff.infest_stone_magic.name": "Infest %s",
   "gui.wizard-staff.infinity": "\u221E",
   "gui.wizard-staff.inventory_magic.description": "Gain access to magic storage.",
   "gui.wizard-staff.inventory_magic.name": "Portable Chest",
