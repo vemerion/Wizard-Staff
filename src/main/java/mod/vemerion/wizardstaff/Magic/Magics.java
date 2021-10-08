@@ -57,7 +57,7 @@ public class Magics extends JsonReloadListener {
 				}
 			}
 		}
-		return ModMagics.NO_MAGIC.create();
+		return ModMagics.NO_MAGIC.create(new ResourceLocation(Main.MODID, "no_magic"));
 	}
 
 	public static Magics getInstance(boolean isRemote) {
@@ -89,7 +89,7 @@ public class Magics extends JsonReloadListener {
 			if (type == ModMagics.NO_MAGIC)
 				continue;
 
-			Magic magic = type.create();
+			Magic magic = type.create(key);
 			magic.read(json);
 			newMagics.put(key, magic);
 		}

@@ -39,7 +39,7 @@ public class UpdateMagicsMessage {
 		for (int i = 0; i < size; i++) {
 			ResourceLocation key = buffer.readResourceLocation();
 			ResourceLocation name = buffer.readResourceLocation();
-			Magic magic = ModMagics.REGISTRY.getValue(name).create();
+			Magic magic = ModMagics.REGISTRY.getValue(name).create(key);
 			magic.decode(buffer);
 			magics.put(key, magic);
 		}

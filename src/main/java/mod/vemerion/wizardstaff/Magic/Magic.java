@@ -23,6 +23,7 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.LanguageMap;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -34,11 +35,12 @@ public abstract class Magic {
 	protected int duration;
 	protected Ingredient ingredient;
 	private MagicType<?> type;
+	private ResourceLocation name;
 
 	public Magic(MagicType<?> type) {
 		this.type = type;
 	}
-	
+
 	public Magic setParams(float cost, int duration, Ingredient ingredient) {
 		this.cost = cost;
 		this.duration = duration;
@@ -48,6 +50,14 @@ public abstract class Magic {
 
 	public ResourceLocation getRegistryName() {
 		return type.getRegistryName();
+	}
+
+	public void setName(ResourceLocation name) {
+		this.name = name;
+	}
+	
+	public ResourceLocation getName() {
+		return name;
 	}
 
 	public void read(JsonObject json) {
@@ -72,7 +82,7 @@ public abstract class Magic {
 		json.addProperty("duration", duration);
 		json.addProperty("magic", getRegistryName().toString());
 		json.add("ingredient", ingredient.serialize());
-		
+
 		writeAdditional(json);
 		return json;
 	}
@@ -176,7 +186,7 @@ public abstract class Magic {
 	}
 
 	public Description getDescription() {
-		return new Description(cost, duration, getRegistryName(), getNameArgs(), getDescrArgs());
+		return new Description(this);
 	}
 
 	// Override to provide args to the spellbook magic name
@@ -198,14 +208,25 @@ public abstract class Magic {
 		private TranslationTextComponent name;
 		private TranslationTextComponent descr;
 
-		private Description(float cost, int duration, ResourceLocation magicName, Object[] nameArgs,
-				Object[] descrArgs) {
-			this.cost = cost;
-			this.duration = duration;
-			this.name = new TranslationTextComponent(
-					"gui." + magicName.getNamespace() + "." + magicName.getPath() + ".name", nameArgs);
-			this.descr = new TranslationTextComponent(
-					"gui." + magicName.getNamespace() + "." + magicName.getPath() + ".description", descrArgs);
+		private Description(Magic magic) {
+			this.cost = magic.cost;
+			this.duration = magic.duration;
+
+			ResourceLocation regName = magic.getRegistryName();
+			String customName = "gui." + magic.name.getNamespace() + "." + magic.name.getPath() + ".name";
+			String standardName = "gui." + regName.getNamespace() + "." + regName.getPath() + ".name";
+
+			String customDescr = "gui." + magic.name.getNamespace() + "." + magic.name.getPath() + ".description";
+			String standardDescr = "gui." + regName.getNamespace() + "." + regName.getPath() + ".description";
+
+			this.name = new TranslationTextComponent(hasTranslation(customName) ? customName : standardName,
+					magic.getNameArgs());
+			this.descr = new TranslationTextComponent(hasTranslation(customDescr) ? customDescr : standardDescr,
+					magic.getDescrArgs());
+		}
+
+		private static boolean hasTranslation(String key) {
+			return LanguageMap.getInstance().func_230506_b_(key);
 		}
 
 		public float getCost() {
