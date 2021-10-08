@@ -185,6 +185,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addGui("haste_magic.name", "Work Ethic");
 		addGui("infest_stone_magic.name", "Infest %s");
 		addGui("infest_stone_magic.description", "Infest a %s block with silverfish.");
+		addMagicName(ModMagics.REPAIR_OFFHAND_MAGIC, "Repair Offhand");
+		addMagicDescription(ModMagics.REPAIR_OFFHAND_MAGIC, "Channel your magical powers to slowly repair the item held in your other hand.");
 	}
 	// @formatter:on
 

@@ -141,6 +141,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.SWAP_HEALTH_FOOD_MAGIC).setParams(20, 20, ing(Items.COOKED_BEEF)));
 		c.accept(create(ModMagics.SWAP_TRADE_MAGIC).setAdditionalParams(ing(Items.BELL)).setParams(400, 40, ing(Items.EMERALD)));
 		c.accept(create(ModMagics.TRANSFORM_BLOCK_MAGIC, "infest_stone_magic").setAdditionalParams(Blocks.STONE, Blocks.INFESTED_STONE).setParams(20, 20, ing(Tags.Items.DYES_LIGHT_GRAY)));
+		c.accept(create(ModMagics.REPAIR_OFFHAND_MAGIC).setAdditionalParams(1).setParams(1, -1, ing(Items.SMITHING_TABLE)));
 	}
 	// @formatter:on
 
