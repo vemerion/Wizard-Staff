@@ -191,6 +191,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.WALL_CLIMB_MAGIC, "Become Spider-Man!");
 		addMagicName(ModMagics.COBWEB_MAGIC, "Spider Web");
 		addMagicDescription(ModMagics.COBWEB_MAGIC, "Shoot cobweb at your enemies!");
+		addMagicName(ModMagics.BEE_MAGIC, "Evacuate Hive");
+		addMagicDescription(ModMagics.BEE_MAGIC, "Use your magic to force bees out of their hive.");
 	}
 	// @formatter:on
 

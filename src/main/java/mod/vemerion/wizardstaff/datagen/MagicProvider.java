@@ -144,6 +144,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.REPAIR_OFFHAND_MAGIC).setAdditionalParams(1).setParams(1, -1, ing(Items.SMITHING_TABLE)));
 		c.accept(create(ModMagics.WALL_CLIMB_MAGIC).setAdditionalParams(0.2f).setParams(0.05f, -1, ing(Items.STRING)));
 		c.accept(create(ModMagics.COBWEB_MAGIC).setParams(10, 15, ing(Items.COBWEB)));
+		c.accept(create(ModMagics.BEE_MAGIC).setParams(20, 20, ing(Items.HONEYCOMB)));
 	}
 	// @formatter:on
 

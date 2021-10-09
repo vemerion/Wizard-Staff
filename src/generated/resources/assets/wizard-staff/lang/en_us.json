@@ -11,6 +11,8 @@
   "entity.wizard-staff.nether_portal": "Magic Nether Portal",
   "entity.wizard-staff.pumpkin_magic": "Magic Pumpkin",
   "entity.wizard-staff.wizard_hat": "Wizard Hat",
+  "gui.wizard-staff.bee_magic.description": "Use your magic to force bees out of their hive.",
+  "gui.wizard-staff.bee_magic.name": "Evacuate Hive",
   "gui.wizard-staff.blaze_powder_magic.description": "Incinerate your enemies!",
   "gui.wizard-staff.blaze_powder_magic.name": "Flame Thrower",
   "gui.wizard-staff.blue_dye_magic.description": "Control the weather!",
