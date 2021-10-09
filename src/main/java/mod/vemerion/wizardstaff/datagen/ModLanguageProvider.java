@@ -187,6 +187,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addGui("infest_stone_magic.description", "Infest a %s block with silverfish.");
 		addMagicName(ModMagics.REPAIR_OFFHAND_MAGIC, "Repair Offhand");
 		addMagicDescription(ModMagics.REPAIR_OFFHAND_MAGIC, "Channel your magical powers to slowly repair the item held in your other hand.");
+		addMagicName(ModMagics.WALL_CLIMB_MAGIC, "Wall Climbing");
+		addMagicDescription(ModMagics.WALL_CLIMB_MAGIC, "Become Spider-Man!");
 	}
 	// @formatter:on
 

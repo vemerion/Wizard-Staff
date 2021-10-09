@@ -142,7 +142,8 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 				search.render(matrixStack, mouseX, mouseY, partialTicks);
 
 			// Draw page number
-			String pageText = (page + 1) + "/" + (searched.size() / ITEMS_PER_PAGE + 1);
+			int maxPageNbr = Math.max(1, (int) Math.ceil((searched.size() / (float) ITEMS_PER_PAGE)));
+			String pageText = (page + 1) + "/" + maxPageNbr;
 			int textWidth = mc.fontRenderer.getStringWidth(pageText);
 			mc.fontRenderer.drawString(matrixStack, pageText, left + X_SIZE / 2 - textWidth / 2f, top + Y_SIZE - 22,
 					-1);

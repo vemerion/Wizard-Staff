@@ -4,6 +4,7 @@ import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.NoMagic;
 import mod.vemerion.wizardstaff.Magic.bugfix.RepairOffhandMagic;
+import mod.vemerion.wizardstaff.Magic.bugfix.WallClimbMagic;
 import mod.vemerion.wizardstaff.Magic.fashionupdate.TransmutationMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GhastTearMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
@@ -124,6 +125,7 @@ public class ModMagics {
 	public static final MagicType<SwapHealthFoodMagic> SWAP_HEALTH_FOOD_MAGIC = null;
 	public static final MagicType<SwapTradeMagic> SWAP_TRADE_MAGIC = null;
 	public static final MagicType<RepairOffhandMagic> REPAIR_OFFHAND_MAGIC = null;
+	public static final MagicType<WallClimbMagic> WALL_CLIMB_MAGIC = null;
 	public static final MagicType<NoMagic> NO_MAGIC = null;
 
 	@SubscribeEvent
@@ -182,6 +184,7 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(SwapHealthFoodMagic::new), "swap_health_food_magic"));
 		reg.register(Init.setup(new MagicType<>(SwapTradeMagic::new), "swap_trade_magic"));
 		reg.register(Init.setup(new MagicType<>(RepairOffhandMagic::new), "repair_offhand_magic"));
+		reg.register(Init.setup(new MagicType<>(WallClimbMagic::new), "wall_climb_magic"));
 		reg.register(Init.setup(new MagicType<>(NoMagic::new), "no_magic"));
 	}
 

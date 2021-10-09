@@ -131,6 +131,8 @@
   "gui.wizard-staff.transform_entity_magic.name": "Transform Entity",
   "gui.wizard-staff.transmutation_magic.description": "Transmutate the item in the staff into the item %s.",
   "gui.wizard-staff.transmutation_magic.name": "Conjure %s",
+  "gui.wizard-staff.wall_climb_magic.description": "Become Spider-Man!",
+  "gui.wizard-staff.wall_climb_magic.name": "Wall Climbing",
   "gui.wizard-staff.wizard_staff_magic.description": "Very dangerous!",
   "gui.wizard-staff.wizard_staff_magic.name": "Staff-ception",
   "gui.wizard-staff.writable_book_magic.description": "What knowledge will you unveil?",
