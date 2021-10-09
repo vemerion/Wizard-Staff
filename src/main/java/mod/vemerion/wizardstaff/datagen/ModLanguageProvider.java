@@ -189,6 +189,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.REPAIR_OFFHAND_MAGIC, "Channel your magical powers to slowly repair the item held in your other hand.");
 		addMagicName(ModMagics.WALL_CLIMB_MAGIC, "Wall Climbing");
 		addMagicDescription(ModMagics.WALL_CLIMB_MAGIC, "Become Spider-Man!");
+		addMagicName(ModMagics.COBWEB_MAGIC, "Spider Web");
+		addMagicDescription(ModMagics.COBWEB_MAGIC, "Shoot cobweb at your enemies!");
 	}
 	// @formatter:on
 

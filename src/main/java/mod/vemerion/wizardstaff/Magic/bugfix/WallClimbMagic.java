@@ -17,33 +17,33 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class WallClimbMagic extends Magic {
-	
+
 	private float speed;
 
 	public WallClimbMagic(MagicType<? extends WallClimbMagic> type) {
 		super(type);
 	}
-	
+
 	public WallClimbMagic setAdditionalParams(float speed) {
 		this.speed = speed;
 		return this;
 	}
-	
+
 	@Override
 	protected void readAdditional(JsonObject json) {
 		speed = JSONUtils.getFloat(json, "speed");
 	}
-	
+
 	@Override
 	protected void writeAdditional(JsonObject json) {
 		json.addProperty("speed", speed);
 	}
-	
+
 	@Override
 	public void encodeAdditional(PacketBuffer buffer) {
 		buffer.writeFloat(speed);
 	}
-	
+
 	@Override
 	public void decodeAdditional(PacketBuffer buffer) {
 		speed = buffer.readFloat();
@@ -69,7 +69,8 @@ public class WallClimbMagic extends Magic {
 		if (player.collidedHorizontally) {
 			Vector3d motion = player.getMotion();
 			player.setMotion(motion.getX(), speed, motion.getZ());
-			cost(player);
+			if (!world.isRemote)
+				cost(player);
 		}
 	}
 
