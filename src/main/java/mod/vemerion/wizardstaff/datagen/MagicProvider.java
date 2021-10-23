@@ -148,6 +148,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.BEE_MAGIC).setParams(20, 20, ing(Items.HONEYCOMB)));
 		c.accept(create(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "evoker_fangs_magic").setAdditionalParams(circlesShape()).setAdditionalParams(EntityType.EVOKER_FANGS, ModSounds.BELL).setParams(30, 15, ing(Items.LAPIS_LAZULI)));
 		c.accept(create(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "soul_sand_magic").setAdditionalParams(soulSandMagicShape()).setAdditionalParams(ModEntities.MAGIC_SOUL_SAND_ARM, ModSounds.PUMPKIN_MAGIC).setParams(40, 40, ing(Items.SOUL_SAND)));
+		c.accept(create(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "tnt_magic").setAdditionalParams(tntShape()).setAdditionalParams(EntityType.TNT, ModSounds.CLOCK).setParams(50, 15, ing(Items.TNT)));
 	}
 	// @formatter:on
 
@@ -195,5 +196,9 @@ public class MagicProvider implements IDataProvider {
 
 	private List<String> soulSandMagicShape() {
 		return shape(" x ", "x  ", " x ", " x ", "  x", " x ", "  x", " x ", " p ");
+	}
+	
+	private List<String> tntShape() {
+		return shape("x", "x", "x", " ", "p");
 	}
 }
