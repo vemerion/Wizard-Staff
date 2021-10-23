@@ -6,6 +6,7 @@ import mod.vemerion.wizardstaff.Magic.NoMagic;
 import mod.vemerion.wizardstaff.Magic.bugfix.BeeMagic;
 import mod.vemerion.wizardstaff.Magic.bugfix.CobwebMagic;
 import mod.vemerion.wizardstaff.Magic.bugfix.RepairOffhandMagic;
+import mod.vemerion.wizardstaff.Magic.bugfix.ShapedCreateEntityMagic;
 import mod.vemerion.wizardstaff.Magic.bugfix.WallClimbMagic;
 import mod.vemerion.wizardstaff.Magic.fashionupdate.TransmutationMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GhastTearMagic;
@@ -130,6 +131,7 @@ public class ModMagics {
 	public static final MagicType<WallClimbMagic> WALL_CLIMB_MAGIC = null;
 	public static final MagicType<CobwebMagic> COBWEB_MAGIC = null;
 	public static final MagicType<BeeMagic> BEE_MAGIC = null;
+	public static final MagicType<ShapedCreateEntityMagic> SHAPED_CREATE_ENTITY_MAGIC = null;
 	public static final MagicType<NoMagic> NO_MAGIC = null;
 
 	@SubscribeEvent
@@ -191,6 +193,7 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(WallClimbMagic::new), "wall_climb_magic"));
 		reg.register(Init.setup(new MagicType<>(CobwebMagic::new), "cobweb_magic"));
 		reg.register(Init.setup(new MagicType<>(BeeMagic::new), "bee_magic"));
+		reg.register(Init.setup(new MagicType<>(ShapedCreateEntityMagic::new), "shaped_create_entity_magic"));
 		reg.register(Init.setup(new MagicType<>(NoMagic::new), "no_magic"));
 	}
 

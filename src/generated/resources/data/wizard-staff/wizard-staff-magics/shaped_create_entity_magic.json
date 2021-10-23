@@ -1,0 +1,18 @@
+{
+  "cost": 30.0,
+  "duration": 15,
+  "magic": "wizard-staff:shaped_create_entity_magic",
+  "ingredient": {
+    "item": "minecraft:lapis_lazuli"
+  },
+  "entity": "minecraft:evoker_fangs",
+  "shape": [
+    "   x   ",
+    " x   x ",
+    "   x   ",
+    "x xpx x",
+    "   x   ",
+    " x   x ",
+    "   x   "
+  ]
+}

@@ -193,6 +193,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.COBWEB_MAGIC, "Shoot cobweb at your enemies!");
 		addMagicName(ModMagics.BEE_MAGIC, "Evacuate Hive");
 		addMagicDescription(ModMagics.BEE_MAGIC, "Use your magic to force bees out of their hive.");
+		addMagicName(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "Shaped Summon: %s");
+		addMagicDescription(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "Summon a number of %s entities in a special shape around the player.");
 	}
 	// @formatter:on
 

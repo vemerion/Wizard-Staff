@@ -111,6 +111,8 @@
   "gui.wizard-staff.revert_position_magic.name": "Revert Position",
   "gui.wizard-staff.search_hint": "Search Magic...",
   "gui.wizard-staff.seconds": "s",
+  "gui.wizard-staff.shaped_create_entity_magic.description": "Summon a number of %s entities in a special shape around the player.",
+  "gui.wizard-staff.shaped_create_entity_magic.name": "Shaped Summon: %s",
   "gui.wizard-staff.shulker_bullet_magic.description": "Use magic to replicate a shulker bullet, targeting a nearby entity.",
   "gui.wizard-staff.shulker_bullet_magic.name": "Shulker Bullet",
   "gui.wizard-staff.smelting_magic.description": "Magical item processing, replicating the functionality of the %s.",

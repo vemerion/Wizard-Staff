@@ -2,6 +2,8 @@ package mod.vemerion.wizardstaff.datagen;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
@@ -132,7 +134,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.ENDER_CHEST_MAGIC).setParams(10, 10, ing(Items.ENDER_CHEST)));
 		c.accept(create(ModMagics.DEFLECT_PROJECTILE_MAGIC).setAdditionalParams(ImmutableSet.of()).setParams(0.8f, -1, ing(Items.SHIELD)));
 		c.accept(create(ModMagics.REPAIR_ARMOR_MAGIC).setAdditionalParams(1).setParams(1, -1, ing(Items.ANVIL)));
-		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC, "summon_friendly_vex_magic").setAdditionalParams(ModEntities.MAGIC_VEX, 3).setParams(40, 40, ing(Items.TOTEM_OF_UNDYING)));
+		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC, "summon_friendly_vex_magic").setAdditionalParams(3).setAdditionalParams(ModEntities.MAGIC_VEX).setParams(40, 40, ing(Items.TOTEM_OF_UNDYING)));
 		c.accept(create(ModMagics.MASS_HARVEST_MAGIC, "chop_tree_magic").setAdditionalParams(new BlockMatch(BlockTags.LOGS), 40).setParams(2, 40, ing(Items.DIAMOND_AXE)));
 		c.accept(create(ModMagics.MASS_HARVEST_MAGIC, "clear_leaves_magic").setAdditionalParams(new BlockMatch(BlockTags.LEAVES), 50).setParams(0.1f, 20, ing(Items.SHEARS)));
 		c.accept(create(ModMagics.FORCE_ENTITY_MAGIC, "item_magnet_magic").setAdditionalParams(EntityType.ITEM, 0.2f).setParams(0.1f, -1, ing(Items.IRON_BLOCK)));
@@ -145,6 +147,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.WALL_CLIMB_MAGIC).setAdditionalParams(0.2f).setParams(0.05f, -1, ing(Items.STRING)));
 		c.accept(create(ModMagics.COBWEB_MAGIC).setParams(10, 15, ing(Items.COBWEB)));
 		c.accept(create(ModMagics.BEE_MAGIC).setParams(20, 20, ing(Items.HONEYCOMB)));
+		c.accept(create(ModMagics.SHAPED_CREATE_ENTITY_MAGIC).setAdditionalParams(circlesShape()).setAdditionalParams(EntityType.EVOKER_FANGS).setParams(30, 15, ing(Items.LAPIS_LAZULI)));
 	}
 	// @formatter:on
 
@@ -176,5 +179,17 @@ public class MagicProvider implements IDataProvider {
 	@Override
 	public String getName() {
 		return "Magics";
+	}
+
+	private List<String> shape(String... rows) {
+		List<String> shape = new ArrayList<>();
+		for (String s : rows) {
+			shape.add(s);
+		}
+		return shape;
+	}
+
+	private List<String> circlesShape() {
+		return shape("   x   ", " x   x ", "   x   ", "x xpx x", "   x   ", " x   x ", "   x   ");
 	}
 }
