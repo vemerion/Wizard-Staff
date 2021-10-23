@@ -100,8 +100,6 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.GHAST_TEAR_MAGIC, "Use magic to enhance your crying, immediately extinguishing flames from you.");	
 		addMagicName(ModMagics.NETHER_BRICK_MAGIC, "Fortress Locator");		
 		addMagicDescription(ModMagics.NETHER_BRICK_MAGIC, "Use your magic to sense the direction of the nearest Nether Fortress.");	
-		addMagicName(ModMagics.SOUL_SAND_MAGIC, "Hands from Below");		
-		addMagicDescription(ModMagics.SOUL_SAND_MAGIC, "Summon skeletal hands from the ground in front of your, damaging and slowing entities they touch.");	
 		addMagicName(ModMagics.GOLD_NUGGET_MAGIC, "Magic Bartering");		
 		addMagicDescription(ModMagics.GOLD_NUGGET_MAGIC, "Use magic compel nearby Piglins to give you their items.");	
 		addMagicName(ModMagics.LODESTONE_MAGIC, "Magical Translocator");		
@@ -195,6 +193,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.BEE_MAGIC, "Use your magic to force bees out of their hive.");
 		addMagicName(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "Shaped Summon: %s");
 		addMagicDescription(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "Summon a number of %s entities in a special shape around the player.");
+		addGui("soul_sand_magic.name", "Hands from Below");		
+		addGui("soul_sand_magic.description", "Summon skeletal hands from the ground in front of your, damaging and slowing entities they touch.");	
 	}
 	// @formatter:on
 

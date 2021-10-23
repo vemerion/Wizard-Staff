@@ -17,7 +17,6 @@ import mod.vemerion.wizardstaff.Magic.netherupdate.NetherBrickMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.NetherrackMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.ObsidianMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.ProjectileMagic;
-import mod.vemerion.wizardstaff.Magic.netherupdate.SoulSandMagic;
 import mod.vemerion.wizardstaff.Magic.original.BlazePowderMagic;
 import mod.vemerion.wizardstaff.Magic.original.CarvedPumpkinMagic;
 import mod.vemerion.wizardstaff.Magic.original.ClockMagic;
@@ -90,7 +89,6 @@ public class ModMagics {
 	public static final MagicType<ProjectileMagic> PROJECTILE_MAGIC = null;
 	public static final MagicType<GhastTearMagic> GHAST_TEAR_MAGIC = null;
 	public static final MagicType<NetherBrickMagic> NETHER_BRICK_MAGIC = null;
-	public static final MagicType<SoulSandMagic> SOUL_SAND_MAGIC = null;
 	public static final MagicType<GoldNuggetMagic> GOLD_NUGGET_MAGIC = null;
 	public static final MagicType<LodestoneMagic> LODESTONE_MAGIC = null;
 	public static final MagicType<TransmutationMagic> TRANSMUTATION_MAGIC = null;
@@ -152,7 +150,6 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(ProjectileMagic::new), "projectile_magic"));
 		reg.register(Init.setup(new MagicType<>(GhastTearMagic::new), "ghast_tear_magic"));
 		reg.register(Init.setup(new MagicType<>(NetherBrickMagic::new), "nether_brick_magic"));
-		reg.register(Init.setup(new MagicType<>(SoulSandMagic::new), "soul_sand_magic"));
 		reg.register(Init.setup(new MagicType<>(GoldNuggetMagic::new), "gold_nugget_magic"));
 		reg.register(Init.setup(new MagicType<>(LodestoneMagic::new), "lodestone_magic"));
 		reg.register(Init.setup(new MagicType<>(TransmutationMagic::new), "transmutation_magic"));

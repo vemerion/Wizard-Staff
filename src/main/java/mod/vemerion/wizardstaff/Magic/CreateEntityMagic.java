@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 
+import mod.vemerion.wizardstaff.entity.ICasted;
 import mod.vemerion.wizardstaff.entity.MagicVexEntity;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -19,6 +20,7 @@ import net.minecraft.entity.projectile.EvokerFangsEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -26,24 +28,28 @@ import net.minecraftforge.registries.ForgeRegistries;
 public abstract class CreateEntityMagic extends Magic {
 
 	protected EntityType<?> entity;
+	protected SoundEvent sound;
 
 	public CreateEntityMagic(MagicType<? extends CreateEntityMagic> type) {
 		super(type);
 	}
 
-	public CreateEntityMagic setAdditionalParams(EntityType<?> entity) {
+	public CreateEntityMagic setAdditionalParams(EntityType<?> entity, SoundEvent sound) {
 		this.entity = entity;
+		this.sound = sound;
 		return this;
 	}
 
 	@Override
 	protected void writeAdditional(JsonObject json) {
 		MagicUtil.write(json, entity, "entity");
+		MagicUtil.write(json, sound, "sound");
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
 		entity = MagicUtil.read(json, ForgeRegistries.ENTITIES, "entity");
+		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound");
 	}
 
 	@Override
@@ -88,6 +94,9 @@ public abstract class CreateEntityMagic extends Magic {
 
 				if (e instanceof EvokerFangsEntity)
 					((EvokerFangsEntity) e).setCaster(player);
+				
+				if (e instanceof ICasted)
+					((ICasted) e).setCaster(player);
 
 				world.addEntity(e);
 			}
@@ -95,7 +104,7 @@ public abstract class CreateEntityMagic extends Magic {
 			if (entities.isEmpty()) {
 				playSoundServer(world, player, ModSounds.POOF, 1, soundPitch(player));
 			} else {
-				playSoundServer(world, player, ModSounds.BELL, 1, soundPitch(player));
+				playSoundServer(world, player, sound, 1, soundPitch(player));
 				cost(player);
 			}
 		}

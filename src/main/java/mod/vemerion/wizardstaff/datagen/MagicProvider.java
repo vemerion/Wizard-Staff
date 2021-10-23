@@ -115,7 +115,6 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.POTION_MAGIC, "haste_magic").setAdditionalParams(2, 600, 2, Effects.HASTE, true, SoundEvents.BLOCK_BREWING_STAND_BREW).setParams(25, 25, ing(Items.WOODEN_PICKAXE)));
 		c.accept(create(ModMagics.SHULKER_BULLET_MAGIC).setParams(20, 25, ing(Items.SHULKER_SHELL)));
 		c.accept(create(ModMagics.SMELTING_MAGIC).setAdditionalParams(IRecipeType.SMELTING, 20, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, Blocks.FURNACE.getTranslationKey(), 1).setParams(1, -1, ing(Items.FURNACE)));
-		c.accept(create(ModMagics.SOUL_SAND_MAGIC).setParams(40, 40, ing(Items.SOUL_SAND)));
 		c.accept(create(ModMagics.SMELTING_MAGIC, "stonecutting_magic").setAdditionalParams(IRecipeType.STONECUTTING, 2, SoundEvents.UI_STONECUTTER_TAKE_RESULT, Blocks.STONECUTTER.getTranslationKey(), 1).setParams(0.1f, -1, ing(Items.STONECUTTER)));
 		c.accept(create(ModMagics.SURFACE_MAGIC).setParams(0.5f, 20, ing(Items.STONE)));
 		c.accept(create(ModMagics.BUCKET_MAGIC, "water_bucket_magic").setAdditionalParams((BucketItem) Items.WATER_BUCKET).setParams(5, 10, ing(Items.WATER_BUCKET)));
@@ -134,7 +133,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.ENDER_CHEST_MAGIC).setParams(10, 10, ing(Items.ENDER_CHEST)));
 		c.accept(create(ModMagics.DEFLECT_PROJECTILE_MAGIC).setAdditionalParams(ImmutableSet.of()).setParams(0.8f, -1, ing(Items.SHIELD)));
 		c.accept(create(ModMagics.REPAIR_ARMOR_MAGIC).setAdditionalParams(1).setParams(1, -1, ing(Items.ANVIL)));
-		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC, "summon_friendly_vex_magic").setAdditionalParams(3).setAdditionalParams(ModEntities.MAGIC_VEX).setParams(40, 40, ing(Items.TOTEM_OF_UNDYING)));
+		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC, "summon_friendly_vex_magic").setAdditionalParams(3).setAdditionalParams(ModEntities.MAGIC_VEX, ModSounds.BELL).setParams(40, 40, ing(Items.TOTEM_OF_UNDYING)));
 		c.accept(create(ModMagics.MASS_HARVEST_MAGIC, "chop_tree_magic").setAdditionalParams(new BlockMatch(BlockTags.LOGS), 40).setParams(2, 40, ing(Items.DIAMOND_AXE)));
 		c.accept(create(ModMagics.MASS_HARVEST_MAGIC, "clear_leaves_magic").setAdditionalParams(new BlockMatch(BlockTags.LEAVES), 50).setParams(0.1f, 20, ing(Items.SHEARS)));
 		c.accept(create(ModMagics.FORCE_ENTITY_MAGIC, "item_magnet_magic").setAdditionalParams(EntityType.ITEM, 0.2f).setParams(0.1f, -1, ing(Items.IRON_BLOCK)));
@@ -147,7 +146,8 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.WALL_CLIMB_MAGIC).setAdditionalParams(0.2f).setParams(0.05f, -1, ing(Items.STRING)));
 		c.accept(create(ModMagics.COBWEB_MAGIC).setParams(10, 15, ing(Items.COBWEB)));
 		c.accept(create(ModMagics.BEE_MAGIC).setParams(20, 20, ing(Items.HONEYCOMB)));
-		c.accept(create(ModMagics.SHAPED_CREATE_ENTITY_MAGIC).setAdditionalParams(circlesShape()).setAdditionalParams(EntityType.EVOKER_FANGS).setParams(30, 15, ing(Items.LAPIS_LAZULI)));
+		c.accept(create(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "evoker_fangs_magic").setAdditionalParams(circlesShape()).setAdditionalParams(EntityType.EVOKER_FANGS, ModSounds.BELL).setParams(30, 15, ing(Items.LAPIS_LAZULI)));
+		c.accept(create(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "soul_sand_magic").setAdditionalParams(soulSandMagicShape()).setAdditionalParams(ModEntities.MAGIC_SOUL_SAND_ARM, ModSounds.PUMPKIN_MAGIC).setParams(40, 40, ing(Items.SOUL_SAND)));
 	}
 	// @formatter:on
 
@@ -191,5 +191,9 @@ public class MagicProvider implements IDataProvider {
 
 	private List<String> circlesShape() {
 		return shape("   x   ", " x   x ", "   x   ", "x xpx x", "   x   ", " x   x ", "   x   ");
+	}
+
+	private List<String> soulSandMagicShape() {
+		return shape(" x ", "x  ", " x ", " x ", "  x", " x ", "  x", " x ", " p ");
 	}
 }

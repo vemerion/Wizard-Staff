@@ -6,6 +6,7 @@
     "item": "minecraft:lapis_lazuli"
   },
   "entity": "minecraft:evoker_fangs",
+  "sound": "wizard-staff:bell",
   "shape": [
     "   x   ",
     " x   x ",
