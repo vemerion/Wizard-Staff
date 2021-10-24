@@ -37,7 +37,7 @@ public class LodestoneMagic extends Magic {
 
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
-		waypoint = MagicUtil.decode(buffer, ForgeRegistries.BLOCKS);
+		waypoint = MagicUtil.decode(buffer);
 	}
 
 	@Override

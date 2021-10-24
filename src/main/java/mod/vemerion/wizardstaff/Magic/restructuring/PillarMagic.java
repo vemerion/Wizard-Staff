@@ -35,7 +35,7 @@ public class PillarMagic extends Magic {
 
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
-		block = MagicUtil.decode(buffer, ForgeRegistries.BLOCKS);
+		block = MagicUtil.decode(buffer);
 	}
 
 	@Override

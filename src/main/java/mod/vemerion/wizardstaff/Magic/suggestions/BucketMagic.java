@@ -68,7 +68,7 @@ public class BucketMagic extends Magic {
 
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
-		bucket = (BucketItem) MagicUtil.decode(buffer, ForgeRegistries.ITEMS);
+		bucket = (BucketItem) MagicUtil.decode(buffer);
 	}
 
 	@Override

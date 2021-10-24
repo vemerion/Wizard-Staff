@@ -17,6 +17,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryManager;
 
 public class RegistryMatch<T extends IForgeRegistryEntry<T>> implements Predicate<T> {
 
@@ -24,8 +25,8 @@ public class RegistryMatch<T extends IForgeRegistryEntry<T>> implements Predicat
 	private T entry;
 	private ResourceLocation tag;
 
-	public RegistryMatch(IForgeRegistry<T> registry, T entry) {
-		this.registry = registry;
+	public RegistryMatch(T entry) {
+		this.registry = RegistryManager.ACTIVE.getRegistry(entry.getRegistryType());
 		this.entry = entry;
 	}
 
@@ -71,7 +72,7 @@ public class RegistryMatch<T extends IForgeRegistryEntry<T>> implements Predicat
 			JsonObject json) {
 		String field = registry.getRegistryName().getPath();
 		if (JSONUtils.hasField(json, field))
-			return new RegistryMatch<T>(registry, MagicUtil.read(json, registry, field));
+			return new RegistryMatch<T>(MagicUtil.read(json, registry, field));
 		else if (JSONUtils.hasField(json, "tag"))
 			return new RegistryMatch<T>(registry, new ResourceLocation(JSONUtils.getString(json, "tag")));
 		else
@@ -92,7 +93,7 @@ public class RegistryMatch<T extends IForgeRegistryEntry<T>> implements Predicat
 	public static <T extends IForgeRegistryEntry<T>> RegistryMatch<T> decode(IForgeRegistry<T> registry,
 			PacketBuffer buffer) {
 		if (buffer.readBoolean())
-			return new RegistryMatch<T>(registry, MagicUtil.decode(buffer, registry));
+			return new RegistryMatch<T>(MagicUtil.decode(buffer));
 		else
 			return new RegistryMatch<T>(registry, buffer.readResourceLocation());
 	}

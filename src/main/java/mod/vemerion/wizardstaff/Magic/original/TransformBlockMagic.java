@@ -31,8 +31,8 @@ public class TransformBlockMagic extends BlockRayMagic {
 
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
-		from = MagicUtil.decode(buffer, ForgeRegistries.BLOCKS);
-		to = MagicUtil.decode(buffer, ForgeRegistries.BLOCKS);
+		from = MagicUtil.decode(buffer);
+		to = MagicUtil.decode(buffer);
 	}
 
 	@Override

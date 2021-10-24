@@ -55,7 +55,7 @@ public class TransmutationMagic extends Magic {
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
 		created = buffer.readItemStack().getItem();
-		sound = MagicUtil.decode(buffer, ForgeRegistries.SOUND_EVENTS);
+		sound = MagicUtil.decode(buffer);
 	}
 
 	@Override

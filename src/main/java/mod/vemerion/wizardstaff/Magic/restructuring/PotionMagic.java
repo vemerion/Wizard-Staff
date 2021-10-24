@@ -89,9 +89,9 @@ public class PotionMagic extends Magic {
 		level = buffer.readInt();
 		potionTime = buffer.readInt();
 		radius = buffer.readFloat();
-		potion = MagicUtil.decode(buffer, ForgeRegistries.POTIONS);
+		potion = MagicUtil.decode(buffer);
 		affectCaster = buffer.readBoolean();
-		sound = MagicUtil.decode(buffer, ForgeRegistries.SOUND_EVENTS);
+		sound = MagicUtil.decode(buffer);
 	}
 
 	@Override

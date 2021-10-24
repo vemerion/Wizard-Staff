@@ -59,7 +59,7 @@ public abstract class CreateEntityMagic extends Magic {
 
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
-		entity = MagicUtil.decode(buffer, ForgeRegistries.ENTITIES);
+		entity = MagicUtil.decode(buffer);
 	}
 
 	@Override

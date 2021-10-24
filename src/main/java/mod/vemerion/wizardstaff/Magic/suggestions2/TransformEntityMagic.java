@@ -62,7 +62,7 @@ public class TransformEntityMagic extends RayMagic {
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
 		match = RegistryMatch.decode(ForgeRegistries.ENTITIES, buffer);
-		to = MagicUtil.decode(buffer, ForgeRegistries.ENTITIES);
+		to = MagicUtil.decode(buffer);
 		particleColor = buffer.readInt();
 	}
 

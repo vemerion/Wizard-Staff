@@ -56,8 +56,8 @@ public class BookshelfMagic extends Magic {
 
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
-		generated = MagicUtil.decode(buffer, ForgeRegistries.ITEMS);
-		sound = MagicUtil.decode(buffer, ForgeRegistries.SOUND_EVENTS);
+		generated = MagicUtil.decode(buffer);
+		sound = MagicUtil.decode(buffer);
 	}
 
 	@Override

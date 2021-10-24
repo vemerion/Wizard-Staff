@@ -69,7 +69,7 @@ public class SmeltingMagic extends Magic {
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
 		recipeType = (IRecipeType<IRecipe<IInventory>>) MagicUtil.decode(buffer, Registry.RECIPE_TYPE);
-		sound = MagicUtil.decode(buffer, ForgeRegistries.SOUND_EVENTS);
+		sound = MagicUtil.decode(buffer);
 		interval = buffer.readInt();
 		int nameLength = buffer.readInt();
 		recipeName = buffer.readString(nameLength);

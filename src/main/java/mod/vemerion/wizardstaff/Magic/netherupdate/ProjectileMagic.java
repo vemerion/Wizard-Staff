@@ -78,8 +78,8 @@ public class ProjectileMagic extends Magic {
 
 	@Override
 	public void decodeAdditional(PacketBuffer buffer) {
-		projectileType = MagicUtil.decode(buffer, ForgeRegistries.ENTITIES);
-		sound = MagicUtil.decode(buffer, ForgeRegistries.SOUND_EVENTS);
+		projectileType = MagicUtil.decode(buffer);
+		sound = MagicUtil.decode(buffer);
 		speed = buffer.readFloat();
 	}
 

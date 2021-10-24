@@ -44,14 +44,11 @@ public class MagicUtil {
 	}
 
 	public static <T extends IForgeRegistryEntry<T>> void encode(PacketBuffer buffer, T obj) {
-		String key = obj.getRegistryName().toString();
-		buffer.writeInt(key.length());
-		buffer.writeString(key);
+		buffer.writeRegistryId(obj);
 	}
 
-	public static <T extends IForgeRegistryEntry<T>> T decode(PacketBuffer buffer, IForgeRegistry<T> registry) {
-		int keyLen = buffer.readInt();
-		return registry.getValue(new ResourceLocation(buffer.readString(keyLen)));
+	public static <T extends IForgeRegistryEntry<T>> T decode(PacketBuffer buffer) {
+		return buffer.readRegistryId();
 	}
 	// ---
 
