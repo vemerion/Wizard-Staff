@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
-import mod.vemerion.wizardstaff.Magic.MagicUtil;
+import mod.vemerion.wizardstaff.Magic.RegistryMatch;
 import mod.vemerion.wizardstaff.init.ModMagics;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -27,39 +27,39 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ForceEntityMagic extends Magic {
 
 	private float force;
-	private EntityType<?> type;
+	private RegistryMatch<EntityType<?>> match;
 
 	public ForceEntityMagic(MagicType<? extends ForceEntityMagic> type) {
 		super(type);
 	}
 
-	public ForceEntityMagic setAdditionalParams(EntityType<?> type, float force) {
-		this.type = type;
+	public ForceEntityMagic setAdditionalParams(RegistryMatch<EntityType<?>> match, float force) {
+		this.match = match;
 		this.force = force;
 		return this;
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		type = MagicUtil.read(json, ForgeRegistries.ENTITIES, "entity");
+		match = RegistryMatch.read(ForgeRegistries.ENTITIES, JSONUtils.getJsonObject(json, "entity_match"));
 		force = JSONUtils.getFloat(json, "force");
 	}
 
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, type, "entity");
+		json.add("entity_match", match.write());
 		json.addProperty("force", force);
 	}
 
 	@Override
 	public void encodeAdditional(PacketBuffer buffer) {
-		MagicUtil.encode(buffer, type);
+		match.encode(buffer);
 		buffer.writeFloat(force);
 	}
 
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
-		type = MagicUtil.decode(buffer, ForgeRegistries.ENTITIES);
+		match = RegistryMatch.decode(ForgeRegistries.ENTITIES, buffer);
 		force = buffer.readFloat();
 	}
 
@@ -71,7 +71,7 @@ public class ForceEntityMagic extends Magic {
 								+ ModMagics.FORCE_ENTITY_MAGIC.getRegistryName().getPath() + ".attract")
 						: new TranslationTextComponent("gui." + Main.MODID + "."
 								+ ModMagics.FORCE_ENTITY_MAGIC.getRegistryName().getPath() + ".repel"),
-				type.getName() };
+				match.getName() };
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class ForceEntityMagic extends Magic {
 
 	@Override
 	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		for (Entity e : world.getEntitiesWithinAABB(type, player.getBoundingBox().grow(3), e -> true)) {
+		for (Entity e : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().grow(3), e -> match.test(e.getType()))) {
 			Vector3d motion = player.getPositionVec().subtract(e.getPositionVec()).normalize().scale(force).mul(1, 0, 1)
 					.add(0, e.getMotion().y, 0);
 			e.setMotion(motion);

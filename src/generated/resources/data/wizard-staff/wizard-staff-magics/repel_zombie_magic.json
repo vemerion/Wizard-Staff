@@ -5,6 +5,8 @@
   "ingredient": {
     "item": "minecraft:glistering_melon_slice"
   },
-  "entity": "minecraft:zombie",
+  "entity_match": {
+    "entity_type": "minecraft:zombie"
+  },
   "force": -0.1
 }

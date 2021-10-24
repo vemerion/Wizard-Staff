@@ -5,5 +5,7 @@
   "ingredient": {
     "item": "minecraft:sponge"
   },
-  "fluid": "minecraft:water"
+  "fluid_match": {
+    "tag": "minecraft:water"
+  }
 }

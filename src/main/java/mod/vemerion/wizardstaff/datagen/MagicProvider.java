@@ -16,20 +16,21 @@ import com.google.gson.GsonBuilder;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Helper.Helper;
-import mod.vemerion.wizardstaff.Magic.BlockMatch;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.Magics;
+import mod.vemerion.wizardstaff.Magic.RegistryMatch;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModItems;
 import mod.vemerion.wizardstaff.init.ModMagics;
 import mod.vemerion.wizardstaff.init.ModSounds;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -37,6 +38,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -44,6 +46,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MagicProvider implements IDataProvider {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -124,20 +127,20 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.WRITABLE_BOOK_MAGIC).setAdditionalParams(ImmutableList.of("All that glitters is gold", "Fear the old blood", "Every fleeing man must be caught. Every secret must be unearthed. Such is the conceit of the self-proclaimed seeker of truth.", "What we do in life echoes in eternity", "STEVEN LIVES", "What we've got here is... failure to communicate", "All those moments will be lost in time, like tears in rain", "A wizard is never late, nor is he early. He arrives precisely when he means to.")).setParams(10, 20, ing(Items.WRITABLE_BOOK)));
 		c.accept(create(ModMagics.PUSH_BLOCK_MAGIC, "push_spawner_magic").setAdditionalParams(Blocks.SPAWNER).setParams(15, 25, ing(Items.MOSSY_COBBLESTONE)));
 		c.accept(create(ModMagics.REVERT_POSITION_MAGIC).setParams(15, 15, ing(Items.CHORUS_FRUIT)));
-		c.accept(create(ModMagics.REMOVE_FLUID_MAGIC, "remove_water_magic").setAdditionalParams(Fluids.WATER).setParams(0.2f, 10, ing(Items.SPONGE)));
+		c.accept(create(ModMagics.REMOVE_FLUID_MAGIC, "remove_water_magic").setAdditionalParams(new RegistryMatch<Fluid>(ForgeRegistries.FLUIDS, FluidTags.WATER)).setParams(0.2f, 10, ing(Items.SPONGE)));
 		c.accept(create(ModMagics.PUSH_BUTTON_MAGIC).setParams(1, -1, ing(Items.STONE_BUTTON)));
 		c.accept(create(ModMagics.NAME_TAG_MAGIC).setAdditionalParams(ImmutableList.of("ig", "nite", "syl", "la", "bles", "di", "vide", "un", "ex", "am", "ples", "dif", "fer", "ence", "re", "main", "der")).setParams(10, 20, ing(Items.NAME_TAG)));
 		c.accept(create(ModMagics.LOCATE_SPAWN_MAGIC).setParams(25, 20, ing(Items.COMPASS)));
-		c.accept(create(ModMagics.TRANSFORM_ENTITY_MAGIC, "cow_to_mooshroom_magic").setAdditionalParams(EntityType.COW, EntityType.MOOSHROOM, Helper.color(200, 100, 100, 255)).setParams(90, 25, ing(Items.BROWN_MUSHROOM)));
+		c.accept(create(ModMagics.TRANSFORM_ENTITY_MAGIC, "cow_to_mooshroom_magic").setAdditionalParams(new RegistryMatch<EntityType<?>>(ForgeRegistries.ENTITIES, EntityType.COW), EntityType.MOOSHROOM, Helper.color(200, 100, 100, 255)).setParams(90, 25, ing(Items.BROWN_MUSHROOM)));
 		c.accept(create(ModMagics.INVENTORY_MAGIC).setParams(10, 10, ing(Items.CHEST)));
 		c.accept(create(ModMagics.ENDER_CHEST_MAGIC).setParams(10, 10, ing(Items.ENDER_CHEST)));
 		c.accept(create(ModMagics.DEFLECT_PROJECTILE_MAGIC).setAdditionalParams(ImmutableSet.of()).setParams(0.8f, -1, ing(Items.SHIELD)));
 		c.accept(create(ModMagics.REPAIR_ARMOR_MAGIC).setAdditionalParams(1).setParams(1, -1, ing(Items.ANVIL)));
 		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC, "summon_friendly_vex_magic").setAdditionalParams(3).setAdditionalParams(ModEntities.MAGIC_VEX, ModSounds.BELL).setParams(40, 40, ing(Items.TOTEM_OF_UNDYING)));
-		c.accept(create(ModMagics.MASS_HARVEST_MAGIC, "chop_tree_magic").setAdditionalParams(new BlockMatch(BlockTags.LOGS), 40).setParams(2, 40, ing(Items.DIAMOND_AXE)));
-		c.accept(create(ModMagics.MASS_HARVEST_MAGIC, "clear_leaves_magic").setAdditionalParams(new BlockMatch(BlockTags.LEAVES), 50).setParams(0.1f, 20, ing(Items.SHEARS)));
-		c.accept(create(ModMagics.FORCE_ENTITY_MAGIC, "item_magnet_magic").setAdditionalParams(EntityType.ITEM, 0.2f).setParams(0.1f, -1, ing(Items.IRON_BLOCK)));
-		c.accept(create(ModMagics.FORCE_ENTITY_MAGIC, "repel_zombie_magic").setAdditionalParams(EntityType.ZOMBIE, -0.1f).setParams(0.5f, -1, ing(Items.GLISTERING_MELON_SLICE)));
+		c.accept(create(ModMagics.MASS_HARVEST_MAGIC, "chop_tree_magic").setAdditionalParams(new RegistryMatch<Block>(ForgeRegistries.BLOCKS, BlockTags.LOGS), 40).setParams(2, 40, ing(Items.DIAMOND_AXE)));
+		c.accept(create(ModMagics.MASS_HARVEST_MAGIC, "clear_leaves_magic").setAdditionalParams(new RegistryMatch<Block>(ForgeRegistries.BLOCKS, BlockTags.LEAVES), 50).setParams(0.1f, 20, ing(Items.SHEARS)));
+		c.accept(create(ModMagics.FORCE_ENTITY_MAGIC, "item_magnet_magic").setAdditionalParams(new RegistryMatch<EntityType<?>>(ForgeRegistries.ENTITIES, EntityType.ITEM), 0.2f).setParams(0.1f, -1, ing(Items.IRON_BLOCK)));
+		c.accept(create(ModMagics.FORCE_ENTITY_MAGIC, "repel_zombie_magic").setAdditionalParams(new RegistryMatch<EntityType<?>>(ForgeRegistries.ENTITIES, EntityType.ZOMBIE), -0.1f).setParams(0.5f, -1, ing(Items.GLISTERING_MELON_SLICE)));
 		c.accept(create(ModMagics.SWAP_POSITION_MAGIC).setAdditionalParams(ImmutableSet.of(EntityType.ENDER_DRAGON.getRegistryName(), EntityType.WITHER.getRegistryName()), 5).setParams(25, 20, ing(Items.ARMOR_STAND)));
 		c.accept(create(ModMagics.SWAP_HEALTH_FOOD_MAGIC).setParams(20, 20, ing(Items.COOKED_BEEF)));
 		c.accept(create(ModMagics.SWAP_TRADE_MAGIC).setAdditionalParams(ing(Items.BELL)).setParams(400, 40, ing(Items.EMERALD)));
@@ -197,7 +200,7 @@ public class MagicProvider implements IDataProvider {
 	private List<String> soulSandMagicShape() {
 		return shape(" x ", "x  ", " x ", " x ", "  x", " x ", "  x", " x ", " p ");
 	}
-	
+
 	private List<String> tntShape() {
 		return shape("x", "x", "x", " ", "p");
 	}

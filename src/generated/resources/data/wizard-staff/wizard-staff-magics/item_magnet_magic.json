@@ -5,6 +5,8 @@
   "ingredient": {
     "item": "minecraft:iron_block"
   },
-  "entity": "minecraft:item",
+  "entity_match": {
+    "entity_type": "minecraft:item"
+  },
   "force": 0.2
 }

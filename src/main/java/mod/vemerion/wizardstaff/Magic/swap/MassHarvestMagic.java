@@ -8,9 +8,9 @@ import java.util.Set;
 import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Helper.Helper;
-import mod.vemerion.wizardstaff.Magic.BlockMatch;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
+import mod.vemerion.wizardstaff.Magic.RegistryMatch;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
@@ -30,17 +30,18 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MassHarvestMagic extends Magic {
 
-	private BlockMatch match;
+	private RegistryMatch<Block> match;
 	private int harvestLimit;
 
 	public MassHarvestMagic(MagicType<? extends MassHarvestMagic> type) {
 		super(type);
 	}
 
-	public MassHarvestMagic setAdditionalParams(BlockMatch match, int harvestLimit) {
+	public MassHarvestMagic setAdditionalParams(RegistryMatch<Block> match, int harvestLimit) {
 		this.match = match;
 		this.harvestLimit = harvestLimit;
 		return this;
@@ -48,7 +49,7 @@ public class MassHarvestMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		match = BlockMatch.read(JSONUtils.getJsonObject(json, "block_match"));
+		match = RegistryMatch.read(ForgeRegistries.BLOCKS, JSONUtils.getJsonObject(json, "block_match"));
 		harvestLimit = JSONUtils.getInt(json, "harvest_limit");
 	}
 
@@ -66,7 +67,7 @@ public class MassHarvestMagic extends Magic {
 
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
-		match = BlockMatch.decode(buffer);
+		match = RegistryMatch.decode(ForgeRegistries.BLOCKS, buffer);
 		harvestLimit = buffer.readInt();
 	}
 

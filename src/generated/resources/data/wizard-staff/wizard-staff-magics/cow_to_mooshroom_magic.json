@@ -5,7 +5,9 @@
   "ingredient": {
     "item": "minecraft:brown_mushroom"
   },
-  "from": "minecraft:cow",
+  "entity_match": {
+    "entity_type": "minecraft:cow"
+  },
   "to": "minecraft:mooshroom",
   "particle_color": -3644316
 }

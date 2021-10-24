@@ -6,6 +6,7 @@ import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
+import mod.vemerion.wizardstaff.Magic.RegistryMatch;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
 import net.minecraft.entity.Entity;
@@ -21,7 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class TransformEntityMagic extends RayMagic {
 
-	private EntityType<?> from;
+	private RegistryMatch<EntityType<?>> match;
 	private EntityType<?> to;
 	private int particleColor;
 	private Vector4f particleColorComponents;
@@ -30,8 +31,8 @@ public class TransformEntityMagic extends RayMagic {
 		super(type);
 	}
 
-	public TransformEntityMagic setAdditionalParams(EntityType<?> from, EntityType<?> to, int particleColor) {
-		this.from = from;
+	public TransformEntityMagic setAdditionalParams(RegistryMatch<EntityType<?>> match, EntityType<?> to, int particleColor) {
+		this.match = match;
 		this.to = to;
 		this.particleColor = particleColor;
 		return this;
@@ -39,35 +40,35 @@ public class TransformEntityMagic extends RayMagic {
 
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, from, "from");
+		json.add("entity_match", match.write());
 		MagicUtil.write(json, to, "to");
 		json.addProperty("particle_color", particleColor);
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		from = MagicUtil.read(json, ForgeRegistries.ENTITIES, "from");
+		match = RegistryMatch.read(ForgeRegistries.ENTITIES, JSONUtils.getJsonObject(json, "entity_match"));
 		to = MagicUtil.read(json, ForgeRegistries.ENTITIES, "to");
 		particleColor = JSONUtils.getInt(json, "particle_color");
 	}
 
 	@Override
 	protected void encodeAdditional(PacketBuffer buffer) {
-		MagicUtil.encode(buffer, from);
+		match.encode(buffer);
 		MagicUtil.encode(buffer, to);
 		buffer.writeInt(particleColor);
 	}
 
 	@Override
 	protected void decodeAdditional(PacketBuffer buffer) {
-		from = MagicUtil.decode(buffer, ForgeRegistries.ENTITIES);
+		match = RegistryMatch.decode(ForgeRegistries.ENTITIES, buffer);
 		to = MagicUtil.decode(buffer, ForgeRegistries.ENTITIES);
 		particleColor = buffer.readInt();
 	}
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { from.getName(), to.getName() };
+		return new Object[] { match.getName(), to.getName() };
 	}
 
 	@Override
@@ -82,7 +83,7 @@ public class TransformEntityMagic extends RayMagic {
 
 	@Override
 	protected void hitEntity(World world, PlayerEntity player, Entity target) {
-		if (target.getType() == from) {
+		if (match.test(target.getType())) {
 			playSoundServer(world, player, ModSounds.TRANSFORM, 0.7f, soundPitch(player));
 			if (!world.isRemote) {
 				cost(player);
