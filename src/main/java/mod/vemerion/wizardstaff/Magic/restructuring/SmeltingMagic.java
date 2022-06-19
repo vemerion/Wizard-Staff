@@ -12,25 +12,25 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.Registry;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class SmeltingMagic extends Magic {
 
-	private IRecipeType<? extends IRecipe<IInventory>> recipeType;
+	private RecipeType<? extends Recipe<Container>> recipeType;
 	private int interval;
 	private SoundEvent sound;
 	private String recipeName;
@@ -40,7 +40,7 @@ public class SmeltingMagic extends Magic {
 		super(type);
 	}
 
-	public SmeltingMagic setAdditionalParams(IRecipeType<? extends IRecipe<IInventory>> recipeType, int interval,
+	public SmeltingMagic setAdditionalParams(RecipeType<? extends Recipe<Container>> recipeType, int interval,
 			SoundEvent sound, String recipeName, int itemCost) {
 		this.recipeType = recipeType;
 		this.interval = interval;
@@ -61,37 +61,37 @@ public class SmeltingMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
-		recipeType = (IRecipeType<IRecipe<IInventory>>) MagicUtil.decode(buffer, Registry.RECIPE_TYPE);
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
+		recipeType = (RecipeType<Recipe<Container>>) MagicUtil.decode(buffer, Registry.RECIPE_TYPE);
 		sound = MagicUtil.decode(buffer);
 		interval = buffer.readInt();
 		int nameLength = buffer.readInt();
-		recipeName = buffer.readString(nameLength);
+		recipeName = buffer.readUtf(nameLength);
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		MagicUtil.encode(buffer, recipeType, Registry.RECIPE_TYPE);
 		MagicUtil.encode(buffer, sound);
 		buffer.writeInt(interval);
 		buffer.writeInt(recipeName.length());
-		buffer.writeString(recipeName);
+		buffer.writeUtf(recipeName);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void readAdditional(JsonObject json) {
-		recipeType = (IRecipeType<IRecipe<IInventory>>) MagicUtil.read(json, Registry.RECIPE_TYPE, "recipe_type");
+		recipeType = (RecipeType<Recipe<Container>>) MagicUtil.read(json, Registry.RECIPE_TYPE, "recipe_type");
 		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound");
-		interval = JSONUtils.getInt(json, "smelt_interval");
-		recipeName = JSONUtils.getString(json, "recipe_name");
-		itemCost = JSONUtils.getInt(json, "item_cost");
+		interval = GsonHelper.getAsInt(json, "smelt_interval");
+		recipeName = GsonHelper.getAsString(json, "recipe_name");
+		itemCost = GsonHelper.getAsInt(json, "item_cost");
 	}
 
 	@Override
@@ -105,44 +105,44 @@ public class SmeltingMagic extends Magic {
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { new TranslationTextComponent(recipeName) };
+		return new Object[] { new TranslatableComponent(recipeName) };
 	}
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { new TranslationTextComponent(recipeName) };
+		return new Object[] { new TranslatableComponent(recipeName) };
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		if (!world.isRemote) {
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
+		if (!level.isClientSide) {
 			if (count % interval == 0 && count != getUseDuration(staff)) {
-				Random rand = player.getRNG();
+				Random rand = player.getRandom();
 
-				List<ItemEntity> entities = world.getEntitiesWithinAABB(ItemEntity.class,
-						player.getBoundingBox().grow(2),
-						e -> e.getItem().getCount() >= itemCost && !getRecipes(world, e).isEmpty());
+				List<ItemEntity> entities = level.getEntitiesOfClass(ItemEntity.class,
+						player.getBoundingBox().inflate(2),
+						e -> e.getItem().getCount() >= itemCost && !getRecipes(level, e).isEmpty());
 				if (entities.isEmpty())
 					return;
 
 				ItemEntity itemEntity = entities.get(rand.nextInt(entities.size()));
-				IInventory inv = new Inventory(itemEntity.getItem());
-				List<? extends IRecipe<IInventory>> recipes = world.getRecipeManager().getRecipes(recipeType, inv,
-						world);
+				Container inv = new SimpleContainer(itemEntity.getItem());
+				List<? extends Recipe<Container>> recipes = level.getRecipeManager().getRecipesFor(recipeType, inv,
+						level);
 
 				if (!recipes.isEmpty()) {
-					playSoundServer(world, player, sound, 1, soundPitch(player));
+					playSoundServer(level, player, sound, 1, soundPitch(player));
 					cost(player);
-					IRecipe<IInventory> recipe = recipes.get(rand.nextInt(recipes.size()));
+					Recipe<Container> recipe = recipes.get(rand.nextInt(recipes.size()));
 					itemEntity.getItem().shrink(itemCost);
-					itemEntity.entityDropItem(recipe.getCraftingResult(inv));
+					itemEntity.spawnAtLocation(recipe.assemble(inv));
 				}
 			}
 		}
 	}
 
-	private List<? extends IRecipe<IInventory>> getRecipes(World world, ItemEntity itemEntity) {
-		IInventory inv = new Inventory(itemEntity.getItem());
-		return world.getRecipeManager().getRecipes(recipeType, inv, world);
+	private List<? extends Recipe<Container>> getRecipes(Level level, ItemEntity itemEntity) {
+		Container inv = new SimpleContainer(itemEntity.getItem());
+		return level.getRecipeManager().getRecipesFor(recipeType, inv, level);
 	}
 }

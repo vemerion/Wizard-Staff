@@ -1,0 +1,11 @@
+{
+  "cost": 400.0,
+  "duration": 40,
+  "magic": "wizardstaff:swap_trade_magic",
+  "ingredient": {
+    "item": "minecraft:emerald"
+  },
+  "blacklist_ingredient": {
+    "item": "minecraft:bell"
+  }
+}

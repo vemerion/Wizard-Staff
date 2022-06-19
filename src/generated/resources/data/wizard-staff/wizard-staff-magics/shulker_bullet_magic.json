@@ -1,8 +1,0 @@
-{
-  "cost": 20.0,
-  "duration": 25,
-  "magic": "wizard-staff:shulker_bullet_magic",
-  "ingredient": {
-    "item": "minecraft:shulker_shell"
-  }
-}

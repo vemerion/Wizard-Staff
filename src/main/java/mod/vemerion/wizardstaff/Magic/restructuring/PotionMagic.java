@@ -9,29 +9,28 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class PotionMagic extends Magic {
 
-	private int level;
+	private int amplifier;
 	private int potionTime;
 	private float radius;
-	private Effect potion;
+	private MobEffect potion;
 	private boolean affectCaster;
 	private SoundEvent sound;
 
@@ -39,8 +38,8 @@ public class PotionMagic extends Magic {
 		super(type);
 	}
 	
-	public PotionMagic setAdditionalParams(int level, int potionTime, float radius, Effect potion, boolean affectCaster, SoundEvent sound) {
-		this.level = level;
+	public PotionMagic setAdditionalParams(int amplifier, int potionTime, float radius, MobEffect potion, boolean affectCaster, SoundEvent sound) {
+		this.amplifier = amplifier;
 		this.potionTime = potionTime;
 		this.radius = radius;
 		this.potion = potion;
@@ -60,23 +59,23 @@ public class PotionMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		level = JSONUtils.getInt(json, "level");
-		potionTime = JSONUtils.getInt(json, "potion_time");
-		radius = JSONUtils.getFloat(json, "radius");
-		potion = MagicUtil.read(json, ForgeRegistries.POTIONS, "potion");
-		affectCaster = JSONUtils.getBoolean(json, "affect_caster");
+		amplifier = GsonHelper.getAsInt(json, "level");
+		potionTime = GsonHelper.getAsInt(json, "potion_time");
+		radius = GsonHelper.getAsFloat(json, "radius");
+		potion = MagicUtil.read(json, ForgeRegistries.MOB_EFFECTS, "potion");
+		affectCaster = GsonHelper.getAsBoolean(json, "affect_caster");
 		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound");
 	}
 	
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		json.addProperty("level", level);
+		json.addProperty("level", amplifier);
 		json.addProperty("potion_time", potionTime);
 		json.addProperty("radius", radius);
 		MagicUtil.write(json, potion, "potion");
@@ -85,8 +84,8 @@ public class PotionMagic extends Magic {
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
-		level = buffer.readInt();
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
+		amplifier = buffer.readInt();
 		potionTime = buffer.readInt();
 		radius = buffer.readFloat();
 		potion = MagicUtil.decode(buffer);
@@ -95,8 +94,8 @@ public class PotionMagic extends Magic {
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
-		buffer.writeInt(level);
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
+		buffer.writeInt(amplifier);
 		buffer.writeInt(potionTime);
 		buffer.writeFloat(radius);
 		MagicUtil.encode(buffer, potion);
@@ -114,44 +113,44 @@ public class PotionMagic extends Magic {
 		Object[] args = new Object[5];
 		args[0] = potion.getDisplayName();
 		args[1] = levelTranslation();
-		args[2] = new StringTextComponent(String.valueOf(potionTime / 20));
-		ITextComponent glue = radius > 0.001
-				? new TranslationTextComponent("gui.wizard-staff.potion_magic.glue")
-				: StringTextComponent.EMPTY;
-		args[3] = affectCaster ? new TranslationTextComponent("gui.wizard-staff.potion_magic.affect_caster", glue)
-				: StringTextComponent.EMPTY;
-		args[4] = radius > 0.001 ? new TranslationTextComponent("gui.wizard-staff.potion_magic.affect_others")
-				: StringTextComponent.EMPTY;
+		args[2] = new TextComponent(String.valueOf(potionTime / 20));
+		Component glue = radius > 0.001
+				? new TranslatableComponent("gui.wizardstaff.potion_magic.glue")
+				: TextComponent.EMPTY;
+		args[3] = affectCaster ? new TranslatableComponent("gui.wizardstaff.potion_magic.affect_caster", glue)
+				: TextComponent.EMPTY;
+		args[4] = radius > 0.001 ? new TranslatableComponent("gui.wizardstaff.potion_magic.affect_others")
+				: TextComponent.EMPTY;
 
 		return args;
 	}
 
-	private TextComponent levelTranslation() {
-		if (level <= 0)
-			return new TranslationTextComponent("enchantment.level.1");
-		else if (level <= 10)
-			return new TranslationTextComponent("enchantment.level." + level);
+	private Component levelTranslation() {
+		if (amplifier <= 0)
+			return new TranslatableComponent("enchantment.level.1");
+		else if (amplifier <= 10)
+			return new TranslatableComponent("enchantment.level." + amplifier);
 		else
-			return new StringTextComponent(String.valueOf(level));
+			return new TextComponent(String.valueOf(amplifier));
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
 			cost(player);
 
 			if (affectCaster)
-				player.addPotionEffect(new EffectInstance(potion, potionTime, level - 1));
+				player.addEffect(new MobEffectInstance(potion, potionTime, amplifier - 1));
 
 			if (radius > 0.001) {
-				AxisAlignedBB box = new AxisAlignedBB(player.getPositionVec(), player.getPositionVec()).grow(radius);
-				for (LivingEntity e : world.getEntitiesWithinAABB(LivingEntity.class, box, e -> e != player)) {
-					e.addPotionEffect(new EffectInstance(potion, potionTime, level - 1));
+				AABB box = new AABB(player.position(), player.position()).inflate(radius);
+				for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, box, e -> e != player)) {
+					e.addEffect(new MobEffectInstance(potion, potionTime, amplifier - 1));
 				}
 			}
 		}
 
 		player.playSound(sound, 1, soundPitch(player));
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 }

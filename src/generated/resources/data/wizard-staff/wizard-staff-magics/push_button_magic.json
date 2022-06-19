@@ -1,8 +1,0 @@
-{
-  "cost": 1.0,
-  "duration": -1,
-  "magic": "wizard-staff:push_button_magic",
-  "ingredient": {
-    "item": "minecraft:stone_button"
-  }
-}

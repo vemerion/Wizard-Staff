@@ -9,10 +9,10 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public class CarvedPumpkinMagic extends Magic {
 	
@@ -21,21 +21,21 @@ public class CarvedPumpkinMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
 		player.playSound(ModSounds.PUMPKIN_MAGIC, 0.2f, soundPitch(player));
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			cost(player);
-			PumpkinMagicEntity entity = new PumpkinMagicEntity(ModEntities.PUMPKIN_MAGIC, world, player);
-			entity.setPositionAndRotation(player.getPosX(), player.getPosY() + 2, player.getPosZ(), player.rotationYaw,
+			PumpkinMagicEntity entity = new PumpkinMagicEntity(ModEntities.PUMPKIN_MAGIC, level, player);
+			entity.absMoveTo(player.getX(), player.getY() + 2, player.getZ(), player.getYRot(),
 					0);
-			world.addEntity(entity);
+			level.addFreshEntity(entity);
 		}
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
 	@Override

@@ -1,0 +1,8 @@
+{
+  "cost": 30.0,
+  "duration": 40,
+  "magic": "wizardstaff:map_magic",
+  "ingredient": {
+    "item": "minecraft:map"
+  }
+}

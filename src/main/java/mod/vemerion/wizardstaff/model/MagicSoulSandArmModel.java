@@ -1,142 +1,140 @@
 package mod.vemerion.wizardstaff.model;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
 
 /**
  * Created using Tabula 8.0.0
  */
 public class MagicSoulSandArmModel extends EntityModel<MagicSoulSandArmEntity> {
-    public ModelRenderer arm1;
-    public ModelRenderer palm;
-    public ModelRenderer arm2;
-    public ModelRenderer thumb1;
-    public ModelRenderer index1;
-    public ModelRenderer middle1;
-    public ModelRenderer little1;
-    public ModelRenderer thumb2;
-    public ModelRenderer index2;
-    public ModelRenderer index3;
-    public ModelRenderer middle2;
-    public ModelRenderer middle3;
-    public ModelRenderer little2;
-    public ModelRenderer little3;
+	public ModelPart arm1;
+	public ModelPart palm;
+	public ModelPart arm2;
+	public ModelPart thumb1;
+	public ModelPart index1;
+	public ModelPart middle1;
+	public ModelPart little1;
+	public ModelPart thumb2;
+	public ModelPart index2;
+	public ModelPart index3;
+	public ModelPart middle2;
+	public ModelPart middle3;
+	public ModelPart little2;
+	public ModelPart little3;
 
-    public MagicSoulSandArmModel() {
-        this.textureWidth = 64;
-        this.textureHeight = 64;
-        this.palm = new ModelRenderer(this, 20, 0);
-        this.palm.setRotationPoint(0.0F, -32.0F, 0.0F);
-        this.palm.addBox(-6.0F, -13.0F, -2.5F, 12.0F, 13.0F, 5.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(palm, 0.0F, 0.0F, 0.06981317007977318F);
-        this.arm2 = new ModelRenderer(this, 0, 0);
-        this.arm2.setRotationPoint(-1.0F, 0.0F, 0.0F);
-        this.arm2.addBox(-4.0F, -32.0F, -1.5F, 3.0F, 32.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(arm2, 0.0F, 0.0F, 0.06981317007977318F);
-        this.little1 = new ModelRenderer(this, 20, 18);
-        this.little1.setRotationPoint(-4.0F, -13.0F, 0.0F);
-        this.little1.addBox(-2.0F, -6.0F, -2.0F, 4.0F, 6.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(little1, 0.24434609527920614F, 0.0F, -0.13962634015954636F);
-        this.middle3 = new ModelRenderer(this, 15, 0);
-        this.middle3.setRotationPoint(0.0F, -3.0F, 0.0F);
-        this.middle3.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(middle3, 0.19547687289441354F, 0.0F, 0.0F);
-        this.thumb2 = new ModelRenderer(this, 36, 18);
-        this.thumb2.setRotationPoint(0.0F, -6.0F, 0.0F);
-        this.thumb2.addBox(-1.5F, -4.0F, -1.5F, 3.0F, 4.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(thumb2, 0.3127630032889644F, 0.0F, 0.0F);
-        this.little2 = new ModelRenderer(this, 0, 37);
-        this.little2.setRotationPoint(0.0F, -6.0F, 0.0F);
-        this.little2.addBox(-1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(little2, 0.19547687289441354F, 0.0F, 0.0F);
-        this.middle2 = new ModelRenderer(this, 0, 37);
-        this.middle2.setRotationPoint(0.0F, -6.0F, 0.0F);
-        this.middle2.addBox(-1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(middle2, 0.19547687289441354F, 0.0F, 0.0F);
-        this.middle1 = new ModelRenderer(this, 20, 18);
-        this.middle1.setRotationPoint(0.2F, -13.0F, 0.0F);
-        this.middle1.addBox(-2.0F, -6.0F, -2.0F, 4.0F, 6.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(middle1, 0.24434609527920614F, 0.0F, 0.0F);
-        this.little3 = new ModelRenderer(this, 15, 0);
-        this.little3.setRotationPoint(0.0F, -3.0F, 0.0F);
-        this.little3.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(little3, 0.19547687289441354F, 0.0F, 0.0F);
-        this.index3 = new ModelRenderer(this, 15, 0);
-        this.index3.setRotationPoint(0.0F, -3.0F, 0.0F);
-        this.index3.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(index3, 0.19547687289441354F, 0.0F, 0.0F);
-        this.index1 = new ModelRenderer(this, 20, 18);
-        this.index1.setRotationPoint(4.4F, -13.0F, 0.0F);
-        this.index1.addBox(-2.0F, -6.0F, -2.0F, 4.0F, 6.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(index1, 0.7916813593572721F, 0.0F, 0.1563815016444822F);
-        this.index2 = new ModelRenderer(this, 0, 37);
-        this.index2.setRotationPoint(0.0F, -6.0F, 0.0F);
-        this.index2.addBox(-1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(index2, 0.19547687289441354F, 0.0F, 0.0F);
-        this.arm1 = new ModelRenderer(this, 0, 0);
-        this.arm1.setRotationPoint(0.0F, 24.0F, 0.0F);
-        this.arm1.addBox(1.0F, -32.0F, -1.5F, 3.0F, 32.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(arm1, 0.0F, 0.0F, -0.03490658503988659F);
-        this.thumb1 = new ModelRenderer(this, 20, 18);
-        this.thumb1.setRotationPoint(6.0F, -6.0F, 0.0F);
-        this.thumb1.addBox(-2.0F, -6.0F, -2.0F, 4.0F, 6.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-        this.setRotateAngle(thumb1, 0.392350007858842F, 0.0F, 0.7428121536172364F);
-        this.arm1.addChild(this.palm);
-        this.arm1.addChild(this.arm2);
-        this.palm.addChild(this.little1);
-        this.middle2.addChild(this.middle3);
-        this.thumb1.addChild(this.thumb2);
-        this.little1.addChild(this.little2);
-        this.middle1.addChild(this.middle2);
-        this.palm.addChild(this.middle1);
-        this.little2.addChild(this.little3);
-        this.index2.addChild(this.index3);
-        this.palm.addChild(this.index1);
-        this.index1.addChild(this.index2);
-        this.palm.addChild(this.thumb1);        
-    }
+	public MagicSoulSandArmModel(ModelPart parts) {
+		this.arm1 = parts.getChild("arm1");
+		this.palm = arm1.getChild("palm");
+		this.arm2 = arm1.getChild("arm2");
+		this.thumb1 = palm.getChild("thumb1");
+		this.index1 = palm.getChild("index1");
+		this.middle1 = palm.getChild("middle1");
+		this.little1 = palm.getChild("little1");
+		this.thumb2 = thumb1.getChild("thumb2");
+		this.index2 = index1.getChild("index2");
+		this.index3 = index2.getChild("index3");
+		this.middle2 = middle1.getChild("middle2");
+		this.middle3 = middle2.getChild("middle3");
+		this.little2 = little1.getChild("little2");
+		this.little3 = little2.getChild("little3");
+	}
 
-    @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) { 
-        ImmutableList.of(this.arm1).forEach((modelRenderer) -> { 
-            modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-        });
-    }
+	public static LayerDefinition createLayer() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition parts = mesh.getRoot();
+		PartDefinition arm1 = parts.addOrReplaceChild("arm1",
+				CubeListBuilder.create().texOffs(0, 0).addBox(1.0F, -32.0F, -1.5F, 3.0F, 32.0F, 3.0F, false),
+				PartPose.offsetAndRotation(0.0F, 24.0F, 0.0F, 0.0F, 0.0F, -0.03490658503988659F));
+		PartDefinition palm = arm1.addOrReplaceChild("palm",
+				CubeListBuilder.create().texOffs(20, 0).addBox(-6.0F, -13.0F, -2.5F, 12.0F, 13.0F, 5.0F, false),
+				PartPose.offsetAndRotation(0.0F, -32.0F, 0.0F, 0.0F, 0.0F, 0.06981317007977318F));
+		arm1.addOrReplaceChild("arm2",
+				CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -32.0F, -1.5F, 3.0F, 32.0F, 3.0F, false),
+				PartPose.offsetAndRotation(-1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.06981317007977318F));
+		PartDefinition thumb1 = palm.addOrReplaceChild("thumb1",
+				CubeListBuilder.create().texOffs(20, 18).addBox(-2.0F, -6.0F, -2.0F, 4.0F, 6.0F, 4.0F, false),
+				PartPose.offsetAndRotation(6.0F, -6.0F, 0.0F, 0.392350007858842F, 0.0F, 0.7428121536172364F));
+		PartDefinition index1 = palm.addOrReplaceChild("index1",
+				CubeListBuilder.create().texOffs(20, 18).addBox(-2.0F, -6.0F, -2.0F, 4.0F, 6.0F, 4.0F, false),
+				PartPose.offsetAndRotation(4.4F, -13.0F, 0.0F, 0.7916813593572721F, 0.0F, 0.1563815016444822F));
+		PartDefinition middle1 = palm.addOrReplaceChild("middle1",
+				CubeListBuilder.create().texOffs(20, 18).addBox(-2.0F, -6.0F, -2.0F, 4.0F, 6.0F, 4.0F, false),
+				PartPose.offsetAndRotation(0.2F, -13.0F, 0.0F, 0.24434609527920614F, 0.0F, 0.0F));
+		PartDefinition little1 = palm.addOrReplaceChild("little1",
+				CubeListBuilder.create().texOffs(20, 18).addBox(-2.0F, -6.0F, -2.0F, 4.0F, 6.0F, 4.0F, false),
+				PartPose.offsetAndRotation(-4.0F, -13.0F, 0.0F, 0.24434609527920614F, 0.0F, -0.13962634015954636F));
+		thumb1.addOrReplaceChild("thumb2",
+				CubeListBuilder.create().texOffs(36, 18).addBox(-1.5F, -4.0F, -1.5F, 3.0F, 4.0F, 3.0F, false),
+				PartPose.offsetAndRotation(0.0F, -6.0F, 0.0F, 0.3127630032889644F, 0.0F, 0.0F));
+		PartDefinition index2 = index1.addOrReplaceChild("index2",
+				CubeListBuilder.create().texOffs(0, 37).addBox(-1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F, false),
+				PartPose.offsetAndRotation(0.0F, -6.0F, 0.0F, 0.19547687289441354F, 0.0F, 0.0F));
+		index2.addOrReplaceChild("index3",
+				CubeListBuilder.create().texOffs(15, 0).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, false),
+				PartPose.offsetAndRotation(0.0F, -3.0F, 0.0F, 0.19547687289441354F, 0.0F, 0.0F));
+		PartDefinition middle2 = middle1.addOrReplaceChild("middle2",
+				CubeListBuilder.create().texOffs(0, 37).addBox(-1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F, false),
+				PartPose.offsetAndRotation(0.0F, -6.0F, 0.0F, 0.19547687289441354F, 0.0F, 0.0F));
+		middle2.addOrReplaceChild("middle3",
+				CubeListBuilder.create().texOffs(15, 0).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, false),
+				PartPose.offsetAndRotation(0.0F, -3.0F, 0.0F, 0.19547687289441354F, 0.0F, 0.0F));
+		PartDefinition little2 = little1.addOrReplaceChild("little2",
+				CubeListBuilder.create().texOffs(0, 37).addBox(-1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F, false),
+				PartPose.offsetAndRotation(0.0F, -6.0F, 0.0F, 0.19547687289441354F, 0.0F, 0.0F));
+		little2.addOrReplaceChild("little3",
+				CubeListBuilder.create().texOffs(15, 0).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, false),
+				PartPose.offsetAndRotation(0.0F, -3.0F, 0.0F, 0.19547687289441354F, 0.0F, 0.0F));
+		return LayerDefinition.create(mesh, 64, 64);
+	}
 
-    @Override
-    public void setRotationAngles(MagicSoulSandArmEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    	index1.rotateAngleX = (float) Math.abs(MathHelper.sin(((ageInTicks + 8) / 120) * (float) Math.PI * 2) * Math.toRadians(60));
-    	index2.rotateAngleX = (float) Math.abs(MathHelper.sin(((ageInTicks + 8) / 120) * (float) Math.PI * 2) * Math.toRadians(30));
-    	index3.rotateAngleX = (float) Math.abs(MathHelper.sin(((ageInTicks + 8) / 120) * (float) Math.PI * 2) * Math.toRadians(15));
-    	
-    	middle1.rotateAngleX = (float) Math.abs(MathHelper.sin(((ageInTicks + 2) / 120) * (float) Math.PI * 2) * Math.toRadians(60));
-    	middle2.rotateAngleX = (float) Math.abs(MathHelper.sin(((ageInTicks + 2) / 120) * (float) Math.PI * 2) * Math.toRadians(30));
-    	middle3.rotateAngleX = (float) Math.abs(MathHelper.sin(((ageInTicks + 2) / 120) * (float) Math.PI * 2) * Math.toRadians(15));
-    	
-    	little1.rotateAngleX = (float) Math.abs(MathHelper.sin(((ageInTicks - 6) / 120) * (float) Math.PI * 2) * Math.toRadians(60));
-    	little2.rotateAngleX = (float) Math.abs(MathHelper.sin(((ageInTicks - 6) / 120) * (float) Math.PI * 2) * Math.toRadians(30));
-    	little3.rotateAngleX = (float) Math.abs(MathHelper.sin(((ageInTicks - 6) / 120) * (float) Math.PI * 2) * Math.toRadians(15));
-    	
-    	thumb1.rotateAngleX = (float) Math.abs(MathHelper.sin(((ageInTicks + 4) / 120) * (float) Math.PI * 2) * Math.toRadians(60));
-    	thumb2.rotateAngleX = (float) Math.abs(MathHelper.sin(((ageInTicks + 4) / 120) * (float) Math.PI * 2) * Math.toRadians(30));
-    	
-    	palm.rotateAngleX = MathHelper.sin(((ageInTicks + 0) / 120) * (float) Math.PI * 2) * (float) Math.toRadians(15);
-    	
-    	arm1.rotateAngleY = entityIn.getRotation();
-    }
+	@Override
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn,
+			float red, float green, float blue, float alpha) {
+		ImmutableList.of(this.arm1).forEach((modelRenderer) -> {
+			modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		});
+	}
 
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
-    }
+	@Override
+	public void setupAnim(MagicSoulSandArmEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks,
+			float netHeadYaw, float headPitch) {
+		index1.xRot = (float) Math.abs(Mth.sin(((ageInTicks + 8) / 120) * (float) Math.PI * 2) * Math.toRadians(60));
+		index2.xRot = (float) Math.abs(Mth.sin(((ageInTicks + 8) / 120) * (float) Math.PI * 2) * Math.toRadians(30));
+		index3.xRot = (float) Math.abs(Mth.sin(((ageInTicks + 8) / 120) * (float) Math.PI * 2) * Math.toRadians(15));
+
+		middle1.xRot = (float) Math.abs(Mth.sin(((ageInTicks + 2) / 120) * (float) Math.PI * 2) * Math.toRadians(60));
+		middle2.xRot = (float) Math.abs(Mth.sin(((ageInTicks + 2) / 120) * (float) Math.PI * 2) * Math.toRadians(30));
+		middle3.xRot = (float) Math.abs(Mth.sin(((ageInTicks + 2) / 120) * (float) Math.PI * 2) * Math.toRadians(15));
+
+		little1.xRot = (float) Math.abs(Mth.sin(((ageInTicks - 6) / 120) * (float) Math.PI * 2) * Math.toRadians(60));
+		little2.xRot = (float) Math.abs(Mth.sin(((ageInTicks - 6) / 120) * (float) Math.PI * 2) * Math.toRadians(30));
+		little3.xRot = (float) Math.abs(Mth.sin(((ageInTicks - 6) / 120) * (float) Math.PI * 2) * Math.toRadians(15));
+
+		thumb1.xRot = (float) Math.abs(Mth.sin(((ageInTicks + 4) / 120) * (float) Math.PI * 2) * Math.toRadians(60));
+		thumb2.xRot = (float) Math.abs(Mth.sin(((ageInTicks + 4) / 120) * (float) Math.PI * 2) * Math.toRadians(30));
+
+		palm.xRot = Mth.sin(((ageInTicks + 0) / 120) * (float) Math.PI * 2) * (float) Math.toRadians(15);
+
+		arm1.yRot = entityIn.getRotation();
+	}
+
+	/**
+	 * This is a helper function from Tabula to set the rotation of model parts
+	 */
+	public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
+		modelRenderer.xRot = x;
+		modelRenderer.yRot = y;
+		modelRenderer.zRot = z;
+	}
 }

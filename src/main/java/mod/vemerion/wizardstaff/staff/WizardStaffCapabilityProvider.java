@@ -1,27 +1,27 @@
 package mod.vemerion.wizardstaff.staff;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class WizardStaffCapabilityProvider implements ICapabilitySerializable<INBT> {
+public class WizardStaffCapabilityProvider implements ICapabilitySerializable<Tag> {
 
 	private ItemStack staff;
-	private LazyOptional<IItemHandler> instance = LazyOptional.of(this::getHandler);
+	private LazyOptional<IItemHandler> instance = LazyOptional.of(this::getInteractionHandler);
 	private WizardStaffItemHandler handler;
 
 	public WizardStaffCapabilityProvider(ItemStack staff) {
 		this.staff = staff;
 	}
 
-	private WizardStaffItemHandler getHandler() {
+	private WizardStaffItemHandler getInteractionHandler() {
 		if (handler == null)
 			handler = new WizardStaffItemHandler(staff);
 		return handler;
@@ -33,23 +33,23 @@ public class WizardStaffCapabilityProvider implements ICapabilitySerializable<IN
 	}
 
 	@Override
-	public INBT serializeNBT() {
-		return getHandler().serializeNBT();
+	public Tag serializeNBT() {
+		return getInteractionHandler().serializeNBT();
 	}
 
 	@Override
-	public void deserializeNBT(INBT nbt) {
-		if (nbt instanceof CompoundNBT)
-			getHandler().deserializeNBT((CompoundNBT) nbt);
-		else if (nbt instanceof ListNBT)
-			legacyDeserialize((ListNBT) nbt);
+	public void deserializeNBT(Tag nbt) {
+		if (nbt instanceof CompoundTag)
+			getInteractionHandler().deserializeNBT((CompoundTag) nbt);
+		else if (nbt instanceof ListTag)
+			legacyDeserialize((ListTag) nbt);
 	}
 
-	private void legacyDeserialize(ListNBT nbt) {
+	private void legacyDeserialize(ListTag nbt) {
 		if (nbt.size() < 1)
 			return;
-		CompoundNBT compound = nbt.getCompound(0);
-		getHandler().insertItem(0, ItemStack.read(compound), false);
+		CompoundTag compound = nbt.getCompound(0);
+		getInteractionHandler().insertItem(0, ItemStack.of(compound), false);
 	}
 
 }

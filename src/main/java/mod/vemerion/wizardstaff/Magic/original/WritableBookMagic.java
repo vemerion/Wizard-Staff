@@ -15,15 +15,15 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.UseAction;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public class WritableBookMagic extends Magic {
 
@@ -40,7 +40,7 @@ public class WritableBookMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		wisdoms = MagicUtil.readColl(json, "wisdoms", e -> JSONUtils.getString(e, "wisdom"), new ArrayList<>());
+		wisdoms = MagicUtil.readColl(json, "wisdoms", e -> GsonHelper.convertToString(e, "wisdom"), new ArrayList<>());
 	}
 
 	@Override
@@ -49,28 +49,28 @@ public class WritableBookMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		String wisdom = wisdoms.get(player.getRNG().nextInt(wisdoms.size()));
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		String wisdom = wisdoms.get(player.getRandom().nextInt(wisdoms.size()));
 		player.playSound(ModSounds.SCRIBBLE, 1, soundPitch(player));
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
 				cost(player);
 				ItemStack book = h.extractCurrent();
-				CompoundNBT tag = book.getOrCreateTag();
-				ListNBT pages = new ListNBT();
-				pages.add(StringNBT.valueOf(wisdom));
+				CompoundTag tag = book.getOrCreateTag();
+				ListTag pages = new ListTag();
+				pages.add(StringTag.valueOf(wisdom));
 				tag.put("pages", pages);
 				book = new ItemStack(Items.WRITABLE_BOOK);
 				book.setTag(tag);
 				h.insertCurrent(book);
 			});
 		}
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
 	@Override

@@ -10,18 +10,17 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IBucketPickupHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class RemoveFluidMagic extends Magic {
@@ -39,7 +38,7 @@ public class RemoveFluidMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		match = RegistryMatch.read(ForgeRegistries.FLUIDS, JSONUtils.getJsonObject(json, "fluid_match"));
+		match = RegistryMatch.read(ForgeRegistries.FLUIDS, GsonHelper.getAsJsonObject(json, "fluid_match"));
 	}
 
 	@Override
@@ -48,12 +47,12 @@ public class RemoveFluidMagic extends Magic {
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		match.encode(buffer);
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 		match = RegistryMatch.decode(ForgeRegistries.FLUIDS, buffer);
 	}
 
@@ -68,8 +67,8 @@ public class RemoveFluidMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
@@ -83,23 +82,23 @@ public class RemoveFluidMagic extends Magic {
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
 			int count = 0;
-			BlockPos pos = player.getPosition();
-			for (BlockPos p : BlockPos.getAllInBoxMutable(pos.add(-2, -1, -2), pos.add(2, 2, 2))) {
-				BlockState blockstate = world.getBlockState(p);
+			BlockPos pos = player.blockPosition();
+			for (BlockPos p : BlockPos.betweenClosed(pos.offset(-2, -1, -2), pos.offset(2, 2, 2))) {
+				BlockState blockstate = level.getBlockState(p);
 				Block block = blockstate.getBlock();
-				if (match.test(blockstate.getFluidState().getFluid()) && block instanceof IBucketPickupHandler
-						&& ((IBucketPickupHandler) block).pickupFluid(world, p, blockstate) != Fluids.EMPTY) {
+				if (match.test(blockstate.getFluidState().getType()) && block instanceof BucketPickup
+						&& ((BucketPickup) block).pickupBlock(level, p, blockstate) != ItemStack.EMPTY) {
 					count++;
 				}
 			}
 			cost(player, count);
 			if (count > 0)
-				playSoundServer(world, player, ModSounds.EVAPORATE, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.EVAPORATE, 1, soundPitch(player));
 		}
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
 }

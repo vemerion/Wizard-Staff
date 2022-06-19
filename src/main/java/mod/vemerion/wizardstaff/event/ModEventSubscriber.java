@@ -9,7 +9,7 @@ import mod.vemerion.wizardstaff.network.CycleCurrentMessage;
 import mod.vemerion.wizardstaff.network.JukeboxMagicMessage;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
-import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -19,11 +19,6 @@ public class ModEventSubscriber {
 
 	@SubscribeEvent
 	public static void setup(FMLCommonSetupEvent event) {
-		CapabilityManager.INSTANCE.register(ScreenAnimations.class, new ScreenAnimations.ScreenAnimationsStorage(),
-				ScreenAnimations::new);
-		CapabilityManager.INSTANCE.register(Experience.class, new Experience.ExperienceStorage(), Experience::new);
-		CapabilityManager.INSTANCE.register(Wizard.class, new Wizard.WizardStorage(), Wizard::new);
-
 		Network.INSTANCE.registerMessage(0, ScreenAnimations.class, ScreenAnimations::encode, ScreenAnimations::decode,
 				ScreenAnimations::handle);
 		Network.INSTANCE.registerMessage(1, UpdateMagicsMessage.class, UpdateMagicsMessage::encode,
@@ -36,5 +31,12 @@ public class ModEventSubscriber {
 
 		Magics.init();
 
+	}
+	
+	@SubscribeEvent
+	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+		event.register(ScreenAnimations.class);
+		event.register(Experience.class);
+		event.register(Wizard.class);
 	}
 }

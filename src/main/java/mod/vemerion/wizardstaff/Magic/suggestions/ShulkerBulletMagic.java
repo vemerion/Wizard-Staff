@@ -8,14 +8,14 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ShulkerBulletEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.Direction.Axis;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ShulkerBullet;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public class ShulkerBulletMagic extends Magic {
 
@@ -34,24 +34,24 @@ public class ShulkerBulletMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 	
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
-			List<LivingEntity> nearby = world.getEntitiesWithinAABB(LivingEntity.class, player.getBoundingBox().grow(4), e -> e != player);
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
+			List<LivingEntity> nearby = level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(4), e -> e != player);
 			if (!nearby.isEmpty()) {
-				LivingEntity target = nearby.get(player.getRNG().nextInt(nearby.size()));
-				ShulkerBulletEntity bullet = new ShulkerBulletEntity(world, player, target, Axis.Y);
-				world.addEntity(bullet);
+				LivingEntity target = nearby.get(player.getRandom().nextInt(nearby.size()));
+				ShulkerBullet bullet = new ShulkerBullet(level, player, target, Axis.Y);
+				level.addFreshEntity(bullet);
 				cost(player);
-				playSoundServer(world, player, SoundEvents.ENTITY_SHULKER_SHOOT, 1, soundPitch(player));
+				playSoundServer(level, player, SoundEvents.SHULKER_SHOOT, 1, soundPitch(player));
 			}
 		}
 		
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
 }

@@ -4,17 +4,15 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceContext.BlockMode;
-import net.minecraft.util.math.RayTraceContext.FluidMode;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class BlockRayMagic extends Magic {
 
@@ -22,26 +20,26 @@ public abstract class BlockRayMagic extends Magic {
 		super(type);
 	}
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
-			Vector3d direction = Vector3d.fromPitchYaw(player.getPitchYaw());
-			Vector3d start = player.getPositionVec().add(0, 1.5, 0).add(direction.scale(0.2));
-			Vector3d stop = start.add(direction.scale(4.5));
-			BlockRayTraceResult result = world
-					.rayTraceBlocks(new RayTraceContext(start, stop, BlockMode.COLLIDER, FluidMode.NONE, player));
-			if (result.getType() == Type.BLOCK) {
-				hitBlock(world, player, result.getPos());
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
+			Vec3 direction = Vec3.directionFromRotation(player.getRotationVector());
+			Vec3 start = player.position().add(0, 1.5, 0).add(direction.scale(0.2));
+			Vec3 stop = start.add(direction.scale(4.5));
+			BlockHitResult result = level
+					.clip(new ClipContext(start, stop, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+			if (result.getType() == HitResult.Type.BLOCK) {
+				hitBlock(level, player, result.getBlockPos());
 			}
 		}
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 	
-	protected abstract void hitBlock(World world, PlayerEntity player, BlockPos pos);
+	protected abstract void hitBlock(Level level, Player player, BlockPos pos);
 
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {

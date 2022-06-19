@@ -3,8 +3,8 @@ package mod.vemerion.wizardstaff.init;
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.container.MagicContainer;
 import mod.vemerion.wizardstaff.staff.WizardStaffContainer;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -16,14 +16,14 @@ import net.minecraftforge.registries.ObjectHolder;
 @EventBusSubscriber(bus = Bus.MOD, modid = Main.MODID)
 public class ModContainers {
 
-	public static final ContainerType<WizardStaffContainer> WIZARD_STAFF = null;
-	public static final ContainerType<MagicContainer> MAGIC = null;
+	public static final MenuType<WizardStaffContainer> WIZARD_STAFF = null;
+	public static final MenuType<MagicContainer> MAGIC = null;
 
 	@SubscribeEvent
-	public static void onRegisterContainer(RegistryEvent.Register<ContainerType<?>> event) {
-		IForgeRegistry<ContainerType<?>> reg = event.getRegistry();
-		reg.register(Init.setup(IForgeContainerType.create(WizardStaffContainer::createContainerClientSide),
+	public static void onRegisterContainer(RegistryEvent.Register<MenuType<?>> event) {
+		IForgeRegistry<MenuType<?>> reg = event.getRegistry();
+		reg.register(Init.setup(IForgeMenuType.create(WizardStaffContainer::createContainerClientSide),
 				"wizard_staff"));
-		reg.register(Init.setup(IForgeContainerType.create(MagicContainer::createContainerClientSide), "magic"));
+		reg.register(Init.setup(IForgeMenuType.create(MagicContainer::createContainerClientSide), "magic"));
 	}
 }

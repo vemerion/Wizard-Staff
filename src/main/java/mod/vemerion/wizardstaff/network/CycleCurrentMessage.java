@@ -3,17 +3,17 @@ package mod.vemerion.wizardstaff.network;
 import java.util.function.Supplier;
 
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.NetworkEvent;
 
 public class CycleCurrentMessage {
 
-	public void encode(final PacketBuffer buffer) {
+	public void encode(final FriendlyByteBuf buffer) {
 	}
 
-	public static CycleCurrentMessage decode(final PacketBuffer buffer) {
+	public static CycleCurrentMessage decode(final FriendlyByteBuf buffer) {
 		return new CycleCurrentMessage();
 	}
 
@@ -23,11 +23,11 @@ public class CycleCurrentMessage {
 		context.enqueueWork(() -> cycle(context.getSender()));
 	}
 
-	private void cycle(ServerPlayerEntity player) {
+	private void cycle(ServerPlayer player) {
 		if (player == null)
 			return;
 
-		ItemStack staff = player.getHeldItemMainhand();
+		ItemStack staff = player.getMainHandItem();
 		WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
 			h.cycleCurrent();
 		});

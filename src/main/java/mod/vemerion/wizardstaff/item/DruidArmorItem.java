@@ -3,21 +3,21 @@ package mod.vemerion.wizardstaff.item;
 import java.awt.Color;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.init.ModLayerLocations;
 import mod.vemerion.wizardstaff.model.DruidArmorModel;
 import mod.vemerion.wizardstaff.model.MagicArmorModel;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class DruidArmorItem extends MagicArmorItem {
 	private static final int COLOR = Color.GREEN.getRGB();
 
-	public DruidArmorItem(EquipmentSlotType slot) {
+	public DruidArmorItem(EquipmentSlot slot) {
 		super(new DruidArmorMaterial(), slot);
 	}
-	
+
 	@Override
 	protected int getDefaultColor() {
 		return COLOR;
@@ -28,25 +28,31 @@ public class DruidArmorItem extends MagicArmorItem {
 		return "druid_armor";
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
-	protected MagicArmorModel<?> getModel() {
-		if (model == null) {
-			model = new DruidArmorModel<>(0.3f);
-		}
-		return model;
+	protected RenderProperties getRenderProperties() {
+		return new DruidRenderProperties();
 	}
 
 	private static class DruidArmorMaterial extends MagicArmorMaterial {
 
 		@Override
-		public Ingredient getRepairMaterial() {
-			return Ingredient.fromItems(Items.GOLD_INGOT);
+		public Ingredient getRepairIngredient() {
+			return Ingredient.of(Items.GOLD_INGOT);
 		}
 
 		@Override
 		public String getName() {
 			return Main.MODID + ":druid_armor";
 		}
+	}
+
+	private static class DruidRenderProperties extends RenderProperties {
+
+		@Override
+		protected MagicArmorModel<?> getModel() {
+			return new DruidArmorModel<>(
+					Minecraft.getInstance().getEntityModels().bakeLayer(ModLayerLocations.DRUID_ARMOR));
+		}
+
 	}
 }

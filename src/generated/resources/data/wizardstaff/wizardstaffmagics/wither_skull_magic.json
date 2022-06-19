@@ -1,0 +1,11 @@
+{
+  "cost": 20.0,
+  "duration": 15,
+  "magic": "wizardstaff:projectile_magic",
+  "ingredient": {
+    "item": "minecraft:wither_skeleton_skull"
+  },
+  "projectile": "wizardstaff:magic_wither_skull",
+  "sound": "wizardstaff:skeleton",
+  "speed": 0.5
+}

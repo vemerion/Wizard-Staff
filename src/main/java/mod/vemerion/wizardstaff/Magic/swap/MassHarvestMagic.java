@@ -16,20 +16,20 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class MassHarvestMagic extends Magic {
@@ -49,8 +49,8 @@ public class MassHarvestMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		match = RegistryMatch.read(ForgeRegistries.BLOCKS, JSONUtils.getJsonObject(json, "block_match"));
-		harvestLimit = JSONUtils.getInt(json, "harvest_limit");
+		match = RegistryMatch.read(ForgeRegistries.BLOCKS, GsonHelper.getAsJsonObject(json, "block_match"));
+		harvestLimit = GsonHelper.getAsInt(json, "harvest_limit");
 	}
 
 	@Override
@@ -60,13 +60,13 @@ public class MassHarvestMagic extends Magic {
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		match.encode(buffer);
 		buffer.writeInt(harvestLimit);
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 		match = RegistryMatch.decode(ForgeRegistries.BLOCKS, buffer);
 		harvestLimit = buffer.readInt();
 	}
@@ -82,8 +82,8 @@ public class MassHarvestMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 
 	protected Object[] getNameArgs() {
@@ -92,51 +92,51 @@ public class MassHarvestMagic extends Magic {
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { new StringTextComponent(String.valueOf(harvestLimit)), match.getName() };
+		return new Object[] { new TextComponent(String.valueOf(harvestLimit)), match.getName() };
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		BlockRayTraceResult result = Helper.blockRay(world, player, 4);
-		if (result.getType() == Type.BLOCK) {
-			BlockState state = world.getBlockState(result.getPos());
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		BlockHitResult result = Helper.blockRay(level, player, 4);
+		if (result.getType() == HitResult.Type.BLOCK) {
+			BlockState state = level.getBlockState(result.getBlockPos());
 			if (match.test(state.getBlock())) {
 				player.playSound(state.getSoundType().getBreakSound(), 1, soundPitch(player));
-				if (!world.isRemote)
-					cost(player, havestBlocks(result.getPos(), world));
+				if (!level.isClientSide)
+					cost(player, havestBlocks(result.getBlockPos(), level));
 			} else {
 				player.playSound(ModSounds.POOF, 1, soundPitch(player));
 			}
 		}
 
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
-	private int havestBlocks(BlockPos start, World world) {
+	private int havestBlocks(BlockPos start, Level level) {
 		List<BlockPos> positions = new ArrayList<>();
 		Set<BlockPos> found = new HashSet<>();
 		positions.add(start);
 		while (!positions.isEmpty()) {
 			BlockPos pos = positions.remove(0);
-			BlockPos.getAllInBox(pos.add(-1, -1, -1), pos.add(1, 1, 1)).forEach(p -> {
+			BlockPos.betweenClosedStream(pos.offset(-1, -1, -1), pos.offset(1, 1, 1)).forEach(p -> {
 				if (found.size() < harvestLimit && !found.contains(p)
-						&& match.test(world.getBlockState(p).getBlock())) {
-					BlockPos immutable = p.toImmutable();
+						&& match.test(level.getBlockState(p).getBlock())) {
+					BlockPos immutable = p.immutable();
 					positions.add(immutable);
 					found.add(immutable);
 				}
 			});
-			destroyBlock(world, pos);
+			destroyBlock(level, pos);
 		}
 		return found.size();
 	}
 
-	private void destroyBlock(World world, BlockPos pos) {
-		FluidState fluidstate = world.getFluidState(pos);
-		BlockState state = world.getBlockState(pos);
-		TileEntity tileentity = state.hasTileEntity() ? world.getTileEntity(pos) : null;
-		Block.spawnDrops(state, world, pos, tileentity, null, ItemStack.EMPTY);
-		world.setBlockState(pos, fluidstate.getBlockState());
+	private void destroyBlock(Level level, BlockPos pos) {
+		FluidState fluidstate = level.getFluidState(pos);
+		BlockState state = level.getBlockState(pos);
+		BlockEntity tileentity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
+		Block.dropResources(state, level, pos, tileentity, null, ItemStack.EMPTY);
+		level.setBlockAndUpdate(pos, fluidstate.createLegacyBlock());
 	}
 
 }

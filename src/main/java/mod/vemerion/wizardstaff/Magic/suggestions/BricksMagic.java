@@ -8,11 +8,11 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public class BricksMagic extends Magic {
 
@@ -31,26 +31,26 @@ public class BricksMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
 			cost(player);
-			createCage(world, player.getPosition());
+			createCage(level, player.blockPosition());
 		}
 		player.playSound(ModSounds.BRICK, 0.8f, soundPitch(player));
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
-	private void createCage(World world, BlockPos position) {
+	private void createCage(Level level, BlockPos position) {
 		for (int x = -1; x < 2; x++) {
 			for (int z = -1; z < 2; z++) {
 				for (int y = 0; y < 2; y++) {
-					if ((x != 0 || z != 0) && world.isAirBlock(position.add(x, y, z))) {
-						world.setBlockState(position.add(x, y, z), ModBlocks.MAGIC_BRICKS.getDefaultState());
+					if ((x != 0 || z != 0) && level.isEmptyBlock(position.offset(x, y, z))) {
+						level.setBlockAndUpdate(position.offset(x, y, z), ModBlocks.MAGIC_BRICKS.defaultBlockState());
 					}
 				}
 			}

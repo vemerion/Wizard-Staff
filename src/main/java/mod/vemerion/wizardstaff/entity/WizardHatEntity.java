@@ -4,41 +4,41 @@ import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModItems;
 import mod.vemerion.wizardstaff.init.ModSounds;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 
-public class WizardHatEntity extends AbstractArrowEntity {
+public class WizardHatEntity extends AbstractArrow {
 
 	private float hatRotation, prevHatRotation;
 
-	public WizardHatEntity(EntityType<? extends WizardHatEntity> entityTypeIn, World worldIn) {
-		super(entityTypeIn, worldIn);
-		this.setDamage(1);
-		this.setHitSound(ModSounds.CLOTH);
+	public WizardHatEntity(EntityType<? extends WizardHatEntity> entityTypeIn, Level level) {
+		super(entityTypeIn, level);
+		this.setBaseDamage(1);
+		this.setSoundEvent(ModSounds.CLOTH);
 	}
 
-	public WizardHatEntity(double x, double y, double z, World world) {
-		super(ModEntities.WIZARD_HAT, x, y, z, world);
-		this.setDamage(1);
-		this.setHitSound(ModSounds.CLOTH);
+	public WizardHatEntity(double x, double y, double z, Level level) {
+		super(ModEntities.WIZARD_HAT, x, y, z, level);
+		this.setBaseDamage(1);
+		this.setSoundEvent(ModSounds.CLOTH);
 	}
 	
 	@Override
-	protected SoundEvent getHitEntitySound() {
+	protected SoundEvent getDefaultHitGroundSoundEvent() {
 		return ModSounds.CLOTH;
 	}
 
@@ -50,49 +50,49 @@ public class WizardHatEntity extends AbstractArrowEntity {
 	}
 
 	public float getHatRotation(float partialTicks) {
-		return MathHelper.lerp(partialTicks, prevHatRotation, hatRotation);
+		return Mth.lerp(partialTicks, prevHatRotation, hatRotation);
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult result) {
-		super.onImpact(result);
-		if (!world.isRemote) {
-			remove();
+	protected void onHit(HitResult result) {
+		super.onHit(result);
+		if (!level.isClientSide) {
+			discard();
 		}
 	}
 
 	@Override
-	protected void onEntityHit(EntityRayTraceResult result) {
-		if (!world.isRemote) {
+	protected void onHitEntity(EntityHitResult result) {
+		if (!level.isClientSide) {
 			Entity target = result.getEntity();
-			if (func_234616_v_() != null && func_234616_v_() instanceof PlayerEntity) { // getShooter()
-				target.attackEntityFrom(Magic.magicDamage(this, (PlayerEntity) func_234616_v_()),
-						(float) getDamage());
+			if (getOwner() != null && getOwner() instanceof Player) { // getShooter()
+				target.hurt(Magic.magicDamage(this, (Player) getOwner()),
+						(float) getBaseDamage());
 			} else {
-				target.attackEntityFrom(Magic.magicDamage(), (float) getDamage());
+				target.hurt(Magic.magicDamage(), (float) getBaseDamage());
 			}
-			playSound(getHitEntitySound(), 1, 0.8f + rand.nextFloat() * 0.4f);
+			playSound(getDefaultHitGroundSoundEvent(), 1, 0.8f + random.nextFloat() * 0.4f);
 
 			if (target instanceof LivingEntity) {
-				Vector3d vector3d = getMotion().mul(1.0D, 0.0D, 1.0D).normalize().scale(2);
-				if (vector3d.lengthSquared() > 0.0D)
-					((LivingEntity) target).addVelocity(vector3d.x, 0.1D, vector3d.z);
+				Vec3 Vec3 = getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale(2);
+				if (Vec3.lengthSqr() > 0.0D)
+					((LivingEntity) target).push(Vec3.x, 0.1D, Vec3.z);
 			}
-			if (rand.nextFloat() < 0.1 && target instanceof MobEntity) {
-				MobEntity mob = (MobEntity) target;
-				if (mob.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty())
-					mob.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(ModItems.WIZARD_HAT));
+			if (random.nextFloat() < 0.1 && target instanceof Mob) {
+				Mob mob = (Mob) target;
+				if (mob.getItemBySlot(EquipmentSlot.HEAD).isEmpty())
+					mob.setItemSlot(EquipmentSlot.HEAD, new ItemStack(ModItems.WIZARD_HAT));
 			}
 		}
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override
-	protected ItemStack getArrowStack() {
+	protected ItemStack getPickupItem() {
 		return ItemStack.EMPTY;
 	}
 

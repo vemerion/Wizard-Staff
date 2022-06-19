@@ -1,0 +1,13 @@
+{
+  "cost": 200.0,
+  "duration": 40,
+  "magic": "wizardstaff:egg_magic",
+  "ingredient": {
+    "item": "minecraft:egg"
+  },
+  "blacklist": [
+    "iceandfire:fire_dragon",
+    "iceandfire:ice_dragon",
+    "iceandfire:lightning_dragon"
+  ]
+}

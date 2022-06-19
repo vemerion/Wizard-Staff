@@ -7,11 +7,11 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class FeatherMagic extends Magic {
 
@@ -30,18 +30,18 @@ public class FeatherMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		Vector3d motion = player.getMotion();
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
+		Vec3 motion = player.getDeltaMovement();
 		if (motion.y < 0) {
-			motion = motion.mul(1, 0.2, 1);
+			motion = motion.multiply(1, 0.2, 1);
 			player.fallDistance = 0;
-			player.setMotion(motion);
-			if (!world.isRemote)
+			player.setDeltaMovement(motion);
+			if (!level.isClientSide)
 				cost(player);
 			
 			if (count % 5 == 0)

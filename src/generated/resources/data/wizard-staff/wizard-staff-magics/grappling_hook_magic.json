@@ -1,8 +1,0 @@
-{
-  "cost": 5.0,
-  "duration": -1,
-  "magic": "wizard-staff:grappling_hook_magic",
-  "ingredient": {
-    "item": "minecraft:fishing_rod"
-  }
-}

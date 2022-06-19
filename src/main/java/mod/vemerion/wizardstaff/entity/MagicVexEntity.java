@@ -1,57 +1,50 @@
 package mod.vemerion.wizardstaff.entity;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.GoalSelector;
-import net.minecraft.entity.ai.goal.TargetGoal;
-import net.minecraft.entity.monster.VexEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.monster.Vex;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class MagicVexEntity extends VexEntity implements ICasted {
+public class MagicVexEntity extends Vex implements ICasted {
 
 	private static final ResourceLocation[] MOD_WEAPONS = new ResourceLocation[] {
 			new ResourceLocation("twilightforest", "fiery_sword"),
 			new ResourceLocation("immersiveengineering", "revolver"),
 			new ResourceLocation("iceandfire", "dragonbone_sword") };
 
-	private static Field goals;
-
 	private UUID caster;
 
-	public MagicVexEntity(EntityType<? extends MagicVexEntity> type, World world) {
-		super(type, world);
-		this.experienceValue = 0;
+	public MagicVexEntity(EntityType<? extends MagicVexEntity> type, Level level) {
+		super(type, level);
+		this.xpReward = 0;
 	}
 
 	@Override
-	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason,
-			ILivingEntityData spawnDataIn, CompoundNBT dataTag) {
-		setLeftHanded(getRNG().nextBoolean());
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelIn, DifficultyInstance difficultyIn,
+			MobSpawnType reason, SpawnGroupData spawnDataIn, CompoundTag dataTag) {
+		setLeftHanded(getRandom().nextBoolean());
 		giveWeapon();
 		return spawnDataIn;
 	}
@@ -66,8 +59,8 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 			if (ForgeRegistries.ITEMS.containsKey(rl))
 				weapons.add(ForgeRegistries.ITEMS.getValue(rl));
 
-		setItemStackToSlot(EquipmentSlotType.OFFHAND, new ItemStack(weapons.get(getRNG().nextInt(weapons.size()))));
-		setDropChance(EquipmentSlotType.OFFHAND, 0);
+		setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(weapons.get(getRandom().nextInt(weapons.size()))));
+		setDropChance(EquipmentSlot.OFFHAND, 0);
 	}
 
 	@Override
@@ -81,16 +74,16 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 	}
 
 	@Override
-	protected boolean isDespawnPeaceful() {
+	protected boolean shouldDespawnInPeaceful() {
 		return false;
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity entityIn) {
-		PlayerEntity caster = getCaster(world);
+	public boolean doHurtTarget(Entity entityIn) {
+		Player caster = getCaster(level);
 		float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
 		DamageSource source = caster == null ? Magic.magicDamage() : Magic.magicDamage(this, caster);
-		return entityIn.attackEntityFrom(source, damage);
+		return entityIn.hurt(source, damage);
 	}
 
 	@Override
@@ -105,29 +98,21 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		if (compound.contains("shooter"))
 			loadCaster(compound.getCompound("shooter"));
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
 		compound.put("shooter", saveCaster());
 	}
 
-	// Use reflection to clear the targetSelector, to prevent Vex from attacking
-	// player
+	// Clear the targetSelector, to prevent Vex from attacking player
 	private void clearTargetSelector() {
-		if (goals == null)
-			goals = ObfuscationReflectionHelper.findField(GoalSelector.class, "field_220892_d");
-
-		try {
-			((Set<?>) goals.get(targetSelector)).clear();
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			Main.LOGGER.warn("Failed to clear targetSelector: " + e.getMessage());
-		}
+		targetSelector.getAvailableGoals().clear();
 	}
 
 	private abstract static class SetAttackTargetGoal extends TargetGoal {
@@ -140,8 +125,8 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 			this.vex = vex;
 		}
 
-		public boolean shouldExecute() {
-			PlayerEntity player = vex.getCaster(vex.world);
+		public boolean canUse() {
+			Player player = vex.getCaster(vex.level);
 			if (player == null)
 				return false;
 
@@ -150,24 +135,24 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 
 			Entity target = getTarget(player);
 			if (target == null
-					|| (target instanceof MagicVexEntity && ((MagicVexEntity) target).getCaster(vex.world) == player))
+					|| (target instanceof MagicVexEntity && ((MagicVexEntity) target).getCaster(vex.level) == player))
 				return false;
 
 			return true;
 		}
 
-		public void startExecuting() {
-			PlayerEntity player = vex.getCaster(vex.world);
+		public void start() {
+			Player player = vex.getCaster(vex.level);
 			if (player == null)
 				return;
-			vex.setAttackTarget(getTarget(player));
+			vex.setTarget(getTarget(player));
 			timestamp = getTimestamp(player);
-			super.startExecuting();
+			super.start();
 		}
 
-		protected abstract LivingEntity getTarget(PlayerEntity player);
+		protected abstract LivingEntity getTarget(Player player);
 
-		protected abstract int getTimestamp(PlayerEntity player);
+		protected abstract int getTimestamp(Player player);
 	}
 
 	private static class CopyCasterTargetGoal extends SetAttackTargetGoal {
@@ -177,13 +162,13 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 		}
 
 		@Override
-		protected LivingEntity getTarget(PlayerEntity player) {
-			return player.getLastAttackedEntity();
+		protected LivingEntity getTarget(Player player) {
+			return player.getLastHurtMob();
 		}
 
 		@Override
-		protected int getTimestamp(PlayerEntity player) {
-			return player.getLastAttackedEntityTime();
+		protected int getTimestamp(Player player) {
+			return player.getLastHurtMobTimestamp();
 		}
 	}
 
@@ -194,13 +179,13 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 		}
 
 		@Override
-		protected LivingEntity getTarget(PlayerEntity player) {
-			return player.getRevengeTarget();
+		protected LivingEntity getTarget(Player player) {
+			return player.getLastHurtByMob();
 		}
 
 		@Override
-		protected int getTimestamp(PlayerEntity player) {
-			return player.getRevengeTimer();
+		protected int getTimestamp(Player player) {
+			return player.getLastHurtByMobTimestamp();
 		}
 	}
 
@@ -213,19 +198,19 @@ public class MagicVexEntity extends VexEntity implements ICasted {
 		}
 
 		@Override
-		public boolean shouldExecute() {
-			PlayerEntity player = vex.getCaster(vex.world);
+		public boolean canUse() {
+			Player player = vex.getCaster(vex.level);
 			if (player == null)
 				return false;
-			return vex.getRNG().nextInt(30) == 1 && player.getDistanceSq(vex) < 2000;
+			return vex.getRandom().nextInt(30) == 1 && player.distanceToSqr(vex) < 2000;
 		}
 
 		@Override
-		public void startExecuting() {
-			PlayerEntity player = vex.getCaster(vex.world);
+		public void start() {
+			Player player = vex.getCaster(vex.level);
 			if (player == null)
 				return;
-			vex.setBoundOrigin(player.getPosition());
+			vex.setBoundOrigin(player.blockPosition());
 		}
 
 	}

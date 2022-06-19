@@ -1,10 +1,10 @@
 package mod.vemerion.wizardstaff.init;
 
 import mod.vemerion.wizardstaff.Main;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.Item;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,8 +25,8 @@ public class ModMissingMappings {
 	}
 
 	@SubscribeEvent
-	public static void onMissingContainer(RegistryEvent.MissingMappings<ContainerType<?>> event) {
-		for (Mapping<ContainerType<?>> mapping : event.getMappings(Main.MODID)) {
+	public static void onMissingContainer(RegistryEvent.MissingMappings<MenuType<?>> event) {
+		for (Mapping<MenuType<?>> mapping : event.getMappings(Main.MODID)) {
 			if (mapping.key.getPath().equals("wizard_staff_container"))
 				mapping.remap(ModContainers.WIZARD_STAFF);
 		}

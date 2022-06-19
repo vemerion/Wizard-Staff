@@ -9,15 +9,15 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class PillarMagic extends Magic {
@@ -34,12 +34,12 @@ public class PillarMagic extends Magic {
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 		block = MagicUtil.decode(buffer);
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		MagicUtil.encode(buffer, block);
 	}
 
@@ -55,12 +55,12 @@ public class PillarMagic extends Magic {
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { block.getTranslatedName() };
+		return new Object[] { block.getName() };
 	}
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { block.getTranslatedName() };
+		return new Object[] { block.getName() };
 	}
 
 	@Override
@@ -74,24 +74,24 @@ public class PillarMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (player.isOnGround()) {
-			player.jump();
+			player.jumpFromGround();
 		} else {
-			BlockPos below = player.getPosition().down();
-			if (world.isAirBlock(below)
-					&& !world.getBlockState(below.down()).getCollisionShape(world, below.down()).isEmpty()) {
-				BlockState state = block.getDefaultState();
+			BlockPos below = player.blockPosition().below();
+			if (level.isEmptyBlock(below)
+					&& !level.getBlockState(below.below()).getCollisionShape(level, below.below()).isEmpty()) {
+				BlockState state = block.defaultBlockState();
 				SoundType soundType = state.getSoundType();
 				player.playSound(soundType.getPlaceSound(), soundType.getVolume(), soundType.getPitch());
-				if (!world.isRemote) {
+				if (!level.isClientSide) {
 					cost(player);
-					world.setBlockState(below, state);
+					level.setBlockAndUpdate(below, state);
 				}
 			}
 		}

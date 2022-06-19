@@ -1,9 +1,0 @@
-{
-  "cost": 0.05,
-  "duration": -1,
-  "magic": "wizard-staff:wall_climb_magic",
-  "ingredient": {
-    "item": "minecraft:string"
-  },
-  "speed": 0.2
-}

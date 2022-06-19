@@ -8,12 +8,12 @@ import java.util.function.Supplier;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.init.ModMagics;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.DistExecutor.SafeRunnable;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 public class UpdateMagicsMessage {
 
@@ -23,7 +23,7 @@ public class UpdateMagicsMessage {
 		this.magics = magics;
 	}
 
-	public void encode(final PacketBuffer buffer) {
+	public void encode(final FriendlyByteBuf buffer) {
 		buffer.writeInt(magics.size());
 		for (Entry<ResourceLocation, Magic> entry : magics.entrySet()) {
 			Magic m = entry.getValue();
@@ -33,13 +33,13 @@ public class UpdateMagicsMessage {
 		}
 	}
 
-	public static UpdateMagicsMessage decode(final PacketBuffer buffer) {
+	public static UpdateMagicsMessage decode(final FriendlyByteBuf buffer) {
 		Map<ResourceLocation, Magic> magics = new HashMap<>();
 		int size = buffer.readInt();
 		for (int i = 0; i < size; i++) {
 			ResourceLocation key = buffer.readResourceLocation();
 			ResourceLocation name = buffer.readResourceLocation();
-			Magic magic = ModMagics.REGISTRY.getValue(name).create(key);
+			Magic magic = ModMagics.getRegistry().getValue(name).create(key);
 			magic.decode(buffer);
 			magics.put(key, magic);
 		}

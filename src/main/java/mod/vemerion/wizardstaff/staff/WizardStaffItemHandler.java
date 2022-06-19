@@ -1,8 +1,8 @@
 package mod.vemerion.wizardstaff.staff;
 
 import mod.vemerion.wizardstaff.Main;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -41,14 +41,14 @@ public class WizardStaffItemHandler extends ItemStackHandler {
 	}
 
 	@Override
-	public CompoundNBT serializeNBT() {
-		CompoundNBT nbt = super.serializeNBT();
+	public CompoundTag serializeNBT() {
+		CompoundTag nbt = super.serializeNBT();
 		nbt.putInt("current", current);
 		return nbt;
 	}
 
 	@Override
-	public void deserializeNBT(CompoundNBT nbt) {
+	public void deserializeNBT(CompoundTag nbt) {
 		super.deserializeNBT(nbt);
 		if (nbt.contains("current"))
 			current = nbt.getInt("current");
@@ -61,7 +61,7 @@ public class WizardStaffItemHandler extends ItemStackHandler {
 
 	@Override
 	protected void onContentsChanged(int slot) {
-		CompoundNBT nbt = staff.getOrCreateTag();
+		CompoundTag nbt = staff.getOrCreateTag();
 		nbt.putBoolean(Main.MODID + "-dirty", !nbt.getBoolean(Main.MODID + "-dirty"));
 	}
 
@@ -78,9 +78,9 @@ public class WizardStaffItemHandler extends ItemStackHandler {
 	}
 
 	public static LazyOptional<WizardStaffItemHandler> getOptional(ItemStack staff) {
-		LazyOptional<IItemHandler> itemHandlerOpt = staff.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
-		if (itemHandlerOpt.isPresent()) {
-			IItemHandler handler = itemHandlerOpt.orElse(null);
+		LazyOptional<IItemHandler> itemInteractionHandlerOpt = staff.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+		if (itemInteractionHandlerOpt.isPresent()) {
+			IItemHandler handler = itemInteractionHandlerOpt.orElse(null);
 			if (handler instanceof WizardStaffItemHandler)
 				return LazyOptional.of(() -> (WizardStaffItemHandler) handler);
 		}

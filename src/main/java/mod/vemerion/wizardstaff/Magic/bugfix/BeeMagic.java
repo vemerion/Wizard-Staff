@@ -6,15 +6,15 @@ import java.util.List;
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.BlockRayMagic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.passive.BeeEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tileentity.BeehiveTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class BeeMagic extends BlockRayMagic {
 
@@ -27,27 +27,27 @@ public class BeeMagic extends BlockRayMagic {
 	}
 
 	@Override
-	protected void hitBlock(World world, PlayerEntity player, BlockPos pos) {
-		if (!world.getBlockState(pos).getBlock().isIn(BlockTags.BEEHIVES))
+	protected void hitBlock(Level level, Player player, BlockPos pos) {
+		if (!level.getBlockState(pos).is(BlockTags.BEEHIVES))
 			return;
 
-		BlockState state = world.getBlockState(pos);
-		TileEntity tile = world.getTileEntity(pos);
-		if (!(tile instanceof BeehiveTileEntity))
+		BlockState state = level.getBlockState(pos);
+		BlockEntity tile = level.getBlockEntity(pos);
+		if (!(tile instanceof BeehiveBlockEntity))
 			return;
 
-		BeehiveTileEntity hive = (BeehiveTileEntity) tile;
+		BeehiveBlockEntity hive = (BeehiveBlockEntity) tile;
 
 		try {
 			if (tryReleaseBee == null)
-				tryReleaseBee = ObfuscationReflectionHelper.findMethod(BeehiveTileEntity.class, "func_226965_a_",
-						BlockState.class, BeehiveTileEntity.State.class);
+				tryReleaseBee = ObfuscationReflectionHelper.findMethod(BeehiveBlockEntity.class, "m_58759_",
+						BlockState.class, BeehiveBlockEntity.BeeReleaseStatus.class);
 
-			List<?> bees = (List<?>) tryReleaseBee.invoke(hive, state, BeehiveTileEntity.State.EMERGENCY);
+			List<?> bees = (List<?>) tryReleaseBee.invoke(hive, state, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
 			boolean didRelease = false;
 			for (Object bee : bees) {
-				if (bee instanceof BeeEntity) {
-					((BeeEntity) bee).setStayOutOfHiveCountdown(STAY_OUT_OF_HIVE_TIME);
+				if (bee instanceof Bee) {
+					((Bee) bee).setStayOutOfHiveCountdown(STAY_OUT_OF_HIVE_TIME);
 					didRelease = true;
 				}
 			}

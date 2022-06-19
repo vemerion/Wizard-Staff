@@ -1,0 +1,8 @@
+{
+  "cost": 10.0,
+  "duration": 15,
+  "magic": "wizardstaff:cobweb_magic",
+  "ingredient": {
+    "item": "minecraft:cobweb"
+  }
+}

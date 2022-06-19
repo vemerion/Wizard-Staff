@@ -11,18 +11,18 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.EvokerFangsEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.EvokerFangs;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class CreateEntityMagic extends Magic {
@@ -53,12 +53,12 @@ public abstract class CreateEntityMagic extends Magic {
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		MagicUtil.encode(buffer, entity);
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 		entity = MagicUtil.decode(buffer);
 	}
 
@@ -73,18 +73,18 @@ public abstract class CreateEntityMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.CROSSBOW;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.CROSSBOW;
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
-			List<Entity> entities = createEntities(world, player, staff);
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
+			List<Entity> entities = createEntities(level, player, staff);
 			for (Entity e : entities) {
-				if (e instanceof MobEntity)
-					((MobEntity) e).onInitialSpawn((IServerWorld) world,
-							world.getDifficultyForLocation(player.getPosition()), SpawnReason.MOB_SUMMONED, null, null);
+				if (e instanceof Mob)
+					((Mob) e).finalizeSpawn((ServerLevelAccessor) level,
+							level.getCurrentDifficultyAt(player.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 
 				if (e instanceof MagicVexEntity) {
 					MagicVexEntity vex = (MagicVexEntity) e;
@@ -92,25 +92,25 @@ public abstract class CreateEntityMagic extends Magic {
 					vex.setLimitedLife(20 * 20);
 				}
 
-				if (e instanceof EvokerFangsEntity)
-					((EvokerFangsEntity) e).setCaster(player);
+				if (e instanceof EvokerFangs)
+					((EvokerFangs) e).setOwner(player);
 				
 				if (e instanceof ICasted)
 					((ICasted) e).setCaster(player);
 
-				world.addEntity(e);
+				level.addFreshEntity(e);
 			}
 
 			if (entities.isEmpty()) {
-				playSoundServer(world, player, ModSounds.POOF, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
 			} else {
-				playSoundServer(world, player, sound, 1, soundPitch(player));
+				playSoundServer(level, player, sound, 1, soundPitch(player));
 				cost(player);
 			}
 		}
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
-	protected abstract List<Entity> createEntities(World world, PlayerEntity player, ItemStack staff);
+	protected abstract List<Entity> createEntities(Level level, Player player, ItemStack staff);
 
 }

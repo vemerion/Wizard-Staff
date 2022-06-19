@@ -1,0 +1,9 @@
+{
+  "cost": 0.8,
+  "duration": -1,
+  "magic": "wizardstaff:deflect_projectile_magic",
+  "ingredient": {
+    "item": "minecraft:shield"
+  },
+  "blacklist": []
+}

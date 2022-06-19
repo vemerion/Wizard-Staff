@@ -5,15 +5,15 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.command.arguments.EntityAnchorArgument;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class LookAtMagic extends Magic {
 
@@ -32,24 +32,24 @@ public abstract class LookAtMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
-	protected abstract BlockPos getPosition(ServerWorld world, ServerPlayerEntity player, ItemStack staff);
+	protected abstract BlockPos getPosition(ServerLevel level, ServerPlayer player, ItemStack staff);
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
-			BlockPos pos = getPosition((ServerWorld) world, (ServerPlayerEntity) player, staff);
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
+			BlockPos pos = getPosition((ServerLevel) level, (ServerPlayer) player, staff);
 			if (pos != null) {
-				playSoundServer(world, player, ModSounds.WARP, 0.8f, soundPitch(player));
+				playSoundServer(level, player, ModSounds.WARP, 0.8f, soundPitch(player));
 				cost(player);
-				player.lookAt(EntityAnchorArgument.Type.EYES, Vector3d.copyCentered(pos));
+				player.lookAt(EntityAnchorArgument.Anchor.EYES, Vec3.atCenterOf(pos));
 			} else {
-				playSoundServer(world, player, ModSounds.POOF, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
 			}
 		}
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 }

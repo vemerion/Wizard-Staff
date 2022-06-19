@@ -12,16 +12,16 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ForceEntityMagic extends Magic {
@@ -41,8 +41,8 @@ public class ForceEntityMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		match = RegistryMatch.read(ForgeRegistries.ENTITIES, JSONUtils.getJsonObject(json, "entity_match"));
-		force = JSONUtils.getFloat(json, "force");
+		match = RegistryMatch.read(ForgeRegistries.ENTITIES, GsonHelper.getAsJsonObject(json, "entity_match"));
+		force = GsonHelper.getAsFloat(json, "force");
 	}
 
 	@Override
@@ -52,13 +52,13 @@ public class ForceEntityMagic extends Magic {
 	}
 
 	@Override
-	public void encodeAdditional(PacketBuffer buffer) {
+	public void encodeAdditional(FriendlyByteBuf buffer) {
 		match.encode(buffer);
 		buffer.writeFloat(force);
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 		match = RegistryMatch.decode(ForgeRegistries.ENTITIES, buffer);
 		force = buffer.readFloat();
 	}
@@ -67,9 +67,9 @@ public class ForceEntityMagic extends Magic {
 	protected Object[] getNameArgs() {
 		return new Object[] {
 				force >= 0
-						? new TranslationTextComponent("gui." + Main.MODID + "."
+						? new TranslatableComponent("gui." + Main.MODID + "."
 								+ ModMagics.FORCE_ENTITY_MAGIC.getRegistryName().getPath() + ".attract")
-						: new TranslationTextComponent("gui." + Main.MODID + "."
+						: new TranslatableComponent("gui." + Main.MODID + "."
 								+ ModMagics.FORCE_ENTITY_MAGIC.getRegistryName().getPath() + ".repel"),
 				match.getName() };
 	}
@@ -89,18 +89,18 @@ public class ForceEntityMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		for (Entity e : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().grow(3), e -> match.test(e.getType()))) {
-			Vector3d motion = player.getPositionVec().subtract(e.getPositionVec()).normalize().scale(force).mul(1, 0, 1)
-					.add(0, e.getMotion().y, 0);
-			e.setMotion(motion);
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
+		for (Entity e : level.getEntities(player, player.getBoundingBox().inflate(3), e -> match.test(e.getType()))) {
+			Vec3 motion = player.position().subtract(e.position()).normalize().scale(force).multiply(1, 0, 1)
+					.add(0, e.getDeltaMovement().y, 0);
+			e.setDeltaMovement(motion);
 		}
-		if (!world.isRemote)
+		if (!level.isClientSide)
 			cost(player);
 
 		if (count % 6 == 0)

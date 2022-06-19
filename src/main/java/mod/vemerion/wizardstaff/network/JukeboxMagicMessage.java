@@ -5,11 +5,11 @@ import java.util.function.Supplier;
 
 import mod.vemerion.wizardstaff.sound.WizardStaffTickableSound;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 public class JukeboxMagicMessage {
 
@@ -21,13 +21,13 @@ public class JukeboxMagicMessage {
 		this.music = music;
 	}
 
-	public void encode(final PacketBuffer buffer) {
-		buffer.writeUniqueId(id);
+	public void encode(final FriendlyByteBuf buffer) {
+		buffer.writeUUID(id);
 		buffer.writeRegistryId(music);
 	}
 
-	public static JukeboxMagicMessage decode(final PacketBuffer buffer) {
-		return new JukeboxMagicMessage(buffer.readUniqueId(), buffer.readRegistryId());
+	public static JukeboxMagicMessage decode(final FriendlyByteBuf buffer) {
+		return new JukeboxMagicMessage(buffer.readUUID(), buffer.readRegistryId());
 	}
 
 	public void handle(final Supplier<NetworkEvent.Context> supplier) {
@@ -44,7 +44,7 @@ public class JukeboxMagicMessage {
 				@Override
 				public void run() {
 					WizardStaffTickableSound sound = new WizardStaffTickableSound(id, music);
-					Minecraft.getInstance().getSoundHandler().play(sound);
+					Minecraft.getInstance().getSoundManager().play(sound);
 				}
 			};
 		}

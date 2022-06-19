@@ -1,89 +1,88 @@
 package mod.vemerion.wizardstaff.renderer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
+import mod.vemerion.wizardstaff.init.ModLayerLocations;
 import mod.vemerion.wizardstaff.model.GrapplingHookModel;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 public class GrapplingHookRenderer extends EntityRenderer<GrapplingHookEntity> {
 	public static final ResourceLocation TEXTURES = new ResourceLocation(Main.MODID,
 			"textures/entity/grappling_hook.png");
-	private final GrapplingHookModel model = new GrapplingHookModel();
+	private final GrapplingHookModel model;
 
-	public GrapplingHookRenderer(EntityRendererManager renderManagerIn) {
+	public GrapplingHookRenderer(EntityRendererProvider.Context renderManagerIn) {
 		super(renderManagerIn);
+		model = new GrapplingHookModel(renderManagerIn.bakeLayer(ModLayerLocations.GRAPPLING_HOOK));
 	}
 
 	@Override
-	public void render(GrapplingHookEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn,
-			IRenderTypeBuffer bufferIn, int packedLightIn) {
-		model.setRotationAngles(entityIn, 0, 0, entityIn.ticksExisted + partialTicks,
-				(float) Math.toRadians(180 - entityIn.getYaw(partialTicks)),
-				(float) Math.toRadians(-entityIn.getPitch(partialTicks)));
-		IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.model.getRenderType(getEntityTexture(entityIn)));
-		model.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		matrixStackIn.push();
+	public void render(GrapplingHookEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+			MultiBufferSource bufferIn, int packedLightIn) {
+		model.setupAnim(entityIn, 0, 0, entityIn.tickCount + partialTicks,
+				(float) Math.toRadians(180 - entityIn.getViewYRot(partialTicks)),
+				(float) Math.toRadians(-entityIn.getViewXRot(partialTicks)));
+		VertexConsumer ivertexbuilder = bufferIn.getBuffer(this.model.renderType(getTextureLocation(entityIn)));
+		model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+		matrixStackIn.pushPose();
 
-		// The rendering of the grappling line, derived from FishRenderer
-		PlayerEntity shooter = entityIn.getCaster(entityIn.world);
+		// The rendering of the grappling line, derived from FishingHookRenderer
+		Player shooter = entityIn.getCaster(entityIn.level);
 		if (shooter != null) {
-			float handOffset = shooter.getPrimaryHand() == HandSide.RIGHT ? 1 : -1;
-			Vector3d shooterPos;
-			if (!(shooter.getHeldItemMainhand().getItem() instanceof WizardStaffItem))
+			float handOffset = shooter.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
+			Vec3 shooterPos;
+			if (!(shooter.getMainHandItem().getItem() instanceof WizardStaffItem))
 				handOffset *= -1;
 
-			if ((this.renderManager.options == null || this.renderManager.options.getPointOfView().func_243192_a())
+			if ((this.entityRenderDispatcher.options == null
+					|| this.entityRenderDispatcher.options.getCameraType().isFirstPerson())
 					&& shooter == Minecraft.getInstance().player) { // First person
-				double fov = renderManager.options.fov / 100d;
-				Vector3d fovOffset = new Vector3d(-0.1D * fov * handOffset, 0.03D * fov, 0.3D);
-				fovOffset = fovOffset.rotatePitch((float) -Math.toRadians(shooter.getPitch(partialTicks)));
-				fovOffset = fovOffset.rotateYaw((float) -Math.toRadians(shooter.getYaw(partialTicks)));
-				shooterPos = shooter.getEyePosition(partialTicks).subtract(entityIn.getPositionVec()).add(fovOffset);
+				double fov = entityRenderDispatcher.options.fov / 100d;
+				Vec3 fovOffset = new Vec3(-0.1D * fov * handOffset, 0.03D * fov, 0.3D);
+				fovOffset = fovOffset.xRot((float) -Math.toRadians(shooter.getViewXRot(partialTicks)));
+				fovOffset = fovOffset.yRot((float) -Math.toRadians(shooter.getViewYRot(partialTicks)));
+				shooterPos = shooter.getEyePosition(partialTicks).subtract(entityIn.position()).add(fovOffset);
 			} else { // Third person
-				float renderYawOffset = MathHelper.lerp(partialTicks, shooter.prevRenderYawOffset,
-						shooter.renderYawOffset) * ((float) Math.PI / 180F);
-				float xOffset = MathHelper.sin(renderYawOffset);
-				float yOffset = MathHelper.cos(renderYawOffset);
-				Vector3d offset = new Vector3d(-xOffset * 0.8D, 0.2, yOffset * 0.8D);
-				shooterPos = shooter.getEyePosition(partialTicks).subtract(entityIn.getPositionVec()).add(offset);
+				float renderYawOffset = Mth.lerp(partialTicks, shooter.yBodyRotO, shooter.yBodyRot)
+						* ((float) Math.PI / 180F);
+				float xOffset = Mth.sin(renderYawOffset);
+				float yOffset = Mth.cos(renderYawOffset);
+				Vec3 offset = new Vec3(-xOffset * 0.8D, 0.2, yOffset * 0.8D);
+				shooterPos = shooter.getEyePosition(partialTicks).subtract(entityIn.position()).add(offset);
 			}
 
-			IVertexBuilder builder = bufferIn.getBuffer(RenderType.getLines());
-			Matrix4f matrix = matrixStackIn.getLast().getMatrix();
-			builder.pos(matrix, 0, 0.1f, 0).color(0, 0, 0, 255).endVertex();
-			builder.pos(matrix, (float) shooterPos.x, (float) shooterPos.y, (float) shooterPos.z).color(0, 0, 0, 255)
-					.endVertex();
+			VertexConsumer builder = bufferIn.getBuffer(RenderType.lines());
+			var pose = matrixStackIn.last();
+			builder.vertex(pose.pose(), 0, 0.1f, 0).color(0, 0, 0, 255).normal(pose.normal(), 0, 0, 0).endVertex();
+			builder.vertex(pose.pose(), (float) shooterPos.x, (float) shooterPos.y, (float) shooterPos.z)
+					.color(0, 0, 0, 255).normal(pose.normal(), 0, 0, 0).endVertex();
 		}
 
-		matrixStackIn.pop();
+		matrixStackIn.popPose();
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
 	@Override
-	protected boolean canRenderName(GrapplingHookEntity entity) {
+	protected boolean shouldShowName(GrapplingHookEntity entity) {
 		return false;
 	}
 
-	/**
-	 * Returns the location of an entity's texture.
-	 */
 	@Override
-	public ResourceLocation getEntityTexture(GrapplingHookEntity entity) {
+	public ResourceLocation getTextureLocation(GrapplingHookEntity entity) {
 		return TEXTURES;
 	}
 }

@@ -9,13 +9,13 @@ import com.google.gson.JsonPrimitive;
 import mod.vemerion.wizardstaff.Magic.CreateEntityMagic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class ShapedCreateEntityMagic extends CreateEntityMagic {
 
@@ -44,7 +44,7 @@ public class ShapedCreateEntityMagic extends CreateEntityMagic {
 	@Override
 	protected void readAdditional(JsonObject json) {
 		super.readAdditional(json);
-		shape = MagicUtil.readColl(json, "shape", e -> JSONUtils.getString(e, "row"), new ArrayList<>());
+		shape = MagicUtil.readColl(json, "shape", e -> GsonHelper.convertToString(e, "row"), new ArrayList<>());
 		spawnPositions = calculateSpawnPositions(shape);
 	}
 
@@ -55,7 +55,7 @@ public class ShapedCreateEntityMagic extends CreateEntityMagic {
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { entity.getName() };
+		return new Object[] { entity.getDescription() };
 	}
 
 	@Override
@@ -99,29 +99,28 @@ public class ShapedCreateEntityMagic extends CreateEntityMagic {
 	}
 
 	@Override
-	protected List<Entity> createEntities(World world, PlayerEntity player, ItemStack staff) {
+	protected List<Entity> createEntities(Level level, Player player, ItemStack staff) {
 		List<Entity> entities = new ArrayList<>();
-		Vector3d forward = Vector3d.fromPitchYaw(0, player.rotationYaw);
-		Vector3d right = forward.rotateYaw((float) Math.PI / 2);
+		Vec3 forward = Vec3.directionFromRotation(0, player.getYRot());
+		Vec3 right = forward.yRot((float) Math.PI / 2);
 
 		for (Pos p : spawnPositions) {
-			Entity e = entity.create(world);
-			Vector3d pos = findValidPosition(player.getPositionVec().add(forward.scale(p.row).add(right.scale(p.col))),
-					world);
+			Entity e = entity.create(level);
+			Vec3 pos = findValidPosition(player.position().add(forward.scale(p.row).add(right.scale(p.col))), level);
 			if (pos == null)
 				continue;
-			e.setPositionAndRotation(pos.x, pos.y, pos.z, player.getRNG().nextFloat() * 360, 0);
+			e.absMoveTo(pos.x, pos.y, pos.z, player.getRandom().nextFloat() * 360, 0);
 			entities.add(e);
 		}
 		return entities;
 	}
 
-	private Vector3d findValidPosition(Vector3d position, World world) {
+	private Vec3 findValidPosition(Vec3 position, Level level) {
 		int[] heights = new int[] { 0, -1, 1 };
 		for (int height : heights) {
-			BlockPos pos = new BlockPos(position).up(height);
-			if (!world.getBlockState(pos).isSolid() && world.getBlockState(pos.down()).isSolid())
-				return new Vector3d(position.x, pos.getY(), position.z);
+			BlockPos pos = new BlockPos(position).above(height);
+			if (!level.getBlockState(pos).canOcclude() && level.getBlockState(pos.below()).canOcclude())
+				return new Vec3(position.x, pos.getY(), position.z);
 		}
 		return null;
 	}

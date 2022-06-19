@@ -1,0 +1,27 @@
+{
+  "cost": 10.0,
+  "duration": 20,
+  "magic": "wizardstaff:name_tag_magic",
+  "ingredient": {
+    "item": "minecraft:name_tag"
+  },
+  "syllables": [
+    "ig",
+    "nite",
+    "syl",
+    "la",
+    "bles",
+    "di",
+    "vide",
+    "un",
+    "ex",
+    "am",
+    "ples",
+    "dif",
+    "fer",
+    "ence",
+    "re",
+    "main",
+    "der"
+  ]
+}

@@ -7,12 +7,12 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public class ClockMagic extends Magic {
 	
@@ -21,21 +21,21 @@ public class ClockMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (count % 7 == 0)
 			player.playSound(ModSounds.CLOCK, 1, soundPitch(player));
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			cost(player);
 		}
-		if (!world.isRemote) {
-			((ServerWorld) world).setDayTime(world.getDayTime() + 40);
+		if (!level.isClientSide) {
+			((ServerLevel) level).setDayTime(level.getDayTime() + 40);
 		} else {
-			((ClientWorld) world).setDayTime(world.getDayTime() + 40);
+			((ClientLevel) level).setDayTime(level.getDayTime() + 40);
 		}
 	}
 

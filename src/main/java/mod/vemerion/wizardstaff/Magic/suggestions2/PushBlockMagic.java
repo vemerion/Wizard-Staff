@@ -11,19 +11,19 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class PushBlockMagic extends Magic {
@@ -52,12 +52,12 @@ public class PushBlockMagic extends Magic {
 	}
 
 	@Override
-	public void encodeAdditional(PacketBuffer buffer) {
+	public void encodeAdditional(FriendlyByteBuf buffer) {
 		MagicUtil.encode(buffer, block);
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 		block = MagicUtil.decode(buffer);
 	}
 
@@ -72,13 +72,13 @@ public class PushBlockMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 	
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { block.getTranslatedName() };
+		return new Object[] { block.getName() };
 	}
 	
 	@Override
@@ -87,49 +87,49 @@ public class PushBlockMagic extends Magic {
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
-			Direction direction = Direction.getFacingDirections(player)[0];
-			BlockPos start = ray(world, player);
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
+			Direction direction = Direction.orderedByNearest(player)[0];
+			BlockPos start = ray(level, player);
 
 			if (start != null) {
 				BlockPos p = new BlockPos(start);
-				BlockState state = world.getBlockState(p);
-				TileEntity tileEntity = world.getTileEntity(start);
-				if (tileEntity != null)
-					tileEntity = TileEntity.readTileEntity(state, tileEntity.serializeNBT());
+				BlockState state = level.getBlockState(p);
+				BlockEntity tileEntity = level.getBlockEntity(start);
 
 				for (int i = 0; i < MAX_DISTANCE; i++) {
-					if (!(world.isAirBlock(p.offset(direction)) && state.isValidPosition(world, p.offset(direction))))
+					if (!(level.isEmptyBlock(p.relative(direction)) && state.canSurvive(level, p.relative(direction))))
 						break;
-					p = p.offset(direction);
+					p = p.relative(direction);
 				}
+				
+				if (tileEntity != null)
+					tileEntity = BlockEntity.loadStatic(p, state, tileEntity.serializeNBT());
 
 				if (p.equals(start)) {
-					playSoundServer(world, player, ModSounds.POOF, 1, soundPitch(player));
+					playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
 				} else {
-					playSoundServer(world, player, ModSounds.PUSH, 1, soundPitch(player));
+					playSoundServer(level, player, ModSounds.PUSH, 1, soundPitch(player));
 					cost(player);
-					world.setBlockState(p, state);
+					level.setBlockAndUpdate(p, state);
 					if (tileEntity != null) {
-						world.removeTileEntity(start);
-						tileEntity.setPos(p);
-						world.setTileEntity(p, tileEntity);
-						tileEntity.markDirty();
+						level.removeBlockEntity(start);
+						level.setBlockEntity(tileEntity);
+						tileEntity.setChanged();
 					}
-					world.setBlockState(start, Blocks.AIR.getDefaultState());
+					level.setBlockAndUpdate(start, Blocks.AIR.defaultBlockState());
 				}
 			} else {
-				playSoundServer(world, player, ModSounds.POOF, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
 			}
 		}
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
-	private BlockPos ray(World world, PlayerEntity player) {
-		BlockRayTraceResult result = Helper.blockRay(world, player, 5);
-		if (result.getType() == Type.BLOCK && world.getBlockState(result.getPos()).getBlock() == block)
-			return result.getPos();
+	private BlockPos ray(Level level, Player player) {
+		BlockHitResult result = Helper.blockRay(level, player, 5);
+		if (result.getType() == HitResult.Type.BLOCK && level.getBlockState(result.getBlockPos()).getBlock() == block)
+			return result.getBlockPos();
 
 		return null;
 	}

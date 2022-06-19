@@ -9,9 +9,9 @@ import mod.vemerion.wizardstaff.entity.MushroomCloudEntity;
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.entity.PumpkinMagicEntity;
 import mod.vemerion.wizardstaff.entity.WizardHatEntity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.monster.VexEntity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.monster.Vex;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -35,45 +35,43 @@ public class ModEntities {
 	@SubscribeEvent
 	public static void onRegisterEntity(RegistryEvent.Register<EntityType<?>> event) {
 		EntityType<PumpkinMagicEntity> pumpkinMagicEntity = EntityType.Builder
-				.<PumpkinMagicEntity>create(PumpkinMagicEntity::new, EntityClassification.MISC).size(1, 1F).build("");
+				.<PumpkinMagicEntity>of(PumpkinMagicEntity::new, MobCategory.MISC).sized(1, 1F).build("");
 		event.getRegistry().register(Init.setup(pumpkinMagicEntity, "pumpkin_magic"));
 
 		EntityType<NetherPortalEntity> netherPortalEntity = EntityType.Builder
-				.<NetherPortalEntity>create(NetherPortalEntity::new, EntityClassification.MISC).size(1, 2F)
-				.immuneToFire().build("");
+				.<NetherPortalEntity>of(NetherPortalEntity::new, MobCategory.MISC).sized(1, 2F).fireImmune().build("");
 		event.getRegistry().register(Init.setup(netherPortalEntity, "nether_portal"));
 
 		EntityType<MagicWitherSkullEntity> magicWitherSkullEntity = EntityType.Builder
-				.<MagicWitherSkullEntity>create(MagicWitherSkullEntity::new, EntityClassification.MISC)
-				.size(0.3125F, 0.3125F).immuneToFire().build("");
+				.<MagicWitherSkullEntity>of(MagicWitherSkullEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F)
+				.fireImmune().build("");
 		event.getRegistry().register(Init.setup(magicWitherSkullEntity, "magic_wither_skull"));
 
 		EntityType<MagicSoulSandArmEntity> magicSoulSandArmEntity = EntityType.Builder
-				.<MagicSoulSandArmEntity>create(MagicSoulSandArmEntity::new, EntityClassification.MISC).size(1, 1)
-				.immuneToFire().build("");
+				.<MagicSoulSandArmEntity>of(MagicSoulSandArmEntity::new, MobCategory.MISC).sized(1, 1).fireImmune()
+				.build("");
 		event.getRegistry().register(Init.setup(magicSoulSandArmEntity, "magic_soul_sand_arm"));
 
 		EntityType<GrapplingHookEntity> grapplingHookEntity = EntityType.Builder
-				.<GrapplingHookEntity>create(GrapplingHookEntity::new, EntityClassification.MISC).size(0.3f, 0.3f)
-				.build("");
+				.<GrapplingHookEntity>of(GrapplingHookEntity::new, MobCategory.MISC).sized(0.3f, 0.3f).build("");
 		event.getRegistry().register(Init.setup(grapplingHookEntity, "grappling_hook"));
 
 		EntityType<MushroomCloudEntity> mushroomCloudEntity = EntityType.Builder
-				.<MushroomCloudEntity>create(MushroomCloudEntity::new, EntityClassification.MISC).size(3, 3).build("");
+				.<MushroomCloudEntity>of(MushroomCloudEntity::new, MobCategory.MISC).sized(3, 3).build("");
 		event.getRegistry().register(Init.setup(mushroomCloudEntity, "mushroom_cloud"));
 
 		EntityType<WizardHatEntity> wizardHatEntity = EntityType.Builder
-				.<WizardHatEntity>create(WizardHatEntity::new, EntityClassification.MISC).size(1, 1).build("");
+				.<WizardHatEntity>of(WizardHatEntity::new, MobCategory.MISC).sized(1, 1).build("");
 		event.getRegistry().register(Init.setup(wizardHatEntity, "wizard_hat"));
 
 		EntityType<MagicVexEntity> magicVexEntity = EntityType.Builder
-				.<MagicVexEntity>create(MagicVexEntity::new, EntityClassification.MONSTER).immuneToFire()
-				.size(0.4f, 0.8f).trackingRange(8).build("");
+				.<MagicVexEntity>of(MagicVexEntity::new, MobCategory.MONSTER).fireImmune().sized(0.4f, 0.8f)
+				.clientTrackingRange(8).build("");
 		event.getRegistry().register(Init.setup(magicVexEntity, "magic_vex"));
 	}
-	
+
 	@SubscribeEvent
 	public static void onRegisterEntityAttributes(EntityAttributeCreationEvent event) {
-		event.put(MAGIC_VEX, VexEntity.func_234321_m_().create());
+		event.put(MAGIC_VEX, Vex.createAttributes().build());
 	}
 }

@@ -1,8 +1,0 @@
-{
-  "cost": 10.0,
-  "duration": 10,
-  "magic": "wizard-staff:inventory_magic",
-  "ingredient": {
-    "item": "minecraft:chest"
-  }
-}

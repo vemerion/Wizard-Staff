@@ -7,46 +7,46 @@ import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.Magic.original.JukeboxMagic;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.TickableSound;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
-public class WizardStaffTickableSound extends TickableSound {
+public class WizardStaffTickableSound extends AbstractTickableSoundInstance {
 
 	private UUID id;
 	private boolean started;
 
 	public WizardStaffTickableSound(UUID id, SoundEvent music) {
-		super(music, SoundCategory.PLAYERS);
+		super(music, SoundSource.PLAYERS);
 		this.id = id;
 		this.volume = 0;
-		this.repeat = true;
+		this.looping = true;
 	}
 
 	@Override
 	public void tick() {
-		if (isDonePlaying())
+		if (isStopped())
 			return;
 		Minecraft mc = Minecraft.getInstance();
-		PlayerEntity player = mc.world == null ? null : mc.world.getPlayerByUuid(id);
-		ItemStack stack = player == null ? ItemStack.EMPTY : player.getActiveItemStack();
+		Player player = mc.level == null ? null : mc.level.getPlayerByUUID(id);
+		ItemStack stack = player == null ? ItemStack.EMPTY : player.getUseItem();
 		WizardStaffItemHandler handler = WizardStaffItemHandler.orNull(stack);
 		if (player == null || handler == null || !(getMagic(handler) instanceof JukeboxMagic)) {
 			if (started)
-				finishPlaying();
+				stop();
 		} else {
 			started = true;
 			volume = 1;
-			x = player.getPosX();
-			y = player.getPosY();
-			z = player.getPosZ();
+			x = player.getX();
+			y = player.getY();
+			z = player.getZ();
 		}
 	}
 
 	@Override
-	public boolean canBeSilent() {
+	public boolean canStartSilent() {
 		return true;
 	}
 

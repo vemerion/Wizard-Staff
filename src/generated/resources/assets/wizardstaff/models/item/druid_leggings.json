@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "wizardstaff:item/druid_leggings",
+    "layer1": "wizardstaff:item/druid_leggings_overlay"
+  }
+}

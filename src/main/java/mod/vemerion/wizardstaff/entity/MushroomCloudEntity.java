@@ -3,27 +3,27 @@ package mod.vemerion.wizardstaff.entity;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class MushroomCloudEntity extends MagicEntity {
 	private static final int DURATION = 20 * 10;
 
 
-	public MushroomCloudEntity(EntityType<? extends MushroomCloudEntity> entityTypeIn, World worldIn) {
-		super(entityTypeIn, worldIn);
+	public MushroomCloudEntity(EntityType<? extends MushroomCloudEntity> entityTypeIn, Level levelIn) {
+		super(entityTypeIn, levelIn);
 		this.setNoGravity(true);
 	}
 
-	public MushroomCloudEntity(World worldIn, PlayerEntity shooter) {
-		this(ModEntities.MUSHROOM_CLOUD, worldIn);
+	public MushroomCloudEntity(Level levelIn, Player shooter) {
+		this(ModEntities.MUSHROOM_CLOUD, levelIn);
 		this.setCaster(shooter);
 	}
 
@@ -31,11 +31,11 @@ public class MushroomCloudEntity extends MagicEntity {
 	public void tick() {
 		super.tick();
 
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			damageEntities();
 
-			if (ticksExisted > DURATION)
-				remove();
+			if (tickCount > DURATION)
+				discard();
 		} else {
 			createParticles();
 		}
@@ -43,27 +43,27 @@ public class MushroomCloudEntity extends MagicEntity {
 
 	private void createParticles() {
 		for (int i = 0; i < 10; i++) {
-			Vector3d pos = randomParticlePos();
-			world.addParticle(new MagicDustParticleData(rand.nextFloat() * 0.2f, 0.8f + rand.nextFloat() * 0.2f,
-					rand.nextFloat() * 0.2f, 1), pos.x, pos.y, pos.z, 0, 0.5, 0);
+			Vec3 pos = randomParticlePos();
+			level.addParticle(new MagicDustParticleData(random.nextFloat() * 0.2f, 0.8f + random.nextFloat() * 0.2f,
+					random.nextFloat() * 0.2f, 1), pos.x, pos.y, pos.z, 0, 0.5, 0);
 		}
 	}
 
-	private Vector3d randomParticlePos() {
-		AxisAlignedBB box = getBoundingBox();
-		double x = rand.nextDouble() * (box.maxX - box.minX) + box.minX;
-		double y = rand.nextDouble() * (box.maxY - box.minY) + box.minY;
-		double z = rand.nextDouble() * (box.maxZ - box.minZ) + box.minZ;
-		return new Vector3d(x, y, z);
+	private Vec3 randomParticlePos() {
+		AABB box = getBoundingBox();
+		double x = random.nextDouble() * (box.maxX - box.minX) + box.minX;
+		double y = random.nextDouble() * (box.maxY - box.minY) + box.minY;
+		double z = random.nextDouble() * (box.maxZ - box.minZ) + box.minZ;
+		return new Vec3(x, y, z);
 	}
 
 	private void damageEntities() {
-		PlayerEntity caster = getCaster(world);
-		for (LivingEntity e : world.getEntitiesWithinAABB(LivingEntity.class, getBoundingBox(), e -> e != caster && e.isAlive())) {
+		Player caster = getCaster(level);
+		for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox(), e -> e != caster && e.isAlive())) {
 			if (caster != null) {
-				e.attackEntityFrom(Magic.magicDamage(this, caster), 2);
+				e.hurt(Magic.magicDamage(this, caster), 2);
 			} else {
-				e.attackEntityFrom(Magic.magicDamage(), 2);
+				e.hurt(Magic.magicDamage(), 2);
 			}
 			if (e.getHealth() <= 0) {
 				spawnMushrooms(e.getEyePosition(1));
@@ -71,16 +71,16 @@ public class MushroomCloudEntity extends MagicEntity {
 		}
 	}
 
-	private void spawnMushrooms(Vector3d pos) {
-		for (int i = 0; i < rand.nextInt(5) + 3; i++) {
-			Vector3d spawnPos = pos.add(rand.nextDouble() - 0.5, rand.nextDouble() - 0.5, rand.nextDouble() - 0.5);
-			ItemEntity mushroom = new ItemEntity(world, spawnPos.x, spawnPos.y, spawnPos.z,
-					new ItemStack(rand.nextBoolean() ? Items.RED_MUSHROOM : Items.BROWN_MUSHROOM));
-			world.addEntity(mushroom);
+	private void spawnMushrooms(Vec3 pos) {
+		for (int i = 0; i < random.nextInt(5) + 3; i++) {
+			Vec3 spawnPos = pos.add(random.nextDouble() - 0.5, random.nextDouble() - 0.5, random.nextDouble() - 0.5);
+			ItemEntity mushroom = new ItemEntity(level, spawnPos.x, spawnPos.y, spawnPos.z,
+					new ItemStack(random.nextBoolean() ? Items.RED_MUSHROOM : Items.BROWN_MUSHROOM));
+			level.addFreshEntity(mushroom);
 		}
 	}
 
 	@Override
-	protected void registerData() {
+	protected void defineSynchedData() {
 	}
 }

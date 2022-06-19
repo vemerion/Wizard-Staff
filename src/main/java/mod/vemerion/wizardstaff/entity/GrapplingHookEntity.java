@@ -5,22 +5,22 @@ import java.util.UUID;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 
 public class GrapplingHookEntity extends MagicEntity implements IEntityAdditionalSpawnData {
 
-	public GrapplingHookEntity(EntityType<? extends GrapplingHookEntity> entityTypeIn, World worldIn) {
-		super(entityTypeIn, worldIn);
+	public GrapplingHookEntity(EntityType<? extends GrapplingHookEntity> entityTypeIn, Level level) {
+		super(entityTypeIn, level);
 		this.setNoGravity(true);
-		this.ignoreFrustumCheck = true;
+		this.noCulling = true;
 	}
 
-	public GrapplingHookEntity(World worldIn, PlayerEntity shooter) {
-		this(ModEntities.GRAPPLING_HOOK, worldIn);
+	public GrapplingHookEntity(Level level, Player shooter) {
+		this(ModEntities.GRAPPLING_HOOK, level);
 		this.setCaster(shooter);
 	}
 
@@ -28,41 +28,41 @@ public class GrapplingHookEntity extends MagicEntity implements IEntityAdditiona
 	public void tick() {
 		super.tick();
 
-		if (!world.isRemote) {
-			PlayerEntity shooter = getCaster(world);
-			if (shooter == null || this.getDistanceSq(shooter) > 100
-					|| !(shooter.getActiveItemStack().getItem() instanceof WizardStaffItem))
-				remove();
+		if (!level.isClientSide) {
+			Player shooter = getCaster(level);
+			if (shooter == null || this.distanceToSqr(shooter) > 100
+					|| !(shooter.getUseItem().getItem() instanceof WizardStaffItem))
+				discard();
 		}
 
-		if (getCaster(world) != null && isAlive()) {
-			Wizard.getWizardOptional(getCaster(world)).ifPresent(wizard -> wizard.setGrapplingHook(this));
+		if (getCaster(level) != null && isAlive()) {
+			Wizard.getWizardOptional(getCaster(level)).ifPresent(wizard -> wizard.setGrapplingHook(this));
 		}
 	}
 
-	public boolean isInRangeToRenderDist(double distance) {
+	public boolean shouldRenderAtSqrDistance(double distance) {
 		return distance < 4096;
 	}
 
 	@Override
-	protected void registerData() {
+	protected void defineSynchedData() {
 
 	}
 
 	@Override
-	public void writeSpawnData(PacketBuffer buffer) {
+	public void writeSpawnData(FriendlyByteBuf buffer) {
 		UUID caster = getCasterUUID();
 		if (caster == null) {
 			buffer.writeBoolean(false);
 		} else {
 			buffer.writeBoolean(true);
-			buffer.writeUniqueId(caster);
+			buffer.writeUUID(caster);
 		}
 	}
 
 	@Override
-	public void readSpawnData(PacketBuffer additionalData) {
+	public void readSpawnData(FriendlyByteBuf additionalData) {
 		if (additionalData.readBoolean())
-			setCasterUUID(additionalData.readUniqueId());
+			setCasterUUID(additionalData.readUUID());
 	}
 }

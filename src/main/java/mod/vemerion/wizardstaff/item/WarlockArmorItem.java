@@ -3,18 +3,18 @@ package mod.vemerion.wizardstaff.item;
 import java.awt.Color;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.init.ModLayerLocations;
 import mod.vemerion.wizardstaff.model.MagicArmorModel;
 import mod.vemerion.wizardstaff.model.WarlockArmorModel;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class WarlockArmorItem extends MagicArmorItem {
 	private static final int COLOR = Color.RED.getRGB();
 
-	public WarlockArmorItem(EquipmentSlotType slot) {
+	public WarlockArmorItem(EquipmentSlot slot) {
 		super(new WarlockArmorMaterial(), slot);
 	}
 
@@ -28,24 +28,30 @@ public class WarlockArmorItem extends MagicArmorItem {
 		return "warlock_armor";
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
-	protected MagicArmorModel<?> getModel() {
-		if (model == null) {
-			model = new WarlockArmorModel<>(0.5f);
-		}
-		return model;
+	protected RenderProperties getRenderProperties() {
+		return new WarlockRenderProperties();
 	}
 
 	private static class WarlockArmorMaterial extends MagicArmorMaterial {
 		@Override
-		public Ingredient getRepairMaterial() {
-			return Ingredient.fromItems(Items.IRON_INGOT);
+		public Ingredient getRepairIngredient() {
+			return Ingredient.of(Items.IRON_INGOT);
 		}
 
 		@Override
 		public String getName() {
 			return Main.MODID + ":warlock_armor";
 		}
+	}
+
+	private static class WarlockRenderProperties extends RenderProperties {
+
+		@Override
+		protected MagicArmorModel<?> getModel() {
+			return new WarlockArmorModel<>(
+					Minecraft.getInstance().getEntityModels().bakeLayer(ModLayerLocations.WARLOCK_ARMOR));
+		}
+
 	}
 }

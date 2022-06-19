@@ -1,8 +1,0 @@
-{
-  "cost": 20.0,
-  "duration": 20,
-  "magic": "wizard-staff:bee_magic",
-  "ingredient": {
-    "item": "minecraft:honeycomb"
-  }
-}

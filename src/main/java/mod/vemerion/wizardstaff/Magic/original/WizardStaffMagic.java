@@ -7,11 +7,11 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.world.Explosion.Mode;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 
 public class WizardStaffMagic extends Magic {
 	
@@ -20,16 +20,16 @@ public class WizardStaffMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.CROSSBOW;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.CROSSBOW;
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
 			int depth = staffDepth(staff);
-			world.createExplosion(null, magicDamage(player), null, player.getPosX(), player.getPosY(),
-					player.getPosZ(), depth, true, Mode.DESTROY);
+			level.explode(null, magicDamage(player), null, player.getX(), player.getY(),
+					player.getZ(), depth, true, Explosion.BlockInteraction.DESTROY);
 		}
 		return ItemStack.EMPTY;
 	}

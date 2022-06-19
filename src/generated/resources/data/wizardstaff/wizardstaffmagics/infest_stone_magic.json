@@ -1,0 +1,10 @@
+{
+  "cost": 20.0,
+  "duration": 20,
+  "magic": "wizardstaff:transform_block_magic",
+  "ingredient": {
+    "tag": "forge:dyes/light_gray"
+  },
+  "from": "minecraft:stone",
+  "to": "minecraft:infested_stone"
+}

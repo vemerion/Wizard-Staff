@@ -11,15 +11,15 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class TransmutationMagic extends Magic {
@@ -48,25 +48,25 @@ public class TransmutationMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
-		created = buffer.readItemStack().getItem();
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
+		created = buffer.readItem().getItem();
 		sound = MagicUtil.decode(buffer);
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
-		buffer.writeItemStack(created.getDefaultInstance());
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
+		buffer.writeItem(created.getDefaultInstance());
 		MagicUtil.encode(buffer, sound);
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		created = JSONUtils.getItem(json, "created");
+		created = GsonHelper.getAsItem(json, "created");
 		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound", ModSounds.PLOP);
 	}
 	
@@ -78,35 +78,35 @@ public class TransmutationMagic extends Magic {
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { created.getDisplayName(created.getDefaultInstance()) };
+		return new Object[] { created.getName(created.getDefaultInstance()) };
 	}
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { created.getDisplayName(created.getDefaultInstance()) };
+		return new Object[] { created.getName(created.getDefaultInstance()) };
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
 		player.playSound(sound, 1, soundPitch(player));
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
 				cost(player);
 				ItemStack extracted = h.extractCurrent();
 				ItemStack createdStack = new ItemStack(created);
-				CompoundNBT tag = extracted.getOrCreateTag();
+				CompoundTag tag = extracted.getOrCreateTag();
 				if (tag.contains("display")) {
-					CompoundNBT display = tag.getCompound("display");
+					CompoundTag display = tag.getCompound("display");
 					int color = display.getInt("color");
 
 					tag = createdStack.getOrCreateTag();
-					display = createdStack.getOrCreateChildTag("display");
+					display = createdStack.getOrCreateTagElement("display");
 					display.putInt("color", color);
 				}
 				h.insertCurrent(createdStack);
 			});
 		}
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
 }

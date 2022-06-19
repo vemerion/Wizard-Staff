@@ -1,54 +1,51 @@
 package mod.vemerion.wizardstaff.renderer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Quaternion;
 
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
+import mod.vemerion.wizardstaff.init.ModLayerLocations;
 import mod.vemerion.wizardstaff.model.NetherPortalModel;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.projectile.ShulkerBulletEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.resources.ResourceLocation;
 
 public class NetherPortalRenderer extends EntityRenderer<NetherPortalEntity> {
-	private final NetherPortalModel model = new NetherPortalModel();
+	private final NetherPortalModel model;
 
-	public NetherPortalRenderer(EntityRendererManager renderManagerIn) {
+	public NetherPortalRenderer(EntityRendererProvider.Context renderManagerIn) {
 		super(renderManagerIn);
+		model = new NetherPortalModel(renderManagerIn.bakeLayer(ModLayerLocations.NETHER_PORTAL));
 	}
 
 	@Override
-	public void render(NetherPortalEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn,
-			IRenderTypeBuffer bufferIn, int packedLightIn) {
-		matrixStackIn.push();
+	public void render(NetherPortalEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn,
+			MultiBufferSource bufferIn, int packedLightIn) {
+		matrixStackIn.pushPose();
 		matrixStackIn.scale(1.0F, -1.0F, 1.0F);
-		matrixStackIn.rotate(new Quaternion(0, -entityYaw, 0, true));
+		matrixStackIn.mulPose(new Quaternion(0, -entityYaw, 0, true));
 		matrixStackIn.translate(0.0D, (double) -1.501F, 0.0D);
 
-		IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.model.getRenderType(getEntityTexture(entityIn)));
-		model.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		matrixStackIn.pop();
+		VertexConsumer ivertexbuilder = bufferIn.getBuffer(this.model.renderType(getTextureLocation(entityIn)));
+		model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+		matrixStackIn.popPose();
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
-	
 
 	@Override
-	protected boolean canRenderName(NetherPortalEntity entity) {
+	protected boolean shouldShowName(NetherPortalEntity entity) {
 		return false;
 	}
 
-	protected int getBlockLight(ShulkerBulletEntity entityIn, float partialTicks) {
+	protected int getBlockLight(NetherPortalEntity entityIn, float partialTicks) {
 		return 15;
 	}
 
-	/**
-	 * Returns the location of an entity's texture.
-	 */
 	@Override
-	public ResourceLocation getEntityTexture(NetherPortalEntity entity) {
+	public ResourceLocation getTextureLocation(NetherPortalEntity entity) {
 		return entity.getTexture();
 	}
 }

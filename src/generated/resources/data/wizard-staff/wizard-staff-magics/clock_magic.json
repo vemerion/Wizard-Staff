@@ -1,8 +1,0 @@
-{
-  "cost": 1.0,
-  "duration": -1,
-  "magic": "wizard-staff:clock_magic",
-  "ingredient": {
-    "item": "minecraft:clock"
-  }
-}

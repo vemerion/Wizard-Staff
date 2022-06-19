@@ -1,5 +1,7 @@
 package mod.vemerion.wizardstaff.init;
 
+import java.util.function.Supplier;
+
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.NoMagic;
@@ -59,12 +61,13 @@ import mod.vemerion.wizardstaff.Magic.swap.MassHarvestMagic;
 import mod.vemerion.wizardstaff.Magic.swap.SwapHealthFoodMagic;
 import mod.vemerion.wizardstaff.Magic.swap.SwapPositionMagic;
 import mod.vemerion.wizardstaff.Magic.swap.SwapTradeMagic;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.ObjectHolder;
 import net.minecraftforge.registries.RegistryBuilder;
 
@@ -72,7 +75,7 @@ import net.minecraftforge.registries.RegistryBuilder;
 @EventBusSubscriber(bus = Bus.MOD, modid = Main.MODID)
 public class ModMagics {
 
-	public static IForgeRegistry<MagicType<?>> REGISTRY;
+	private static Supplier<IForgeRegistry<MagicType<?>>> registry;
 
 	public static final MagicType<BlazePowderMagic> BLAZE_POWDER_MAGIC = null;
 	public static final MagicType<CarvedPumpkinMagic> CARVED_PUMPKIN_MAGIC = null;
@@ -196,9 +199,13 @@ public class ModMagics {
 
 	@SuppressWarnings("unchecked")
 	@SubscribeEvent
-	public static void onRegisterMagicRegistry(RegistryEvent.NewRegistry event) {
-		REGISTRY = new RegistryBuilder<MagicType<?>>().setName(new ResourceLocation(Main.MODID, "magics"))
-				.setType((Class<MagicType<?>>) (Class<?>) MagicType.class).create();
+	public static void onRegisterMagicRegistry(NewRegistryEvent event) {
+		registry = event.create(new RegistryBuilder<MagicType<?>>().setName(new ResourceLocation(Main.MODID, "magics"))
+				.setType((Class<MagicType<?>>) (Class<?>) MagicType.class));
+	}
+	
+	public static IForgeRegistry<MagicType<?>> getRegistry() {
+		return registry.get();
 	}
 
 }

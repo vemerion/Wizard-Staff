@@ -1,8 +1,0 @@
-{
-  "cost": 50.0,
-  "duration": 20,
-  "magic": "wizard-staff:gold_nugget_magic",
-  "ingredient": {
-    "tag": "forge:nuggets/gold"
-  }
-}

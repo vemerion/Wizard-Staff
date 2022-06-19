@@ -4,9 +4,9 @@ import java.util.function.Consumer;
 
 import mod.vemerion.wizardstaff.init.ModItems;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.data.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraftforge.common.Tags;
 
 public class ModRecipeProvider extends RecipeProvider {
@@ -16,10 +16,10 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	@Override
-	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-		ShapedRecipeBuilder.shapedRecipe(ModItems.WIZARD_STAFF).key('s', Tags.Items.COBBLESTONE)
-				.key('l', Tags.Items.RODS_WOODEN).patternLine("s s").patternLine("sls").patternLine(" l ")
-				.addCriterion("has_cobblestone", hasItem(Tags.Items.COBBLESTONE)).build(consumer);
+	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+		ShapedRecipeBuilder.shaped(ModItems.WIZARD_STAFF).define('s', Tags.Items.COBBLESTONE)
+				.define('l', Tags.Items.RODS_WOODEN).pattern("s s").pattern("sls").pattern(" l ")
+				.unlockedBy("has_cobblestone", has(Tags.Items.COBBLESTONE)).save(consumer);
 	}
 
 }

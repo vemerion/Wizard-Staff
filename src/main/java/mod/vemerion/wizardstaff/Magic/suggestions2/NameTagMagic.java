@@ -18,13 +18,13 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public class NameTagMagic extends Magic {
 
@@ -41,7 +41,7 @@ public class NameTagMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		syllables = MagicUtil.readColl(json, "syllables", e -> JSONUtils.getString(e, "syllable"), new ArrayList<>());
+		syllables = MagicUtil.readColl(json, "syllables", e -> GsonHelper.convertToString(e, "syllable"), new ArrayList<>());
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class NameTagMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
@@ -73,19 +73,19 @@ public class NameTagMagic extends Magic {
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
 		player.playSound(ModSounds.SCRIBBLE, 1, soundPitch(player));
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
-				String name = randomName(player.getRNG());
+				String name = randomName(player.getRandom());
 				cost(player);
 				ItemStack nametag = h.extractCurrent();
 				nametag = Items.NAME_TAG.getDefaultInstance();
-				nametag.setDisplayName(new StringTextComponent(name));
+				nametag.setHoverName(new TextComponent(name));
 				h.insertCurrent(nametag);
 			});
 		}
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
 }

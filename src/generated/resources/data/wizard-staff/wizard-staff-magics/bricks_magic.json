@@ -1,8 +1,0 @@
-{
-  "cost": 50.0,
-  "duration": 30,
-  "magic": "wizard-staff:bricks_magic",
-  "ingredient": {
-    "item": "minecraft:bricks"
-  }
-}

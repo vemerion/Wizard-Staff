@@ -1,8 +1,0 @@
-{
-  "cost": 40.0,
-  "duration": 40,
-  "magic": "wizard-staff:glowstone_dust_magic",
-  "ingredient": {
-    "tag": "forge:dusts/glowstone"
-  }
-}

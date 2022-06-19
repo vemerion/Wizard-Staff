@@ -1,0 +1,8 @@
+{
+  "cost": 10.0,
+  "duration": 10,
+  "magic": "wizardstaff:ender_chest_magic",
+  "ingredient": {
+    "item": "minecraft:ender_chest"
+  }
+}

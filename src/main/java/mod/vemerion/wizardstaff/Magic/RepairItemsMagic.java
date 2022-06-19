@@ -5,18 +5,16 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 
-import mod.vemerion.wizardstaff.Magic.Magic;
-import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.world.World;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public abstract class RepairItemsMagic extends Magic {
 	
@@ -38,7 +36,7 @@ public abstract class RepairItemsMagic extends Magic {
 	
 	@Override
 	protected void readAdditional(JsonObject json) {
-		repairRate = JSONUtils.getInt(json, "repair_rate");
+		repairRate = GsonHelper.getAsInt(json, "repair_rate");
 	}
 	
 	@Override
@@ -52,20 +50,20 @@ public abstract class RepairItemsMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 	
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		if (!world.isRemote) {
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
+		if (!level.isClientSide) {
 			List<ItemStack> broken = new ArrayList<>();
-			for (ItemStack armor : getItems(world, player, staff, count))
+			for (ItemStack armor : getItems(level, player, staff, count))
 				if (armor.isDamaged())
 					broken.add(armor);
 			if (!broken.isEmpty()) {
-				ItemStack armor = broken.get(player.getRNG().nextInt(broken.size()));
-				armor.setDamage(armor.getDamage() - repairRate);
+				ItemStack armor = broken.get(player.getRandom().nextInt(broken.size()));
+				armor.setDamageValue(armor.getDamageValue() - repairRate);
 				cost(player);
 			}
 		}
@@ -74,6 +72,6 @@ public abstract class RepairItemsMagic extends Magic {
 			player.playSound(ModSounds.ANVIL, 1, soundPitch(player));
 	}
 
-	protected abstract Iterable<ItemStack> getItems(World world, PlayerEntity player, ItemStack staff, int count);
+	protected abstract Iterable<ItemStack> getItems(Level level, Player player, ItemStack staff, int count);
 
 }

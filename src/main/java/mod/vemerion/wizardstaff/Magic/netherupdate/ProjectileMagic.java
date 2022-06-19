@@ -9,17 +9,17 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ProjectileMagic extends Magic {
@@ -50,15 +50,15 @@ public class ProjectileMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
 		projectileType = MagicUtil.read(json, ForgeRegistries.ENTITIES, "projectile");
 		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound");
-		speed = JSONUtils.getFloat(json, "speed");
+		speed = GsonHelper.getAsFloat(json, "speed");
 	}
 	
 	@Override
@@ -69,7 +69,7 @@ public class ProjectileMagic extends Magic {
 	}
 
 	@Override
-	public void encodeAdditional(PacketBuffer buffer) {
+	public void encodeAdditional(FriendlyByteBuf buffer) {
 		MagicUtil.encode(buffer, projectileType);
 		MagicUtil.encode(buffer, sound);
 		buffer.writeFloat(speed);
@@ -77,7 +77,7 @@ public class ProjectileMagic extends Magic {
 	
 
 	@Override
-	public void decodeAdditional(PacketBuffer buffer) {
+	public void decodeAdditional(FriendlyByteBuf buffer) {
 		projectileType = MagicUtil.decode(buffer);
 		sound = MagicUtil.decode(buffer);
 		speed = buffer.readFloat();
@@ -85,32 +85,32 @@ public class ProjectileMagic extends Magic {
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { projectileType.getName() };
+		return new Object[] { projectileType.getDescription() };
 	}
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { projectileType.getName() };
+		return new Object[] { projectileType.getDescription() };
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
 		player.playSound(sound, 1, soundPitch(player));
-		if (!world.isRemote) {
-			Vector3d direction = Vector3d.fromPitchYaw(player.getPitchYaw());
-			Vector3d position = player.getPositionVec().add(direction.getX() * 1, 1.2, direction.getZ() * 1);
+		if (!level.isClientSide) {
+			Vec3 direction = Vec3.directionFromRotation(player.getRotationVector());
+			Vec3 position = player.position().add(direction.x() * 1, 1.2, direction.z() * 1);
 			cost(player);
-			Entity entity = projectileType.create(world);
-			entity.setPosition(position.x, position.y, position.z);
-			if (entity instanceof ProjectileEntity) {
-				ProjectileEntity projectile = (ProjectileEntity) entity;
-				projectile.setShooter(player);
-				projectile.func_234612_a_(player, player.rotationPitch, player.rotationYaw, 0, speed, 0); // shoot()
+			Entity entity = projectileType.create(level);
+			entity.setPos(position.x, position.y, position.z);
+			if (entity instanceof Projectile) {
+				Projectile projectile = (Projectile) entity;
+				projectile.setOwner(player);
+				projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, speed, 0); // shoot()
 			}
-			world.addEntity(entity);
+			level.addFreshEntity(entity);
 		}
 
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
 }

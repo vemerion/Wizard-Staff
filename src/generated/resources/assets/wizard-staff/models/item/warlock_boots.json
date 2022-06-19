@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "wizard-staff:item/warlock_boots",
-    "layer1": "wizard-staff:item/warlock_boots_overlay"
-  }
-}

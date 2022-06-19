@@ -1,0 +1,18 @@
+{
+  "cost": 10.0,
+  "duration": 20,
+  "magic": "wizardstaff:writable_book_magic",
+  "ingredient": {
+    "item": "minecraft:writable_book"
+  },
+  "wisdoms": [
+    "All that glitters is gold",
+    "Fear the old blood",
+    "Every fleeing man must be caught. Every secret must be unearthed. Such is the conceit of the self-proclaimed seeker of truth.",
+    "What we do in life echoes in eternity",
+    "STEVEN LIVES",
+    "What we\u0027ve got here is... failure to communicate",
+    "All those moments will be lost in time, like tears in rain",
+    "A wizard is never late, nor is he early. He arrives precisely when he means to."
+  ]
+}

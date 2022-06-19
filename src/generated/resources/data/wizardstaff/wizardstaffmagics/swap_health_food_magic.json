@@ -1,0 +1,8 @@
+{
+  "cost": 20.0,
+  "duration": 20,
+  "magic": "wizardstaff:swap_health_food_magic",
+  "ingredient": {
+    "item": "minecraft:cooked_beef"
+  }
+}

@@ -4,27 +4,27 @@ import java.util.function.Function;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.init.ModParticles;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.PortalInfo;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.portal.PortalInfo;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.ITeleporter;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.minecraftforge.network.NetworkHooks;
 
 // Not really a nether portal anymore, but a generic portal to any dimension
 public class NetherPortalEntity extends Entity implements IEntityAdditionalSpawnData {
@@ -36,71 +36,70 @@ public class NetherPortalEntity extends Entity implements IEntityAdditionalSpawn
 
 	private int duration;
 	private ResourceLocation texture;
-	private RegistryKey<World> dimension;
+	private ResourceKey<Level> dimension;
 
-	public NetherPortalEntity(EntityType<? extends NetherPortalEntity> entityTypeIn, World worldIn,
-			RegistryKey<World> dimension, ResourceLocation texture) {
-		super(entityTypeIn, worldIn);
+	public NetherPortalEntity(EntityType<? extends NetherPortalEntity> entityTypeIn, Level level,
+			ResourceKey<Level> dimension, ResourceLocation texture) {
+		super(entityTypeIn, level);
 		setNoGravity(true);
 		this.texture = texture;
 		this.dimension = dimension;
 	}
 
-	public NetherPortalEntity(EntityType<? extends NetherPortalEntity> entityTypeIn, World worldIn) {
-		this(entityTypeIn, worldIn, World.THE_NETHER, DEFAULT_TEXTURE);
+	public NetherPortalEntity(EntityType<? extends NetherPortalEntity> entityTypeIn, Level level) {
+		this(entityTypeIn, level, Level.NETHER, DEFAULT_TEXTURE);
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			spawnParticles();
 
 			if (duration++ > MAX_DURATION)
-				remove();
+				discard();
 		}
 	}
 
 	private void spawnParticles() {
-		ServerWorld serverWorld = (ServerWorld) world;
-		Vector3d sideways = Vector3d.fromPitchYaw(0, rotationYaw + 90);
+		ServerLevel serverWorld = (ServerLevel) level;
+		Vec3 sideways = Vec3.directionFromRotation(0, getYRot() + 90);
 		for (int j = 0; j < 30; j++) {
-			float rotation = rand.nextFloat() * (float) Math.PI * 2;
-			float offset = rand.nextFloat() * 0.05f - 0.025f;
-			Vector3d pos = getPositionVec().add(sideways.x * MathHelper.cos(rotation) * (0.5 + offset),
-					1 + MathHelper.sin(rotation) * (1 + offset),
-					sideways.z * MathHelper.cos(rotation) * (0.5 + offset));
-			serverWorld.spawnParticle(ModParticles.MAGIC_SMOKE_PARTICLE, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
+			float rotation = random.nextFloat() * (float) Math.PI * 2;
+			float offset = random.nextFloat() * 0.05f - 0.025f;
+			Vec3 pos = position().add(sideways.x * Mth.cos(rotation) * (0.5 + offset),
+					1 + Mth.sin(rotation) * (1 + offset), sideways.z * Mth.cos(rotation) * (0.5 + offset));
+			serverWorld.sendParticles(ModParticles.MAGIC_SMOKE_PARTICLE, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
 		}
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return true;
 	}
 
 	@Override
-	public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
-		if (!player.world.isRemote) {
+	public InteractionResult interact(Player player, InteractionHand hand) {
+		if (!player.level.isClientSide) {
 			if (duration > 20) {
-				World world = player.world;
-				player.func_242279_ag(); // Reset portal cooldown
-				ServerWorld portalWorld = ((ServerWorld) world).getServer().getWorld(dimension);
+				Level level = player.level;
+				player.setPortalCooldown(); // Reset portal cooldown
+				ServerLevel portalWorld = ((ServerLevel) level).getServer().getLevel(dimension);
 				if (portalWorld != null) {
 					try {
 						ObfuscationReflectionHelper.setPrivateValue(Entity.class, player,
-								player.getPosition().toImmutable(), "field_242271_ac");
+								player.blockPosition().immutable(), "f_19819_");
 						player.changeDimension(portalWorld, new MagicTeleporter());
 					} catch (RuntimeException e) {
 						Main.LOGGER.warn("Unable to use spell to teleport to nether, reason: " + e);
 					}
 				} else {
-					Main.LOGGER.debug("Can not find dimension " + dimension.getLocation().toString());
+					Main.LOGGER.debug("Can not find dimension " + dimension.location().toString());
 				}
 			}
 		}
-		return ActionResultType.FAIL;
+		return InteractionResult.FAIL;
 	}
 
 	public ResourceLocation getTexture() {
@@ -113,50 +112,49 @@ public class NetherPortalEntity extends Entity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	protected void registerData() {
+	protected void defineSynchedData() {
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT compound) {
+	protected void readAdditionalSaveData(CompoundTag compound) {
 		if (compound.contains("texture"))
 			texture = new ResourceLocation(compound.getString("texture"));
 	}
 
 	@Override
-	protected void writeAdditional(CompoundNBT compound) {
+	protected void addAdditionalSaveData(CompoundTag compound) {
 		compound.putString("texture", texture.toString());
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override
-	public void writeSpawnData(PacketBuffer buffer) {
+	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeResourceLocation(texture);
 	}
 
 	@Override
-	public void readSpawnData(PacketBuffer additionalData) {
+	public void readSpawnData(FriendlyByteBuf additionalData) {
 		texture = additionalData.readResourceLocation();
 	}
 
 	private static class MagicTeleporter implements ITeleporter {
 		@Override
-		public PortalInfo getPortalInfo(Entity entity, ServerWorld destWorld,
-				Function<ServerWorld, PortalInfo> defaultPortalInfo) {
-			if (destWorld.getDimensionKey() == World.THE_END)
+		public PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld,
+				Function<ServerLevel, PortalInfo> defaultPortalInfo) {
+			if (destWorld.dimension() == Level.END)
 				return defaultPortalInfo.apply(destWorld);
 
-			BlockPos p = destWorld.getSpawnPoint();
-			if (destWorld.isAirBlock(p.down()))
-				destWorld.setBlockState(p.down(), Blocks.STONE.getDefaultState());
+			BlockPos p = destWorld.getSharedSpawnPos();
+			if (destWorld.isEmptyBlock(p.below()))
+				destWorld.setBlockAndUpdate(p.below(), Blocks.STONE.defaultBlockState());
 			for (int i = 0; i < 2; i++)
-				if (!destWorld.isAirBlock(p.up(i)))
-					destWorld.setBlockState(p.up(i), Blocks.AIR.getDefaultState());
-			return new PortalInfo(Vector3d.copyCenteredHorizontally(p), Vector3d.ZERO,
-					destWorld.getRandom().nextFloat() * 360, 0);
+				if (!destWorld.isEmptyBlock(p.above(i)))
+					destWorld.setBlockAndUpdate(p.above(i), Blocks.AIR.defaultBlockState());
+			return new PortalInfo(Vec3.atBottomCenterOf(p), Vec3.ZERO, destWorld.getRandom().nextFloat() * 360, 0);
 		}
 	}
 

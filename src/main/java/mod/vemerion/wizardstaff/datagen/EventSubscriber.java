@@ -6,7 +6,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @EventBusSubscriber(bus = Bus.MOD, modid = Main.MODID)
 public class EventSubscriber {
@@ -20,6 +20,7 @@ public class EventSubscriber {
 		if (event.includeServer()) {
 			generator.addProvider(new MagicProvider(generator, Main.MODID));
 			generator.addProvider(new ModRecipeProvider(generator));
+			generator.addProvider(new ModConfiguredStructureTagsProvider(generator, Main.MODID, existingFileHelper));
 		}
 		if (event.includeClient()) {
 			generator.addProvider(new ModItemModelProvider(generator, existingFileHelper));

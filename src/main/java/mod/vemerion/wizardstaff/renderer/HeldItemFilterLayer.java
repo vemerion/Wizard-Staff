@@ -5,31 +5,29 @@ import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.IEntityRenderer;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.entity.model.PlayerModel;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper.UnableToAccessFieldException;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper.UnableToAccessFieldException;
 
-// Class used to disable the normal HeldItemLayer when a wizard staff spell i currently being used
+// Class used to disable the normal HeldItemLayer when a wizard staff spell is currently being used
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
-public class HeldItemFilterLayer
-		extends HeldItemLayer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> {
+public class HeldItemFilterLayer extends ItemInHandLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
 
 	private static final Set<PlayerRenderer> injected = Collections
 			.newSetFromMap(new WeakHashMap<PlayerRenderer, Boolean>());
@@ -43,15 +41,15 @@ public class HeldItemFilterLayer
 			injected.add(renderer);
 		}
 	}
-	
+
 	private static void addFilterLayer(PlayerRenderer renderer) {
 		try {
-			List<LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>>> layers = ObfuscationReflectionHelper
-					.getPrivateValue(LivingRenderer.class, renderer, "field_177097_h");
+			List<RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>> layers = ObfuscationReflectionHelper
+					.getPrivateValue(LivingEntityRenderer.class, renderer, "f_115291_");
 			if (layers != null) {
-				LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> heldItemLayer = null;
-				for (LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> layerRenderer : layers) {
-					if (layerRenderer instanceof HeldItemLayer && !(layerRenderer instanceof HeldItemFilterLayer)) {
+				RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> heldItemLayer = null;
+				for (RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> layerRenderer : layers) {
+					if (layerRenderer instanceof ItemInHandLayer && !(layerRenderer instanceof HeldItemFilterLayer)) {
 						heldItemLayer = layerRenderer;
 						break;
 					}
@@ -66,21 +64,20 @@ public class HeldItemFilterLayer
 		}
 	}
 
-	private LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> parent;
+	private RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> parent;
 
-	public HeldItemFilterLayer(
-			IEntityRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> renderer,
-			LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> parent) {
+	public HeldItemFilterLayer(LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer,
+			RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> parent) {
 		super(renderer);
 		this.parent = parent;
 	}
 
 	@Override
-	public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn,
-			AbstractClientPlayerEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
+	public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn,
+			AbstractClientPlayer entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks,
 			float ageInTicks, float netHeadYaw, float headPitch) {
 
-		ItemStack activeItem = entitylivingbaseIn.getActiveItemStack();
+		ItemStack activeItem = entitylivingbaseIn.getUseItem();
 		setStaffVisibility(activeItem, false);
 		parent.render(matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn, limbSwing, limbSwingAmount,
 				partialTicks, ageInTicks, netHeadYaw, headPitch);

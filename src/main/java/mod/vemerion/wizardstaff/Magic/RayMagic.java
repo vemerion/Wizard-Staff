@@ -6,14 +6,14 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class RayMagic extends Magic {
 
@@ -26,40 +26,40 @@ public abstract class RayMagic extends Magic {
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (count % 10 == 0) {
-			player.playSound(ModSounds.RAY, 0.6f, 0.95f + player.getRNG().nextFloat() * 0.05f);
+			player.playSound(ModSounds.RAY, 0.6f, 0.95f + player.getRandom().nextFloat() * 0.05f);
 		}
-		if (world.isRemote) {
-			Vector3d direction = Vector3d.fromPitchYaw(player.getPitchYaw());
-			Entity target = Helper.findTargetLine(player.getPositionVec().add(0, 1.5, 0), direction, getRange(), world, player);
+		if (level.isClientSide) {
+			Vec3 direction = Vec3.directionFromRotation(player.getRotationVector());
+			Entity target = Helper.findTargetLine(player.position().add(0, 1.5, 0), direction, getRange(), level, player);
 			if (target != null) {
-				Vector3d pos = player.getPositionVec().add(0, 1.5, 0).add(direction);
+				Vec3 pos = player.position().add(0, 1.5, 0).add(direction);
 				for (int i = 0; i < 25; i++) {
-					world.addParticle(generateParticle(world, player, staff, count), pos.x, pos.y, pos.z, 0.1, 0.1, 0.1);
+					level.addParticle(generateParticle(level, player, staff, count), pos.x, pos.y, pos.z, 0.1, 0.1, 0.1);
 					pos = pos.add(direction.scale(0.3));
-					if (target.getBoundingBox().intersects(new AxisAlignedBB(pos, pos).grow(0.25)))
+					if (target.getBoundingBox().intersects(new AABB(pos, pos).inflate(0.25)))
 						break;
 				}
 			}
 		}
 	}
 	
-	protected abstract IParticleData generateParticle(World world, PlayerEntity player, ItemStack staff, int count);
+	protected abstract ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count);
 	
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
-			Entity target = Helper.findTargetLine(player.getPositionVec().add(0, 1.5, 0),
-					Vector3d.fromPitchYaw(player.getPitchYaw()), getRange(), world, player);
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
+			Entity target = Helper.findTargetLine(player.position().add(0, 1.5, 0),
+					Vec3.directionFromRotation(player.getRotationVector()), getRange(), level, player);
 			if (target != null) {
-				hitEntity(world, player, target);
+				hitEntity(level, player, target);
 			}
 		}
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 	
-	protected abstract void hitEntity(World world, PlayerEntity player, Entity target);
+	protected abstract void hitEntity(Level level, Player player, Entity target);
 
 	@Override
 	public RenderFirstPersonMagic firstPersonRenderer() {
@@ -72,8 +72,8 @@ public abstract class RayMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 
 }

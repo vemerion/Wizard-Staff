@@ -1,32 +1,31 @@
 package mod.vemerion.wizardstaff.staff;
 
 import mod.vemerion.wizardstaff.init.ModContainers;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Hand;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class WizardStaffContainer extends Container {
+public class WizardStaffContainer extends AbstractContainerMenu {
 
 	private static final int STAFF_SLOT_COUNT = WizardStaffItemHandler.SLOT_COUNT;
 
 	private ItemStack staff;
-	private Hand hand;
+	private InteractionHand hand;
 	private boolean shouldAnimate;
 
-	public static WizardStaffContainer createContainerClientSide(int id, PlayerInventory inventory,
-			PacketBuffer buffer) {
-		Hand hand = buffer.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
-		return new WizardStaffContainer(id, inventory, new WizardStaffItemHandler(ItemStack.EMPTY), ItemStack.EMPTY,
-				buffer.readBoolean(), hand);
+	public static WizardStaffContainer createContainerClientSide(int id, Inventory inventory, FriendlyByteBuf buffer) {
+		InteractionHand hand = buffer.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+		return new WizardStaffContainer(id, inventory, new WizardStaffItemHandler(ItemStack.EMPTY),
+				ItemStack.EMPTY, buffer.readBoolean(), hand);
 	}
 
-	protected WizardStaffContainer(int id, PlayerInventory inventory, WizardStaffItemHandler handler, ItemStack staff,
-			boolean shouldAnimate, Hand hand) {
+	protected WizardStaffContainer(int id, Inventory inventory, WizardStaffItemHandler handler,
+			ItemStack staff, boolean shouldAnimate, InteractionHand hand) {
 		super(ModContainers.WIZARD_STAFF, id);
 		this.staff = staff;
 		this.shouldAnimate = shouldAnimate;
@@ -55,22 +54,22 @@ public class WizardStaffContainer extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player) {
-		return (player.getHeldItemMainhand() == staff || player.getHeldItemOffhand() == staff) && !staff.isEmpty();
+	public boolean stillValid(Player player) {
+		return (player.getMainHandItem() == staff || player.getOffhandItem() == staff) && !staff.isEmpty();
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
-		Slot slot = this.inventorySlots.get(index);
-		ItemStack stack = slot.getStack();
+	public ItemStack quickMoveStack(Player playerIn, int index) {
+		Slot slot = this.slots.get(index);
+		ItemStack stack = slot.getItem();
 		ItemStack copy = stack.copy();
 
-		if (slot != null && slot.getHasStack() && stack != playerIn.getHeldItem(hand)) {
+		if (slot != null && slot.hasItem() && stack != playerIn.getItemInHand(hand)) {
 			if (index < STAFF_SLOT_COUNT) {
-				if (!mergeItemStack(stack, STAFF_SLOT_COUNT, STAFF_SLOT_COUNT + 9 * 4, false))
+				if (!moveItemStackTo(stack, STAFF_SLOT_COUNT, STAFF_SLOT_COUNT + 9 * 4, false))
 					return ItemStack.EMPTY;
 			} else if (index >= STAFF_SLOT_COUNT && index < STAFF_SLOT_COUNT + 9 * 4) {
-				if (!mergeItemStack(stack, 0, STAFF_SLOT_COUNT, false))
+				if (!moveItemStackTo(stack, 0, STAFF_SLOT_COUNT, false))
 					return ItemStack.EMPTY;
 			} else {
 				return ItemStack.EMPTY;
@@ -80,9 +79,9 @@ public class WizardStaffContainer extends Container {
 		}
 
 		if (stack.getCount() == 0)
-			slot.putStack(ItemStack.EMPTY);
+			slot.set(ItemStack.EMPTY);
 		else
-			slot.onSlotChanged();
+			slot.setChanged();
 		slot.onTake(playerIn, stack);
 
 		return copy;

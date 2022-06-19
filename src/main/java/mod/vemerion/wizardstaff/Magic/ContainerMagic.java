@@ -5,17 +5,17 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.SimpleNamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 
 public abstract class ContainerMagic extends Magic {
 
@@ -34,30 +34,30 @@ public abstract class ContainerMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
 			Wizard.getWizardOptional(player).ifPresent(w -> {
 				cost(player);
-				SimpleNamedContainerProvider provider = new SimpleNamedContainerProvider(
-						(id, inventory, p) -> getContainer(id, inventory, p, world, staff, w),
+				SimpleMenuProvider provider = new SimpleMenuProvider(
+						(id, inventory, p) -> getContainer(id, inventory, p, level, staff, w),
 						getDescription().getName());
-				NetworkHooks.openGui((ServerPlayerEntity) player, provider, b -> addExtraData(b, player));
+				NetworkHooks.openGui((ServerPlayer) player, provider, b -> addExtraData(b, player));
 			});
 		}
 		player.playSound(getSound(), 1, soundPitch(player));
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
-
-	abstract protected Container getContainer(int id, PlayerInventory playerInv, PlayerEntity player, World world,
+	
+	abstract protected AbstractContainerMenu getContainer(int id, Inventory playerInv, Player player, Level level,
 			ItemStack staff, Wizard wizard);
 
 	abstract protected SoundEvent getSound();
 	
-	protected void addExtraData(PacketBuffer buffer, PlayerEntity player) {
+	protected void addExtraData(FriendlyByteBuf buffer, Player player) {
 	}
 }

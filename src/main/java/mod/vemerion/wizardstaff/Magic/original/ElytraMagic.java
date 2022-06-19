@@ -7,11 +7,11 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class ElytraMagic extends Magic {
 	
@@ -20,24 +20,24 @@ public class ElytraMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.SPEAR;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.SPEAR;
 	}
 	
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (count % 5 == 0)
 			player.playSound(ModSounds.WOOSH, 1, soundPitch(player));
-		if (!world.isRemote) {
-			Vector3d motion = player.getMotion();
+		if (!level.isClientSide) {
+			Vec3 motion = player.getDeltaMovement();
 			cost(player);
 			player.fallDistance = 0;
-			Vector3d direction = Vector3d.fromPitchYaw(player.getPitchYaw()).scale(0.3);
-			double x = motion.getX() < 3 ? direction.getX() : 0;
-			double y = motion.getY() < 3 ? direction.getY() + 0.1 : 0;
-			double z = motion.getZ() < 3 ? direction.getZ() : 0;
-			player.addVelocity(x, y, z);
-			player.velocityChanged = true;
+			Vec3 direction = Vec3.directionFromRotation(player.getRotationVector()).scale(0.3);
+			double x = motion.x() < 3 ? direction.x() : 0;
+			double y = motion.y() < 3 ? direction.y() + 0.1 : 0;
+			double z = motion.z() < 3 ? direction.z() : 0;
+			player.push(x, y, z);
+			player.hurtMarked = true;
 		}
 	}
 	

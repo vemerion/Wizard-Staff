@@ -1,8 +1,0 @@
-{
-  "cost": 0.3,
-  "duration": -1,
-  "magic": "wizard-staff:blaze_powder_magic",
-  "ingredient": {
-    "item": "minecraft:blaze_powder"
-  }
-}

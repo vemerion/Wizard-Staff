@@ -1,14 +1,14 @@
 package mod.vemerion.wizardstaff.entity;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 public class MagicSoulSandArmEntity extends MagicEntity {
 	private static final int MAX_DURATION = 20 * 10;
@@ -16,15 +16,15 @@ public class MagicSoulSandArmEntity extends MagicEntity {
 	private int duration;
 	private float rotation;
 
-	public MagicSoulSandArmEntity(EntityType<? extends MagicSoulSandArmEntity> entityTypeIn, World worldIn) {
-		super(entityTypeIn, worldIn);
+	public MagicSoulSandArmEntity(EntityType<? extends MagicSoulSandArmEntity> entityTypeIn, Level levelIn) {
+		super(entityTypeIn, levelIn);
 		this.setNoGravity(true);
-		this.rotation = rand.nextFloat() * 360;
+		this.rotation = random.nextFloat() * 360;
 	}
 
-	public MagicSoulSandArmEntity(EntityType<? extends MagicSoulSandArmEntity> entityTypeIn, World worldIn,
-			PlayerEntity caster) {
-		this(entityTypeIn, worldIn);
+	public MagicSoulSandArmEntity(EntityType<? extends MagicSoulSandArmEntity> entityTypeIn, Level levelIn,
+			Player caster) {
+		this(entityTypeIn, levelIn);
 		this.setCaster(caster);
 	}
 
@@ -33,16 +33,16 @@ public class MagicSoulSandArmEntity extends MagicEntity {
 		super.tick();
 
 		duration++;
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			if (duration > MAX_DURATION)
-				remove();
+				discard();
 
 			if (duration % 10 == 0) {
-				PlayerEntity caster = getCaster(world);
-				for (LivingEntity e : world.getEntitiesWithinAABB(LivingEntity.class, getBoundingBox())) {
+				Player caster = getCaster(level);
+				for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox())) {
 					if (e != caster) {
-						e.attackEntityFrom(caster == null ? Magic.magicDamage() : Magic.magicDamage(this, caster), 2);
-						e.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 30, 1));
+						e.hurt(caster == null ? Magic.magicDamage() : Magic.magicDamage(this, caster), 2);
+						e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30, 1));
 					}
 				}
 			}
@@ -50,7 +50,7 @@ public class MagicSoulSandArmEntity extends MagicEntity {
 	}
 
 	public float getY(float partialTicks) {
-		return MathHelper.cos(((duration + partialTicks) / (float) MAX_DURATION) * (float) Math.PI * 2) * 2 + 2f;
+		return Mth.cos(((duration + partialTicks) / (float) MAX_DURATION) * (float) Math.PI * 2) * 2 + 2f;
 	}
 
 	public float getRotation() {
@@ -58,24 +58,24 @@ public class MagicSoulSandArmEntity extends MagicEntity {
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return true;
 	}
 
 	@Override
-	protected void registerData() {
+	protected void defineSynchedData() {
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	protected void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
 		if (compound.contains("duration"))
 			duration = compound.getInt("duration");
 	}
 
 	@Override
-	protected void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	protected void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
 		compound.putInt("duration", duration);
 	}
 }

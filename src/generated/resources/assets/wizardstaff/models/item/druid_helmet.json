@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "wizardstaff:item/druid_helmet",
+    "layer1": "wizardstaff:item/druid_helmet_overlay"
+  }
+}

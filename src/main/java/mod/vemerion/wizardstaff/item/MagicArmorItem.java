@@ -1,114 +1,97 @@
 package mod.vemerion.wizardstaff.item;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.model.MagicArmorModel;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.DyeableArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DyeableArmorItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.client.IItemRenderProperties;
 
 public abstract class MagicArmorItem extends DyeableArmorItem {
-	protected static final int[] MAX_DAMAGE_ARRAY = new int[] { 13, 15, 16, 11 };
-	protected static final int[] PROTECTION_ARRAY = new int[] { 1, 2, 3, 1 };
 
-	@OnlyIn(Dist.CLIENT)
-	protected MagicArmorModel<?> model;
-
-	public MagicArmorItem(IArmorMaterial material, EquipmentSlotType slot) {
-		super(material, slot, new Item.Properties().maxStackSize(1).group(ItemGroup.SEARCH));
+	public MagicArmorItem(ArmorMaterial material, EquipmentSlot slot) {
+		super(material, slot, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_SEARCH));
 	}
 
 	@Override
 	public int getColor(ItemStack stack) {
-		return hasColor(stack) ? super.getColor(stack) : getDefaultColor();
+		return hasCustomColor(stack) ? super.getColor(stack) : getDefaultColor();
 	}
 
 	protected abstract int getDefaultColor();
 
 	protected abstract String getMagicArmorName();
 
+	protected abstract RenderProperties getRenderProperties();
+
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		if ("overlay".equals(type))
 			return Main.MODID + ":textures/armor/" + getMagicArmorName() + "_overlay.png";
 		else
 			return Main.MODID + ":textures/armor/" + getMagicArmorName() + ".png";
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new TranslationTextComponent("item.wizard-staff." + getMagicArmorName() + ".description")
-				.mergeStyle(TextFormatting.BLUE));
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+		tooltip.add(new TranslatableComponent("item.wizardstaff." + getMagicArmorName() + ".description")
+				.withStyle(ChatFormatting.BLUE));
+		super.appendHoverText(stack, level, tooltip, flagIn);
 	}
 
-	@SuppressWarnings("unchecked")
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack,
-			EquipmentSlotType armorSlot, A _default) {
-		MagicArmorModel<?> model = getModel();
-
-		model.setVisibility(armorSlot);
-
-		model.isSitting = _default.isSitting;
-		model.isSneak = _default.isSneak;
-		model.isChild = _default.isChild;
-		model.rightArmPose = _default.rightArmPose;
-		model.leftArmPose = _default.leftArmPose;
-		
-		return (A) model;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	protected abstract MagicArmorModel<?> getModel();
-
-	public static int countMagicArmorPieces(PlayerEntity player) {
+	public static int countMagicArmorPieces(Player player) {
 		int count = 0;
-		for (ItemStack armor : player.getArmorInventoryList()) {
+		for (ItemStack armor : player.getArmorSlots()) {
 			if (armor.getItem() instanceof MagicArmorItem)
 				count++;
 		}
 		return count;
 	}
 
-	protected static abstract class MagicArmorMaterial implements IArmorMaterial {
+	@Override
+	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+		consumer.accept(getRenderProperties());
+	}
+
+	protected static abstract class MagicArmorMaterial implements ArmorMaterial {
+		protected static final int[] MAX_DAMAGE_ARRAY = new int[] { 13, 15, 16, 11 };
+		protected static final int[] PROTECTION_ARRAY = new int[] { 1, 2, 3, 1 };
+
 		@Override
-		public int getDurability(EquipmentSlotType slotIn) {
+		public int getDurabilityForSlot(EquipmentSlot slotIn) {
 			return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * 5;
 		}
 
 		@Override
-		public int getDamageReductionAmount(EquipmentSlotType slotIn) {
+		public int getDefenseForSlot(EquipmentSlot slotIn) {
 			return PROTECTION_ARRAY[slotIn.getIndex()];
 		}
 
 		@Override
-		public int getEnchantability() {
+		public int getEnchantmentValue() {
 			return 20;
 		}
 
 		@Override
-		public SoundEvent getSoundEvent() {
-			return SoundEvents.ITEM_ARMOR_EQUIP_LEATHER;
+		public SoundEvent getEquipSound() {
+			return SoundEvents.ARMOR_EQUIP_LEATHER;
 		}
 
 		@Override
@@ -120,5 +103,29 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 		public float getKnockbackResistance() {
 			return 0;
 		}
+	}
+
+	protected static abstract class RenderProperties implements IItemRenderProperties {
+
+		MagicArmorModel<?> model;
+
+		@Override
+		public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot,
+				HumanoidModel<?> _default) {
+			if (model == null)
+				model = getModel();
+
+			model.setVisibility(armorSlot);
+
+			model.riding = _default.riding;
+			model.crouching = _default.crouching;
+			model.young = _default.young;
+			model.rightArmPose = _default.rightArmPose;
+			model.leftArmPose = _default.leftArmPose;
+
+			return model;
+		}
+
+		protected abstract MagicArmorModel<?> getModel();
 	}
 }

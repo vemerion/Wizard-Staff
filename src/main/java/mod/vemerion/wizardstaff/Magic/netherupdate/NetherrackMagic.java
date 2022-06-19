@@ -6,17 +6,18 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.shapes.CollisionContext;
 
 public class NetherrackMagic extends Magic {
 
@@ -35,37 +36,35 @@ public class NetherrackMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		if (!world.isRemote && player.ticksExisted % 10 == 0) {
-			if (rackify(world, player)) {
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
+		if (!level.isClientSide && player.tickCount % 10 == 0) {
+			if (rackify(level, player)) {
 				cost(player);
-				playSoundServer(world, player, SoundEvents.BLOCK_STONE_PLACE, 1, soundPitch(player));
+				playSoundServer(level, player, SoundEvents.STONE_PLACE, 1, soundPitch(player));
 			}
 		}
 	}
 
 	// Derived from FrostWalkerEnchantment.freezeNearby()
-	private boolean rackify(World world, PlayerEntity player) {
+	private boolean rackify(Level level, Player player) {
 		boolean hasRackified = false;
 		if (player.isOnGround()) {
-			BlockState netherrack = Blocks.NETHERRACK.getDefaultState();
+			BlockState netherrack = Blocks.NETHERRACK.defaultBlockState();
 			float range = 2;
-			BlockPos start = new BlockPos(player.getPositionVec()).add(-range, -1, -range);
-			BlockPos stop = new BlockPos(player.getPositionVec()).add(range, -1, range);
-			for (BlockPos pos : BlockPos.getAllInBoxMutable(start, stop)) {
-				if (canBeRackified(world, pos)) {
-					if (world.placedBlockCollides(netherrack, pos, ISelectionContext.dummy())
-							&& !net.minecraftforge.event.ForgeEventFactory
-									.onBlockPlace(
-											player, net.minecraftforge.common.util.BlockSnapshot
-													.create(world.getDimensionKey(), world, pos),
-											net.minecraft.util.Direction.UP)) {
-						world.setBlockState(pos, netherrack);
+			BlockPos start = new BlockPos(player.position()).offset(-range, -1, -range);
+			BlockPos stop = new BlockPos(player.position()).offset(range, -1, range);
+			for (BlockPos pos : BlockPos.betweenClosed(start, stop)) {
+				if (canBeRackified(level, pos)) {
+					if (level.isUnobstructed(netherrack, pos, CollisionContext.empty())
+							&& !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(player,
+									net.minecraftforge.common.util.BlockSnapshot.create(level.dimension(), level, pos),
+									Direction.UP)) {
+						level.setBlockAndUpdate(pos, netherrack);
 						hasRackified = true;
 					}
 				}
@@ -74,9 +73,9 @@ public class NetherrackMagic extends Magic {
 		return hasRackified;
 	}
 
-	private boolean canBeRackified(World world, BlockPos pos) {
-		FluidState fluidState = world.getFluidState(pos);
-		return world.isAirBlock(pos.up()) && fluidState.isTagged(FluidTags.LAVA) && fluidState.isSource();
+	private boolean canBeRackified(Level level, BlockPos pos) {
+		FluidState fluidState = level.getFluidState(pos);
+		return level.isEmptyBlock(pos.above()) && fluidState.is(FluidTags.LAVA) && fluidState.isSource();
 	}
 
 }

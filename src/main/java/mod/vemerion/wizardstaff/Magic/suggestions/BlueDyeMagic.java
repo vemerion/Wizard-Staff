@@ -7,11 +7,11 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public class BlueDyeMagic extends Magic {
 
@@ -30,24 +30,24 @@ public class BlueDyeMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
 			cost(player);
-			ServerWorld serverWorld = (ServerWorld) world;
-			if (world.isRaining()) {
-				serverWorld.func_241113_a_(0, 0, false, false);
+			ServerLevel serverWorld = (ServerLevel) level;
+			if (level.isRaining()) {
+				serverWorld.setWeatherParameters(0, 0, false, false);
 			} else {
-				serverWorld.func_241113_a_(0, player.getRNG().nextInt(12000) + 12000, true, player.getRNG().nextDouble() < 0.3);
+				serverWorld.setWeatherParameters(0, player.getRandom().nextInt(12000) + 12000, true, player.getRandom().nextDouble() < 0.3);
 			}
 		}
 		player.playSound(ModSounds.CHIRP, 1, soundPitch(player));
 
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
 }

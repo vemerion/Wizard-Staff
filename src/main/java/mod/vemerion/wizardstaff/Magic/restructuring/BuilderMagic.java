@@ -1,8 +1,9 @@
 package mod.vemerion.wizardstaff.Magic.restructuring;
 
+import java.util.Optional;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mojang.serialization.Codec;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
@@ -13,27 +14,25 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
-import net.minecraft.world.gen.feature.template.IStructureProcessorType;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.StructureProcessor;
-import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.gen.feature.template.Template.BlockInfo;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 public class BuilderMagic extends Magic {
 
@@ -45,8 +44,9 @@ public class BuilderMagic extends Magic {
 	public BuilderMagic(MagicType<? extends BuilderMagic> type) {
 		super(type);
 	}
-	
-	public BuilderMagic setAdditionalParams(ResourceLocation name, Direction front, BlockPos center, BlockPos playerOffset) {
+
+	public BuilderMagic setAdditionalParams(ResourceLocation name, Direction front, BlockPos center,
+			BlockPos playerOffset) {
 		this.name = name;
 		this.front = front;
 		this.center = center;
@@ -56,8 +56,8 @@ public class BuilderMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		name = new ResourceLocation(JSONUtils.getString(json, "template"));
-		String direction = JSONUtils.getString(json, "front");
+		name = new ResourceLocation(GsonHelper.getAsString(json, "template"));
+		String direction = GsonHelper.getAsString(json, "front");
 		front = Direction.byName(direction);
 		if (front == null)
 			throw new JsonParseException("Invalid direction " + direction + " for front attribute");
@@ -66,35 +66,35 @@ public class BuilderMagic extends Magic {
 		center = MagicUtil.readBlockPos(json, "center");
 		playerOffset = MagicUtil.readBlockPos(json, "player_offset");
 	}
-	
+
 	@Override
 	protected void writeAdditional(JsonObject json) {
 		json.addProperty("template", name.toString());
-		json.addProperty("front", front.getName2());
+		json.addProperty("front", front.getName());
 		MagicUtil.writeBlockPos(json, "center", center);
 		MagicUtil.writeBlockPos(json, "player_offset", playerOffset);
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 		int len = buffer.readInt();
-		name = new ResourceLocation(buffer.readString(len));
+		name = new ResourceLocation(buffer.readUtf(len));
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		buffer.writeInt(name.toString().length());
-		buffer.writeString(name.toString());
+		buffer.writeUtf(name.toString());
 	}
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { new StringTextComponent(name.getPath()) };
+		return new Object[] { new TextComponent(name.getPath()) };
 	}
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { new StringTextComponent(name.getPath()) };
+		return new Object[] { new TextComponent(name.getPath()) };
 	}
 
 	@Override
@@ -108,53 +108,53 @@ public class BuilderMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.CROSSBOW;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.CROSSBOW;
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote && generateStructure((ServerWorld) world, player)) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide && generateStructure((ServerLevel) level, player)) {
 			cost(player);
-			playSoundServer(world, player, ModSounds.BUILDING, 1, soundPitch(player));
+			playSoundServer(level, player, ModSounds.BUILDING, 1, soundPitch(player));
 		}
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
-	private boolean generateStructure(ServerWorld world, PlayerEntity player) {
-		Template template = world.getStructureTemplateManager().getTemplate(name);
-		if (template == null) {
+	private boolean generateStructure(ServerLevel level, Player player) {
+		Optional<StructureTemplate> templateOpt = level.getStructureManager().get(name);
+		if (templateOpt.isEmpty()) {
 			Main.LOGGER.error("Invalid template name " + name);
 			return false;
 		}
 
 		Direction direction = getDirection(player);
-		BlockPos offset = BlockPos.ZERO.offset(direction, playerOffset.getZ())
-				.offset(direction.rotateY(), playerOffset.getX()).offset(Direction.UP, playerOffset.getY());
-		BlockPos pos = player.getPosition().subtract(new BlockPos(center.getX(), 0, center.getY())).add(offset);
+		BlockPos offset = BlockPos.ZERO.relative(direction, playerOffset.getZ())
+				.relative(direction.getClockWise(), playerOffset.getX()).relative(Direction.UP, playerOffset.getY());
+		BlockPos pos = player.blockPosition().subtract(new BlockPos(center.getX(), 0, center.getY())).offset(offset);
 		Rotation rotation = calculateRotation(player);
-		PlacementSettings settings = new PlacementSettings().setRotation(rotation).setMirror(Mirror.NONE)
-				.setCenterOffset(center).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK)
-				.addProcessor(AirStructureProcessor.INSTANCE);
-		return template.func_237146_a_(world, pos, pos, settings, player.getRNG(), 2);
+		StructurePlaceSettings settings = new StructurePlaceSettings().setRotation(rotation).setMirror(Mirror.NONE)
+				.setRotationPivot(center).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
+				.addProcessor(new AirStructureProcessor());
+		return templateOpt.get().placeInWorld(level, pos, pos, settings, player.getRandom(), 2);
 	}
 
-	private Rotation calculateRotation(PlayerEntity player) {
+	private Rotation calculateRotation(Player player) {
 		Direction direction = getDirection(player).getOpposite();
 
 		if (front == direction) {
 			return Rotation.NONE;
-		} else if (front == direction.rotateY())
+		} else if (front == direction.getClockWise())
 			return Rotation.COUNTERCLOCKWISE_90;
-		else if (front == direction.rotateYCCW()) {
+		else if (front == direction.getCounterClockWise()) {
 			return Rotation.CLOCKWISE_90;
 		} else {
 			return Rotation.CLOCKWISE_180;
 		}
 	}
 
-	private Direction getDirection(PlayerEntity player) {
-		Direction[] directions = Direction.getFacingDirections(player);
+	private Direction getDirection(Player player) {
+		Direction[] directions = Direction.orderedByNearest(player);
 		for (Direction d : directions) {
 			if (Direction.Plane.HORIZONTAL.test(d))
 				return d;
@@ -163,25 +163,17 @@ public class BuilderMagic extends Magic {
 	}
 
 	// Processor for checking that we are only replacing air, nothing else
-	private static final IStructureProcessorType<AirStructureProcessor> AIR = Registry.register(
-			Registry.STRUCTURE_PROCESSOR, new ResourceLocation(Main.MODID, "air"), () -> AirStructureProcessor.CODEC);
-
 	private static class AirStructureProcessor extends StructureProcessor {
-
-		public static final AirStructureProcessor INSTANCE = new AirStructureProcessor();
-		public static final Codec<AirStructureProcessor> CODEC = Codec.unit(() -> {
-			return INSTANCE;
-		});
-
 		@Override
-		protected IStructureProcessorType<?> getType() {
-			return AIR;
+		protected StructureProcessorType<?> getType() {
+			return null;
 		}
 
 		@Override
-		public BlockInfo process(IWorldReader world, BlockPos center1, BlockPos center2, BlockInfo infoRelative,
-				BlockInfo infoAbsolute, PlacementSettings settings, Template template) {
-			return !world.isAirBlock(infoAbsolute.pos) ? null
+		public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos center1, BlockPos center2,
+				StructureTemplate.StructureBlockInfo infoRelative, StructureTemplate.StructureBlockInfo infoAbsolute,
+				StructurePlaceSettings settings, StructureTemplate template) {
+			return !world.isEmptyBlock(infoAbsolute.pos) ? null
 					: super.process(world, center1, center2, infoRelative, infoAbsolute, settings, template);
 		}
 

@@ -8,16 +8,16 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.MovementInput;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.RenderProperties;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.InputUpdateEvent;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,22 +28,22 @@ public class ClientForgeEventSubscriber {
 
 	@SubscribeEvent
 	public static void wizardStaff(RenderHandEvent event) {
-		AbstractClientPlayerEntity player = Minecraft.getInstance().player;
+		AbstractClientPlayer player = Minecraft.getInstance().player;
 		ItemStack itemStack = event.getItemStack();
 		Item item = itemStack.getItem();
 		float partialTicks = event.getPartialTicks();
-		if (item instanceof WizardStaffItem && player.getActiveItemStack().equals(itemStack)) {
+		if (item instanceof WizardStaffItem && player.getUseItem().equals(itemStack)) {
 			event.setCanceled(true);
 			ItemStack magic = WizardStaffItem.getMagic(itemStack);
-			HandSide side = event.getHand() == Hand.MAIN_HAND ? player.getPrimaryHand()
-					: player.getPrimaryHand().opposite();
-			WizardStaffTileEntityRenderer renderer = (WizardStaffTileEntityRenderer) item
-					.getItemStackTileEntityRenderer();
+			HumanoidArm side = event.getHand() == InteractionHand.MAIN_HAND ? player.getMainArm()
+					: player.getMainArm().getOpposite();
+			WizardStaffTileEntityRenderer renderer = (WizardStaffTileEntityRenderer) RenderProperties.get(item)
+					.getItemStackRenderer();
 			int maxDuration = itemStack.getUseDuration();
-			float duration = (float) maxDuration - ((float) player.getItemInUseCount() - partialTicks + 1.0f);
+			float duration = (float) maxDuration - ((float) player.getUseItemRemainingTicks() - partialTicks + 1.0f);
 			Magics.getInstance(true).get(magic).firstPersonRenderer().render(renderer, duration, maxDuration, itemStack,
-					event.getMatrixStack(), event.getBuffers(), event.getLight(), OverlayTexture.NO_OVERLAY,
-					partialTicks, side);
+					event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(),
+					OverlayTexture.NO_OVERLAY, partialTicks, side);
 		}
 	}
 
@@ -57,18 +57,18 @@ public class ClientForgeEventSubscriber {
 
 	@SubscribeEvent
 	public static void noLeftClickWithStaff(InputEvent.ClickInputEvent event) {
-		Item item = Minecraft.getInstance().player.getHeldItem(event.getHand()).getItem();
-		if (event.getHand() != Hand.MAIN_HAND || !event.isAttack() || !(item instanceof WizardStaffItem))
+		Item item = Minecraft.getInstance().player.getItemInHand(event.getHand()).getItem();
+		if (event.getHand() != InteractionHand.MAIN_HAND || !event.isAttack() || !(item instanceof WizardStaffItem))
 			return;
 		event.setSwingHand(false);
 	}
 
 	@SubscribeEvent
-	public static void noStaffSlowdown(InputUpdateEvent event) {
-		if (!(event.getPlayer().getActiveItemStack().getItem() instanceof WizardStaffItem))
+	public static void noStaffSlowdown(MovementInputUpdateEvent event) {
+		if (!(event.getPlayer().getUseItem().getItem() instanceof WizardStaffItem))
 			return;
-		MovementInput movement = event.getMovementInput();
-		movement.moveStrafe *= 1 / 0.2;
-		movement.moveForward *= 1 / 0.2;
+		var movement = event.getInput();
+		movement.leftImpulse *= 1 / 0.2;
+		movement.forwardImpulse *= 1 / 0.2;
 	}
 }

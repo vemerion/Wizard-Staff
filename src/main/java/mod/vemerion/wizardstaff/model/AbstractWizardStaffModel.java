@@ -2,9 +2,9 @@ package mod.vemerion.wizardstaff.model;
 
 import java.util.function.Function;
 
+import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.Model;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class AbstractWizardStaffModel extends Model {
 

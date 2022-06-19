@@ -10,18 +10,18 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class BucketMagic extends Magic {
@@ -48,8 +48,8 @@ public class BucketMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 
 	@Override
@@ -67,42 +67,42 @@ public class BucketMagic extends Magic {
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 		bucket = (BucketItem) MagicUtil.decode(buffer);
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		MagicUtil.encode(buffer, bucket);
 	}
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { bucket.getDisplayName(bucket.getDefaultInstance()) };
+		return new Object[] { bucket.getName(bucket.getDefaultInstance()) };
 	}
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { bucket.getDisplayName(bucket.getDefaultInstance()) };
+		return new Object[] { bucket.getName(bucket.getDefaultInstance()) };
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		Vector3d start = player.getEyePosition(1);
-		Vector3d end = start.add(Vector3d.fromPitchYaw(player.getPitchYaw()).scale(4.5));
-		RayTraceResult raytrace = world.rayTraceBlocks(new RayTraceContext(start, end,
-				RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, player));
-		if (raytrace.getType() == RayTraceResult.Type.BLOCK) {
-			BlockPos pos = new BlockPos(raytrace.getHitVec());
-			if (bucket.tryPlaceContainedLiquid(player, world, pos, (BlockRayTraceResult) raytrace)) {
-				bucket.onLiquidPlaced(world, new ItemStack(bucket), pos);
-				if (!world.isRemote) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		Vec3 start = player.getEyePosition(1);
+		Vec3 end = start.add(Vec3.directionFromRotation(player.getRotationVector()).scale(4.5));
+		HitResult raytrace = level.clip(new ClipContext(start, end,
+				ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+		if (raytrace.getType() == HitResult.Type.BLOCK) {
+			BlockPos pos = new BlockPos(raytrace.getLocation());
+			if (bucket.emptyContents(player, level, pos, (BlockHitResult) raytrace)) {
+				bucket.checkExtraContent(player, level, new ItemStack(bucket), pos);
+				if (!level.isClientSide) {
 					cost(player);
 				}
 			}
 		}
 
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
 }

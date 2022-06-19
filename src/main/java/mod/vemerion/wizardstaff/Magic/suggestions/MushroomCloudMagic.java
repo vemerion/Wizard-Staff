@@ -8,11 +8,11 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class MushroomCloudMagic extends Magic {
 
@@ -31,21 +31,21 @@ public class MushroomCloudMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
-			MushroomCloudEntity cloud = new MushroomCloudEntity(world, player);
-			Vector3d pos = player.getPositionVec().add(Vector3d.fromPitchYaw(player.getPitchYaw()).scale(3));
-			cloud.setPosition(pos.x, pos.y, pos.z);
-			world.addEntity(cloud);
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
+			MushroomCloudEntity cloud = new MushroomCloudEntity(level, player);
+			Vec3 pos = player.position().add(Vec3.directionFromRotation(player.getRotationVector()).scale(3));
+			cloud.setPos(pos.x, pos.y, pos.z);
+			level.addFreshEntity(cloud);
 			cost(player);
 		}
 		player.playSound(ModSounds.SPRAY, 1, soundPitch(player));
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
 }

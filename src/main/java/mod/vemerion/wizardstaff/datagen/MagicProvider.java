@@ -24,30 +24,29 @@ import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModItems;
 import mod.vemerion.wizardstaff.init.ModMagics;
 import mod.vemerion.wizardstaff.init.ModSounds;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.data.IDataProvider;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.potion.Effects;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.HashCache;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class MagicProvider implements IDataProvider {
+public class MagicProvider implements DataProvider {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Logger LOGGER = LogManager.getLogger();
 
@@ -60,13 +59,13 @@ public class MagicProvider implements IDataProvider {
 	}
 
 	@Override
-	public void act(DirectoryCache cache) throws IOException {
+	public void run(HashCache cache) throws IOException {
 		Path folder = generator.getOutputFolder();
 		registerMagics(magic -> {
 			Path path = folder
 					.resolve("data/" + modid + "/" + Magics.FOLDER_NAME + "/" + magic.getName().getPath() + ".json");
 			try {
-				IDataProvider.save(GSON, cache, magic.write(), path);
+				DataProvider.save(GSON, cache, magic.write(), path);
 			} catch (IOException e) {
 				LOGGER.error("Couldn't save magic {}", path, e);
 			}
@@ -78,7 +77,7 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.BLAZE_POWDER_MAGIC).setParams(0.3f, -1, ing(Items.BLAZE_POWDER)));
 		c.accept(create(ModMagics.BLUE_DYE_MAGIC).setParams(30, 50, ing(Tags.Items.DYES_BLUE)));
 		c.accept(create(ModMagics.BOOKSHELF_MAGIC).setAdditionalParams(Items.BOOK, ModSounds.PAGE_TURN).setParams(0.8f, -1, ing(Items.BOOKSHELF)));
-		c.accept(create(ModMagics.TRANSMUTATION_MAGIC, "bottle_magic").setAdditionalParams(Items.EXPERIENCE_BOTTLE, SoundEvents.BLOCK_BREWING_STAND_BREW).setParams(12, 15, ing(Items.GLASS_BOTTLE)));
+		c.accept(create(ModMagics.TRANSMUTATION_MAGIC, "bottle_magic").setAdditionalParams(Items.EXPERIENCE_BOTTLE, SoundEvents.BREWING_STAND_BREW).setParams(12, 15, ing(Items.GLASS_BOTTLE)));
 		c.accept(create(ModMagics.BRICKS_MAGIC).setParams(50, 30, ing(Items.BRICKS)));
 		c.accept(create(ModMagics.BUILDER_MAGIC).setAdditionalParams(new ResourceLocation(Main.MODID, "wizard_home"), Direction.SOUTH, new BlockPos(3, 3, 3), new BlockPos(0, 0, 5)).setParams(400, 80, ing(Items.COBBLESTONE)));
 		c.accept(create(ModMagics.CARVED_PUMPKIN_MAGIC).setParams(50, 40, ing(Items.CARVED_PUMPKIN)));
@@ -111,13 +110,13 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.NETHER_BRICK_MAGIC).setParams(60, 20, ing(Tags.Items.INGOTS_NETHER_BRICK)));
 		c.accept(create(ModMagics.TRANSMUTATION_MAGIC, "netherite_ingot_magic").setAdditionalParams(ModItems.NETHER_WIZARD_STAFF, ModSounds.POOF).setParams(100, 40, ing(Tags.Items.INGOTS_NETHERITE)));
 		c.accept(create(ModMagics.NETHERRACK_MAGIC).setParams(3, -1, ing(Items.NETHERRACK)));
-		c.accept(create(ModMagics.OBSIDIAN_MAGIC).setAdditionalParams(World.THE_NETHER, new ResourceLocation(Main.MODID, "textures/entity/nether_portal.png")).setParams(100, 60, ing(Items.OBSIDIAN)));
+		c.accept(create(ModMagics.OBSIDIAN_MAGIC).setAdditionalParams(Level.NETHER, new ResourceLocation(Main.MODID, "textures/entity/nether_portal.png")).setParams(100, 60, ing(Items.OBSIDIAN)));
 		c.accept(create(ModMagics.PILLAR_MAGIC).setAdditionalParams(Blocks.DIRT).setParams(0.5f, -1, ing(Items.DIRT)));
 		c.accept(create(ModMagics.PORTABLE_CRAFTING_MAGIC).setParams(10, 10, ing(Items.CRAFTING_TABLE)));
-		c.accept(create(ModMagics.POTION_MAGIC, "haste_magic").setAdditionalParams(2, 600, 2, Effects.HASTE, true, SoundEvents.BLOCK_BREWING_STAND_BREW).setParams(25, 25, ing(Items.WOODEN_PICKAXE)));
+		c.accept(create(ModMagics.POTION_MAGIC, "haste_magic").setAdditionalParams(2, 600, 2, MobEffects.DIG_SPEED, true, SoundEvents.BREWING_STAND_BREW).setParams(25, 25, ing(Items.WOODEN_PICKAXE)));
 		c.accept(create(ModMagics.SHULKER_BULLET_MAGIC).setParams(20, 25, ing(Items.SHULKER_SHELL)));
-		c.accept(create(ModMagics.SMELTING_MAGIC).setAdditionalParams(IRecipeType.SMELTING, 20, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, Blocks.FURNACE.getTranslationKey(), 1).setParams(1, -1, ing(Items.FURNACE)));
-		c.accept(create(ModMagics.SMELTING_MAGIC, "stonecutting_magic").setAdditionalParams(IRecipeType.STONECUTTING, 2, SoundEvents.UI_STONECUTTER_TAKE_RESULT, Blocks.STONECUTTER.getTranslationKey(), 1).setParams(0.1f, -1, ing(Items.STONECUTTER)));
+		c.accept(create(ModMagics.SMELTING_MAGIC).setAdditionalParams(RecipeType.SMELTING, 20, SoundEvents.FURNACE_FIRE_CRACKLE, Blocks.FURNACE.getDescriptionId(), 1).setParams(1, -1, ing(Items.FURNACE)));
+		c.accept(create(ModMagics.SMELTING_MAGIC, "stonecutting_magic").setAdditionalParams(RecipeType.STONECUTTING, 2, SoundEvents.UI_STONECUTTER_TAKE_RESULT, Blocks.STONECUTTER.getDescriptionId(), 1).setParams(0.1f, -1, ing(Items.STONECUTTER)));
 		c.accept(create(ModMagics.SURFACE_MAGIC).setParams(0.5f, 20, ing(Items.STONE)));
 		c.accept(create(ModMagics.BUCKET_MAGIC, "water_bucket_magic").setAdditionalParams((BucketItem) Items.WATER_BUCKET).setParams(5, 10, ing(Items.WATER_BUCKET)));
 		c.accept(create(ModMagics.PROJECTILE_MAGIC, "wither_skull_magic").setAdditionalParams(ModEntities.MAGIC_WITHER_SKULL, ModSounds.SKELETON, 0.5f).setParams(20, 15, ing(Items.WITHER_SKELETON_SKULL)));
@@ -130,16 +129,16 @@ public class MagicProvider implements IDataProvider {
 		c.accept(create(ModMagics.PUSH_BUTTON_MAGIC).setParams(1, -1, ing(Items.STONE_BUTTON)));
 		c.accept(create(ModMagics.NAME_TAG_MAGIC).setAdditionalParams(ImmutableList.of("ig", "nite", "syl", "la", "bles", "di", "vide", "un", "ex", "am", "ples", "dif", "fer", "ence", "re", "main", "der")).setParams(10, 20, ing(Items.NAME_TAG)));
 		c.accept(create(ModMagics.LOCATE_SPAWN_MAGIC).setParams(25, 20, ing(Items.COMPASS)));
-		c.accept(create(ModMagics.TRANSFORM_ENTITY_MAGIC, "cow_to_mooshroom_magic").setAdditionalParams(new RegistryMatch<>(EntityType.COW), EntityType.MOOSHROOM, Helper.color(200, 100, 100, 255)).setParams(90, 25, ing(Items.BROWN_MUSHROOM)));
+		c.accept(create(ModMagics.TRANSFORM_ENTITY_MAGIC, "cow_to_mooshroom_magic").setAdditionalParams(new RegistryMatch<>(ForgeRegistries.ENTITIES, EntityType.COW), EntityType.MOOSHROOM, Helper.color(200, 100, 100, 255)).setParams(90, 25, ing(Items.BROWN_MUSHROOM)));
 		c.accept(create(ModMagics.INVENTORY_MAGIC).setParams(10, 10, ing(Items.CHEST)));
 		c.accept(create(ModMagics.ENDER_CHEST_MAGIC).setParams(10, 10, ing(Items.ENDER_CHEST)));
 		c.accept(create(ModMagics.DEFLECT_PROJECTILE_MAGIC).setAdditionalParams(ImmutableSet.of()).setParams(0.8f, -1, ing(Items.SHIELD)));
 		c.accept(create(ModMagics.REPAIR_ARMOR_MAGIC).setAdditionalParams(1).setParams(1, -1, ing(Items.ANVIL)));
 		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC, "summon_friendly_vex_magic").setAdditionalParams(3).setAdditionalParams(ModEntities.MAGIC_VEX, ModSounds.BELL).setParams(40, 40, ing(Items.TOTEM_OF_UNDYING)));
-		c.accept(create(ModMagics.MASS_HARVEST_MAGIC, "chop_tree_magic").setAdditionalParams(new RegistryMatch<Block>(ForgeRegistries.BLOCKS, BlockTags.LOGS), 40).setParams(2, 40, ing(Items.DIAMOND_AXE)));
+		c.accept(create(ModMagics.MASS_HARVEST_MAGIC, "chop_tree_magic").setAdditionalParams(new RegistryMatch<>(ForgeRegistries.BLOCKS, BlockTags.LOGS), 40).setParams(2, 40, ing(Items.DIAMOND_AXE)));
 		c.accept(create(ModMagics.MASS_HARVEST_MAGIC, "clear_leaves_magic").setAdditionalParams(new RegistryMatch<>(ForgeRegistries.BLOCKS, BlockTags.LEAVES), 50).setParams(0.1f, 20, ing(Items.SHEARS)));
-		c.accept(create(ModMagics.FORCE_ENTITY_MAGIC, "item_magnet_magic").setAdditionalParams(new RegistryMatch<>(EntityType.ITEM), 0.2f).setParams(0.1f, -1, ing(Items.IRON_BLOCK)));
-		c.accept(create(ModMagics.FORCE_ENTITY_MAGIC, "repel_zombie_magic").setAdditionalParams(new RegistryMatch<>(EntityType.ZOMBIE), -0.1f).setParams(0.5f, -1, ing(Items.GLISTERING_MELON_SLICE)));
+		c.accept(create(ModMagics.FORCE_ENTITY_MAGIC, "item_magnet_magic").setAdditionalParams(new RegistryMatch<>(ForgeRegistries.ENTITIES, EntityType.ITEM), 0.2f).setParams(0.1f, -1, ing(Items.IRON_BLOCK)));
+		c.accept(create(ModMagics.FORCE_ENTITY_MAGIC, "repel_zombie_magic").setAdditionalParams(new RegistryMatch<>(ForgeRegistries.ENTITIES, EntityType.ZOMBIE), -0.1f).setParams(0.5f, -1, ing(Items.GLISTERING_MELON_SLICE)));
 		c.accept(create(ModMagics.SWAP_POSITION_MAGIC).setAdditionalParams(ImmutableSet.of(EntityType.ENDER_DRAGON.getRegistryName(), EntityType.WITHER.getRegistryName()), 5).setParams(25, 20, ing(Items.ARMOR_STAND)));
 		c.accept(create(ModMagics.SWAP_HEALTH_FOOD_MAGIC).setParams(20, 20, ing(Items.COOKED_BEEF)));
 		c.accept(create(ModMagics.SWAP_TRADE_MAGIC).setAdditionalParams(ing(Items.BELL)).setParams(400, 40, ing(Items.EMERALD)));
@@ -172,11 +171,11 @@ public class MagicProvider implements IDataProvider {
 	}
 
 	private Ingredient ing(Item item) {
-		return Ingredient.fromItems(item);
+		return Ingredient.of(item);
 	}
 
-	private Ingredient ing(ITag<Item> tag) {
-		return Ingredient.fromTag(tag);
+	private Ingredient ing(TagKey<Item> tag) {
+		return Ingredient.of(tag);
 	}
 
 	@Override

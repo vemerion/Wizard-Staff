@@ -6,36 +6,33 @@ import java.util.stream.Collectors;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.DirectionalPlaceContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.NBTDynamicOps;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.GlobalPos;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceContext.BlockMode;
-import net.minecraft.util.math.RayTraceContext.FluidMode;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.DirectionalPlaceContext;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.Capability.IStorage;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -45,10 +42,10 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.items.ItemStackHandler;
 
 // Class for holding data on player related to magics
-public class Wizard implements INBTSerializable<CompoundNBT> {
-	@CapabilityInject(Wizard.class)
-	public static final Capability<Wizard> CAPABILITY = null;
-	
+public class Wizard implements INBTSerializable<CompoundTag> {
+	public static final Capability<Wizard> CAPABILITY = CapabilityManager.get(new CapabilityToken<Wizard>() {
+	});
+
 	public static final int INVENTORY_SIZE = 3 * 9;
 
 	private GlobalPos lodestonePos;
@@ -59,68 +56,68 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 	private BlockPos surfaceStart, surfaceStop;
 
 	private LinkedList<GlobalPos> revertPositions = new LinkedList<>();
-	
+
 	private ItemStackHandler inventory = new ItemStackHandler(INVENTORY_SIZE);
 
 	public Wizard() {
 
 	}
-	
+
 	public ItemStackHandler getInventory() {
 		return inventory;
 	}
 
-	public static Wizard getWizard(PlayerEntity player) {
+	public static Wizard getWizard(Player player) {
 		return player.getCapability(CAPABILITY)
 				.orElseThrow(() -> new IllegalArgumentException("Player is missing wizard capability"));
 	}
 
-	public static LazyOptional<Wizard> getWizardOptional(PlayerEntity player) {
+	public static LazyOptional<Wizard> getWizardOptional(Player player) {
 		return player.getCapability(CAPABILITY);
 	}
 
-	public void tick(PlayerEntity player) {
-		if (!player.world.isRemote) {
-			if (player.ticksExisted % 20 == 0) {
-				revertPositions.addFirst(GlobalPos.getPosition(player.world.getDimensionKey(), player.getPosition()));
+	public void tick(Player player) {
+		if (!player.level.isClientSide) {
+			if (player.tickCount % 20 == 0) {
+				revertPositions.addFirst(GlobalPos.of(player.level.dimension(), player.blockPosition()));
 				if (revertPositions.size() > 5)
 					revertPositions.removeLast();
 			}
 		}
 	}
 
-	public BlockPos revertPosition(PlayerEntity player) {
+	public BlockPos revertPosition(Player player) {
 		if (revertPositions.size() < 5)
 			return null;
 
 		GlobalPos pos = revertPositions.getLast();
-		return pos.getDimension() == player.world.getDimensionKey() ? pos.getPos() : null;
+		return pos.dimension() == player.level.dimension() ? pos.pos() : null;
 	}
 
-	public boolean lodestoneTeleport(ServerPlayerEntity player, Block waypoint) {
-		if (lodestoneTracked && lodestonePos != null && player.world.getDimensionKey() == lodestonePos.getDimension()
-				&& (player.world.getBlockState(lodestonePos.getPos()).getBlock() == waypoint)) {
+	public boolean lodestoneTeleport(ServerPlayer player, Block waypoint) {
+		if (lodestoneTracked && lodestonePos != null && player.level.dimension() == lodestonePos.dimension()
+				&& (player.level.getBlockState(lodestonePos.pos()).getBlock() == waypoint)) {
 			lodestoneTracked = false;
-			BlockPos destination = lodestonePos.getPos();
-			player.teleport(player.getServerWorld(), destination.getX(), destination.getY() + 1, destination.getZ(),
-					player.rotationYaw, player.rotationPitch);
-			player.world.destroyBlock(destination, false);
+			BlockPos destination = lodestonePos.pos();
+			player.teleportTo(player.getLevel(), destination.getX(), destination.getY() + 1, destination.getZ(),
+					player.getYRot(), player.getXRot());
+			player.level.destroyBlock(destination, false);
 			return true;
 		}
 		return false;
 	}
 
-	public boolean throwGrapplingHook(World world, PlayerEntity player) {
-		if (!world.isRemote) {
-			Vector3d start = player.getEyePosition(0.5f);
-			Vector3d end = start.add(Vector3d.fromPitchYaw(player.getPitchYaw()).scale(10));
-			BlockRayTraceResult raytrace = world
-					.rayTraceBlocks(new RayTraceContext(start, end, BlockMode.OUTLINE, FluidMode.NONE, player));
-			if (raytrace.getType() == Type.BLOCK) {
+	public boolean throwGrapplingHook(Level world, Player player) {
+		if (!world.isClientSide) {
+			Vec3 start = player.getEyePosition(0.5f);
+			Vec3 end = start.add(Vec3.directionFromRotation(player.getRotationVector()).scale(10));
+			BlockHitResult raytrace = world
+					.clip(new ClipContext(start, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+			if (raytrace.getType() == HitResult.Type.BLOCK) {
 				GrapplingHookEntity hook = new GrapplingHookEntity(world, player);
-				Vector3d pos = raytrace.getHitVec().subtract(end.subtract(start).normalize().scale(0.07));
-				hook.setLocationAndAngles(pos.x, pos.y, pos.z, player.rotationYaw, player.rotationPitch);
-				world.addEntity(hook);
+				Vec3 pos = raytrace.getLocation().subtract(end.subtract(start).normalize().scale(0.07));
+				hook.moveTo(pos.x, pos.y, pos.z, player.getYRot(), player.getXRot());
+				world.addFreshEntity(hook);
 				grapplingHook = hook;
 				return true;
 			}
@@ -128,22 +125,21 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 		return false;
 	}
 
-	public void trackLodestone(World world, BlockPos pos, Block waypoint) {
+	public void trackLodestone(Level world, BlockPos pos, Block waypoint) {
 		if (world.getBlockState(pos).getBlock() == waypoint) {
 			lodestoneTracked = true;
-			lodestonePos = GlobalPos.getPosition(world.getDimensionKey(), pos.toImmutable());
+			lodestonePos = GlobalPos.of(world.dimension(), pos.immutable());
 		}
 	}
 
-	public void reelGrapplingHook(World world, PlayerEntity player) {
+	public void reelGrapplingHook(Level world, Player player) {
 		if (grapplingHook != null && grapplingHook.isAlive()) {
-			Vector3d direction = grapplingHook.getPositionVec().subtract(player.getPositionVec()).normalize()
-					.scale(1.2);
-			Vector3d motion = player.getMotion().add(direction);
-			player.setMotion(motion);
+			Vec3 direction = grapplingHook.position().subtract(player.position()).normalize().scale(1.2);
+			Vec3 motion = player.getDeltaMovement().add(direction);
+			player.setDeltaMovement(motion);
 
-			if (!world.isRemote)
-				grapplingHook.remove();
+			if (!world.isClientSide)
+				grapplingHook.discard();
 		}
 	}
 
@@ -166,7 +162,7 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 		}
 	}
 
-	public int createSurface(World world, PlayerEntity player) {
+	public int createSurface(Level world, Player player) {
 		BlockPos start = surfaceStart == null ? null : new BlockPos(surfaceStart);
 		BlockPos stop = surfaceStop == null ? null : new BlockPos(surfaceStop);
 		surfaceStart = null;
@@ -176,16 +172,16 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 			return 0;
 
 		// Too far away
-		if (!player.getPosition().withinDistance(start, 100) || !player.getPosition().withinDistance(stop, 100))
+		if (!player.blockPosition().closerThan(start, 100) || !player.blockPosition().closerThan(stop, 100))
 			return 0;
 
-		if (world.isAirBlock(start) || world.isAirBlock(stop))
+		if (world.isEmptyBlock(start) || world.isEmptyBlock(stop))
 			return 0;
 
-		AxisAlignedBB surface = new AxisAlignedBB(start, stop);
+		AABB surface = new AABB(start, stop);
 
 		// Not a 2d surface
-		if (surface.getXSize() > 0.1 && surface.getYSize() > 0.1 && surface.getZSize() > 0.1)
+		if (surface.getXsize() > 0.1 && surface.getYsize() > 0.1 && surface.getZsize() > 0.1)
 			return 0;
 
 		Item item = world.getBlockState(start).getBlock().asItem();
@@ -193,67 +189,67 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 		if (item == Items.AIR || !(item instanceof BlockItem))
 			return 0;
 
-		List<BlockPos> positions = BlockPos.getAllInBox(surface).map(b -> b.toImmutable()).collect(Collectors.toList());
+		List<BlockPos> positions = BlockPos.betweenClosedStream(surface).map(b -> b.immutable())
+				.collect(Collectors.toList());
 
 		// Placement of surface blocks
 		int count = 0;
-		PlayerInventory inv = player.inventory;
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			if (inv.getStackInSlot(i).getItem() != item)
+		Inventory inv = player.getInventory();
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			if (inv.getItem(i).getItem() != item)
 				continue;
-			ItemStack stack = inv.removeStackFromSlot(i);
+			ItemStack stack = inv.removeItemNoUpdate(i);
 			while (!positions.isEmpty()) {
 				if (stack.isEmpty())
 					break;
 
 				BlockPos p = positions.remove(0);
-				if (!world.isAirBlock(p))
+				if (!world.isEmptyBlock(p))
 					continue;
 
-				BlockItemUseContext context = new DirectionalPlaceContext(world, p, Direction.NORTH, stack,
+				BlockPlaceContext context = new DirectionalPlaceContext(world, p, Direction.NORTH, stack,
 						Direction.DOWN);
-				if (((BlockItem) item).tryPlace(context) == ActionResultType.FAIL)
+				if (((BlockItem) item).place(context) == InteractionResult.FAIL)
 					continue;
 
 				count++;
 			}
 
-			inv.addItemStackToInventory(stack);
+			inv.add(stack);
 		}
 
 		return count;
 	}
 
-	public void deserializeNBT(CompoundNBT compound) {
+	public void deserializeNBT(CompoundTag compound) {
 		lodestoneTracked = compound.getBoolean("lodestoneTracked");
 		if (lodestoneTracked) {
-			lodestonePos = GlobalPos.CODEC.parse(NBTDynamicOps.INSTANCE, compound.get("lodestonePos")).result()
-					.orElse(null);
+			lodestonePos = GlobalPos.CODEC.parse(NbtOps.INSTANCE, compound.get("lodestonePos")).result().orElse(null);
 		}
-		
+
 		if (compound.contains("inventory"))
 			inventory.deserializeNBT(compound.getCompound("inventory"));
 	}
 
-	public CompoundNBT serializeNBT() {
-		CompoundNBT compound = new CompoundNBT();
+	public CompoundTag serializeNBT() {
+		CompoundTag compound = new CompoundTag();
 		if (lodestoneTracked) {
-			GlobalPos.CODEC.encodeStart(NBTDynamicOps.INSTANCE, lodestonePos).resultOrPartial(s -> {
+			GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, lodestonePos).resultOrPartial(s -> {
 			}).ifPresent((lodestonePos) -> {
 				compound.put("lodestonePos", lodestonePos);
 			});
 		}
 		compound.putBoolean("lodestoneTracked", lodestoneTracked);
-		
+
 		compound.put("inventory", inventory.serializeNBT());
-		
+
 		return compound;
 	}
 
 	@EventBusSubscriber(modid = Main.MODID, bus = EventBusSubscriber.Bus.FORGE)
-	public static class WizardProvider implements ICapabilitySerializable<INBT> {
+	public static class WizardProvider implements ICapabilitySerializable<CompoundTag> {
 
-		private LazyOptional<Wizard> instance = LazyOptional.of(CAPABILITY::getDefaultInstance);
+		private LazyOptional<Wizard> instance = LazyOptional.of(Wizard::new);
 
 		@Override
 		public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
@@ -261,38 +257,23 @@ public class Wizard implements INBTSerializable<CompoundNBT> {
 		}
 
 		@Override
-		public INBT serializeNBT() {
-			return CAPABILITY.getStorage().writeNBT(CAPABILITY,
-					instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!")), null);
+		public CompoundTag serializeNBT() {
+			return instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!"))
+					.serializeNBT();
 		}
 
 		@Override
-		public void deserializeNBT(INBT nbt) {
-			CAPABILITY.getStorage().readNBT(CAPABILITY,
-					instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!")), null,
-					nbt);
+		public void deserializeNBT(CompoundTag nbt) {
+			instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!"))
+					.deserializeNBT(nbt);
 		}
 
 		public static final ResourceLocation LOCATION = new ResourceLocation(Main.MODID, "wizard");
 
 		@SubscribeEvent
 		public static void attachCapability(AttachCapabilitiesEvent<Entity> event) {
-			if (event.getObject() instanceof PlayerEntity)
+			if (event.getObject() instanceof Player)
 				event.addCapability(LOCATION, new WizardProvider());
-		}
-	}
-
-	public static class WizardStorage implements IStorage<Wizard> {
-
-		@Override
-		public INBT writeNBT(Capability<Wizard> capability, Wizard instance, Direction side) {
-			return instance.serializeNBT();
-
-		}
-
-		@Override
-		public void readNBT(Capability<Wizard> capability, Wizard instance, Direction side, INBT nbt) {
-			instance.deserializeNBT((CompoundNBT) nbt);
 		}
 	}
 }

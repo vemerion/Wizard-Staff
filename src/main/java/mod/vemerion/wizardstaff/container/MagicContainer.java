@@ -1,29 +1,30 @@
 package mod.vemerion.wizardstaff.container;
 
+
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.init.ModContainers;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Hand;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class MagicContainer extends Container {
+public class MagicContainer extends AbstractContainerMenu {
 
-	public static MagicContainer createContainerClientSide(int id, PlayerInventory inventory, PacketBuffer buffer) {
-		Hand hand = buffer.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
+	public static MagicContainer createContainerClientSide(int id, Inventory inventory, FriendlyByteBuf buffer) {
+		InteractionHand hand = buffer.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 		return new MagicContainer(id, inventory, new ItemStackHandler(Wizard.INVENTORY_SIZE), ItemStack.EMPTY, hand);
 	}
-
+	
 	private ItemStack staff;
-	private Hand hand;
+	private InteractionHand hand;
 
-	public MagicContainer(int id, PlayerInventory playerInv, IItemHandler magicInv, ItemStack staff, Hand hand) {
+	public MagicContainer(int id, Inventory playerInv, IItemHandler magicInv, ItemStack staff, InteractionHand hand) {
 		super(ModContainers.MAGIC, id);
 		this.staff = staff;
 		this.hand = hand;
@@ -42,27 +43,27 @@ public class MagicContainer extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
-		Slot slot = inventorySlots.get(index);
+	public ItemStack quickMoveStack(Player playerIn, int index) {
+		Slot slot = slots.get(index);
 		ItemStack copy = ItemStack.EMPTY;
-		if (slot != null && slot.getHasStack()) {
-			ItemStack stack = slot.getStack();
+		if (slot != null && slot.hasItem()) {
+			ItemStack stack = slot.getItem();
 			copy = stack.copy();
 
-			if (stack == playerIn.getHeldItem(hand))
+			if (stack == playerIn.getItemInHand(hand))
 				return ItemStack.EMPTY;
 
 			if (index < Wizard.INVENTORY_SIZE) {
-				if (!mergeItemStack(stack, Wizard.INVENTORY_SIZE, inventorySlots.size(), false))
+				if (!moveItemStackTo(stack, Wizard.INVENTORY_SIZE, slots.size(), false))
 					return ItemStack.EMPTY;
-			} else if (!mergeItemStack(stack, 0, Wizard.INVENTORY_SIZE, false)) {
+			} else if (!moveItemStackTo(stack, 0, Wizard.INVENTORY_SIZE, false)) {
 				return ItemStack.EMPTY;
 			}
 
 			if (stack.isEmpty())
-				slot.putStack(ItemStack.EMPTY);
+				slot.set(ItemStack.EMPTY);
 			else
-				slot.onSlotChanged();
+				slot.setChanged();
 			slot.onTake(playerIn, stack);
 		}
 
@@ -70,8 +71,8 @@ public class MagicContainer extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player) {
-		return (player.getHeldItemMainhand() == staff || player.getHeldItemOffhand() == staff) && !staff.isEmpty();
+	public boolean stillValid(Player player) {
+		return (player.getMainHandItem() == staff || player.getOffhandItem() == staff) && !staff.isEmpty();
 	}
 
 }

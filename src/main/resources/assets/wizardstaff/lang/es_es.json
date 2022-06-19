@@ -1,0 +1,21 @@
+{
+  "item.wizardstaff.warlock_helmet": "Capucha de brujo",
+  "item.wizardstaff.warlock_chestplate": "Túnica de brujo",
+  "item.wizardstaff.warlock_leggings": "Grebas de brujo",
+  "item.wizardstaff.warlock_boots": "Botas de brujo",
+  "item.wizardstaff.druid_helmet": "Cráneo de druida",
+  "item.wizardstaff.druid_chestplate": "Túnica de druida",
+  "item.wizardstaff.druid_leggings": "Grebas de druida",
+  "item.wizardstaff.druid_boots_item": "Botas de druida",
+  "item.wizardstaff.wizard_staff": "Bastón de mago",
+  "item.wizardstaff.wizard_hat": "Sombrero de mago",
+  "item.wizardstaff.wizard_chestplate": "Túnica de mago",
+  "item.wizardstaff.wizard_leggings": "Falda de mago",
+  "item.wizardstaff.wizard_boots": "Zapatillas de mago",
+  "item.wizardstaff.wizard_armor.description": "-10% costo de hechizo",
+  "item.wizardstaff.druid_armor.description": "-10% costo de hechizo",
+  "item.wizardstaff.warlock_armor.description": "-10% costo de hechizo",
+  "block.wizardstaff.magic_bricks": "Ladrillos mágicos",
+  "gui.wizardstaff.toggle_animations": "Alternar animaciones GUI",
+  "itemGroup.wizardstaff": "Bastón de mago"
+}

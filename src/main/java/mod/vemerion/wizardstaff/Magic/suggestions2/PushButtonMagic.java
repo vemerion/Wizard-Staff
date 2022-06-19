@@ -7,18 +7,18 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.block.AbstractButtonBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
 public class PushButtonMagic extends Magic {
 	
@@ -39,23 +39,23 @@ public class PushButtonMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BLOCK;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.BLOCK;
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		if (!world.isRemote) {
-			BlockRayTraceResult result = Helper.blockRay(world, player, DISTANCE);
-			if (result.getType() == Type.BLOCK) {
-				BlockPos pos = result.getPos();
-				BlockState state = world.getBlockState(pos);
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
+		if (!level.isClientSide) {
+			BlockHitResult result = Helper.blockRay(level, player, DISTANCE);
+			if (result.getType() == HitResult.Type.BLOCK) {
+				BlockPos pos = result.getBlockPos();
+				BlockState state = level.getBlockState(pos);
 				Block block = state.getBlock();
-				if (state.hasProperty(BlockStateProperties.POWERED) && !state.get(BlockStateProperties.POWERED)
-						&& block instanceof AbstractButtonBlock) {
+				if (state.hasProperty(BlockStateProperties.POWERED) && !state.getValue(BlockStateProperties.POWERED)
+						&& block instanceof ButtonBlock) {
 					cost(player);
-					((AbstractButtonBlock) block).powerBlock(state, world, pos);
-					playSoundServer(world, player, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, 1, soundPitch(player));
+					((ButtonBlock) block).press(state, level, pos);
+					playSoundServer(level, player, SoundEvents.STONE_BUTTON_CLICK_ON, 1, soundPitch(player));
 				}
 			}
 		}

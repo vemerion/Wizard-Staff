@@ -1,219 +1,174 @@
 package mod.vemerion.wizardstaff.model;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 
 /**
  * Created using Tabula 8.0.0
  */
 
 public class WizardArmorModel<T extends LivingEntity> extends MagicArmorModel<T> {
-	public ModelRenderer rightShoulder;
-	public ModelRenderer rightArm1;
-	public ModelRenderer rightArm2;
-	public ModelRenderer rightArm3;
-	public ModelRenderer rightArm3_1;
-	public ModelRenderer rightShoe1;
-	public ModelRenderer rightShoe2;
-	public ModelRenderer rightShoe3;
-	public ModelRenderer rightShoe4;
-	public ModelRenderer rightShoe5;
-	public ModelRenderer robe;
-	public ModelRenderer dress;
-	public ModelRenderer dressFront;
-	public ModelRenderer dressBack;
-	public ModelRenderer dressFrontLeft;
-	public ModelRenderer deessFrontRight;
-	public ModelRenderer dressBackLeft;
-	public ModelRenderer dressBackRight;
-	public ModelRenderer leftShoulder;
-	public ModelRenderer leftArm1;
-	public ModelRenderer leftArm2;
-	public ModelRenderer leftArm3;
-	public ModelRenderer leftArm3_1;
-	public ModelRenderer leftShoe1;
-	public ModelRenderer leftShoe2;
-	public ModelRenderer leftShoe3;
-	public ModelRenderer leftShoe4;
-	public ModelRenderer leftShoe5;
-	
+	public ModelPart rightShoulder;
+	public ModelPart rightArm1;
+	public ModelPart rightArm2;
+	public ModelPart rightArm3;
+	public ModelPart rightArm3_1;
+	public ModelPart rightShoe1;
+	public ModelPart rightShoe2;
+	public ModelPart rightShoe3;
+	public ModelPart rightShoe4;
+	public ModelPart rightShoe5;
+	public ModelPart robe;
+	public ModelPart dress;
+	public ModelPart dressFront;
+	public ModelPart dressBack;
+	public ModelPart dressFrontLeft;
+	public ModelPart deessFrontRight;
+	public ModelPart dressBackLeft;
+	public ModelPart dressBackRight;
+	public ModelPart leftShoulder;
+	public ModelPart leftArm1;
+	public ModelPart leftArm2;
+	public ModelPart leftArm3;
+	public ModelPart leftArm3_1;
+	public ModelPart leftShoe1;
+	public ModelPart leftShoe2;
+	public ModelPart leftShoe3;
+	public ModelPart leftShoe4;
+	public ModelPart leftShoe5;
+
 	public WizardHatModel<T> hatModel;
 
-	public WizardArmorModel(float modelSize) {
-		super(modelSize, 0, 64, 128);
-		this.textureWidth = 64;
-		this.textureHeight = 128;
-		this.rightShoe5 = new ModelRenderer(this, 36, 82);
-		this.rightShoe5.setRotationPoint(0.0F, 0.0F, -0.8F);
-		this.rightShoe5.addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(rightShoe5, -0.3490658503988659F, 0.0F, 0.0F);
-		this.dressBack = new ModelRenderer(this, 36, 95);
-		this.dressBack.setRotationPoint(0.0F, 0.0F, 2.0F);
-		this.dressBack.addBox(-4.0F, 0.0F, 0.0F, 8.0F, 8.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(dressBack, 0.3490658503988659F, 0.0F, 0.0F);
-		this.rightShoe3 = new ModelRenderer(this, 36, 91);
-		this.rightShoe3.setRotationPoint(0.0F, 0.5F, -1.5F);
-		this.rightShoe3.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(rightShoe3, -0.3490658503988659F, 0.0F, 0.0F);
-		this.rightShoulder = new ModelRenderer(this, 0, 116);
-		this.rightShoulder.mirror = true;
-		this.rightShoulder.setRotationPoint(-1.0F, 0.0F, 0.0F);
-		this.rightShoulder.addBox(-2.5F, -2.5F, -2.5F, 5.0F, 5.0F, 5.0F, modelSize);
-		this.dressBackLeft = new ModelRenderer(this, 52, 100);
-		this.dressBackLeft.setRotationPoint(4.0F, 0.0F, -4.0F);
-		this.dressBackLeft.addBox(0.0F, -1.0F, 0.0F, 0.0F, 9.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-		this.robe = new ModelRenderer(this, 0, 100);
-		this.robe.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.robe.addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, modelSize);
-		this.leftShoe4 = new ModelRenderer(this, 36, 84);
-		this.leftShoe4.setRotationPoint(0.0F, 0.5F, -1.5F);
-		this.leftShoe4.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(leftShoe4, -0.3490658503988659F, 0.0F, 0.0F);
-		this.dressFront = new ModelRenderer(this, 36, 95);
-		this.dressFront.setRotationPoint(0.0F, 0.0F, -2.0F);
-		this.dressFront.addBox(-4.0F, 0.0F, 0.0F, 8.0F, 8.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(dressFront, -0.3490658503988659F, 0.0F, 0.0F);
-		this.rightArm3_1 = new ModelRenderer(this, 0, 116);
-		this.rightArm3_1.setRotationPoint(0.0F, -3.0F, -0.5F);
-		this.rightArm3_1.addBox(-0.5F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-		this.deessFrontRight = new ModelRenderer(this, 52, 91);
-		this.deessFrontRight.setRotationPoint(-4.01F, 0.0F, 0.0F);
-		this.deessFrontRight.addBox(0.0F, -1.0F, 0.0F, 0.0F, 9.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-		this.rightShoe2 = new ModelRenderer(this, 52, 82);
-		this.rightShoe2.setRotationPoint(0.0F, 0.0F, -3.0F);
-		this.rightShoe2.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(rightShoe2, -0.3490658503988659F, 0.0F, 0.0F);
-		this.leftArm3_1 = new ModelRenderer(this, 0, 116);
-		this.leftArm3_1.setRotationPoint(0.0F, -3.0F, -0.5F);
-		this.leftArm3_1.addBox(-0.5F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-		this.dressBackRight = new ModelRenderer(this, 52, 100);
-		this.dressBackRight.setRotationPoint(-4.0F, 0.0F, -4.0F);
-		this.dressBackRight.addBox(0.0F, -1.0F, 0.0F, 0.0F, 9.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-		this.leftShoulder = new ModelRenderer(this, 0, 116);
-		this.leftShoulder.setRotationPoint(1.0F, 0.0F, 0.0F);
-		this.leftShoulder.addBox(-2.5F, -2.5F, -2.5F, 5.0F, 5.0F, 5.0F, modelSize);
-		this.leftShoe5 = new ModelRenderer(this, 36, 82);
-		this.leftShoe5.setRotationPoint(0.0F, 0.0F, -0.8F);
-		this.leftShoe5.addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(leftShoe5, -0.3490658503988659F, 0.0F, 0.0F);
-		this.dressFrontLeft = new ModelRenderer(this, 52, 91);
-		this.dressFrontLeft.setRotationPoint(4.01F, 0.0F, 0.0F);
-		this.dressFrontLeft.addBox(0.0F, -1.0F, 0.0F, 0.0F, 9.0F, 4.0F, 0.0F, 0.0F, 0.0F);
-		this.leftArm3 = new ModelRenderer(this, 15, 116);
-		this.leftArm3.setRotationPoint(0.0F, -3.0F, -0.5F);
-		this.leftArm3.addBox(-1.0F, -3.0F, -1.0F, 2.0F, 3.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.rightShoe1 = new ModelRenderer(this, 36, 82);
-		this.rightShoe1.setRotationPoint(0.0F, 9.01F, 0.0F);
-		this.rightShoe1.addBox(-2.5F, 0.0F, -3.5F, 5.0F, 3.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-		this.rightArm2 = new ModelRenderer(this, 24, 112);
-		this.rightArm2.setRotationPoint(0.0F, 6.0F, 3.5F);
-		this.rightArm2.addBox(-1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-		this.leftShoe1 = new ModelRenderer(this, 36, 82);
-		this.leftShoe1.setRotationPoint(0.0F, 9.01F, 0.0F);
-		this.leftShoe1.addBox(-2.5F, 0.0F, -3.5F, 5.0F, 3.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-		this.leftArm2 = new ModelRenderer(this, 24, 112);
-		this.leftArm2.setRotationPoint(0.0F, 6.0F, 3.5F);
-		this.leftArm2.addBox(-1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
-		this.leftShoe2 = new ModelRenderer(this, 52, 82);
-		this.leftShoe2.setRotationPoint(0.0F, 0.0F, -3.0F);
-		this.leftShoe2.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(leftShoe2, -0.3490658503988659F, 0.0F, 0.0F);
-		this.leftShoe3 = new ModelRenderer(this, 36, 91);
-		this.leftShoe3.setRotationPoint(0.0F, 0.5F, -1.5F);
-		this.leftShoe3.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(leftShoe3, -0.3490658503988659F, 0.0F, 0.0F);
-		this.rightShoe4 = new ModelRenderer(this, 36, 84);
-		this.rightShoe4.setRotationPoint(0.0F, 0.5F, -1.5F);
-		this.rightShoe4.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 1.0F, 0.0F, 0.0F, 0.0F);
-		this.setRotateAngle(rightShoe4, -0.3490658503988659F, 0.0F, 0.0F);
-		this.rightArm1 = new ModelRenderer(this, 24, 100);
-		this.rightArm1.setRotationPoint(0.0F, 4.0F, 0.0F);
-		this.rightArm1.addBox(-2.0F, -2.0F, -2.0F, 4.0F, 8.0F, 4.0F, modelSize);
-		this.dress = new ModelRenderer(this, 0, 100);
-		this.dress.setRotationPoint(0.0F, 10.5F, 0.0F);
-		this.dress.addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-		this.leftArm1 = new ModelRenderer(this, 24, 100);
-		this.leftArm1.setRotationPoint(0.0F, 4.0F, 0.0F);
-		this.leftArm1.addBox(-2.0F, -2.0F, -2.0F, 4.0F, 8.0F, 4.0F, modelSize);
-		this.rightArm3 = new ModelRenderer(this, 15, 116);
-		this.rightArm3.setRotationPoint(0.0F, -3.0F, -0.5F);
-		this.rightArm3.addBox(-1.0F, -3.0F, -1.0F, 2.0F, 3.0F, 2.0F, 0.0F, 0.0F, 0.0F);
-		this.rightShoe4.addChild(this.rightShoe5);
-		this.dress.addChild(this.dressBack);
-		this.rightShoe2.addChild(this.rightShoe3);
-		this.bipedRightArm.addChild(this.rightShoulder);
-		this.dressBack.addChild(this.dressBackLeft);
-		this.bipedBody.addChild(this.robe);
-		this.leftShoe3.addChild(this.leftShoe4);
-		this.dress.addChild(this.dressFront);
-		this.rightArm3.addChild(this.rightArm3_1);
-		this.dressFront.addChild(this.deessFrontRight);
-		this.rightShoe1.addChild(this.rightShoe2);
-		this.leftArm3.addChild(this.leftArm3_1);
-		this.dressBack.addChild(this.dressBackRight);
-		this.bipedLeftArm.addChild(this.leftShoulder);
-		this.leftShoe4.addChild(this.leftShoe5);
-		this.dressFront.addChild(this.dressFrontLeft);
-		this.leftArm2.addChild(this.leftArm3);
-		this.bipedRightLeg.addChild(this.rightShoe1);
-		this.rightArm1.addChild(this.rightArm2);
-		this.bipedLeftLeg.addChild(this.leftShoe1);
-		this.leftArm1.addChild(this.leftArm2);
-		this.leftShoe1.addChild(this.leftShoe2);
-		this.leftShoe2.addChild(this.leftShoe3);
-		this.rightShoe3.addChild(this.rightShoe4);
-		this.rightShoulder.addChild(this.rightArm1);
-		this.bipedBody.addChild(this.dress);
-		this.leftShoulder.addChild(this.leftArm1);
-		this.rightArm2.addChild(this.rightArm3);
-		
-		hatModel = new WizardHatModel<T>(textureWidth, textureHeight);
-		this.bipedHead.addChild(hatModel.hat);
+	public WizardArmorModel(ModelPart pRoot) {
+		super(pRoot);
+		this.rightShoulder = rightArm.getChild("rightShoulder");
+		this.rightArm1 = rightShoulder.getChild("rightArm1");
+		this.rightArm2 = rightArm1.getChild("rightArm2");
+		this.rightArm3 = rightArm2.getChild("rightArm3");
+		this.rightArm3_1 = rightArm3.getChild("rightArm3_1");
+		this.rightShoe1 = rightLeg.getChild("rightShoe1");
+		this.rightShoe2 = rightShoe1.getChild("rightShoe2");
+		this.rightShoe3 = rightShoe2.getChild("rightShoe3");
+		this.rightShoe4 = rightShoe3.getChild("rightShoe4");
+		this.rightShoe5 = rightShoe4.getChild("rightShoe5");
+		this.robe = body.getChild("robe");
+		this.dress = body.getChild("dress");
+		this.dressFront = dress.getChild("dressFront");
+		this.dressBack = dress.getChild("dressBack");
+		this.dressFrontLeft = dressFront.getChild("dressFrontLeft");
+		this.deessFrontRight = dressFront.getChild("deessFrontRight");
+		this.dressBackLeft = dressBack.getChild("dressBackLeft");
+		this.dressBackRight = dressBack.getChild("dressBackRight");
+		this.leftShoulder = leftArm.getChild("leftShoulder");
+		this.leftArm1 = leftShoulder.getChild("leftArm1");
+		this.leftArm2 = leftArm1.getChild("leftArm2");
+		this.leftArm3 = leftArm2.getChild("leftArm3");
+		this.leftArm3_1 = leftArm3.getChild("leftArm3_1");
+		this.leftShoe1 = leftLeg.getChild("leftShoe1");
+		this.leftShoe2 = leftShoe1.getChild("leftShoe2");
+		this.leftShoe3 = leftShoe2.getChild("leftShoe3");
+		this.leftShoe4 = leftShoe3.getChild("leftShoe4");
+		this.leftShoe5 = leftShoe4.getChild("leftShoe5");
+
+		hatModel = new WizardHatModel<T>(head);
 	}
 
+	// @formatter:off
+	public static LayerDefinition createLayer() {
+		var deformation = new CubeDeformation(0.3f);
+		MeshDefinition mesh = HumanoidModel.createMesh(deformation, 0);
+		PartDefinition parts = mesh.getRoot();
+		PartDefinition bipedRightArm = parts.getChild("right_arm");
+		PartDefinition bipedRightLeg = parts.getChild("right_leg");
+		PartDefinition bipedHead = parts.getChild("head");
+		PartDefinition bipedBody = parts.getChild("body");
+		PartDefinition bipedLeftArm = parts.getChild("left_arm");
+		PartDefinition bipedLeftLeg = parts.getChild("left_leg");
+		
+		WizardHatModel.fillParts(bipedHead);
+
+	    PartDefinition rightShoulder = bipedRightArm.addOrReplaceChild("rightShoulder", CubeListBuilder.create().texOffs(0, 116).mirror().addBox(-2.5F, -2.5F, -2.5F, 5.0F, 5.0F, 5.0F, deformation), PartPose.offsetAndRotation(-1.0F, 0.0F, 0.0F, 0, 0, 0));
+	    PartDefinition rightArm1 = rightShoulder.addOrReplaceChild("rightArm1", CubeListBuilder.create().texOffs(24, 100).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 8.0F, 4.0F, deformation), PartPose.offsetAndRotation(0.0F, 4.0F, 0.0F, 0, 0, 0));
+	    PartDefinition rightArm2 = rightArm1.addOrReplaceChild("rightArm2", CubeListBuilder.create().texOffs(24, 112).addBox(-1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F), PartPose.offsetAndRotation(0.0F, 6.0F, 3.5F, 0, 0, 0));
+	    PartDefinition rightArm3 = rightArm2.addOrReplaceChild("rightArm3", CubeListBuilder.create().texOffs(15, 116).addBox(-1.0F, -3.0F, -1.0F, 2.0F, 3.0F, 2.0F), PartPose.offsetAndRotation(0.0F, -3.0F, -0.5F, 0, 0, 0));
+	    rightArm3.addOrReplaceChild("rightArm3_1", CubeListBuilder.create().texOffs(0, 116).addBox(-0.5F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F), PartPose.offsetAndRotation(0.0F, -3.0F, -0.5F, 0, 0, 0));
+	    PartDefinition rightShoe1 = bipedRightLeg.addOrReplaceChild("rightShoe1", CubeListBuilder.create().texOffs(36, 82).addBox(-2.5F, 0.0F, -3.5F, 5.0F, 3.0F, 6.0F), PartPose.offsetAndRotation(0.0F, 9.01F, 0.0F, 0, 0, 0));
+	    PartDefinition rightShoe2 = rightShoe1.addOrReplaceChild("rightShoe2", CubeListBuilder.create().texOffs(52, 82).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 2.0F), PartPose.offsetAndRotation(0.0F, 0.0F, -3.0F, -0.3490658503988659F, 0.0F, 0.0F));
+	    PartDefinition rightShoe3 = rightShoe2.addOrReplaceChild("rightShoe3", CubeListBuilder.create().texOffs(36, 91).addBox(-1.5F, 0.0F, -2.0F, 3.0F, 2.0F, 2.0F), PartPose.offsetAndRotation(0.0F, 0.5F, -1.5F, -0.3490658503988659F, 0.0F, 0.0F));
+	    PartDefinition rightShoe4 = rightShoe3.addOrReplaceChild("rightShoe4", CubeListBuilder.create().texOffs(36, 84).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 1.0F), PartPose.offsetAndRotation(0.0F, 0.5F, -1.5F, -0.3490658503988659F, 0.0F, 0.0F));
+	    rightShoe4.addOrReplaceChild("rightShoe5", CubeListBuilder.create().texOffs(36, 82).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F), PartPose.offsetAndRotation(0.0F, 0.0F, -0.8F, -0.3490658503988659F, 0.0F, 0.0F));
+	    bipedBody.addOrReplaceChild("robe", CubeListBuilder.create().texOffs(0, 100).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, deformation), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0, 0, 0));
+	    PartDefinition dress = bipedBody.addOrReplaceChild("dress", CubeListBuilder.create().texOffs(0, 100).addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F), PartPose.offsetAndRotation(0.0F, 10.5F, 0.0F, 0, 0, 0));
+	    PartDefinition dressFront = dress.addOrReplaceChild("dressFront", CubeListBuilder.create().texOffs(36, 95).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 8.0F, 0.0F), PartPose.offsetAndRotation(0.0F, 0.0F, -2.0F, -0.3490658503988659F, 0.0F, 0.0F));
+	    PartDefinition dressBack = dress.addOrReplaceChild("dressBack", CubeListBuilder.create().texOffs(36, 95).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 8.0F, 0.0F), PartPose.offsetAndRotation(0.0F, 0.0F, 2.0F, 0.3490658503988659F, 0.0F, 0.0F));
+	    dressFront.addOrReplaceChild("dressFrontLeft", CubeListBuilder.create().texOffs(52, 91).addBox(0.0F, -1.0F, 0.0F, 0.0F, 9.0F, 4.0F), PartPose.offsetAndRotation(4.01F, 0.0F, 0.0F, 0, 0, 0));
+	    dressFront.addOrReplaceChild("deessFrontRight", CubeListBuilder.create().texOffs(52, 91).addBox(0.0F, -1.0F, 0.0F, 0.0F, 9.0F, 4.0F), PartPose.offsetAndRotation(-4.01F, 0.0F, 0.0F, 0, 0, 0));
+	    dressBack.addOrReplaceChild("dressBackLeft", CubeListBuilder.create().texOffs(52, 100).addBox(0.0F, -1.0F, 0.0F, 0.0F, 9.0F, 4.0F), PartPose.offsetAndRotation(4.0F, 0.0F, -4.0F, 0, 0, 0));
+	    dressBack.addOrReplaceChild("dressBackRight", CubeListBuilder.create().texOffs(52, 100).addBox(0.0F, -1.0F, 0.0F, 0.0F, 9.0F, 4.0F), PartPose.offsetAndRotation(-4.0F, 0.0F, -4.0F, 0, 0, 0));
+	    PartDefinition leftShoulder = bipedLeftArm.addOrReplaceChild("leftShoulder", CubeListBuilder.create().texOffs(0, 116).addBox(-2.5F, -2.5F, -2.5F, 5.0F, 5.0F, 5.0F, deformation), PartPose.offsetAndRotation(1.0F, 0.0F, 0.0F, 0, 0, 0));
+	    PartDefinition leftArm1 = leftShoulder.addOrReplaceChild("leftArm1", CubeListBuilder.create().texOffs(24, 100).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 8.0F, 4.0F, deformation), PartPose.offsetAndRotation(0.0F, 4.0F, 0.0F, 0, 0, 0));
+	    PartDefinition leftArm2 = leftArm1.addOrReplaceChild("leftArm2", CubeListBuilder.create().texOffs(24, 112).addBox(-1.5F, -3.0F, -1.5F, 3.0F, 3.0F, 3.0F), PartPose.offsetAndRotation(0.0F, 6.0F, 3.5F, 0, 0, 0));
+	    PartDefinition leftArm3 = leftArm2.addOrReplaceChild("leftArm3", CubeListBuilder.create().texOffs(15, 116).addBox(-1.0F, -3.0F, -1.0F, 2.0F, 3.0F, 2.0F), PartPose.offsetAndRotation(0.0F, -3.0F, -0.5F, 0, 0, 0));
+	    leftArm3.addOrReplaceChild("leftArm3_1", CubeListBuilder.create().texOffs(0, 116).addBox(-0.5F, -1.0F, -0.5F, 1.0F, 1.0F, 1.0F), PartPose.offsetAndRotation(0.0F, -3.0F, -0.5F, 0, 0, 0));
+	    PartDefinition leftShoe1 = bipedLeftLeg.addOrReplaceChild("leftShoe1", CubeListBuilder.create().texOffs(36, 82).addBox(-2.5F, 0.0F, -3.5F, 5.0F, 3.0F, 6.0F), PartPose.offsetAndRotation(0.0F, 9.01F, 0.0F, 0, 0, 0));
+	    PartDefinition leftShoe2 = leftShoe1.addOrReplaceChild("leftShoe2", CubeListBuilder.create().texOffs(52, 82).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 2.0F), PartPose.offsetAndRotation(0.0F, 0.0F, -3.0F, -0.3490658503988659F, 0.0F, 0.0F));
+	    PartDefinition leftShoe3 = leftShoe2.addOrReplaceChild("leftShoe3", CubeListBuilder.create().texOffs(36, 91).addBox(-1.5F, 0.0F, -2.0F, 3.0F, 2.0F, 2.0F), PartPose.offsetAndRotation(0.0F, 0.5F, -1.5F, -0.3490658503988659F, 0.0F, 0.0F));
+	    PartDefinition leftShoe4 = leftShoe3.addOrReplaceChild("leftShoe4", CubeListBuilder.create().texOffs(36, 84).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 1.0F, 1.0F), PartPose.offsetAndRotation(0.0F, 0.5F, -1.5F, -0.3490658503988659F, 0.0F, 0.0F));
+	    leftShoe4.addOrReplaceChild("leftShoe5", CubeListBuilder.create().texOffs(36, 82).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F), PartPose.offsetAndRotation(0.0F, 0.0F, -0.8F, -0.3490658503988659F, 0.0F, 0.0F));
+	    return LayerDefinition.create(mesh, 64, 128);
+	}
+	// @formatter:on
+
 	@Override
-	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn,
 			float red, float green, float blue, float alpha) {
-		dressBack.rotateAngleX = (float) Math.max(Math.toRadians(20),
-				Math.max(bipedLeftLeg.rotateAngleX, bipedRightLeg.rotateAngleX) + Math.toRadians(15));
-		dressFront.rotateAngleX = (float) Math.min(Math.toRadians(-20),
-				Math.min(bipedLeftLeg.rotateAngleX, bipedRightLeg.rotateAngleX) - Math.toRadians(15));
-		if (isSneak) {
-			dress.rotateAngleX = (float) Math.toRadians(-30);
-			dress.rotationPointY = 9f;
-			dressBack.rotateAngleX += Math.toRadians(20);
-			dressFront.rotateAngleX -= Math.toRadians(20);
+		dressBack.xRot = (float) Math.max(Math.toRadians(20),
+				Math.max(leftLeg.xRot, rightLeg.xRot) + Math.toRadians(15));
+		dressFront.xRot = (float) Math.min(Math.toRadians(-20),
+				Math.min(leftLeg.xRot, rightLeg.xRot) - Math.toRadians(15));
+		if (crouching) {
+			dress.xRot = (float) Math.toRadians(-30);
+			dress.y = 9f;
+			dressBack.xRot += Math.toRadians(20);
+			dressFront.xRot -= Math.toRadians(20);
 		} else {
-			dress.rotationPointY = 10.5f;
-			dress.rotateAngleX = 0;
+			dress.y = 10.5f;
+			dress.xRot = 0;
 		}
-		super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		super.renderToBuffer(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	}
 
 	/**
 	 * This is a helper function from Tabula to set the rotation of model parts
 	 */
-	public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-		modelRenderer.rotateAngleX = x;
-		modelRenderer.rotateAngleY = y;
-		modelRenderer.rotateAngleZ = z;
+	public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
+		modelRenderer.xRot = x;
+		modelRenderer.yRot = y;
+		modelRenderer.zRot = z;
 	}
 
 	@Override
-	public void setVisibility(EquipmentSlotType armorSlot) {
-		rightShoulder.showModel = armorSlot == EquipmentSlotType.CHEST;
-		leftShoulder.showModel = armorSlot == EquipmentSlotType.CHEST;
-		robe.showModel = armorSlot == EquipmentSlotType.CHEST;
+	public void setVisibility(EquipmentSlot armorSlot) {
+		rightShoulder.visible = armorSlot == EquipmentSlot.CHEST;
+		leftShoulder.visible = armorSlot == EquipmentSlot.CHEST;
+		robe.visible = armorSlot == EquipmentSlot.CHEST;
 
-		hatModel.setVisible(armorSlot == EquipmentSlotType.HEAD);
+		hatModel.setVisible(armorSlot == EquipmentSlot.HEAD);
 
-		dress.showModel = armorSlot == EquipmentSlotType.LEGS;
+		dress.visible = armorSlot == EquipmentSlot.LEGS;
 
-		rightShoe1.showModel = armorSlot == EquipmentSlotType.FEET;
-		leftShoe1.showModel = armorSlot == EquipmentSlotType.FEET;
+		rightShoe1.visible = armorSlot == EquipmentSlot.FEET;
+		leftShoe1.visible = armorSlot == EquipmentSlot.FEET;
 	}
 }

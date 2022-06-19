@@ -2,35 +2,36 @@ package mod.vemerion.wizardstaff.staff;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.Magics;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.IRenderable;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.AbstractButton;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.widget.button.ImageButton;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IReorderingProcessor;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.client.gui.GuiUtils;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.item.ItemStack;
 
-public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventListener {
-	private static final ITextComponent SEARCH_HINT = new TranslationTextComponent("gui." + Main.MODID + ".search_hint")
-			.mergeStyle(TextFormatting.ITALIC);
+public class SpellbookGui extends GuiComponent implements Widget, GuiEventListener {
+	private static final Component SEARCH_HINT = new TranslatableComponent("gui." + Main.MODID + ".search_hint")
+			.withStyle(ChatFormatting.ITALIC);
 	private static final ResourceLocation GUI = new ResourceLocation(Main.MODID, "textures/gui/spellbook.png");
 	private static final int X_OFFSET = 86;
 	private static final int X_SIZE = 147;
@@ -50,22 +51,22 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 	private boolean isActive;
 	private int left;
 	private int top;
-	private int width;
-	private int height;
 	private List<ItemButton> buttons;
 	private List<ItemButton> searched;
 	private Button next;
 	private Button prev;
 	private int page;
 	private SpellDescription description;
-	private TextFieldWidget search;
+	private EditBox search;
+	WizardStaffScreen parent;
+	Minecraft mc;
 
 	public SpellbookGui() {
 	}
 
-	public void init(int width, int height) {
-		this.width = width;
-		this.height = height;
+	public void init(WizardStaffScreen parent, int width, int height) {
+		this.parent = parent;
+		this.mc = parent.getMinecraft();
 		left = (width - X_SIZE) / 2 - X_OFFSET;
 		top = (height - Y_SIZE) / 2;
 
@@ -91,19 +92,18 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 				});
 
 		initSearch();
-		Minecraft.getInstance().keyboardListener.enableRepeatEvents(true);
+		mc.keyboardHandler.setSendRepeatsToGui(true);
 
 		if (description != null)
 			description.init(left, top);
 	}
 
 	private void initSearch() {
-		String text = search == null ? "" : search.getText();
-		search = new TextFieldWidget(Minecraft.getInstance().fontRenderer, left + 26, top + 13, SEARCH_WIDTH,
-				SEARCH_HEIGHT, SEARCH_HINT);
-		search.setMaxStringLength(50);
-		search.setText(text);
-		search.setEnableBackgroundDrawing(false);
+		String text = search == null ? "" : search.getValue();
+		search = new EditBox(mc.font, left + 26, top + 13, SEARCH_WIDTH, SEARCH_HEIGHT, SEARCH_HINT);
+		search.setMaxLength(50);
+		search.setValue(text);
+		search.setBordered(false);
 		search.setVisible(true);
 		search.setTextColor(-1);
 		filterButtons();
@@ -115,16 +115,20 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 
 	public void onClose() {
 		search = null;
-		Minecraft.getInstance().keyboardListener.enableRepeatEvents(false);
+		mc.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		if (!isActive)
 			return;
 
-		Minecraft mc = Minecraft.getInstance();
-		mc.getTextureManager().bindTexture(GUI);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderColor(1, 1, 1, 1);
+		RenderSystem.setShaderTexture(0, GUI);
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.enableDepthTest();
 		blit(matrixStack, left, top, 0, 0, X_SIZE, Y_SIZE);
 
 		if (description == null) {
@@ -136,17 +140,16 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 
 			// Search
 			blit(matrixStack, left + 12, top + 8, 0, 0, Y_SIZE + BUTTON_SIZE * 2, 16, 16, 256, 256);
-			if (!search.isFocused() && search.getText().isEmpty())
-				drawString(matrixStack, mc.fontRenderer, SEARCH_HINT, left + 26, top + 13, -1);
+			if (!search.isFocused() && search.getValue().isEmpty())
+				drawString(matrixStack, mc.font, SEARCH_HINT, left + 26, top + 13, -1);
 			else
 				search.render(matrixStack, mouseX, mouseY, partialTicks);
 
 			// Draw page number
 			int maxPageNbr = Math.max(1, (int) Math.ceil((searched.size() / (float) ITEMS_PER_PAGE)));
 			String pageText = (page + 1) + "/" + maxPageNbr;
-			int textWidth = mc.fontRenderer.getStringWidth(pageText);
-			mc.fontRenderer.drawString(matrixStack, pageText, left + X_SIZE / 2 - textWidth / 2f, top + Y_SIZE - 22,
-					-1);
+			int textWidth = mc.font.width(pageText);
+			mc.font.draw(matrixStack, pageText, left + X_SIZE / 2 - textWidth / 2f, top + Y_SIZE - 22, -1);
 		} else {
 			description.render(matrixStack, mouseX, mouseY, partialTicks);
 		}
@@ -188,11 +191,11 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 	}
 
 	private void filterButtons() {
-		String filter = search.getText().toLowerCase();
+		String filter = search.getValue().toLowerCase();
 		searched = new ArrayList<>();
 		int i = 0;
 		for (ItemButton b : buttons)
-			if (b.stack.getDisplayName().getString().toLowerCase().contains(filter)
+			if (b.stack.getHoverName().getString().toLowerCase().contains(filter)
 					|| b.magicDescr.getName().getString().toLowerCase().contains(filter)) {
 				searched.add(b);
 				b.x = left + BORDER_X + (i % ITEMS_PER_ROW) * ITEM_SIZE;
@@ -229,20 +232,17 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 		private Magic.Description magicDescr;
 
 		public ItemButton(int x, int y, int width, int height, ItemStack stack) {
-			super(x, y, width, height, stack.getDisplayName());
+			super(x, y, width, height, stack.getHoverName());
 			this.stack = stack;
 			this.magicDescr = Magics.getInstance(true).get(stack).getDescription();
 		}
 
 		@Override
-		public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-			Minecraft minecraft = Minecraft.getInstance();
-			if (isHovered()) {
-				GuiUtils.drawHoveringText(matrixStack, Arrays.asList(getMessage()), mouseX, mouseY,
-						SpellbookGui.this.width, SpellbookGui.this.height, -1, minecraft.fontRenderer);
-			}
+		public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+			if (isHoveredOrFocused())
+				parent.renderTooltip(matrixStack, getMessage(), mouseX, mouseY);
 
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(stack, x, y);
+			mc.getItemRenderer().renderAndDecorateItem(stack, x, y);
 		}
 
 		@Override
@@ -250,18 +250,18 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 			description = new SpellDescription(magicDescr, stack, left, top);
 		}
 
+		@Override
+		public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+		}
 	}
 
-	private static final TranslationTextComponent COST = new TranslationTextComponent("gui." + Main.MODID + ".cost");
-	private static final TranslationTextComponent EXP = new TranslationTextComponent("gui." + Main.MODID + ".exp");
-	private static final TranslationTextComponent DURATION = new TranslationTextComponent(
-			"gui." + Main.MODID + ".duration");
-	private static final TranslationTextComponent INFINITY = new TranslationTextComponent(
-			"gui." + Main.MODID + ".infinity");
-	private static final TranslationTextComponent SECONDS = new TranslationTextComponent(
-			"gui." + Main.MODID + ".seconds");
+	private static final TranslatableComponent COST = new TranslatableComponent("gui." + Main.MODID + ".cost");
+	private static final TranslatableComponent EXP = new TranslatableComponent("gui." + Main.MODID + ".exp");
+	private static final TranslatableComponent DURATION = new TranslatableComponent("gui." + Main.MODID + ".duration");
+	private static final TranslatableComponent INFINITY = new TranslatableComponent("gui." + Main.MODID + ".infinity");
+	private static final TranslatableComponent SECONDS = new TranslatableComponent("gui." + Main.MODID + ".seconds");
 
-	private class SpellDescription implements IRenderable, IGuiEventListener {
+	private class SpellDescription implements Widget, GuiEventListener {
 		private ItemStack stack;
 		private Button back;
 		private int left;
@@ -270,8 +270,8 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 		private int top;
 		private Magic.Description magicDescr;
 		private int page;
-		List<IReorderingProcessor> title;
-		List<IReorderingProcessor> text;
+		List<FormattedCharSequence> title;
+		List<FormattedCharSequence> text;
 		String cost, duration;
 		private int linesPerPage;
 		private int pageCount;
@@ -304,9 +304,8 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 							page--;
 					});
 
-			title = Minecraft.getInstance().fontRenderer.trimStringToWidth(magicDescr.getName(), X_SIZE - BORDER_X * 2);
-			text = Minecraft.getInstance().fontRenderer.trimStringToWidth(magicDescr.getDescription(),
-					X_SIZE - BORDER_X * 2);
+			title = mc.font.split(magicDescr.getName(), X_SIZE - BORDER_X * 2);
+			text = mc.font.split(magicDescr.getDescription(), X_SIZE - BORDER_X * 2);
 			linesPerPage = 7 - title.size();
 			pageCount = (int) Math.ceil(text.size() / (float) linesPerPage);
 
@@ -321,43 +320,40 @@ public class SpellbookGui extends AbstractGui implements IRenderable, IGuiEventL
 		}
 
 		@Override
-		public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 			back.render(matrixStack, mouseX, mouseY, partialTicks);
 			if (pageCount > 1) {
 				next.render(matrixStack, mouseX, mouseY, partialTicks);
 				prev.render(matrixStack, mouseX, mouseY, partialTicks);
 			}
 
-			Minecraft mc = Minecraft.getInstance();
-
 			int y = top + BORDER_Y;
 			int textWidth = 0;
 
 			// Item
-			mc.getItemRenderer().renderItemAndEffectIntoGUI(stack, left + X_SIZE / 2 - 8, y);
+			mc.getItemRenderer().renderAndDecorateItem(stack, left + X_SIZE / 2 - 8, y);
 			y += 20;
 
 			// Magic name
-			for (IReorderingProcessor line : title) {
-				textWidth = mc.fontRenderer.func_243245_a(line);
-				mc.fontRenderer.func_238422_b_(matrixStack, line, left + X_SIZE / 2 - textWidth / 2f, y, -1);
-				y += mc.fontRenderer.FONT_HEIGHT;
+			for (FormattedCharSequence line : title) {
+				textWidth = mc.font.width(line);
+				mc.font.draw(matrixStack, line, left + X_SIZE / 2 - textWidth / 2f, y, -1);
+				y += mc.font.lineHeight;
 			}
 			y += 10;
 
 			// Cost
-
-			mc.fontRenderer.drawString(matrixStack, cost, left + BORDER_X, y, -1);
+			mc.font.draw(matrixStack, cost, left + BORDER_X, y, -1);
 			y += 10;
 
 			// Duration
-			mc.fontRenderer.drawString(matrixStack, duration, left + BORDER_X, y, -1);
+			mc.font.draw(matrixStack, duration, left + BORDER_X, y, -1);
 			y += 20;
 
 			// Description
 			for (int i = page * linesPerPage; i < Math.min(page * linesPerPage + linesPerPage, text.size()); i++) {
-				mc.fontRenderer.func_238422_b_(matrixStack, text.get(i), left + BORDER_X, y, -1);
-				y += mc.fontRenderer.FONT_HEIGHT;
+				mc.font.draw(matrixStack, text.get(i), left + BORDER_X, y, -1);
+				y += mc.font.lineHeight;
 			}
 		}
 

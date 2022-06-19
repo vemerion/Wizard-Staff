@@ -1,8 +1,0 @@
-{
-  "cost": 30.0,
-  "duration": 30,
-  "magic": "wizard-staff:deage_magic",
-  "ingredient": {
-    "item": "minecraft:wheat_seeds"
-  }
-}

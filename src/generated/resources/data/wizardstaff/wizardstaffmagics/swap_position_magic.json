@@ -1,0 +1,13 @@
+{
+  "cost": 25.0,
+  "duration": 20,
+  "magic": "wizardstaff:swap_position_magic",
+  "ingredient": {
+    "item": "minecraft:armor_stand"
+  },
+  "blacklist": [
+    "minecraft:ender_dragon",
+    "minecraft:wither"
+  ],
+  "range": 5.0
+}

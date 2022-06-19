@@ -15,15 +15,15 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 
 public class DeflectProjectileMagic extends Magic {
 
@@ -41,7 +41,7 @@ public class DeflectProjectileMagic extends Magic {
 	@Override
 	protected void readAdditional(JsonObject json) {
 		blacklist = MagicUtil.readColl(json, "blacklist",
-				e -> new ResourceLocation(JSONUtils.getString(e, "entity name")), new HashSet<>());
+				e -> new ResourceLocation(GsonHelper.convertToString(e, "entity name")), new HashSet<>());
 	}
 
 	@Override
@@ -60,23 +60,22 @@ public class DeflectProjectileMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		if (!world.isRemote) {
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
+		if (!level.isClientSide) {
 			cost(player);
-			AxisAlignedBB box = player.getBoundingBox().grow(2);
-			List<Entity> projectiles = world.getEntitiesWithinAABB(ProjectileEntity.class, box,
-					this::notBlacklisted);
+			AABB box = player.getBoundingBox().inflate(2);
+			List<Projectile> projectiles = level.getEntitiesOfClass(Projectile.class, box, this::notBlacklisted);
 			for (Entity projectile : projectiles) {
-				projectile.remove();
+				projectile.discard();
 			}
-			
+
 			if (!projectiles.isEmpty())
-				playSoundServer(world, player, ModSounds.IMPACT, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.IMPACT, 1, soundPitch(player));
 		}
 	}
 

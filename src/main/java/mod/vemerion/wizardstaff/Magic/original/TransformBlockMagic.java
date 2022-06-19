@@ -5,13 +5,13 @@ import com.google.gson.JsonObject;
 import mod.vemerion.wizardstaff.Magic.BlockRayMagic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class TransformBlockMagic extends BlockRayMagic {
@@ -30,13 +30,13 @@ public class TransformBlockMagic extends BlockRayMagic {
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 		from = MagicUtil.decode(buffer);
 		to = MagicUtil.decode(buffer);
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		MagicUtil.encode(buffer, from);
 		MagicUtil.encode(buffer, to);
 	}
@@ -55,21 +55,21 @@ public class TransformBlockMagic extends BlockRayMagic {
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { from.getTranslatedName(), to.getTranslatedName() };
+		return new Object[] { from.getName(), to.getName() };
 	}
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { from.getTranslatedName(), to.getTranslatedName() };
+		return new Object[] { from.getName(), to.getName() };
 	}
 
 	@Override
-	protected void hitBlock(World world, PlayerEntity player, BlockPos pos) {
-		if (world.getBlockState(pos).getBlock() == from) {
-			world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_STONE_BREAK,
-					SoundCategory.PLAYERS, 1.5f, soundPitch(player));
+	protected void hitBlock(Level level, Player player, BlockPos pos) {
+		if (level.getBlockState(pos).getBlock() == from) {
+			level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.STONE_BREAK,
+					SoundSource.PLAYERS, 1.5f, soundPitch(player));
 			cost(player);
-			world.setBlockState(pos, to.getDefaultState());
+			level.setBlockAndUpdate(pos, to.defaultBlockState());
 		}
 	}
 

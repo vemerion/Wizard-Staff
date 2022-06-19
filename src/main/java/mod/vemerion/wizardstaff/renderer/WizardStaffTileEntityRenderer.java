@@ -2,259 +2,271 @@ package mod.vemerion.wizardstaff.renderer;
 
 import java.util.Random;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Quaternion;
 
 import mod.vemerion.wizardstaff.init.ModItems;
+import mod.vemerion.wizardstaff.init.ModLayerLocations;
 import mod.vemerion.wizardstaff.model.AbstractWizardStaffModel;
 import mod.vemerion.wizardstaff.model.NetherWizardStaffModel;
 import mod.vemerion.wizardstaff.model.WizardStaffModel;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Quaternion;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class WizardStaffTileEntityRenderer extends ItemStackTileEntityRenderer {
-	private final WizardStaffModel WIZARD_STAFF = new WizardStaffModel();
-	private final NetherWizardStaffModel NETHER_WIZARD_STAFF = new NetherWizardStaffModel();
+public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRenderer {
+
+	private final WizardStaffModel WIZARD_STAFF;
+	private final NetherWizardStaffModel NETHER_WIZARD_STAFF;
+
+	public WizardStaffTileEntityRenderer(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher,
+			EntityModelSet pEntityModelSet) {
+		super(pBlockEntityRenderDispatcher, pEntityModelSet);
+		WIZARD_STAFF = new WizardStaffModel(pEntityModelSet.bakeLayer(ModLayerLocations.WIZARD_STAFF));
+		NETHER_WIZARD_STAFF = new NetherWizardStaffModel(
+				pEntityModelSet.bakeLayer(ModLayerLocations.NETHER_WIZARD_STAFF));
+	}
 
 	@Override
-	public void func_239207_a_(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
-			int combinedLightIn, int combinedOverlayIn) {
+	public void renderByItem(ItemStack itemStackIn, ItemTransforms.TransformType transformType, PoseStack matrixStackIn,
+			MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		if (!shouldRender(itemStackIn))
 			return;
 		renderOnlyStaffNoPop(itemStackIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		renderOnlyMagic(itemStackIn, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-		matrixStackIn.pop();
+		matrixStackIn.popPose();
 	}
 
 	protected AbstractWizardStaffModel getModel(ItemStack itemStackIn) {
 		return itemStackIn.getItem() == ModItems.WIZARD_STAFF ? WIZARD_STAFF : NETHER_WIZARD_STAFF;
 	}
-	
+
 	private boolean shouldRender(ItemStack staff) {
-		LazyOptional<WizardStaffItemHandler> optHandler = WizardStaffItemHandler.getOptional(staff);
-		return optHandler.isPresent() && optHandler.orElse(null).isVisible();
+		LazyOptional<WizardStaffItemHandler> optInteractionHandler = WizardStaffItemHandler.getOptional(staff);
+		return optInteractionHandler.isPresent() && optInteractionHandler.orElse(null).isVisible();
 	}
 
-	protected void renderOnlyStaffNoPop(ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
+	protected void renderOnlyStaffNoPop(ItemStack itemStackIn, PoseStack matrixStackIn, MultiBufferSource bufferIn,
 			int combinedLightIn, int combinedOverlayIn) {
 		if (!shouldRender(itemStackIn))
 			return;
-		matrixStackIn.push();
+		matrixStackIn.pushPose();
 		matrixStackIn.scale(1.0F, -1.0F, -1.0F);
 		matrixStackIn.scale(0.5f, 0.5f, 0.5f);
 		AbstractWizardStaffModel model = getModel(itemStackIn);
-		IVertexBuilder builder = ItemRenderer.getBuffer(bufferIn,
-				model.getRenderType(model.getTexture()), false, itemStackIn.hasEffect());
-		model.render(matrixStackIn, builder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1F);
+		VertexConsumer builder = ItemRenderer.getFoilBuffer(bufferIn, model.renderType(model.getTexture()), false,
+				itemStackIn.hasFoil());
+		model.renderToBuffer(matrixStackIn, builder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1F);
 	}
 
-	protected void renderOnlyMagic(ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
+	protected void renderOnlyMagic(ItemStack itemStackIn, PoseStack matrixStackIn, MultiBufferSource bufferIn,
 			int combinedLightIn, int combinedOverlayIn) {
 		ItemStack magic = WizardStaffItem.getMagic(itemStackIn);
 		if (!shouldRender(itemStackIn))
 			return;
 
-		float ageInTicks = Minecraft.getInstance().player.ticksExisted
-				+ Minecraft.getInstance().getRenderPartialTicks();
-		matrixStackIn.push();
+		float ageInTicks = Minecraft.getInstance().player.tickCount + Minecraft.getInstance().getFrameTime();
+		matrixStackIn.pushPose();
 		matrixStackIn.translate(0, -3.1, 0);
-		matrixStackIn.rotate(new Quaternion(180, ageInTicks, 0, true));
+		matrixStackIn.mulPose(new Quaternion(180, ageInTicks, 0, true));
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 		float magicScale = getModel(itemStackIn).getMagicScale();
 		matrixStackIn.scale(magicScale, magicScale, magicScale);
-		itemRenderer.renderItem(magic, TransformType.GUI, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
-		matrixStackIn.pop();
+		itemRenderer.renderStatic(magic, TransformType.GUI, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn,
+				0);
+		matrixStackIn.popPose();
 
 	}
 
 	public static void buildup(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration, ItemStack stack,
-			MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn, float partialTicks,
-			HandSide side) {
+			PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn, float partialTicks,
+			HumanoidArm side) {
 		float progress = duration / maxDuration;
 		Random random = new Random((int) duration % 5 + 5);
-		Vector3d offset = new Vector3d((random.nextDouble() * 0.6 - 0.3) * progress,
+		Vec3 offset = new Vec3((random.nextDouble() * 0.6 - 0.3) * progress,
 				(random.nextDouble() * 0.6 - 0.3) * progress, (random.nextDouble() * 0.6 - 0.3) * progress);
-		matrix.push();
-		matrix.translate(0 + MathHelper.clampedLerp(0, offset.getX(), partialTicks),
-				-1.4 + MathHelper.clampedLerp(0, offset.getY(), partialTicks),
-				-1.5 + MathHelper.clampedLerp(0, offset.getZ(), partialTicks));
-		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
-		matrix.pop();
+		matrix.pushPose();
+		matrix.translate(0 + Mth.clampedLerp(0, offset.x(), partialTicks),
+				-1.4 + Mth.clampedLerp(0, offset.y(), partialTicks),
+				-1.5 + Mth.clampedLerp(0, offset.z(), partialTicks));
+		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.popPose();
 	}
 
 	public static void helicopter(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
-			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
-			float partialTicks, HandSide hand) {
-		matrix.push();
-		matrix.rotate(new Quaternion(0, 0, (duration / 5f) * 360f, true));
+			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
+			float partialTicks, HumanoidArm hand) {
+		matrix.pushPose();
+		matrix.mulPose(new Quaternion(0, 0, (duration / 5f) * 360f, true));
 		matrix.translate(0, -0.5, -1.5);
-		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
-		matrix.pop();
+		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.popPose();
 	}
 
 	public static void forward(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration, ItemStack stack,
-			MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn, float partialTicks,
-			HandSide hand) {
-		float offset = hand == HandSide.RIGHT ? 1 : -1;
+			PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn, float partialTicks,
+			HumanoidArm hand) {
+		float offset = hand == HumanoidArm.RIGHT ? 1 : -1;
 		float max = maxDuration > 20 ? 5 : maxDuration / 4;
-		float progress = MathHelper.clamp(duration / max, 0, 1);
-		matrix.push();
-		matrix.rotate(new Quaternion((float) MathHelper.clampedLerp(0, -45, progress), 0,
-				(float) MathHelper.clampedLerp(0, 35 * offset, progress), true));
+		float progress = Mth.clamp(duration / max, 0, 1);
+		matrix.pushPose();
+		matrix.mulPose(new Quaternion((float) Mth.clampedLerp(0, -45, progress), 0,
+				(float) Mth.clampedLerp(0, 35 * offset, progress), true));
 		matrix.translate(offset, -0.5 - progress / 5, -1.2);
-		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
-		matrix.pop();
+		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.popPose();
 	}
 
 	public static void spinMagic(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
-			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
-			float partialTicks, HandSide hand) {
-		matrix.push();
+			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
+			float partialTicks, HumanoidArm hand) {
+		matrix.pushPose();
 		float progress = duration / 5;
-		matrix.translate(hand == HandSide.RIGHT ? 1 : -1, -1, -1.2);
+		matrix.translate(hand == HumanoidArm.RIGHT ? 1 : -1, -1, -1.2);
 		renderer.renderOnlyStaffNoPop(stack, matrix, buffer, light, combinedOverlayIn);
-		matrix.rotate(new Quaternion(0, progress * 360, 0, true));
+		matrix.mulPose(new Quaternion(0, progress * 360, 0, true));
 		renderer.renderOnlyMagic(stack, matrix, buffer, light, combinedOverlayIn);
-		matrix.pop();
-		matrix.pop();
+		matrix.popPose();
+		matrix.popPose();
 	}
 
 	public static void buildupMagic(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
-			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
-			float partialTicks, HandSide hand) {
-		matrix.push();
+			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
+			float partialTicks, HumanoidArm hand) {
+		matrix.pushPose();
 		float progress = duration / maxDuration;
 		Random random = new Random((int) duration % 5 + 5);
-		Vector3d offset = new Vector3d((random.nextDouble() * 0.3 - 0.15) * progress,
+		Vec3 offset = new Vec3((random.nextDouble() * 0.3 - 0.15) * progress,
 				(random.nextDouble() * 0.3 - 0.15) * progress, (random.nextDouble() * 0.3 - 0.15) * progress);
-		matrix.push();
-		matrix.translate(hand == HandSide.RIGHT ? 1 : -1, -1, -1.2);
+		matrix.pushPose();
+		matrix.translate(hand == HumanoidArm.RIGHT ? 1 : -1, -1, -1.2);
 		renderer.renderOnlyStaffNoPop(stack, matrix, buffer, light, combinedOverlayIn);
-		matrix.translate(0 + MathHelper.clampedLerp(0, offset.getX(), partialTicks),
-				MathHelper.clampedLerp(0, offset.getY(), partialTicks),
-				MathHelper.clampedLerp(0, offset.getZ(), partialTicks));
+		matrix.translate(0 + Mth.clampedLerp(0, offset.x(), partialTicks), Mth.clampedLerp(0, offset.y(), partialTicks),
+				Mth.clampedLerp(0, offset.z(), partialTicks));
 		renderer.renderOnlyMagic(stack, matrix, buffer, light, combinedOverlayIn);
-		matrix.pop();
-		matrix.pop();
+		matrix.popPose();
+		matrix.popPose();
 	}
 
 	public static void swinging(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
-			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
-			float partialTicks, HandSide hand) {
-		matrix.push();
-		matrix.rotate(new Quaternion((float) MathHelper.sin((duration / 20) * (float) Math.PI * 2) * 30, 0, 0, true));
-		matrix.translate(hand == HandSide.RIGHT ? 1 : -1, -1, -1.2);
-		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
-		matrix.pop();
+			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
+			float partialTicks, HumanoidArm hand) {
+		matrix.pushPose();
+		matrix.mulPose(new Quaternion((float) Mth.sin((duration / 20) * (float) Math.PI * 2) * 30, 0, 0, true));
+		matrix.translate(hand == HumanoidArm.RIGHT ? 1 : -1, -1, -1.2);
+		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.popPose();
 	}
 
 	public static void forwardBuildup(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
-			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
-			float partialTicks, HandSide hand) {
-		float handOffset = hand == HandSide.RIGHT ? 1 : -1;
+			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
+			float partialTicks, HumanoidArm hand) {
+		float handOffset = hand == HumanoidArm.RIGHT ? 1 : -1;
 		float max = maxDuration > 20 ? 5 : maxDuration / 4;
-		float progress = MathHelper.clamp(duration / max, 0, 1);
+		float progress = Mth.clamp(duration / max, 0, 1);
 		float buildupProgress = duration / maxDuration;
 		Random random = new Random((int) duration % 5 + 5);
-		Vector3d offset = new Vector3d((random.nextDouble() * 0.5 - 0.25) * buildupProgress,
+		Vec3 offset = new Vec3((random.nextDouble() * 0.5 - 0.25) * buildupProgress,
 				(random.nextDouble() * 0.5 - 0.25) * buildupProgress,
 				(random.nextDouble() * 0.5 - 0.25) * buildupProgress);
 
-		matrix.push();
-		matrix.rotate(new Quaternion((float) MathHelper.clampedLerp(0, -45, progress), 0,
-				(float) MathHelper.clampedLerp(0, 35 * handOffset, progress), true));
-		matrix.translate(handOffset + MathHelper.clampedLerp(0, offset.getX(), partialTicks),
-				-0.5 - progress / 5 + MathHelper.clampedLerp(0, offset.getY(), partialTicks),
-				-1.2 + MathHelper.clampedLerp(0, offset.getZ(), partialTicks));
-		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
-		matrix.pop();
+		matrix.pushPose();
+		matrix.mulPose(new Quaternion((float) Mth.clampedLerp(0, -45, progress), 0,
+				(float) Mth.clampedLerp(0, 35 * handOffset, progress), true));
+		matrix.translate(handOffset + Mth.clampedLerp(0, offset.x(), partialTicks),
+				-0.5 - progress / 5 + Mth.clampedLerp(0, offset.y(), partialTicks),
+				-1.2 + Mth.clampedLerp(0, offset.z(), partialTicks));
+		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.popPose();
 	}
 
 	public static void forwardWaving(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
-			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
-			float partialTicks, HandSide hand) {
-		float offset = hand == HandSide.RIGHT ? 1 : -1;
+			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
+			float partialTicks, HumanoidArm hand) {
+		float offset = hand == HumanoidArm.RIGHT ? 1 : -1;
 		float maxForward = maxDuration > 20 ? 5 : maxDuration / 4;
-		float forwardProgress = MathHelper.clamp(duration / maxForward, 0, 1);
-		Vector3d forward = new Vector3d(MathHelper.clampedLerp(0, -45, forwardProgress), 0,
-				MathHelper.clampedLerp(0, 35 * offset, forwardProgress));
-		Vector3d waving = new Vector3d(MathHelper.cos(duration / 20 * (float) Math.PI * 2) * 10, 0,
-				MathHelper.sin(duration / 20 * (float) Math.PI * 2) * 10);
-		matrix.push();
+		float forwardProgress = Mth.clamp(duration / maxForward, 0, 1);
+		Vec3 forward = new Vec3(Mth.clampedLerp(0, -45, forwardProgress), 0,
+				Mth.clampedLerp(0, 35 * offset, forwardProgress));
+		Vec3 waving = new Vec3(Mth.cos(duration / 20 * (float) Math.PI * 2) * 10, 0,
+				Mth.sin(duration / 20 * (float) Math.PI * 2) * 10);
+		matrix.pushPose();
 		matrix.translate(0, -0.5, 0);
-		matrix.rotate(
+		matrix.mulPose(
 				new Quaternion((float) (forward.x + waving.x), (float) waving.y, (float) (forward.z + waving.z), true));
 		matrix.translate(0, 0.5, 0);
 		matrix.translate(offset, -0.5 - forwardProgress / 5, -1.2);
-		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
-		matrix.pop();
+		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.popPose();
 	}
 
 	public static void circling(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
-			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
-			float partialTicks, HandSide hand) {
-		matrix.push();
+			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
+			float partialTicks, HumanoidArm hand) {
+		matrix.pushPose();
 		matrix.translate(0, -1, 0);
-		matrix.rotate(new Quaternion((float) MathHelper.cos((duration / 10) * (float) Math.PI * 2) * 10, 0,
-				(float) MathHelper.sin((duration / 10) * (float) Math.PI * 2) * 10, true));
+		matrix.mulPose(new Quaternion((float) Mth.cos((duration / 10) * (float) Math.PI * 2) * 10, 0,
+				(float) Mth.sin((duration / 10) * (float) Math.PI * 2) * 10, true));
 		matrix.translate(0, 1, 0);
-		matrix.translate(hand == HandSide.RIGHT ? 1 : -1, -1, -1.2);
-		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
-		matrix.pop();
+		matrix.translate(hand == HumanoidArm.RIGHT ? 1 : -1, -1, -1.2);
+		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.popPose();
 	}
-	
-	public static void surround(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
-			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
-			float partialTicks, HandSide hand) {
-		matrix.push();
-		matrix.rotate(new Quaternion(0, (duration / 40) * 360f, 0, true));
-		matrix.rotate(new Quaternion(0, 0, (duration / 5) * 360f, true));
-		matrix.translate(0, 0, -1);
-		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
-		matrix.pop();
-	}
-	
-	public static void drill(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
-			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
-			float partialTicks, HandSide hand) {
-		float offset = hand == HandSide.RIGHT ? 1 : -1;
-		float max = maxDuration > 20 ? 5 : maxDuration / 4;
-		float progress = MathHelper.clamp(duration / max, 0, 1);
-		matrix.push();
-		matrix.translate(offset, -0.5 - progress / 5, -1.2);
-		matrix.rotate(new Quaternion((float) MathHelper.clampedLerp(0, -45, progress), 0,
-				(float) MathHelper.clampedLerp(0, 35 * offset, progress), true));
-		
-		float maxRotate = maxDuration > 20 ? 20 : maxDuration;
-		float rotation = duration < maxRotate ? duration * duration : maxRotate * maxRotate + maxRotate * 2 * (duration - maxRotate);
-		matrix.rotate(new Quaternion(0, rotation, 0, true));
 
-		renderer.func_239207_a_(stack, ItemCameraTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
-		matrix.pop();
+	public static void surround(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
+			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
+			float partialTicks, HumanoidArm hand) {
+		matrix.pushPose();
+		matrix.mulPose(new Quaternion(0, (duration / 40) * 360f, 0, true));
+		matrix.mulPose(new Quaternion(0, 0, (duration / 5) * 360f, true));
+		matrix.translate(0, 0, -1);
+		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.popPose();
 	}
-	
+
+	public static void drill(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration, ItemStack stack,
+			PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn, float partialTicks,
+			HumanoidArm hand) {
+		float offset = hand == HumanoidArm.RIGHT ? 1 : -1;
+		float max = maxDuration > 20 ? 5 : maxDuration / 4;
+		float progress = Mth.clamp(duration / max, 0, 1);
+		matrix.pushPose();
+		matrix.translate(offset, -0.5 - progress / 5, -1.2);
+		matrix.mulPose(new Quaternion((float) Mth.clampedLerp(0, -45, progress), 0,
+				(float) Mth.clampedLerp(0, 35 * offset, progress), true));
+
+		float maxRotate = maxDuration > 20 ? 20 : maxDuration;
+		float rotation = duration < maxRotate ? duration * duration
+				: maxRotate * maxRotate + maxRotate * 2 * (duration - maxRotate);
+		matrix.mulPose(new Quaternion(0, rotation, 0, true));
+
+		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		matrix.popPose();
+	}
+
 	public static void noRender(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration,
-			ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn,
-			float partialTicks, HandSide hand) {
-		
+			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
+			float partialTicks, HumanoidArm hand) {
+
 	}
 
 	@FunctionalInterface
 	public static interface RenderFirstPersonMagic {
 		public void render(WizardStaffTileEntityRenderer renderer, float duration, int maxDuration, ItemStack stack,
-				MatrixStack matrix, IRenderTypeBuffer buffer, int light, int combinedOverlayIn, float partialTicks,
-				HandSide hand);
+				PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn, float partialTicks,
+				HumanoidArm hand);
 	}
 }

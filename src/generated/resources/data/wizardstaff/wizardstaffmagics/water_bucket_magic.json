@@ -1,0 +1,9 @@
+{
+  "cost": 5.0,
+  "duration": 10,
+  "magic": "wizardstaff:bucket_magic",
+  "ingredient": {
+    "item": "minecraft:water_bucket"
+  },
+  "bucket": "minecraft:water_bucket"
+}

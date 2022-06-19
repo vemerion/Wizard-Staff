@@ -2,19 +2,19 @@ package mod.vemerion.wizardstaff.entity;
 
 import java.util.UUID;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 
 public abstract class MagicEntity extends Entity implements ICasted {
 
 	private UUID casterId;
 
-	public MagicEntity(EntityType<? extends MagicEntity> entityTypeIn, World worldIn) {
-		super(entityTypeIn, worldIn);
+	public MagicEntity(EntityType<? extends MagicEntity> entityTypeIn, Level level) {
+		super(entityTypeIn, level);
 	}
 
 	@Override
@@ -28,18 +28,18 @@ public abstract class MagicEntity extends Entity implements ICasted {
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT compound) {
+	protected void readAdditionalSaveData(CompoundTag compound) {
 		if (compound.contains("caster"))
 			loadCaster(compound.getCompound("caster"));
 	}
 
 	@Override
-	protected void writeAdditional(CompoundNBT compound) {
+	protected void addAdditionalSaveData(CompoundTag compound) {
 		compound.put("caster", saveCaster());
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

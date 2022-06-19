@@ -2,36 +2,36 @@ package mod.vemerion.wizardstaff.entity;
 
 import java.util.UUID;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 public interface ICasted {
 	UUID getCasterUUID();
 
 	void setCasterUUID(UUID id);
 
-	default void setCaster(PlayerEntity caster) {
-		setCasterUUID(caster.getUniqueID());
+	default void setCaster(Player caster) {
+		setCasterUUID(caster.getUUID());
 	}
 
-	default PlayerEntity getCaster(World world) {
+	default Player getCaster(Level level) {
 		UUID id = getCasterUUID();
 		if (id == null)
 			return null;
-		return world.getPlayerByUuid(id);
+		return level.getPlayerByUUID(id);
 	}
 
-	default CompoundNBT saveCaster() {
-		CompoundNBT nbt = new CompoundNBT();
+	default CompoundTag saveCaster() {
+		CompoundTag nbt = new CompoundTag();
 		UUID id = getCasterUUID();
 		if (id != null)
-			nbt.putUniqueId("id", id);
+			nbt.putUUID("id", id);
 		return nbt;
 	}
 
-	default void loadCaster(CompoundNBT nbt) {
-		if (nbt.hasUniqueId("id"))
-			setCasterUUID(nbt.getUniqueId("id"));
+	default void loadCaster(CompoundTag nbt) {
+		if (nbt.hasUUID("id"))
+			setCasterUUID(nbt.getUUID("id"));
 	}
 }

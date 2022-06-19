@@ -3,7 +3,7 @@ package mod.vemerion.wizardstaff.datagen;
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.init.ModItems;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;

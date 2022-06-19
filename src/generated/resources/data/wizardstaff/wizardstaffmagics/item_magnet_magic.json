@@ -1,0 +1,12 @@
+{
+  "cost": 0.1,
+  "duration": -1,
+  "magic": "wizardstaff:force_entity_magic",
+  "ingredient": {
+    "item": "minecraft:iron_block"
+  },
+  "entity_match": {
+    "entity_type": "minecraft:item"
+  },
+  "force": 0.2
+}

@@ -1,0 +1,8 @@
+{
+  "cost": 0.0,
+  "duration": 20,
+  "magic": "wizardstaff:wizard_staff_magic",
+  "ingredient": {
+    "item": "wizardstaff:wizard_staff"
+  }
+}

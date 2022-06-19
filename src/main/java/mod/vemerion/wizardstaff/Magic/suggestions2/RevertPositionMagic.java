@@ -8,13 +8,13 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public class RevertPositionMagic extends Magic {
 
@@ -33,28 +33,28 @@ public class RevertPositionMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide) {
 			Wizard.getWizardOptional(player).ifPresent(w -> {
 				BlockPos revert = w.revertPosition(player);
 				if (revert != null) {
 					player.fallDistance = 0;
-					playSoundServer(world, player, ModSounds.REVERT, 1, soundPitch(player));
+					playSoundServer(level, player, ModSounds.REVERT, 1, soundPitch(player));
 					cost(player);
-					((ServerPlayerEntity) player).teleport((ServerWorld) world, revert.getX(), revert.getY(),
-							revert.getZ(), player.rotationYaw, player.rotationPitch);
+					((ServerPlayer) player).teleportTo((ServerLevel) level, revert.getX(), revert.getY(),
+							revert.getZ(), player.getYRot(), player.getXRot());
 				} else {
-					playSoundServer(world, player, ModSounds.POOF, 1, soundPitch(player));
+					playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
 				}
 			});
 		}
 
-		return super.magicFinish(world, player, staff);
+		return super.magicFinish(level, player, staff);
 	}
 
 }

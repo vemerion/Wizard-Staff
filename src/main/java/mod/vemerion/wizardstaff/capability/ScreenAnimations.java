@@ -4,29 +4,29 @@ import java.util.function.Supplier;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.network.Network;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.ByteNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.ByteTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.Capability.IStorage;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 
-public class ScreenAnimations implements INBTSerializable<ByteNBT> {
+public class ScreenAnimations implements INBTSerializable<ByteTag> {
 
-	@CapabilityInject(ScreenAnimations.class)
-	public static final Capability<ScreenAnimations> CAPABILITY = null;
+	public static final Capability<ScreenAnimations> CAPABILITY = CapabilityManager
+			.get(new CapabilityToken<ScreenAnimations>() {
+			});
 
 	private boolean shouldAnimate;
 
@@ -46,11 +46,11 @@ public class ScreenAnimations implements INBTSerializable<ByteNBT> {
 		shouldAnimate = value;
 	}
 
-	public void encode(final PacketBuffer buffer) {
+	public void encode(final FriendlyByteBuf buffer) {
 		buffer.writeBoolean(shouldAnimate);
 	}
 
-	public static ScreenAnimations decode(final PacketBuffer buffer) {
+	public static ScreenAnimations decode(final FriendlyByteBuf buffer) {
 		return new ScreenAnimations(buffer.readBoolean());
 	}
 
@@ -58,7 +58,7 @@ public class ScreenAnimations implements INBTSerializable<ByteNBT> {
 		final NetworkEvent.Context context = supplier.get();
 		context.setPacketHandled(true);
 		context.enqueueWork(() -> {
-			PlayerEntity player = context.getSender();
+			Player player = context.getSender();
 			if (player != null) {
 				ScreenAnimations screenAnimations = getScreenAnimations(player);
 				screenAnimations.setShouldAnimate(shouldAnimate);
@@ -66,29 +66,29 @@ public class ScreenAnimations implements INBTSerializable<ByteNBT> {
 		});
 	}
 
-	public static void sendMessage(PlayerEntity player, boolean shouldAnimate) {
+	public static void sendMessage(Player player, boolean shouldAnimate) {
 		Network.INSTANCE.send(PacketDistributor.SERVER.noArg(), new ScreenAnimations(shouldAnimate));
 
 	}
 
-	public static ScreenAnimations getScreenAnimations(PlayerEntity player) {
+	public static ScreenAnimations getScreenAnimations(Player player) {
 		return player.getCapability(CAPABILITY).orElse(new ScreenAnimations());
-	}
-	
-	@Override
-	public ByteNBT serializeNBT() {
-		return ByteNBT.valueOf(shouldAnimate);
 	}
 
 	@Override
-	public void deserializeNBT(ByteNBT nbt) {
-		shouldAnimate = nbt.getByte() == 1;
+	public ByteTag serializeNBT() {
+		return ByteTag.valueOf(shouldAnimate);
+	}
+
+	@Override
+	public void deserializeNBT(ByteTag nbt) {
+		shouldAnimate = nbt.getAsByte() == 1;
 	}
 
 	@EventBusSubscriber(modid = Main.MODID, bus = EventBusSubscriber.Bus.FORGE)
-	public static class ScreenAnimationsProvider implements ICapabilitySerializable<INBT> {
+	public static class ScreenAnimationsProvider implements ICapabilitySerializable<ByteTag> {
 
-		private LazyOptional<ScreenAnimations> instance = LazyOptional.of(CAPABILITY::getDefaultInstance);
+		private LazyOptional<ScreenAnimations> instance = LazyOptional.of(ScreenAnimations::new);
 
 		@Override
 		public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
@@ -96,16 +96,15 @@ public class ScreenAnimations implements INBTSerializable<ByteNBT> {
 		}
 
 		@Override
-		public INBT serializeNBT() {
-			return CAPABILITY.getStorage().writeNBT(CAPABILITY,
-					instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!")), null);
+		public ByteTag serializeNBT() {
+			return instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!"))
+					.serializeNBT();
 		}
 
 		@Override
-		public void deserializeNBT(INBT nbt) {
-			CAPABILITY.getStorage().readNBT(CAPABILITY,
-					instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!")), null,
-					nbt);
+		public void deserializeNBT(ByteTag nbt) {
+			instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional cannot be empty!"))
+					.deserializeNBT(nbt);
 		}
 
 		public static final ResourceLocation SCREEN_ANIMATIONS_LOCATION = new ResourceLocation(Main.MODID,
@@ -113,23 +112,8 @@ public class ScreenAnimations implements INBTSerializable<ByteNBT> {
 
 		@SubscribeEvent
 		public static void attachCapability(AttachCapabilitiesEvent<Entity> event) {
-			if (event.getObject() instanceof PlayerEntity)
+			if (event.getObject() instanceof Player)
 				event.addCapability(SCREEN_ANIMATIONS_LOCATION, new ScreenAnimationsProvider());
-		}
-	}
-
-	public static class ScreenAnimationsStorage implements IStorage<ScreenAnimations> {
-
-		@Override
-		public INBT writeNBT(Capability<ScreenAnimations> capability, ScreenAnimations instance, Direction side) {
-			return instance.serializeNBT();
-
-		}
-
-		@Override
-		public void readNBT(Capability<ScreenAnimations> capability, ScreenAnimations instance, Direction side,
-				INBT nbt) {
-			instance.deserializeNBT((ByteNBT) nbt);
 		}
 	}
 }

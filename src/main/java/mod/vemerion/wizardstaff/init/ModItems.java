@@ -5,11 +5,10 @@ import mod.vemerion.wizardstaff.item.DruidArmorItem;
 import mod.vemerion.wizardstaff.item.WarlockArmorItem;
 import mod.vemerion.wizardstaff.item.WizardArmorItem;
 import mod.vemerion.wizardstaff.item.WizardStaffItemGroup;
-import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -39,27 +38,26 @@ public class ModItems {
 
 	@SubscribeEvent
 	public static void onRegisterItem(RegistryEvent.Register<Item> event) {
-		Item.Properties staffProperties = new Item.Properties().maxStackSize(1).group(ItemGroup.COMBAT)
-				.setISTER(() -> WizardStaffTileEntityRenderer::new);
+		Item.Properties staffProperties = new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_COMBAT);
 		event.getRegistry().register(Init.setup(new WizardStaffItem(staffProperties), "wizard_staff"));
-		Item.Properties netherStaffProperties = new Item.Properties().maxStackSize(1).group(ItemGroup.COMBAT)
-				.setISTER(() -> WizardStaffTileEntityRenderer::new).isImmuneToFire();
+		Item.Properties netherStaffProperties = new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_COMBAT)
+				.fireResistant();
 		event.getRegistry().register(Init.setup(new WizardStaffItem(netherStaffProperties), "nether_wizard_staff"));
 
-		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlotType.HEAD), "druid_helmet"));
-		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlotType.CHEST), "druid_chestplate"));
-		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlotType.LEGS), "druid_leggings"));
-		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlotType.FEET), "druid_boots"));
+		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlot.HEAD), "druid_helmet"));
+		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlot.CHEST), "druid_chestplate"));
+		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlot.LEGS), "druid_leggings"));
+		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlot.FEET), "druid_boots"));
 
-		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlotType.HEAD), "warlock_helmet"));
-		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlotType.CHEST), "warlock_chestplate"));
-		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlotType.LEGS), "warlock_leggings"));
-		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlotType.FEET), "warlock_boots"));
+		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlot.HEAD), "warlock_helmet"));
+		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlot.CHEST), "warlock_chestplate"));
+		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlot.LEGS), "warlock_leggings"));
+		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlot.FEET), "warlock_boots"));
 
-		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlotType.HEAD), "wizard_hat"));
-		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlotType.CHEST), "wizard_chestplate"));
-		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlotType.LEGS), "wizard_leggings"));
-		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlotType.FEET), "wizard_boots"));
+		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlot.HEAD), "wizard_hat"));
+		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlot.CHEST), "wizard_chestplate"));
+		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlot.LEGS), "wizard_leggings"));
+		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlot.FEET), "wizard_boots"));
 	}
 
 }

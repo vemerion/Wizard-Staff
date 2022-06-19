@@ -8,24 +8,24 @@ import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.item.MagicArmorItem;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.UseAction;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.IndirectEntityDamageSource;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.LanguageMap;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.locale.Language;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
 
 public abstract class Magic {
 
@@ -61,13 +61,13 @@ public abstract class Magic {
 	}
 
 	public void read(JsonObject json) {
-		cost = JSONUtils.getFloat(json, "cost");
+		cost = GsonHelper.getAsFloat(json, "cost");
 		if (cost < 0)
 			throw new JsonSyntaxException("The cost of a magic can not be negative");
-		duration = JSONUtils.getInt(json, "duration");
+		duration = GsonHelper.getAsInt(json, "duration");
 		if (duration < 0)
 			duration = HOUR;
-		ingredient = Ingredient.deserialize(json.get("ingredient"));
+		ingredient = Ingredient.fromJson(json.get("ingredient"));
 
 		readAdditional(json);
 	}
@@ -81,7 +81,7 @@ public abstract class Magic {
 		json.addProperty("cost", cost);
 		json.addProperty("duration", duration);
 		json.addProperty("magic", getRegistryName().toString());
-		json.add("ingredient", ingredient.serialize());
+		json.add("ingredient", ingredient.toJson());
 
 		writeAdditional(json);
 		return json;
@@ -91,64 +91,64 @@ public abstract class Magic {
 	protected void writeAdditional(JsonObject json) {
 	}
 
-	public void decode(PacketBuffer buffer) {
+	public void decode(FriendlyByteBuf buffer) {
 		cost = buffer.readFloat();
 		duration = buffer.readInt();
 		if (duration < 0)
 			duration = HOUR;
-		ingredient = Ingredient.read(buffer);
+		ingredient = Ingredient.fromNetwork(buffer);
 		decodeAdditional(buffer);
 	}
 
 	// Override to read additional parameters from the packet
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 	}
 
-	public void encode(PacketBuffer buffer) {
+	public void encode(FriendlyByteBuf buffer) {
 		buffer.writeFloat(cost);
 		buffer.writeInt(duration);
-		ingredient.write(buffer);
+		ingredient.toNetwork(buffer);
 		encodeAdditional(buffer);
 	}
 
 	// Override to write additional parameters to the packet
-	protected void encodeAdditional(PacketBuffer buffer) {
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
 	}
 
 	public final ItemStack[] getMatchingStacks() {
-		return ingredient.getMatchingStacks();
+		return ingredient.getItems();
 	}
 
-	protected float soundPitch(PlayerEntity player) {
-		return 0.8f + player.getRNG().nextFloat() * 0.4f;
+	protected float soundPitch(Player player) {
+		return 0.8f + player.getRandom().nextFloat() * 0.4f;
 	}
 
-	protected void playSoundServer(World world, PlayerEntity player, SoundEvent sound, float volume, float pitch) {
-		world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), sound, SoundCategory.PLAYERS,
+	protected void playSoundServer(Level level, Player player, SoundEvent sound, float volume, float pitch) {
+		level.playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundSource.PLAYERS,
 				volume, pitch);
 	}
 
-	protected final void cost(PlayerEntity player, int multiplier) {
+	protected final void cost(Player player, int multiplier) {
 		int whole = Experience.add(player, multiplier * cost * discount(player));
 		double debt = debt(player, whole);
 		player.giveExperiencePoints(-whole);
 		if (debt > 0)
-			player.attackEntityFrom(DamageSource.MAGIC, (float) debt);
+			player.hurt(DamageSource.MAGIC, (float) debt);
 	}
 
-	protected final void cost(PlayerEntity player) {
+	protected final void cost(Player player) {
 		cost(player, 1);
 	}
 
-	private double discount(PlayerEntity player) {
+	private double discount(Player player) {
 		return 1 - 0.1 * MagicArmorItem.countMagicArmorPieces(player);
 	}
 
-	private double debt(PlayerEntity player, double amount) {
+	private double debt(Player player, double amount) {
 		int trueLevel = player.experienceLevel;
-		amount -= player.experience * player.xpBarCap();
+		amount -= player.experienceProgress * player.getXpNeededForNextLevel();
 		while (--player.experienceLevel >= 0 && amount > 0) {
-			amount -= player.xpBarCap();
+			amount -= player.getXpNeededForNextLevel();
 		}
 		player.experienceLevel = trueLevel;
 		return amount;
@@ -166,23 +166,23 @@ public abstract class Magic {
 
 	public abstract RenderThirdPersonMagic thirdPersonRenderer();
 
-	public abstract UseAction getUseAction(ItemStack stack);
+	public abstract UseAnim getUseAnim(ItemStack stack);
 
-	public void magicStart(World world, PlayerEntity player, ItemStack staff) {
+	public void magicStart(Level level, Player player, ItemStack staff) {
 	}
 
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 	}
 
-	public ItemStack magicFinish(World world, PlayerEntity player, ItemStack staff) {
+	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
 		return staff;
 	}
 
-	public ActionResultType magicInteractBlock(ItemUseContext context) {
-		return ActionResultType.PASS;
+	public InteractionResult magicInteractBlock(UseOnContext context) {
+		return InteractionResult.PASS;
 	}
 
-	public void magicCancel(World world, PlayerEntity player, ItemStack staff, int timeLeft) {
+	public void magicCancel(Level level, Player player, ItemStack staff, int timeLeft) {
 	}
 
 	public Description getDescription() {
@@ -205,8 +205,8 @@ public abstract class Magic {
 
 		private float cost;
 		private int duration;
-		private TranslationTextComponent name;
-		private TranslationTextComponent descr;
+		private TranslatableComponent name;
+		private TranslatableComponent descr;
 
 		private Description(Magic magic) {
 			this.cost = magic.cost;
@@ -219,14 +219,14 @@ public abstract class Magic {
 			String customDescr = "gui." + magic.name.getNamespace() + "." + magic.name.getPath() + ".description";
 			String standardDescr = "gui." + regName.getNamespace() + "." + regName.getPath() + ".description";
 
-			this.name = new TranslationTextComponent(hasTranslation(customName) ? customName : standardName,
+			this.name = new TranslatableComponent(hasTranslation(customName) ? customName : standardName,
 					magic.getNameArgs());
-			this.descr = new TranslationTextComponent(hasTranslation(customDescr) ? customDescr : standardDescr,
+			this.descr = new TranslatableComponent(hasTranslation(customDescr) ? customDescr : standardDescr,
 					magic.getDescrArgs());
 		}
 
 		private static boolean hasTranslation(String key) {
-			return LanguageMap.getInstance().func_230506_b_(key);
+			return Language.getInstance().has(key);
 		}
 
 		public float getCost() {
@@ -237,27 +237,27 @@ public abstract class Magic {
 			return duration;
 		}
 
-		public TranslationTextComponent getName() {
+		public TranslatableComponent getName() {
 			return name;
 		}
 
-		public TranslationTextComponent getDescription() {
+		public TranslatableComponent getDescription() {
 			return descr;
 		}
 	}
 
 	// Damage Types
-	private static final DamageSource MAGIC = (new DamageSource(Main.MODID + ".magic")).setMagicDamage();
+	private static final DamageSource MAGIC = (new DamageSource(Main.MODID + ".magic")).setMagic();
 
 	public static DamageSource magicDamage() {
 		return MAGIC;
 	}
 
-	public static DamageSource magicDamage(PlayerEntity player) {
-		return new EntityDamageSource(Main.MODID + ".magicplayer", player).setMagicDamage();
+	public static DamageSource magicDamage(Player player) {
+		return new EntityDamageSource(Main.MODID + ".magicplayer", player).setMagic();
 	}
 
-	public static DamageSource magicDamage(Entity source, PlayerEntity player) {
-		return new IndirectEntityDamageSource(Main.MODID + ".magicindirect", source, player).setMagicDamage();
+	public static DamageSource magicDamage(Entity source, Player player) {
+		return new IndirectEntityDamageSource(Main.MODID + ".magicindirect", source, player).setMagic();
 	}
 }

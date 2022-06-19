@@ -16,20 +16,20 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.Hand;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class JukeboxMagic extends Magic {
@@ -52,8 +52,8 @@ public class JukeboxMagic extends Magic {
 	@Override
 	protected void readAdditional(JsonObject json) {
 		blacklist = MagicUtil.readColl(json, "blacklist",
-				e -> new ResourceLocation(JSONUtils.getString(e, "entity name")), new HashSet<>());
-		range = JSONUtils.getFloat(json, "range");
+				e -> new ResourceLocation(GsonHelper.convertToString(e, "entity name")), new HashSet<>());
+		range = GsonHelper.getAsFloat(json, "range");
 		music = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "music");
 	}
 
@@ -65,51 +65,51 @@ public class JukeboxMagic extends Magic {
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 		blacklist = MagicUtil.decodeColl(buffer, b -> b.readResourceLocation(), new HashSet<>());
 		range = buffer.readFloat();
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		MagicUtil.encodeColl(buffer, blacklist, (b, rl) -> b.writeResourceLocation(rl));
 		buffer.writeFloat(range);
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public void magicStart(World world, PlayerEntity player, ItemStack staff) {
-		if (!world.isRemote)
+	public void magicStart(Level level, Player player, ItemStack staff) {
+		if (!level.isClientSide)
 			Network.INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
-					new JukeboxMagicMessage(player.getUniqueID(), music));
+					new JukeboxMagicMessage(player.getUUID(), music));
 	}
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { new StringTextComponent(String.valueOf(range)) };
+		return new Object[] { new TextComponent(String.valueOf(range)) };
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class,
-				player.getBoundingBox().grow(range),
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class,
+				player.getBoundingBox().inflate(range),
 				e -> e != player && !blacklist.contains(e.getType().getRegistryName()));
 
 		for (LivingEntity e : entities) {
-			if (!world.isRemote) {
+			if (!level.isClientSide) {
 				if (count % 5 == 0)
-					e.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 7, 100, false, false, false));
-			} else if (e.ticksExisted % 5 == 0) {
-				e.limbSwingAmount = 1 + player.getRNG().nextFloat() - 0.5f;
-				e.swingArm(Hand.MAIN_HAND);
-				e.swingArm(Hand.OFF_HAND);
+					e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 7, 100, false, false, false));
+			} else if (e.tickCount % 5 == 0) {
+				e.animationSpeed = 1 + player.getRandom().nextFloat() - 0.5f;
+				e.swing(InteractionHand.MAIN_HAND);
+				e.swing(InteractionHand.OFF_HAND);
 			}
 		}
-		if (!world.isRemote && !entities.isEmpty())
+		if (!level.isClientSide && !entities.isEmpty())
 			cost(player);
 	}
 

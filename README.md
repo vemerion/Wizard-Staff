@@ -1,5 +1,8 @@
 # Wizard Staff
 
+*Note: Version 1.18.2-1.9.0 changed the modid from 'wizard-staff' to 'wizardstaff', so if you have
+an old data pack, make sure to update all occurrences of 'wizard-staff' to 'wizardstaff'.*
+
 This is the source code to my Minecraft mod **Wizard Staff**, a mod that lets the player be
 a wizard, wielding a magic staff and fancy wizard hat!
 
@@ -49,11 +52,11 @@ For instance, the below example would be used to specify the tag 'cobblestone' a
 ### Additional Json Members
 As of version 1.5 (the restructuring update), the magic system was expanded to give some magics
 additional json members to make them more configurable. For instance, for the lodestone teleportation
-magic ([link](src/generated/resources/data/wizard-staff/wizard-staff-magics/lodestone_magic.json)) you can
+magic ([link](src/generated/resources/data/wizardstaff/wizardstaffmagics/lodestone_magic.json)) you can
 now specify the block to bind the teleportation to, via the 'waypoint' json member.
 
 You might see a member called 'block\_match' in some json files (for example in the
-[chop tree magic](src/generated/resources/data/wizard-staff/wizard-staff-magics/chop_tree_magic.json)).
+[chop tree magic](src/generated/resources/data/wizardstaff/wizardstaffmagics/chop_tree_magic.json)).
 This member works similar to how ingredient works, but for blocks (however it is not as complex and
 versatile as ingredient). It is an object that expects one member, which must be either 'block' or
 'tag'.
@@ -63,12 +66,12 @@ To modify or remove spells, the process is similar to how data-packs can be used
 remove/modify vanilla recipes. If you are unsure how to create data-packs, I recommend
 consulting the Minecraft wiki.
 
-To get started, create a new folder named 'wizard-staff' in the data folder in
-the resource pack. In the 'wizard-staff' folder, create a folder called 'wizard-staff-magics', which is
+To get started, create a new folder named 'wizardstaff' in the data folder in
+the resource pack. In the 'wizardstaff' folder, create a folder called 'wizardstaffmagics', which is
 where you will add your json files. If you want to change the cost of the flame-thrower
 spell, you would create a new json file called 'blaze\_powder\_magic.json', and set
 the members as desired. If you instead want to completely remove the spell, set the magic
-member to "no\_magic". [This folder](src/generated/resources/data/wizard-staff/wizard-staff-magics)
+member to "no\_magic". [This folder](src/generated/resources/data/wizardstaff/wizardstaffmagics)
 contains the json files for all the default spells.
 
 If you instead want to add a new magic to an item, you would create a new json file with
@@ -83,7 +86,7 @@ a data-pack.
 
 
 #### Add flying magic to pink stained glass pane:
-'data/DATAPACK NAME/wizard-staff-magics/flying\_pink\_stained\_glass\_pane.json'
+'data/DATAPACK NAME/wizardstaffmagics/flying\_pink\_stained\_glass\_pane.json'
 
 ```
 {
@@ -99,7 +102,7 @@ a data-pack.
 ```
 
 #### Create your own potion spell:
-'data/DATAPACK NAME/wizard-staff-magics/my\_own\_potion\_spell.json'
+'data/DATAPACK NAME/wizardstaffmagics/my\_own\_potion\_spell.json'
 
 ```
 {
@@ -132,10 +135,10 @@ will try to step by step go through everything:
 * Now, in the 'datapacks' folder, create a new folder that will contain the datapack, as explained [on the Minecraft wiki](https://minecraft.gamepedia.com/Data_Pack). You will also need to add a pack.mcmeta file.
 
 
-* Then, create a new folder called 'data'. In that folder, create a folder named after your data pack (or, name the folder 'wizard-staff' if you want to override the default spells), and in that folder, create a folder called 'wizard-staff-magics'. You path should now be something like: 'datapacks\DATAPACK NAME\data\DATAPACK NAME\wizard-staff-magics\'.
+* Then, create a new folder called 'data'. In that folder, create a folder named after your data pack (or, name the folder 'wizardstaff' if you want to override the default spells), and in that folder, create a folder called 'wizardstaffmagics'. You path should now be something like: 'datapacks\DATAPACK NAME\data\DATAPACK NAME\wizardstaffmagics\'.
 
 
-* The 'wizard-staff-magics' folder is where you will put the json files. If you want to change the parameters of an already existing spell, you best bet is to copy one of the default spells (found [here](src/generated/resources/data/wizard-staff/wizard-staff-magics)), and then change the json members as you like.
+* The 'wizardstaffmagics' folder is where you will put the json files. If you want to change the parameters of an already existing spell, you best bet is to copy one of the default spells (found [here](src/generated/resources/data/wizardstaff/wizardstaffmagics)), and then change the json members as you like.
 
 
 * That's it! You should now be able to start Minecraft and test out the spells you added/modified.

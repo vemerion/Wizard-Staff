@@ -1,0 +1,9 @@
+{
+  "cost": 1.0,
+  "duration": -1,
+  "magic": "wizardstaff:repair_armor_magic",
+  "ingredient": {
+    "item": "minecraft:anvil"
+  },
+  "repair_rate": 1
+}

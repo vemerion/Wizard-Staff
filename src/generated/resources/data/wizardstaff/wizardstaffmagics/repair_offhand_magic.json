@@ -1,0 +1,9 @@
+{
+  "cost": 1.0,
+  "duration": -1,
+  "magic": "wizardstaff:repair_offhand_magic",
+  "ingredient": {
+    "item": "minecraft:smithing_table"
+  },
+  "repair_rate": 1
+}

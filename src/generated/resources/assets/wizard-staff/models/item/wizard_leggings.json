@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "wizard-staff:item/wizard_leggings",
-    "layer1": "wizard-staff:item/wizard_leggings_overlay"
-  }
-}

@@ -1,0 +1,11 @@
+{
+  "cost": 20.0,
+  "duration": 25,
+  "magic": "wizardstaff:projectile_magic",
+  "ingredient": {
+    "item": "wizardstaff:wizard_hat"
+  },
+  "projectile": "wizardstaff:wizard_hat",
+  "sound": "wizardstaff:cloth",
+  "speed": 1.0
+}

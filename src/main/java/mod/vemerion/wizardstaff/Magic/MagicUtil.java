@@ -11,11 +11,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.serialization.JsonOps;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -24,7 +24,7 @@ public class MagicUtil {
 	// Forge Registries
 	public static <T extends IForgeRegistryEntry<T>> T read(JsonObject json, IForgeRegistry<T> registry,
 			String member) {
-		ResourceLocation key = new ResourceLocation(JSONUtils.getString(json, member));
+		ResourceLocation key = new ResourceLocation(GsonHelper.getAsString(json, member));
 		if (registry.containsKey(key)) {
 			return registry.getValue(key);
 		} else {
@@ -43,24 +43,24 @@ public class MagicUtil {
 		json.addProperty(member, key);
 	}
 
-	public static <T extends IForgeRegistryEntry<T>> void encode(PacketBuffer buffer, T obj) {
+	public static <T extends IForgeRegistryEntry<T>> void encode(FriendlyByteBuf buffer, T obj) {
 		buffer.writeRegistryId(obj);
 	}
 
-	public static <T extends IForgeRegistryEntry<T>> T decode(PacketBuffer buffer) {
+	public static <T extends IForgeRegistryEntry<T>> T decode(FriendlyByteBuf buffer) {
 		return buffer.readRegistryId();
 	}
 	// ---
 
 	// Vanilla Registries
 	public static <T> T read(JsonObject json, Registry<T> registry, String member) {
-		ResourceLocation key = new ResourceLocation(JSONUtils.getString(json, member));
+		ResourceLocation key = new ResourceLocation(GsonHelper.getAsString(json, member));
 		Optional<T> value = registry.getOptional(key);
 		if (value.isPresent()) {
 			return value.get();
 		} else {
 			throw new JsonParseException("Invalid registry key " + key + " for registry "
-					+ registry.getRegistryKey().getLocation().getPath());
+					+ registry.key().location().getPath());
 		}
 	}
 
@@ -72,15 +72,15 @@ public class MagicUtil {
 		json.addProperty(member, registry.getKey(obj).toString());
 	}
 
-	public static <T> void encode(PacketBuffer buffer, T obj, Registry<T> registry) {
+	public static <T> void encode(FriendlyByteBuf buffer, T obj, Registry<T> registry) {
 		String key = registry.getKey(obj).toString();
 		buffer.writeInt(key.length());
-		buffer.writeString(key);
+		buffer.writeUtf(key);
 	}
 
-	public static <T> T decode(PacketBuffer buffer, Registry<T> registry) {
+	public static <T> T decode(FriendlyByteBuf buffer, Registry<T> registry) {
 		int keyLen = buffer.readInt();
-		return registry.getOrDefault(new ResourceLocation(buffer.readString(keyLen)));
+		return registry.get(new ResourceLocation(buffer.readUtf(keyLen)));
 	}
 	// ---
 
@@ -100,7 +100,7 @@ public class MagicUtil {
 
 	public static <T, C extends Collection<T>> C readColl(JsonObject json, String member, Function<JsonElement, T> f,
 			C coll) {
-		JsonArray array = JSONUtils.getJsonArray(json, member);
+		JsonArray array = GsonHelper.getAsJsonArray(json, member);
 		array.forEach(e -> coll.add(f.apply(e)));
 		return coll;
 	}
@@ -112,14 +112,14 @@ public class MagicUtil {
 		json.add(member, array);
 	}
 
-	public static <T, C extends Collection<T>> C decodeColl(PacketBuffer buffer, Function<PacketBuffer, T> f, C coll) {
+	public static <T, C extends Collection<T>> C decodeColl(FriendlyByteBuf buffer, Function<FriendlyByteBuf, T> f, C coll) {
 		int count = buffer.readInt();
 		for (int i = 0; i < count; i++)
 			coll.add(f.apply(buffer));
 		return coll;
 	}
 
-	public static <T> void encodeColl(PacketBuffer buffer, Collection<T> coll, BiConsumer<PacketBuffer, T> f) {
+	public static <T> void encodeColl(FriendlyByteBuf buffer, Collection<T> coll, BiConsumer<FriendlyByteBuf, T> f) {
 		buffer.writeInt(coll.size());
 		for (T t : coll)
 			f.accept(buffer, t);

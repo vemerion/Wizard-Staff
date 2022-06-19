@@ -9,16 +9,16 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.ai.brain.BrainUtil;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class BookshelfMagic extends Magic {
@@ -49,20 +49,20 @@ public class BookshelfMagic extends Magic {
 	}
 
 	@Override
-	protected void encodeAdditional(PacketBuffer buffer) {
+	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		MagicUtil.encode(buffer, generated);
 		MagicUtil.encode(buffer, sound);
 	}
 
 	@Override
-	protected void decodeAdditional(PacketBuffer buffer) {
+	protected void decodeAdditional(FriendlyByteBuf buffer) {
 		generated = MagicUtil.decode(buffer);
 		sound = MagicUtil.decode(buffer);
 	}
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { generated.getName() };
+		return new Object[] { generated.getDescription() };
 	}
 
 	@Override
@@ -81,38 +81,38 @@ public class BookshelfMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		if (!world.isRemote) {
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
+		if (!level.isClientSide) {
 			cost(player);
 			if (count % 10 == 0) {
-				BrainUtil.spawnItemNearEntity(player, new ItemStack(generated), nearbyPosition(player));
-				playSoundServer(world, player, sound, 1, soundPitch(player));
+				BehaviorUtils.throwItem(player, new ItemStack(generated), nearbyPosition(player));
+				playSoundServer(level, player, sound, 1, soundPitch(player));
 			}
 		} else {
-			addParticle(world, player);
+			addParticle(level, player);
 		}
 	}
 
-	private void addParticle(World world, PlayerEntity player) {
-		Vector3d pos = player.getPositionVec().add((player.getRNG().nextDouble() - 0.5) * 2,
-				player.getRNG().nextDouble() * 1.5, (player.getRNG().nextDouble() - 0.5) * 2);
-		double speedX = (player.getRNG().nextDouble() - 0.5) * 2;
-		double speedY = player.getRNG().nextDouble() - 0.5;
-		double speedZ = (player.getRNG().nextDouble() - 0.5) * 2;
+	private void addParticle(Level level, Player player) {
+		Vec3 pos = player.position().add((player.getRandom().nextDouble() - 0.5) * 2,
+				player.getRandom().nextDouble() * 1.5, (player.getRandom().nextDouble() - 0.5) * 2);
+		double speedX = (player.getRandom().nextDouble() - 0.5) * 2;
+		double speedY = player.getRandom().nextDouble() - 0.5;
+		double speedZ = (player.getRandom().nextDouble() - 0.5) * 2;
 
-		world.addParticle(ParticleTypes.ENCHANT, pos.getX(), pos.getY() + 1, pos.getZ(), speedX, speedY, speedZ);
+		level.addParticle(ParticleTypes.ENCHANT, pos.x(), pos.y() + 1, pos.z(), speedX, speedY, speedZ);
 	}
 
-	private Vector3d nearbyPosition(PlayerEntity player) {
-		double x = (player.getRNG().nextDouble() - 0.5) * 0.3;
+	private Vec3 nearbyPosition(Player player) {
+		double x = (player.getRandom().nextDouble() - 0.5) * 0.3;
 		double y = 0;
-		double z = (player.getRNG().nextDouble() - 0.5) * 0.3;
-		return player.getPositionVec().add(x, y, z);
+		double z = (player.getRandom().nextDouble() - 0.5) * 0.3;
+		return player.position().add(x, y, z);
 	}
 
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "wizardstaff:item/warlock_chestplate",
+    "layer1": "wizardstaff:item/warlock_chestplate_overlay"
+  }
+}

@@ -8,13 +8,13 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class WallClimbMagic extends Magic {
 
@@ -31,7 +31,7 @@ public class WallClimbMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		speed = JSONUtils.getFloat(json, "speed");
+		speed = GsonHelper.getAsFloat(json, "speed");
 	}
 
 	@Override
@@ -40,12 +40,12 @@ public class WallClimbMagic extends Magic {
 	}
 
 	@Override
-	public void encodeAdditional(PacketBuffer buffer) {
+	public void encodeAdditional(FriendlyByteBuf buffer) {
 		buffer.writeFloat(speed);
 	}
 
 	@Override
-	public void decodeAdditional(PacketBuffer buffer) {
+	public void decodeAdditional(FriendlyByteBuf buffer) {
 		speed = buffer.readFloat();
 	}
 
@@ -60,18 +60,18 @@ public class WallClimbMagic extends Magic {
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.NONE;
+	public UseAnim getUseAnim(ItemStack stack) {
+		return UseAnim.NONE;
 	}
 
 	@Override
-	public void magicTick(World world, PlayerEntity player, ItemStack staff, int count) {
-		if (player.collidedHorizontally) {
-			Vector3d motion = player.getMotion();
-			player.setMotion(motion.getX(), speed, motion.getZ());
-			if (!world.isRemote)
-				cost(player);
+	public void magicTick(Level level, Player player, ItemStack staff, int count) {
+		if (player.horizontalCollision) {
+			Vec3 motion = player.getDeltaMovement();
+			player.setDeltaMovement(motion.x(), speed, motion.z());
 		}
+		if (!level.isClientSide)
+			cost(player);
 	}
 
 }

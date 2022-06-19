@@ -1,0 +1,8 @@
+{
+  "cost": 15.0,
+  "duration": 15,
+  "magic": "wizardstaff:revert_position_magic",
+  "ingredient": {
+    "item": "minecraft:chorus_fruit"
+  }
+}

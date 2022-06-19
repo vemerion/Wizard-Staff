@@ -1,10 +1,11 @@
 package mod.vemerion.wizardstaff.Magic;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -15,27 +16,26 @@ import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.init.ModMagics;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
-import net.minecraft.client.resources.JsonReloadListener;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
-public class Magics extends JsonReloadListener {
+public class Magics extends SimpleJsonResourceReloadListener {
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
-	public static final String FOLDER_NAME = Main.MODID + "-magics";
+	public static final String FOLDER_NAME = Main.MODID + "magics";
 
 	private static Magics clientInstance;
 	private static Magics serverInstance;
 
 	private Map<ResourceLocation, Magic> magics; // The actual magics, as determined by the json magic files
-	private ImmutableSet<ItemStack> magicItems; // All items that have magic effect (used by spellbook)
 	private Map<Item, ResourceLocation> cache; // Cache for faster lookup in get()
 
 	private Magics() {
@@ -64,8 +64,8 @@ public class Magics extends JsonReloadListener {
 		return isRemote ? clientInstance : serverInstance;
 	}
 
-	public static Magics getInstance(World world) {
-		return getInstance(world.isRemote);
+	public static Magics getInstance(Level level) {
+		return getInstance(level.isClientSide);
 	}
 
 	public static void init() {
@@ -74,17 +74,17 @@ public class Magics extends JsonReloadListener {
 	}
 
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> objectIn, IResourceManager resourceManagerIn,
-			IProfiler profilerIn) {
+	protected void apply(Map<ResourceLocation, JsonElement> objectIn, ResourceManager resourceManagerIn,
+			ProfilerFiller profilerIn) {
 		Map<ResourceLocation, Magic> newMagics = new HashMap<>();
 		for (Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet()) {
 			ResourceLocation key = entry.getKey();
 
-			JsonObject json = JSONUtils.getJsonObject(entry.getValue(), "top element");
-			ResourceLocation magicKey = toResourceLocation(JSONUtils.getString(json, "magic"));
-			if (!ModMagics.REGISTRY.containsKey(magicKey))
+			JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), "top element");
+			ResourceLocation magicKey = toResourceLocation(GsonHelper.getAsString(json, "magic"));
+			if (!ModMagics.getRegistry().containsKey(magicKey))
 				throw new JsonSyntaxException("The magic " + magicKey + " does not exist");
-			MagicType<?> type = ModMagics.REGISTRY.getValue(magicKey);
+			MagicType<?> type = ModMagics.getRegistry().getValue(magicKey);
 
 			if (type == ModMagics.NO_MAGIC)
 				continue;
@@ -110,23 +110,20 @@ public class Magics extends JsonReloadListener {
 		Network.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateMagicsMessage(newMagics));
 	}
 
-	public void sendAllMagicMessage(ServerPlayerEntity reciever) {
+	public void sendAllMagicMessage(ServerPlayer reciever) {
 		Network.INSTANCE.send(PacketDistributor.PLAYER.with(() -> reciever), new UpdateMagicsMessage(magics));
 	}
 
 	public void addMagics(Map<ResourceLocation, Magic> newMagics) {
 		cache = new HashMap<>();
 		magics.putAll(newMagics);
-
-		// Build magicItems set
-		ImmutableSet.Builder<ItemStack> builder = ImmutableSet.builder();
-		for (Magic m : newMagics.values())
-			for (ItemStack stack : m.getMatchingStacks())
-				builder.add(stack);
-		magicItems = builder.build();
 	}
 
-	public ImmutableSet<ItemStack> getMagicItems() {
-		return magicItems;
+	public Set<ItemStack> getMagicItems() {
+		var items = new HashSet<ItemStack>();
+		for (Magic m : magics.values())
+			for (ItemStack stack : m.getMatchingStacks())
+				items.add(stack);
+		return items;
 	}
 }
