@@ -1,0 +1,167 @@
+{
+  "anvil": {
+    "sounds": [
+      "wizardstaff:anvil"
+    ]
+  },
+  "bell": {
+    "sounds": [
+      "wizardstaff:bell"
+    ]
+  },
+  "brick": {
+    "sounds": [
+      "wizardstaff:brick"
+    ]
+  },
+  "building": {
+    "sounds": [
+      "wizardstaff:building"
+    ]
+  },
+  "burning": {
+    "sounds": [
+      "wizardstaff:burning"
+    ]
+  },
+  "chirp": {
+    "sounds": [
+      "wizardstaff:chirp"
+    ]
+  },
+  "clock": {
+    "sounds": [
+      "wizardstaff:clock"
+    ]
+  },
+  "cloth": {
+    "sounds": [
+      "wizardstaff:cloth"
+    ]
+  },
+  "deage": {
+    "sounds": [
+      "wizardstaff:deage"
+    ]
+  },
+  "evaporate": {
+    "sounds": [
+      "wizardstaff:evaporate"
+    ]
+  },
+  "flap": {
+    "sounds": [
+      "wizardstaff:flap"
+    ]
+  },
+  "gong": {
+    "sounds": [
+      "wizardstaff:gong"
+    ]
+  },
+  "heartbeat": {
+    "sounds": [
+      "wizardstaff:heartbeat"
+    ]
+  },
+  "impact": {
+    "sounds": [
+      "wizardstaff:impact"
+    ]
+  },
+  "magnet": {
+    "sounds": [
+      "wizardstaff:magnet"
+    ]
+  },
+  "page_turn": {
+    "sounds": [
+      "wizardstaff:page_turn"
+    ]
+  },
+  "plop": {
+    "sounds": [
+      "wizardstaff:plop"
+    ]
+  },
+  "poof": {
+    "sounds": [
+      "wizardstaff:poof"
+    ]
+  },
+  "portal": {
+    "sounds": [
+      "wizardstaff:portal"
+    ]
+  },
+  "pumpkin_magic": {
+    "sounds": [
+      "wizardstaff:pumpkin_magic"
+    ]
+  },
+  "push": {
+    "sounds": [
+      "wizardstaff:push"
+    ]
+  },
+  "radar": {
+    "sounds": [
+      "wizardstaff:radar"
+    ]
+  },
+  "ray": {
+    "sounds": [
+      "wizardstaff:ray"
+    ]
+  },
+  "revert": {
+    "sounds": [
+      "wizardstaff:revert"
+    ]
+  },
+  "scribble": {
+    "sounds": [
+      "wizardstaff:scribble"
+    ]
+  },
+  "skeleton": {
+    "sounds": [
+      "wizardstaff:skeleton"
+    ]
+  },
+  "sniffle": {
+    "sounds": [
+      "wizardstaff:sniffle"
+    ]
+  },
+  "spray": {
+    "sounds": [
+      "wizardstaff:spray"
+    ]
+  },
+  "swap": {
+    "sounds": [
+      "wizardstaff:swap"
+    ]
+  },
+  "teleport": {
+    "sounds": [
+      "wizardstaff:teleport"
+    ]
+  },
+  "transform": {
+    "sounds": [
+      "wizardstaff:transform"
+    ]
+  },
+  "warp": {
+    "sounds": [
+      "wizardstaff:warp"
+    ]
+  },
+  "woosh": {
+    "sounds": [
+      "wizardstaff:woosh"
+    ]
+  }
+}

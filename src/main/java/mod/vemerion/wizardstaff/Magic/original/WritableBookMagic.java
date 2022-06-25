@@ -55,9 +55,9 @@ public class WritableBookMagic extends Magic {
 
 	@Override
 	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
-		String wisdom = wisdoms.get(player.getRandom().nextInt(wisdoms.size()));
 		player.playSound(ModSounds.SCRIBBLE, 1, soundPitch(player));
 		if (!level.isClientSide) {
+			String wisdom = wisdoms.get(player.getRandom().nextInt(wisdoms.size()));
 			WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
 				cost(player);
 				ItemStack book = h.extractCurrent();
