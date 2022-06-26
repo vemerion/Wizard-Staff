@@ -8,5 +8,5 @@
   "block_match": {
     "tag": "minecraft:leaves"
   },
-  "harvest_limit": 50
+  "block_limit": 50
 }

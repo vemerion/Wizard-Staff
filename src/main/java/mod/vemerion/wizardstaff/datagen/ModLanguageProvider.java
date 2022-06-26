@@ -197,7 +197,9 @@ public class ModLanguageProvider extends LanguageProvider {
 		addGui("soul_sand_magic.description", "Summon skeletal hands from the ground in front of your, damaging and slowing entities they touch.");	
 		addGui("tnt_magic.name", "T.N.T.");		
 		addGui("tnt_magic.description", "It's dynamite.");	
-
+		
+		addMagicName(ModMagics.MINING_MAGIC, "Magic Mining");
+		addMagicDescription(ModMagics.MINING_MAGIC, "Use your magic to harvest up to %s nearby %s and put the loot immediately in your inventory. Benefits from enchantments.");
 	}
 	// @formatter:on
 

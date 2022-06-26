@@ -8,5 +8,5 @@
   "block_match": {
     "tag": "minecraft:logs"
   },
-  "harvest_limit": 40
+  "block_limit": 40
 }

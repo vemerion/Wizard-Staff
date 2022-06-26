@@ -1,33 +1,38 @@
-package mod.vemerion.wizardstaff.Magic.swap;
+package mod.vemerion.wizardstaff.Magic.cavesandcliffs;
 
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MassHandleBlockMagic;
+import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraftforge.items.ItemHandlerHelper;
 
-public class MassHarvestMagic extends MassHandleBlockMagic {
+public class MiningMagic extends MassHandleBlockMagic {
 
-	public MassHarvestMagic(MagicType<? extends MassHarvestMagic> type) {
+	public MiningMagic(MagicType<? extends MiningMagic> type) {
 		super(type);
 	}
 
+	@Override
 	protected void handleBlock(Level level, BlockPos pos, Player player, ItemStack staff) {
+		WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
+			for (var item : Block.getDrops(level.getBlockState(pos), (ServerLevel) level, pos,
+					level.getBlockEntity(pos), player, h.getCurrent())) {
+				ItemHandlerHelper.giveItemToPlayer(player, item);
+			}
+		});
 		FluidState fluidstate = level.getFluidState(pos);
-		BlockState state = level.getBlockState(pos);
-		BlockEntity tileentity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
-		Block.dropResources(state, level, pos, tileentity, null, ItemStack.EMPTY);
 		level.setBlockAndUpdate(pos, fluidstate.createLegacyBlock());
 	}
 
+	@Override
 	protected Vec3i searchOffset() {
-		return new Vec3i(1, 1, 1);
+		return new Vec3i(2, 2, 2);
 	}
-
 }
