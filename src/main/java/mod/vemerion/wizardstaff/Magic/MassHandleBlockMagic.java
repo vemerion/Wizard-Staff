@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class MassHandleBlockMagic extends Magic {
@@ -89,6 +90,15 @@ public abstract class MassHandleBlockMagic extends Magic {
 	@Override
 	protected Object[] getDescrArgs() {
 		return new Object[] { new TextComponent(String.valueOf(harvestLimit)), match.getName() };
+	}
+
+	@Override
+	public boolean magicPreventOtherUse(Level level, Player player, ItemStack staff) {
+		BlockHitResult result = Helper.blockRay(level, player, 4);
+		if (result.getType() == Type.BLOCK)
+			return match.test(level.getBlockState(result.getBlockPos()).getBlock());
+
+		return false;
 	}
 
 	@Override

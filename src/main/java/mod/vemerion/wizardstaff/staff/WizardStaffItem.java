@@ -70,6 +70,11 @@ public class WizardStaffItem extends Item {
 		return ImmutableMultimap.of(Attributes.ATTACK_SPEED, NO_COOLDOWN);
 	}
 
+	
+	public static boolean magicPreventOtherUse(Level level, Player player, ItemStack staff) {
+		return Magics.getInstance(level).get(getMagic(staff)).magicPreventOtherUse(level, player, staff);
+	}
+
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		ItemStack itemstack = playerIn.getItemInHand(handIn);
@@ -90,7 +95,8 @@ public class WizardStaffItem extends Item {
 		} else { // Use staff
 			playerIn.startUsingItem(handIn);
 			Magics.getInstance(worldIn).get(getMagic(itemstack)).magicStart(worldIn, playerIn, itemstack);
-
+			if (magicPreventOtherUse(worldIn, playerIn, itemstack))
+				return InteractionResultHolder.success(itemstack);
 		}
 		return InteractionResultHolder.pass(itemstack);
 	}

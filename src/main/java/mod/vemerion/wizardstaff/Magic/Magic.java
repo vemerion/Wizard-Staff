@@ -55,7 +55,7 @@ public abstract class Magic {
 	public void setName(ResourceLocation name) {
 		this.name = name;
 	}
-	
+
 	public ResourceLocation getName() {
 		return name;
 	}
@@ -124,8 +124,7 @@ public abstract class Magic {
 	}
 
 	protected void playSoundServer(Level level, Player player, SoundEvent sound, float volume, float pitch) {
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundSource.PLAYERS,
-				volume, pitch);
+		level.playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundSource.PLAYERS, volume, pitch);
 	}
 
 	protected final void cost(Player player, int multiplier) {
@@ -183,6 +182,14 @@ public abstract class Magic {
 	}
 
 	public void magicCancel(Level level, Player player, ItemStack staff, int timeLeft) {
+	}
+
+	/*
+	 * Determines if use of off-hand item (such as placing torch) and block use
+	 * (such as lighting up redstone) should be prevented for this spell
+	 */
+	public boolean magicPreventOtherUse(Level level, Player player, ItemStack staff) {
+		return false;
 	}
 
 	public Description getDescription() {

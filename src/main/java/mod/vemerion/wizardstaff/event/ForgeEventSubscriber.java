@@ -14,6 +14,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -23,6 +24,8 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -99,5 +102,15 @@ public class ForgeEventSubscriber {
 		WizardStaffItemHandler.getOptional(stack).ifPresent(h -> {
 			h.cycleCurrent();
 		});
+	}
+
+	@SubscribeEvent
+	public static void preventBlockUse(RightClickBlock event) {
+		ItemStack stack = event.getItemStack();
+		if (event.getHand() != InteractionHand.MAIN_HAND || !(stack.getItem() instanceof WizardStaffItem)
+				|| event.getHitVec().getType() != Type.BLOCK)
+			return;
+		if (WizardStaffItem.magicPreventOtherUse(event.getWorld(), event.getPlayer(), stack))
+			event.setUseBlock(Result.DENY);
 	}
 }

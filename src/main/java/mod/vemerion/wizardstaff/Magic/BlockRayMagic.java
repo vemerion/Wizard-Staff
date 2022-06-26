@@ -1,5 +1,6 @@
 package mod.vemerion.wizardstaff.Magic;
 
+import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -8,11 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 
 public abstract class BlockRayMagic extends Magic {
 
@@ -27,11 +25,7 @@ public abstract class BlockRayMagic extends Magic {
 	@Override
 	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
 		if (!level.isClientSide) {
-			Vec3 direction = Vec3.directionFromRotation(player.getRotationVector());
-			Vec3 start = player.position().add(0, 1.5, 0).add(direction.scale(0.2));
-			Vec3 stop = start.add(direction.scale(4.5));
-			BlockHitResult result = level
-					.clip(new ClipContext(start, stop, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+			var result = Helper.blockRay(level, player, 4.5f);
 			if (result.getType() == HitResult.Type.BLOCK) {
 				hitBlock(level, player, result.getBlockPos());
 			}

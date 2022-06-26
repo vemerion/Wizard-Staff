@@ -18,7 +18,7 @@ public class MiningMagic extends MassHandleBlockMagic {
 	public MiningMagic(MagicType<? extends MiningMagic> type) {
 		super(type);
 	}
-
+	
 	@Override
 	protected void handleBlock(Level level, BlockPos pos, Player player, ItemStack staff) {
 		WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
