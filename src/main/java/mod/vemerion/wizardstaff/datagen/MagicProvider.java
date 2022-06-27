@@ -150,7 +150,8 @@ public class MagicProvider implements DataProvider {
 		c.accept(create(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "evoker_fangs_magic").setAdditionalParams(circlesShape()).setAdditionalParams(EntityType.EVOKER_FANGS, ModSounds.BELL).setParams(30, 15, ing(Items.LAPIS_LAZULI)));
 		c.accept(create(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "soul_sand_magic").setAdditionalParams(soulSandMagicShape()).setAdditionalParams(ModEntities.MAGIC_SOUL_SAND_ARM, ModSounds.PUMPKIN_MAGIC).setParams(40, 40, ing(Items.SOUL_SAND)));
 		c.accept(create(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "tnt_magic").setAdditionalParams(tntShape()).setAdditionalParams(EntityType.TNT, ModSounds.CLOCK).setParams(50, 15, ing(Items.TNT)));
-		c.accept(create(ModMagics.MINING_MAGIC, "mining_magic").setAdditionalParams(new RegistryMatch<>(ForgeRegistries.BLOCKS, Tags.Blocks.ORES), 20).setParams(1, 10, ing(Items.DIAMOND_PICKAXE)));
+		c.accept(create(ModMagics.MINING_MAGIC).setAdditionalParams(new RegistryMatch<>(ForgeRegistries.BLOCKS, Tags.Blocks.ORES), 20).setParams(1, 10, ing(Items.DIAMOND_PICKAXE)));
+		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC, "summon_lightning_magic").setAdditionalParams(1).setAdditionalParams(EntityType.LIGHTNING_BOLT, SoundEvents.LIGHTNING_BOLT_IMPACT).setParams(40, 60, ing(Items.LIGHTNING_ROD)));
 	}
 	// @formatter:on
 

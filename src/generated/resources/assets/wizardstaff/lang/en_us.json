@@ -123,6 +123,8 @@
   "gui.wizardstaff.soul_sand_magic.name": "InteractionHands from Below",
   "gui.wizardstaff.summon_entity_magic.description": "Use your magic to summon %s %s entities.",
   "gui.wizardstaff.summon_entity_magic.name": "Summon %s",
+  "gui.wizardstaff.summon_lightning_magic.description": "Magically summon a lightning strike at your position!",
+  "gui.wizardstaff.summon_lightning_magic.name": "Human Lightning Rod",
   "gui.wizardstaff.surface_magic.description": "Click on two blocks in the world with the staff, and then use the staff to automatically build a surface between those two blocks. Only works for axis-aligned surfaces, so no diagonals! It will build the surface using blocks from your inventory, of the same type as the block you clicked first. Costs experience based on amount of blocks placed.",
   "gui.wizardstaff.surface_magic.name": "Magic Surface Builder",
   "gui.wizardstaff.swap_health_food_magic.description": "Magically swap your health and hunger.",
