@@ -202,6 +202,9 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.MINING_MAGIC, "Use your magic to harvest up to %s nearby %s and put the loot immediately in your inventory. Benefits from enchantments.");
 		addGui("summon_lightning_magic.name", "Human Lightning Rod");		
 		addGui("summon_lightning_magic.description", "Magically summon a lightning strike at your position!");	
+		addMagicName(ModMagics.MOUNT_MAGIC, "Ride %s");
+		addMagicDescription(ModMagics.MOUNT_MAGIC, "Use your magic to make it possible to ride certain entities. While riding you can use this spell to steer the entity.");
+
 	}
 	// @formatter:on
 

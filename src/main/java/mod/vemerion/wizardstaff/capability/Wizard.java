@@ -58,6 +58,8 @@ public class Wizard implements INBTSerializable<CompoundTag> {
 	private LinkedList<GlobalPos> revertPositions = new LinkedList<>();
 
 	private ItemStackHandler inventory = new ItemStackHandler(INVENTORY_SIZE);
+	
+	private int mountJumpTimer;
 
 	public Wizard() {
 
@@ -84,6 +86,17 @@ public class Wizard implements INBTSerializable<CompoundTag> {
 					revertPositions.removeLast();
 			}
 		}
+		
+		if (mountJumpTimer > 0)
+			mountJumpTimer--;
+	}
+	
+	public boolean mountJump() {
+		if (mountJumpTimer == 0) {
+			mountJumpTimer = 20 * 2;
+			return true;
+		}
+		return false;
 	}
 
 	public BlockPos revertPosition(Player player) {

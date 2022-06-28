@@ -66,7 +66,7 @@ public class RegistryMatch<T extends IForgeRegistryEntry<T>> implements Predicat
 			return new RegistryMatch<T>(registry,
 					registry.tags().createTagKey(new ResourceLocation(GsonHelper.getAsString(json, "tag"))));
 		else
-			throw new JsonSyntaxException("BlockMatch must have either block or tag member");
+			throw new JsonSyntaxException("RegistryMatch must have either '" + field + "' or 'tag' member");
 	}
 
 	public JsonObject write() {

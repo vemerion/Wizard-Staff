@@ -76,6 +76,8 @@
   "gui.wizardstaff.mass_harvest_magic.name": "Mass Harvest %s",
   "gui.wizardstaff.mining_magic.description": "Use your magic to harvest up to %s nearby %s and put the loot immediately in your inventory. Benefits from enchantments.",
   "gui.wizardstaff.mining_magic.name": "Magic Mining",
+  "gui.wizardstaff.mount_magic.description": "Use your magic to make it possible to ride certain entities. While riding you can use this spell to steer the entity.",
+  "gui.wizardstaff.mount_magic.name": "Ride %s",
   "gui.wizardstaff.mushroom_cloud_magic.description": "Create a magic poison cloud in from of you, damaging anyone that enters it, slowly turning them into mushrooms.",
   "gui.wizardstaff.mushroom_cloud_magic.name": "Mushroom Cloud",
   "gui.wizardstaff.name_tag_magic.description": "Conjure a name tag with a random name.",

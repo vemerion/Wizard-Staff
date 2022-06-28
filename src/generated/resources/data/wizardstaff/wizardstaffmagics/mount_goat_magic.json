@@ -1,0 +1,11 @@
+{
+  "cost": 0.2,
+  "duration": 60,
+  "magic": "wizardstaff:mount_magic",
+  "ingredient": {
+    "item": "minecraft:wheat"
+  },
+  "match": {
+    "entity_type": "minecraft:goat"
+  }
+}
