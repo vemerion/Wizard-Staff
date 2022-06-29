@@ -12,6 +12,7 @@ import mod.vemerion.wizardstaff.Magic.bugfix.ShapedCreateEntityMagic;
 import mod.vemerion.wizardstaff.Magic.bugfix.WallClimbMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.MiningMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.MountMagic;
+import mod.vemerion.wizardstaff.Magic.cavesandcliffs.XRayMagic;
 import mod.vemerion.wizardstaff.Magic.fashionupdate.TransmutationMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GhastTearMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
@@ -137,6 +138,7 @@ public class ModMagics {
 	public static final MagicType<ShapedCreateEntityMagic> SHAPED_CREATE_ENTITY_MAGIC = null;
 	public static final MagicType<MiningMagic> MINING_MAGIC = null;
 	public static final MagicType<MountMagic> MOUNT_MAGIC = null;
+	public static final MagicType<XRayMagic> X_RAY_MAGIC = null;
 	public static final MagicType<NoMagic> NO_MAGIC = null;
 
 	@SubscribeEvent
@@ -200,6 +202,7 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(ShapedCreateEntityMagic::new), "shaped_create_entity_magic"));
 		reg.register(Init.setup(new MagicType<>(MiningMagic::new), "mining_magic"));
 		reg.register(Init.setup(new MagicType<>(MountMagic::new), "mount_magic"));
+		reg.register(Init.setup(new MagicType<>(XRayMagic::new), "x_ray_magic"));
 		reg.register(Init.setup(new MagicType<>(NoMagic::new), "no_magic"));
 	}
 
@@ -209,7 +212,7 @@ public class ModMagics {
 		registry = event.create(new RegistryBuilder<MagicType<?>>().setName(new ResourceLocation(Main.MODID, "magics"))
 				.setType((Class<MagicType<?>>) (Class<?>) MagicType.class));
 	}
-	
+
 	public static IForgeRegistry<MagicType<?>> getRegistry() {
 		return registry.get();
 	}

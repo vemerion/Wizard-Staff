@@ -1,11 +1,16 @@
 package mod.vemerion.wizardstaff.capability;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.Magic.MagicType;
+import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
+import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -58,8 +63,10 @@ public class Wizard implements INBTSerializable<CompoundTag> {
 	private LinkedList<GlobalPos> revertPositions = new LinkedList<>();
 
 	private ItemStackHandler inventory = new ItemStackHandler(INVENTORY_SIZE);
-	
+
 	private int mountJumpTimer;
+
+	private Set<BlockPos> xRayed = new HashSet<>();
 
 	public Wizard() {
 
@@ -78,6 +85,15 @@ public class Wizard implements INBTSerializable<CompoundTag> {
 		return player.getCapability(CAPABILITY);
 	}
 
+	public static boolean isUsingMagic(MagicType<?> type, Player player) {
+		ItemStack staff = player.getUseItem();
+		if (staff.getItem() instanceof WizardStaffItem) {
+			ItemStack magic = WizardStaffItem.getMagic(staff);
+			return Magics.getInstance(player.level.isClientSide).get(magic).getType() == type;
+		}
+		return false;
+	}
+
 	public void tick(Player player) {
 		if (!player.level.isClientSide) {
 			if (player.tickCount % 20 == 0) {
@@ -86,11 +102,16 @@ public class Wizard implements INBTSerializable<CompoundTag> {
 					revertPositions.removeLast();
 			}
 		}
-		
+
 		if (mountJumpTimer > 0)
 			mountJumpTimer--;
 	}
-	
+
+	// Client only
+	public Set<BlockPos> getXRayed() {
+		return xRayed;
+	}
+
 	public boolean mountJump() {
 		if (mountJumpTimer == 0) {
 			mountJumpTimer = 20 * 2;

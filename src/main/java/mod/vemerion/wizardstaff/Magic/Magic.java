@@ -60,6 +60,10 @@ public abstract class Magic {
 		return name;
 	}
 
+	public MagicType<?> getType() {
+		return type;
+	}
+
 	public void read(JsonObject json) {
 		cost = GsonHelper.getAsFloat(json, "cost");
 		if (cost < 0)

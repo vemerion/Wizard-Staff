@@ -32,7 +32,6 @@ import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
@@ -154,6 +153,7 @@ public class MagicProvider implements DataProvider {
 		c.accept(create(ModMagics.MINING_MAGIC).setAdditionalParams(new RegistryMatch<>(ForgeRegistries.BLOCKS, Tags.Blocks.ORES), 20).setParams(1, 10, ing(Items.DIAMOND_PICKAXE)));
 		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC, "summon_lightning_magic").setAdditionalParams(1).setAdditionalParams(EntityType.LIGHTNING_BOLT, SoundEvents.LIGHTNING_BOLT_IMPACT).setParams(40, 60, ing(Items.LIGHTNING_ROD)));
 		c.accept(create(ModMagics.MOUNT_MAGIC, "mount_goat_magic").setAdditionalParams(new RegistryMatch<>(ForgeRegistries.ENTITIES, EntityType.GOAT)).setParams(0.2f, 60, ing(Items.WHEAT)));
+		c.accept(create(ModMagics.X_RAY_MAGIC).setAdditionalParams(15, new RegistryMatch<>(ForgeRegistries.BLOCKS, Tags.Blocks.ORES)).setParams(3, -1, ing(Items.DIAMOND_BLOCK)));
 	}
 	// @formatter:on
 

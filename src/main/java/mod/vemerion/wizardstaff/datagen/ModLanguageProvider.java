@@ -204,6 +204,9 @@ public class ModLanguageProvider extends LanguageProvider {
 		addGui("summon_lightning_magic.description", "Magically summon a lightning strike at your position!");	
 		addMagicName(ModMagics.MOUNT_MAGIC, "Ride %s");
 		addMagicDescription(ModMagics.MOUNT_MAGIC, "Use your magic to make it possible to ride certain entities. While riding you can use this spell to steer the entity.");
+		addMagicName(ModMagics.X_RAY_MAGIC, "X-Ray %s");
+		addMagicDescription(ModMagics.X_RAY_MAGIC, "Magically locate blocks of type %s in a range of %s blocks. Note that it might take a while for all blocks to be discovered.");
+
 
 	}
 	// @formatter:on

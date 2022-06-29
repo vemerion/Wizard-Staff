@@ -1,0 +1,12 @@
+{
+  "cost": 3.0,
+  "duration": -1,
+  "magic": "wizardstaff:x_ray_magic",
+  "ingredient": {
+    "item": "minecraft:diamond_block"
+  },
+  "range": 15,
+  "match": {
+    "tag": "forge:ores"
+  }
+}

@@ -151,6 +151,8 @@
   "gui.wizardstaff.wizard_staff_magic.name": "Staff-ception",
   "gui.wizardstaff.writable_book_magic.description": "What knowledge will you unveil?",
   "gui.wizardstaff.writable_book_magic.name": "Arcane Knowledge",
+  "gui.wizardstaff.x_ray_magic.description": "Magically locate blocks of type %s in a range of %s blocks. Note that it might take a while for all blocks to be discovered.",
+  "gui.wizardstaff.x_ray_magic.name": "X-Ray %s",
   "item.wizardstaff.druid_armor.description": "-10% spell cost",
   "item.wizardstaff.druid_boots": "Druid Boots",
   "item.wizardstaff.druid_chestplate": "Druid Robe",
