@@ -1,0 +1,8 @@
+{
+  "cost": 5.0,
+  "duration": -1,
+  "magic": "wizardstaff:light_magic",
+  "ingredient": {
+    "item": "minecraft:glowstone"
+  }
+}

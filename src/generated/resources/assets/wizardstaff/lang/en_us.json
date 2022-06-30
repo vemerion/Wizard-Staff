@@ -1,5 +1,6 @@
 {
   "block.wizardstaff.magic_bricks": "Magic Bricks",
+  "block.wizardstaff.magic_light": "Magic Light",
   "death.attack.wizardstaff.magic": "%1$s was magicked to death",
   "death.attack.wizardstaff.magicindirect": "%1$s was magicked to death by %2$s",
   "death.attack.wizardstaff.magicplayer": "%1$s was magicked to death by %2$s",
@@ -66,6 +67,8 @@
   "gui.wizardstaff.inventory_magic.name": "Portable Chest",
   "gui.wizardstaff.jukebox_magic.description": "Emit an irresistible tune from the staff, forcing enemies within %s blocks to dance.",
   "gui.wizardstaff.jukebox_magic.name": "Magic Music",
+  "gui.wizardstaff.light_magic.description": "Conjure an invisible light source that disappears after a while.",
+  "gui.wizardstaff.light_magic.name": "Let there be light",
   "gui.wizardstaff.locate_spawn_magic.description": "Channel your inner powers to gain a sense of which direction your spawn point lies.",
   "gui.wizardstaff.locate_spawn_magic.name": "Magic Compass",
   "gui.wizardstaff.lodestone_magic.description": "Right click a %s block with the staff, setting your waypoint to that block. Then, activating the staff anywhere in the world will return you to the waypoint, consuming the block in the process.",

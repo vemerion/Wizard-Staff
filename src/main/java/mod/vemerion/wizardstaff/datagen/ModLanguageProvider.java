@@ -49,6 +49,7 @@ public class ModLanguageProvider extends LanguageProvider {
 		add("item.wizardstaff.warlock_armor.description", "-10% spell cost");
 
 		add(ModBlocks.MAGIC_BRICKS, "Magic Bricks");
+		add(ModBlocks.MAGIC_LIGHT, "Magic Light");
 
 		add("death.attack.wizardstaff.magicplayer", "%1$s was magicked to death by %2$s");
 		add("death.attack.wizardstaff.magicindirect", "%1$s was magicked to death by %2$s");
@@ -206,6 +207,9 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.MOUNT_MAGIC, "Use your magic to make it possible to ride certain entities. While riding you can use this spell to steer the entity.");
 		addMagicName(ModMagics.X_RAY_MAGIC, "X-Ray %s");
 		addMagicDescription(ModMagics.X_RAY_MAGIC, "Magically locate blocks of type %s in a range of %s blocks. Note that it might take a while for all blocks to be discovered.");
+		addMagicName(ModMagics.LIGHT_MAGIC, "Let there be light");
+		addMagicDescription(ModMagics.LIGHT_MAGIC, "Conjure an invisible light source that disappears after a while.");
+
 
 
 	}

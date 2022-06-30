@@ -18,6 +18,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		models();
 		simpleBlock(ModBlocks.MAGIC_BRICKS, models().cubeAll(ModBlocks.MAGIC_BRICKS.getRegistryName().getPath(),
 				mcLoc(ModelProvider.BLOCK_FOLDER + "/" + "bricks")));
+		simpleBlock(ModBlocks.MAGIC_LIGHT, models().getBuilder(ModBlocks.MAGIC_LIGHT.getRegistryName().toString()));
 	}
 
 }

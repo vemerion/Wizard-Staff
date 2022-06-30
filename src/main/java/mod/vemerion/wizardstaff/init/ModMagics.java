@@ -10,6 +10,7 @@ import mod.vemerion.wizardstaff.Magic.bugfix.CobwebMagic;
 import mod.vemerion.wizardstaff.Magic.bugfix.RepairOffhandMagic;
 import mod.vemerion.wizardstaff.Magic.bugfix.ShapedCreateEntityMagic;
 import mod.vemerion.wizardstaff.Magic.bugfix.WallClimbMagic;
+import mod.vemerion.wizardstaff.Magic.cavesandcliffs.LightMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.MiningMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.MountMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.XRayMagic;
@@ -139,6 +140,7 @@ public class ModMagics {
 	public static final MagicType<MiningMagic> MINING_MAGIC = null;
 	public static final MagicType<MountMagic> MOUNT_MAGIC = null;
 	public static final MagicType<XRayMagic> X_RAY_MAGIC = null;
+	public static final MagicType<LightMagic> LIGHT_MAGIC = null;
 	public static final MagicType<NoMagic> NO_MAGIC = null;
 
 	@SubscribeEvent
@@ -203,6 +205,7 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(MiningMagic::new), "mining_magic"));
 		reg.register(Init.setup(new MagicType<>(MountMagic::new), "mount_magic"));
 		reg.register(Init.setup(new MagicType<>(XRayMagic::new), "x_ray_magic"));
+		reg.register(Init.setup(new MagicType<>(LightMagic::new), "light_magic"));
 		reg.register(Init.setup(new MagicType<>(NoMagic::new), "no_magic"));
 	}
 
