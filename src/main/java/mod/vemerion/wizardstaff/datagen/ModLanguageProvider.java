@@ -209,8 +209,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.X_RAY_MAGIC, "Magically locate blocks of type %s in a range of %s blocks. Note that it might take a while for all blocks to be discovered.");
 		addMagicName(ModMagics.LIGHT_MAGIC, "Let there be light");
 		addMagicDescription(ModMagics.LIGHT_MAGIC, "Conjure an invisible light source that disappears after a while.");
-
-
+		addMagicName(ModMagics.ZOOM_MAGIC, "Super Zoom");
+		addMagicDescription(ModMagics.ZOOM_MAGIC, "Enhance your eyes!");
 
 	}
 	// @formatter:on

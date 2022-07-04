@@ -14,6 +14,7 @@ import mod.vemerion.wizardstaff.Magic.cavesandcliffs.LightMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.MiningMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.MountMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.XRayMagic;
+import mod.vemerion.wizardstaff.Magic.cavesandcliffs.ZoomMagic;
 import mod.vemerion.wizardstaff.Magic.fashionupdate.TransmutationMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GhastTearMagic;
 import mod.vemerion.wizardstaff.Magic.netherupdate.GlowstoneDustMagic;
@@ -141,6 +142,7 @@ public class ModMagics {
 	public static final MagicType<MountMagic> MOUNT_MAGIC = null;
 	public static final MagicType<XRayMagic> X_RAY_MAGIC = null;
 	public static final MagicType<LightMagic> LIGHT_MAGIC = null;
+	public static final MagicType<ZoomMagic> ZOOM_MAGIC = null;
 	public static final MagicType<NoMagic> NO_MAGIC = null;
 
 	@SubscribeEvent
@@ -206,6 +208,7 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(MountMagic::new), "mount_magic"));
 		reg.register(Init.setup(new MagicType<>(XRayMagic::new), "x_ray_magic"));
 		reg.register(Init.setup(new MagicType<>(LightMagic::new), "light_magic"));
+		reg.register(Init.setup(new MagicType<>(ZoomMagic::new), "zoom_magic"));
 		reg.register(Init.setup(new MagicType<>(NoMagic::new), "no_magic"));
 	}
 

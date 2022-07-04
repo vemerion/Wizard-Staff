@@ -156,6 +156,8 @@
   "gui.wizardstaff.writable_book_magic.name": "Arcane Knowledge",
   "gui.wizardstaff.x_ray_magic.description": "Magically locate blocks of type %s in a range of %s blocks. Note that it might take a while for all blocks to be discovered.",
   "gui.wizardstaff.x_ray_magic.name": "X-Ray %s",
+  "gui.wizardstaff.zoom_magic.description": "Enhance your eyes!",
+  "gui.wizardstaff.zoom_magic.name": "Super Zoom",
   "item.wizardstaff.druid_armor.description": "-10% spell cost",
   "item.wizardstaff.druid_boots": "Druid Boots",
   "item.wizardstaff.druid_chestplate": "Druid Robe",

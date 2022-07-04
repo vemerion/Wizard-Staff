@@ -67,6 +67,8 @@ public class Wizard implements INBTSerializable<CompoundTag> {
 	private int mountJumpTimer;
 
 	private Set<BlockPos> xRayed = new HashSet<>();
+	
+	private int fov;
 
 	public Wizard() {
 
@@ -107,10 +109,19 @@ public class Wizard implements INBTSerializable<CompoundTag> {
 			mountJumpTimer--;
 	}
 
-	// Client only
+	// CLIENT ONLY START
 	public Set<BlockPos> getXRayed() {
 		return xRayed;
 	}
+	
+	public void setFov(int fov) {
+		this.fov = fov;
+	}
+	
+	public int getFov() {
+		return fov;
+	}
+	// CLIENT ONLY END
 
 	public boolean mountJump() {
 		if (mountJumpTimer == 0) {

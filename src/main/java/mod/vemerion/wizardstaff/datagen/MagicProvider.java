@@ -155,6 +155,7 @@ public class MagicProvider implements DataProvider {
 		c.accept(create(ModMagics.MOUNT_MAGIC, "mount_goat_magic").setAdditionalParams(new RegistryMatch<>(ForgeRegistries.ENTITIES, EntityType.GOAT)).setParams(0.2f, 60, ing(Items.WHEAT)));
 		c.accept(create(ModMagics.X_RAY_MAGIC).setAdditionalParams(15, new RegistryMatch<>(ForgeRegistries.BLOCKS, Tags.Blocks.ORES)).setParams(3, -1, ing(Items.DIAMOND_BLOCK)));
 		c.accept(create(ModMagics.LIGHT_MAGIC).setParams(5, -1, ing(Items.GLOWSTONE)));
+		c.accept(create(ModMagics.ZOOM_MAGIC).setAdditionalParams(3).setParams(0.1f, -1, ing(Items.SPYGLASS)));
 	}
 	// @formatter:on
 

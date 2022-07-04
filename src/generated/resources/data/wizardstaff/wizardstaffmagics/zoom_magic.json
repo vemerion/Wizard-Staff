@@ -1,0 +1,9 @@
+{
+  "cost": 0.1,
+  "duration": -1,
+  "magic": "wizardstaff:zoom_magic",
+  "ingredient": {
+    "item": "minecraft:spyglass"
+  },
+  "fov": 3
+}

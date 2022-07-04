@@ -1,11 +1,14 @@
 package mod.vemerion.wizardstaff.event;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.OptionalDouble;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
+import com.mojang.math.Vector3f;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magics;
@@ -16,30 +19,34 @@ import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.RenderProperties;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 @EventBusSubscriber(modid = Main.MODID, bus = EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientForgeEventSubscriber {
@@ -120,6 +127,63 @@ public class ClientForgeEventSubscriber {
 			RenderSystem.enableDepthTest();
 			RenderSystem.enableCull();
 
+		});
+	}
+
+	static boolean shouldZoom(Minecraft mc) {
+		return Wizard.isUsingMagic(ModMagics.ZOOM_MAGIC, mc.player) && mc.options.getCameraType().isFirstPerson();
+	}
+
+	static final Method renderSpyglassOverlay = ObfuscationReflectionHelper.findMethod(Gui.class, "m_168675_",
+			float.class);
+
+	@SubscribeEvent
+	public static void magicSpyglass(RenderGameOverlayEvent.Pre event) {
+		if (event.getType() != ElementType.ALL)
+			return;
+
+		var mc = Minecraft.getInstance();
+		if (!shouldZoom(mc))
+			return;
+
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.disableDepthTest();
+
+		float time = mc.level.getGameTime() + event.getPartialTicks();
+
+		RenderSystem.setShaderColor(Math.abs(Mth.sin(time / 20f)) * 0.5f + 0.5f, 0,
+				Math.abs(Mth.cos(time / 20f + 0.2f)) * 0.5f + 0.5f, 1.0F);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		var poseStack = RenderSystem.getModelViewStack();
+		poseStack.pushPose();
+		poseStack.translate(event.getWindow().getGuiScaledWidth() / 2, event.getWindow().getGuiScaledHeight() / 2, 0);
+		poseStack.mulPose(Vector3f.ZP.rotationDegrees(time));
+		poseStack.translate(-event.getWindow().getGuiScaledWidth() / 2, -event.getWindow().getGuiScaledHeight() / 2, 0);
+		RenderSystem.applyModelViewMatrix();
+
+		try {
+			renderSpyglassOverlay.invoke(mc.gui, 1.8f);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			Main.LOGGER.warn("Could not invoke 'renderSpyglassOverlay':" + e);
+		}
+		RenderSystem.restoreProjectionMatrix();
+		poseStack.popPose();
+		RenderSystem.applyModelViewMatrix();
+	}
+
+	@SubscribeEvent
+	public static void zoom(EntityViewRenderEvent.FieldOfView event) {
+		var mc = Minecraft.getInstance();
+		var player = mc.player;
+
+		if (!shouldZoom(mc))
+			return;
+
+		Wizard.getWizardOptional(player).ifPresent(w -> {
+			float time = mc.level.getGameTime() + (float) event.getPartialTicks();
+			var fov = w.getFov() + Mth.sin(time / 20f);
+			event.setFOV(fov);
 		});
 	}
 
