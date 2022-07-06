@@ -72,6 +72,7 @@ public class ClientModEventSubscriber {
 		event.registerEntityRenderer(ModEntities.MUSHROOM_CLOUD, NoRenderer::new);
 		event.registerEntityRenderer(ModEntities.WIZARD_HAT, WizardHatRenderer::new);
 		event.registerEntityRenderer(ModEntities.MAGIC_VEX, VexRenderer::new);
+		event.registerEntityRenderer(ModEntities.MAGIC_MINING_VEX, VexRenderer::new);
 	}
 
 	private static class NoRenderer<T extends Entity> extends EntityRenderer<T> {

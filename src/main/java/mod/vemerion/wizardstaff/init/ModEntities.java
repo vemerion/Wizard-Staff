@@ -30,7 +30,8 @@ public class ModEntities {
 	public static final EntityType<GrapplingHookEntity> GRAPPLING_HOOK = null;
 	public static final EntityType<MushroomCloudEntity> MUSHROOM_CLOUD = null;
 	public static final EntityType<WizardHatEntity> WIZARD_HAT = null;
-	public static final EntityType<MagicVexEntity> MAGIC_VEX = null;
+	public static final EntityType<MagicVexEntity.Attack> MAGIC_VEX = null;
+	public static final EntityType<MagicVexEntity.Mining> MAGIC_MINING_VEX = null;
 
 	@SubscribeEvent
 	public static void onRegisterEntity(RegistryEvent.Register<EntityType<?>> event) {
@@ -64,14 +65,20 @@ public class ModEntities {
 				.<WizardHatEntity>of(WizardHatEntity::new, MobCategory.MISC).sized(1, 1).build("");
 		event.getRegistry().register(Init.setup(wizardHatEntity, "wizard_hat"));
 
-		EntityType<MagicVexEntity> magicVexEntity = EntityType.Builder
-				.<MagicVexEntity>of(MagicVexEntity::new, MobCategory.MONSTER).fireImmune().sized(0.4f, 0.8f)
+		EntityType<MagicVexEntity.Attack> magicVexEntity = EntityType.Builder
+				.<MagicVexEntity.Attack>of(MagicVexEntity.Attack::new, MobCategory.MONSTER).fireImmune().sized(0.4f, 0.8f)
 				.clientTrackingRange(8).build("");
 		event.getRegistry().register(Init.setup(magicVexEntity, "magic_vex"));
+		
+		EntityType<MagicVexEntity.Mining> magicMiningVexEntity = EntityType.Builder
+				.<MagicVexEntity.Mining>of(MagicVexEntity.Mining::new, MobCategory.MONSTER).fireImmune().sized(0.4f, 0.8f)
+				.clientTrackingRange(8).build("");
+		event.getRegistry().register(Init.setup(magicMiningVexEntity, "magic_mining_vex"));
 	}
 
 	@SubscribeEvent
 	public static void onRegisterEntityAttributes(EntityAttributeCreationEvent event) {
 		event.put(MAGIC_VEX, Vex.createAttributes().build());
+		event.put(MAGIC_MINING_VEX, Vex.createAttributes().build());
 	}
 }

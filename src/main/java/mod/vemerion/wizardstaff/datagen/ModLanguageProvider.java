@@ -43,6 +43,7 @@ public class ModLanguageProvider extends LanguageProvider {
 		add(ModEntities.PUMPKIN_MAGIC, "Magic Pumpkin");
 		add(ModEntities.WIZARD_HAT, "Wizard Hat");
 		add(ModEntities.MAGIC_VEX, "Friendly Vex");
+		add(ModEntities.MAGIC_MINING_VEX, "Mining Vex");
 
 		add("item.wizardstaff.wizard_armor.description", "-10% spell cost");
 		add("item.wizardstaff.druid_armor.description", "-10% spell cost");

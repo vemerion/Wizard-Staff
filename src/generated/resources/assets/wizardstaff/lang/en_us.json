@@ -5,6 +5,7 @@
   "death.attack.wizardstaff.magicindirect": "%1$s was magicked to death by %2$s",
   "death.attack.wizardstaff.magicplayer": "%1$s was magicked to death by %2$s",
   "entity.wizardstaff.grappling_hook": "Grappling Hook",
+  "entity.wizardstaff.magic_mining_vex": "Mining Vex",
   "entity.wizardstaff.magic_soul_sand_arm": "Magic Soul Sand Arm",
   "entity.wizardstaff.magic_vex": "Friendly Vex",
   "entity.wizardstaff.magic_wither_skull": "Magic Wither Skull",

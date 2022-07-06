@@ -82,21 +82,20 @@ public abstract class CreateEntityMagic extends Magic {
 		if (!level.isClientSide) {
 			List<Entity> entities = createEntities(level, player, staff);
 			for (Entity e : entities) {
-				if (e instanceof Mob)
-					((Mob) e).finalizeSpawn((ServerLevelAccessor) level,
+				if (e instanceof Mob mob)
+					mob.finalizeSpawn((ServerLevelAccessor) level,
 							level.getCurrentDifficultyAt(player.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 
-				if (e instanceof MagicVexEntity) {
-					MagicVexEntity vex = (MagicVexEntity) e;
+				if (e instanceof MagicVexEntity vex) {
 					vex.setCaster(player);
-					vex.setLimitedLife(20 * 20);
+					vex.setLimitedLife(vex.lifetime());
 				}
 
-				if (e instanceof EvokerFangs)
-					((EvokerFangs) e).setOwner(player);
+				if (e instanceof EvokerFangs fang)
+					fang.setOwner(player);
 				
-				if (e instanceof ICasted)
-					((ICasted) e).setCaster(player);
+				if (e instanceof ICasted casted)
+					casted.setCaster(player);
 
 				level.addFreshEntity(e);
 			}
