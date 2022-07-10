@@ -1,0 +1,11 @@
+{
+  "cost": 0.4,
+  "duration": -1,
+  "magic": "wizardstaff:place_light_random_magic",
+  "ingredient": {
+    "item": "minecraft:torch"
+  },
+  "radius": 10,
+  "light_level": 4,
+  "item": "minecraft:torch"
+}

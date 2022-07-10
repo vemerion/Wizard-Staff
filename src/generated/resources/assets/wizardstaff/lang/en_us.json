@@ -96,6 +96,8 @@
   "gui.wizardstaff.obsidian_magic.name": "Portal to '%s'",
   "gui.wizardstaff.pillar_magic.description": "Stand still and use the staff to automatically propel yourself upwards, while creating a %s tower below you.",
   "gui.wizardstaff.pillar_magic.name": "%s Pillar",
+  "gui.wizardstaff.place_light_random_magic.description": "Randomly place %s blocks in a radius of %s around you if the light level is below %s.",
+  "gui.wizardstaff.place_light_random_magic.name": "Lighten Up!",
   "gui.wizardstaff.portable_crafting_magic.description": "Channel your magic to access a full 3x3 crafting table.",
   "gui.wizardstaff.portable_crafting_magic.name": "Portable Crafting",
   "gui.wizardstaff.potion_magic.affect_caster": " yourself%s",

@@ -37,6 +37,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -158,6 +159,7 @@ public class MagicProvider implements DataProvider {
 		c.accept(create(ModMagics.LIGHT_MAGIC).setParams(5, -1, ing(Items.GLOWSTONE)));
 		c.accept(create(ModMagics.ZOOM_MAGIC).setAdditionalParams(3).setParams(0.1f, -1, ing(Items.SPYGLASS)));
 		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC, "summon_mining_vex_magic").setAdditionalParams(3).setAdditionalParams(ModEntities.MAGIC_MINING_VEX, ModSounds.BELL, jsonWithSingleProp("minable", Tags.Blocks.ORES.location().toString())).setParams(60, 55, ing(Items.GOLDEN_PICKAXE)));
+		c.accept(create(ModMagics.PLACE_LIGHT_RANDOM_MAGIC).setAdditionalParams(10, 4, (BlockItem) Items.TORCH).setParams(0.4f, -1, ing(Items.TORCH)));
 	}
 	// @formatter:on
 

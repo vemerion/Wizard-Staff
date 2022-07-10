@@ -212,7 +212,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.LIGHT_MAGIC, "Conjure an invisible light source that disappears after a while.");
 		addMagicName(ModMagics.ZOOM_MAGIC, "Super Zoom");
 		addMagicDescription(ModMagics.ZOOM_MAGIC, "Enhance your eyes!");
-
+		addMagicName(ModMagics.PLACE_LIGHT_RANDOM_MAGIC, "Lighten Up!");
+		addMagicDescription(ModMagics.PLACE_LIGHT_RANDOM_MAGIC, "Randomly place %s blocks in a radius of %s around you if the light level is below %s.");
 	}
 	// @formatter:on
 

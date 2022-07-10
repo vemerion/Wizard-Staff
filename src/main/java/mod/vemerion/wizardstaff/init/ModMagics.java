@@ -13,6 +13,7 @@ import mod.vemerion.wizardstaff.Magic.bugfix.WallClimbMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.LightMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.MiningMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.MountMagic;
+import mod.vemerion.wizardstaff.Magic.cavesandcliffs.PlaceLightRandomMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.XRayMagic;
 import mod.vemerion.wizardstaff.Magic.cavesandcliffs.ZoomMagic;
 import mod.vemerion.wizardstaff.Magic.fashionupdate.TransmutationMagic;
@@ -143,6 +144,7 @@ public class ModMagics {
 	public static final MagicType<XRayMagic> X_RAY_MAGIC = null;
 	public static final MagicType<LightMagic> LIGHT_MAGIC = null;
 	public static final MagicType<ZoomMagic> ZOOM_MAGIC = null;
+	public static final MagicType<PlaceLightRandomMagic> PLACE_LIGHT_RANDOM_MAGIC = null;
 	public static final MagicType<NoMagic> NO_MAGIC = null;
 
 	@SubscribeEvent
@@ -209,6 +211,7 @@ public class ModMagics {
 		reg.register(Init.setup(new MagicType<>(XRayMagic::new), "x_ray_magic"));
 		reg.register(Init.setup(new MagicType<>(LightMagic::new), "light_magic"));
 		reg.register(Init.setup(new MagicType<>(ZoomMagic::new), "zoom_magic"));
+		reg.register(Init.setup(new MagicType<>(PlaceLightRandomMagic::new), "place_light_random_magic"));
 		reg.register(Init.setup(new MagicType<>(NoMagic::new), "no_magic"));
 	}
 
