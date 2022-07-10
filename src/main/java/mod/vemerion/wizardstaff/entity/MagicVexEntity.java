@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import mod.vemerion.wizardstaff.Magic.CreateEntityMagic;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -30,6 +33,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -210,9 +215,12 @@ public abstract class MagicVexEntity extends Vex implements ICasted {
 		private static final int MINING_DURATION = 50;
 
 		private int duration;
+		private MagicVexEntity.Mining vex;
 
-		public MiningGoal(MagicVexEntity vex, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
+		public MiningGoal(MagicVexEntity.Mining vex, double pSpeedModifier, int pSearchRange,
+				int pVerticalSearchRange) {
 			super(vex, pSpeedModifier, pSearchRange, pVerticalSearchRange);
+			this.vex = vex;
 		}
 
 		@Override
@@ -222,7 +230,7 @@ public abstract class MagicVexEntity extends Vex implements ICasted {
 
 		@Override
 		protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
-			return pLevel.getBlockState(pPos).is(Tags.Blocks.ORES);
+			return vex.canMine(pLevel.getBlockState(pPos));
 		}
 
 		@Override
@@ -308,6 +316,8 @@ public abstract class MagicVexEntity extends Vex implements ICasted {
 
 	public static class Mining extends MagicVexEntity {
 
+		private TagKey<Block> minable = Tags.Blocks.ORES;
+
 		public Mining(EntityType<? extends Mining> type, Level level) {
 			super(type, level);
 		}
@@ -327,6 +337,38 @@ public abstract class MagicVexEntity extends Vex implements ICasted {
 		protected void registerGoals() {
 			super.registerGoals();
 			goalSelector.addGoal(1, new MiningGoal(this, 1, 12, 6));
+		}
+
+		public boolean canMine(BlockState state) {
+			return state.is(minable);
+		}
+
+		@Override
+		public SpawnGroupData finalizeSpawn(ServerLevelAccessor levelIn, DifficultyInstance difficultyIn,
+				MobSpawnType reason, SpawnGroupData spawnDataIn, CompoundTag dataTag) {
+			if (spawnDataIn != null && spawnDataIn instanceof CreateEntityMagic.JsonData data
+					&& data.json.has("minable")) {
+				minable = ForgeRegistries.BLOCKS.tags()
+						.createTagKey(new ResourceLocation(GsonHelper.getAsString(data.json, "minable")));
+			}
+
+			return super.finalizeSpawn(levelIn, difficultyIn, reason, spawnDataIn, dataTag);
+		}
+
+		@Override
+		public void readAdditionalSaveData(CompoundTag compound) {
+			super.readAdditionalSaveData(compound);
+
+			if (compound.contains("minable"))
+				minable = ForgeRegistries.BLOCKS.tags()
+						.createTagKey(new ResourceLocation(compound.getString("minable")));
+		}
+
+		@Override
+		public void addAdditionalSaveData(CompoundTag compound) {
+			super.addAdditionalSaveData(compound);
+
+			compound.putString("minable", minable.location().toString());
 		}
 
 		@Override

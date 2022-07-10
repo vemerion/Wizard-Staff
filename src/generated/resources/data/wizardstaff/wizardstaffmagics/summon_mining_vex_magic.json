@@ -7,5 +7,8 @@
   },
   "entity": "wizardstaff:magic_mining_vex",
   "sound": "wizardstaff:bell",
+  "additional_data": {
+    "minable": "forge:ores"
+  },
   "count": 3
 }

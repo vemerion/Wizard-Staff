@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Helper.Helper;
@@ -156,7 +157,7 @@ public class MagicProvider implements DataProvider {
 		c.accept(create(ModMagics.X_RAY_MAGIC).setAdditionalParams(15, new RegistryMatch<>(ForgeRegistries.BLOCKS, Tags.Blocks.ORES)).setParams(3, -1, ing(Items.DIAMOND_BLOCK)));
 		c.accept(create(ModMagics.LIGHT_MAGIC).setParams(5, -1, ing(Items.GLOWSTONE)));
 		c.accept(create(ModMagics.ZOOM_MAGIC).setAdditionalParams(3).setParams(0.1f, -1, ing(Items.SPYGLASS)));
-		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC, "summon_mining_vex_magic").setAdditionalParams(3).setAdditionalParams(ModEntities.MAGIC_MINING_VEX, ModSounds.BELL).setParams(60, 55, ing(Items.GOLDEN_PICKAXE)));
+		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC, "summon_mining_vex_magic").setAdditionalParams(3).setAdditionalParams(ModEntities.MAGIC_MINING_VEX, ModSounds.BELL, jsonWithSingleProp("minable", Tags.Blocks.ORES.location().toString())).setParams(60, 55, ing(Items.GOLDEN_PICKAXE)));
 	}
 	// @formatter:on
 
@@ -183,6 +184,12 @@ public class MagicProvider implements DataProvider {
 
 	private Ingredient ing(TagKey<Item> tag) {
 		return Ingredient.of(tag);
+	}
+
+	private JsonObject jsonWithSingleProp(String key, String property) {
+		var json = new JsonObject();
+		json.addProperty(key, property);
+		return json;
 	}
 
 	@Override
