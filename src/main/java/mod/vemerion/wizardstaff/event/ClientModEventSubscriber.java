@@ -1,11 +1,15 @@
 package mod.vemerion.wizardstaff.event;
 
+import org.lwjgl.glfw.GLFW;
+
+import com.mojang.blaze3d.platform.InputConstants;
+
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.init.ModContainers;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModItems;
-import mod.vemerion.wizardstaff.init.ModParticles;
 import mod.vemerion.wizardstaff.init.ModLayerLocations;
+import mod.vemerion.wizardstaff.init.ModParticles;
 import mod.vemerion.wizardstaff.model.DruidArmorModel;
 import mod.vemerion.wizardstaff.model.GrapplingHookModel;
 import mod.vemerion.wizardstaff.model.MagicSoulSandArmModel;
@@ -22,6 +26,7 @@ import mod.vemerion.wizardstaff.renderer.NetherPortalRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardHatRenderer;
 import mod.vemerion.wizardstaff.screen.MagicScreen;
 import mod.vemerion.wizardstaff.staff.WizardStaffScreen;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.particle.DustParticle;
@@ -34,19 +39,27 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @EventBusSubscriber(modid = Main.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModEventSubscriber {
+	
+	public static KeyMapping cycleMagicKey;
+	
 	@SubscribeEvent
 	public static void onRegister(FMLClientSetupEvent event) {
 		MenuScreens.register(ModContainers.WIZARD_STAFF, WizardStaffScreen::new);
 		MenuScreens.register(ModContainers.MAGIC, MagicScreen::new);
+		
+		cycleMagicKey = new KeyMapping("key." + Main.MODID + ".cycleMagicKey", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM.getOrCreate(GLFW.GLFW_KEY_V), "key." + Main.MODID + ".category");
+		ClientRegistry.registerKeyBinding(cycleMagicKey);
 	}
 
 	@SubscribeEvent

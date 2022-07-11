@@ -19,6 +19,9 @@ public class ModLanguageProvider extends LanguageProvider {
 	@Override
 	protected void addTranslations() {
 		add("itemGroup.wizardstaff", "Wizard Staff");
+		
+		add("key." + Main.MODID + ".cycleMagicKey", "Cycle Magic");
+		add("key." + Main.MODID + ".category", "Wizard Staff");
 
 		add(ModItems.WARLOCK_HELMET, "Warlock Cowl");
 		add(ModItems.WARLOCK_CHESTPLATE, "Warlock Robe");

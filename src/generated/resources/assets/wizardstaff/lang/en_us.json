@@ -178,5 +178,7 @@
   "item.wizardstaff.wizard_hat": "Wizard Hat",
   "item.wizardstaff.wizard_leggings": "Wizard Skirt",
   "item.wizardstaff.wizard_staff": "Wizard Staff",
-  "itemGroup.wizardstaff": "Wizard Staff"
+  "itemGroup.wizardstaff": "Wizard Staff",
+  "key.wizardstaff.category": "Wizard Staff",
+  "key.wizardstaff.cycleMagicKey": "Cycle Magic"
 }

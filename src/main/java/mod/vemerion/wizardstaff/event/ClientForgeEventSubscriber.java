@@ -43,7 +43,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
@@ -73,19 +72,14 @@ public class ClientForgeEventSubscriber {
 	}
 
 	@SubscribeEvent
-	public static void cycleCurrent(PlayerInteractEvent.LeftClickEmpty event) {
-		WizardStaffItemHandler.getOptional(event.getItemStack()).ifPresent(h -> {
+	public static void cycleMagicKey(InputEvent.KeyInputEvent event) {
+		if (!ClientModEventSubscriber.cycleMagicKey.consumeClick())
+			return;
+
+		WizardStaffItemHandler.getOptional(Minecraft.getInstance().player.getMainHandItem()).ifPresent(h -> {
 			h.cycleCurrent();
 			Network.INSTANCE.sendToServer(new CycleCurrentMessage());
 		});
-	}
-
-	@SubscribeEvent
-	public static void noLeftClickWithStaff(InputEvent.ClickInputEvent event) {
-		Item item = Minecraft.getInstance().player.getItemInHand(event.getHand()).getItem();
-		if (event.getHand() != InteractionHand.MAIN_HAND || !event.isAttack() || !(item instanceof WizardStaffItem))
-			return;
-		event.setSwingHand(false);
 	}
 
 	@SubscribeEvent

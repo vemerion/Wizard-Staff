@@ -1,30 +1,21 @@
 package mod.vemerion.wizardstaff.staff;
 
-import java.util.UUID;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
-
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 
 import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,10 +29,6 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class WizardStaffItem extends Item {
 
-	private static final AttributeModifier NO_COOLDOWN = new AttributeModifier(
-			UUID.fromString("90c1a0db-5acd-4910-9257-587fdf003642"), "Wizard Staff", 100,
-			AttributeModifier.Operation.MULTIPLY_TOTAL);
-
 	public WizardStaffItem(Item.Properties properties) {
 		super(properties);
 	}
@@ -50,26 +37,6 @@ public class WizardStaffItem extends Item {
 	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 		consumer.accept(new RenderProperties());
 	}
-
-	@Override
-	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-		return true;
-	}
-
-	@Override
-	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, Player player) {
-		return true;
-	}
-
-	@Override
-	public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-		return true;
-	}
-
-	public static Multimap<Attribute, AttributeModifier> getStaffModifiers() {
-		return ImmutableMultimap.of(Attributes.ATTACK_SPEED, NO_COOLDOWN);
-	}
-
 	
 	public static boolean magicPreventOtherUse(Level level, Player player, ItemStack staff) {
 		return Magics.getInstance(level).get(getMagic(staff)).magicPreventOtherUse(level, player, staff);
