@@ -128,7 +128,7 @@
   "gui.wizardstaff.smelting_magic.description": "Magical item processing, replicating the functionality of the %s.",
   "gui.wizardstaff.smelting_magic.name": "Magical %s",
   "gui.wizardstaff.soul_sand_magic.description": "Summon skeletal hands from the ground in front of your, damaging and slowing entities they touch.",
-  "gui.wizardstaff.soul_sand_magic.name": "InteractionHands from Below",
+  "gui.wizardstaff.soul_sand_magic.name": "Hands from Below",
   "gui.wizardstaff.summon_entity_magic.description": "Use your magic to summon %s %s entities.",
   "gui.wizardstaff.summon_entity_magic.name": "Summon %s",
   "gui.wizardstaff.summon_lightning_magic.description": "Magically summon a lightning strike at your position!",

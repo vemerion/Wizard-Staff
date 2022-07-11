@@ -198,7 +198,7 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.BEE_MAGIC, "Use your magic to force bees out of their hive.");
 		addMagicName(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "Shaped Summon: %s");
 		addMagicDescription(ModMagics.SHAPED_CREATE_ENTITY_MAGIC, "Summon a number of %s entities in a special shape around the player.");
-		addGui("soul_sand_magic.name", "InteractionHands from Below");		
+		addGui("soul_sand_magic.name", "Hands from Below");		
 		addGui("soul_sand_magic.description", "Summon skeletal hands from the ground in front of your, damaging and slowing entities they touch.");	
 		addGui("tnt_magic.name", "T.N.T.");		
 		addGui("tnt_magic.description", "It's dynamite.");	
