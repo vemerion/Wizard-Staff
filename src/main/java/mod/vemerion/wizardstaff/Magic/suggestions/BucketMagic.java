@@ -3,6 +3,7 @@ package mod.vemerion.wizardstaff.Magic.suggestions;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
@@ -17,11 +18,9 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class BucketMagic extends Magic {
@@ -85,13 +84,16 @@ public class BucketMagic extends Magic {
 	protected Object[] getDescrArgs() {
 		return new Object[] { bucket.getName(bucket.getDefaultInstance()) };
 	}
+	
+	@Override
+	public boolean magicPreventOtherUse(Level level, Player player, ItemStack staff) {
+		var raytrace = Helper.blockRay(level, player, 4.5f);
+		return raytrace.getType() == HitResult.Type.BLOCK;
+	}
 
 	@Override
 	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
-		Vec3 start = player.getEyePosition(1);
-		Vec3 end = start.add(Vec3.directionFromRotation(player.getRotationVector()).scale(4.5));
-		HitResult raytrace = level.clip(new ClipContext(start, end,
-				ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+		var raytrace = Helper.blockRay(level, player, 4.5f);
 		if (raytrace.getType() == HitResult.Type.BLOCK) {
 			BlockPos pos = new BlockPos(raytrace.getLocation());
 			if (bucket.emptyContents(player, level, pos, (BlockHitResult) raytrace)) {

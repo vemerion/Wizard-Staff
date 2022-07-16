@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.HitResult.Type;
 
 public abstract class BlockRayMagic extends Magic {
 
@@ -20,6 +21,12 @@ public abstract class BlockRayMagic extends Magic {
 	@Override
 	public UseAnim getUseAnim(ItemStack stack) {
 		return UseAnim.BLOCK;
+	}
+	
+	@Override
+	public boolean magicPreventOtherUse(Level level, Player player, ItemStack staff) {
+		var result = Helper.blockRay(level, player, 4.5f);
+		return result.getType() == Type.BLOCK;
 	}
 
 	@Override

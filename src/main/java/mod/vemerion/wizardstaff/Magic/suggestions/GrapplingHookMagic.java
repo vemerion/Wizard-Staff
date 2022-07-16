@@ -33,6 +33,11 @@ public class GrapplingHookMagic extends Magic {
 	public UseAnim getUseAnim(ItemStack stack) {
 		return UseAnim.BLOCK;
 	}
+	
+	@Override
+	public boolean magicPreventOtherUse(Level level, Player player, ItemStack staff) {
+		return true;
+	}
 
 	@Override
 	public void magicStart(Level level, Player player, ItemStack staff) {

@@ -85,6 +85,11 @@ public class PushBlockMagic extends Magic {
 	protected Object[] getDescrArgs() {
 		return getNameArgs();
 	}
+	
+	@Override
+	public boolean magicPreventOtherUse(Level level, Player player, ItemStack staff) {
+		return ray(level, player) != null;
+	}
 
 	@Override
 	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {

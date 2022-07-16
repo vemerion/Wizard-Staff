@@ -106,7 +106,7 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicName(ModMagics.NETHER_BRICK_MAGIC, "Fortress Locator");		
 		addMagicDescription(ModMagics.NETHER_BRICK_MAGIC, "Use your magic to sense the direction of the nearest Nether Fortress.");	
 		addMagicName(ModMagics.GOLD_NUGGET_MAGIC, "Magic Bartering");		
-		addMagicDescription(ModMagics.GOLD_NUGGET_MAGIC, "Use magic compel nearby Piglins to give you their items.");	
+		addMagicDescription(ModMagics.GOLD_NUGGET_MAGIC, "Use magic to compel nearby Piglins to give you their items.");	
 		addMagicName(ModMagics.LODESTONE_MAGIC, "Magical Translocator");		
 		addMagicDescription(ModMagics.LODESTONE_MAGIC, "Right click a %s block with the staff, setting your waypoint to that block. Then, activating the staff anywhere in the world will return you to the waypoint, consuming the block in the process.");	
 		addMagicName(ModMagics.TRANSMUTATION_MAGIC, "Conjure %s");		
