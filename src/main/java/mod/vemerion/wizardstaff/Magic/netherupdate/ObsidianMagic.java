@@ -12,9 +12,9 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -41,7 +41,7 @@ public class ObsidianMagic extends Magic {
 
 	@Override
 	protected void decodeAdditional(FriendlyByteBuf buffer) {
-		dimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, buffer.readResourceLocation());
+		dimension = ResourceKey.create(Registries.DIMENSION, buffer.readResourceLocation());
 		texture = buffer.readResourceLocation();
 	}
 
@@ -53,7 +53,7 @@ public class ObsidianMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		dimension = ResourceKey.create(Registry.DIMENSION_REGISTRY,
+		dimension = ResourceKey.create(Registries.DIMENSION,
 				new ResourceLocation(GsonHelper.getAsString(json, "dimension")));
 		texture = new ResourceLocation(GsonHelper.getAsString(json, "texture"));
 	}
@@ -66,7 +66,7 @@ public class ObsidianMagic extends Magic {
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { new TextComponent(dimension.location().getPath().toString()) };
+		return new Object[] { Component.literal(dimension.location().getPath().toString()) };
 	}
 
 	@Override
@@ -98,11 +98,11 @@ public class ObsidianMagic extends Magic {
 			BlockPos pos = new BlockPos(spawnPos);
 			if (!level.getBlockState(pos).canOcclude() && !level.getBlockState(pos.above()).canOcclude()) {
 				cost(player);
-				NetherPortalEntity portal = new NetherPortalEntity(ModEntities.NETHER_PORTAL, level, dimension,
+				NetherPortalEntity portal = new NetherPortalEntity(ModEntities.NETHER_PORTAL.get(), level, dimension,
 						texture);
 				portal.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, player.getYRot(), 0);
 				level.addFreshEntity(portal);
-				playSoundServer(level, player, ModSounds.PORTAL, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.PORTAL.get(), 1, soundPitch(player));
 			}
 		}
 		return super.magicFinish(level, player, staff);

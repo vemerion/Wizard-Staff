@@ -41,7 +41,7 @@ public class BricksMagic extends Magic {
 			cost(player);
 			createCage(level, player.blockPosition());
 		}
-		player.playSound(ModSounds.BRICK, 0.8f, soundPitch(player));
+		player.playSound(ModSounds.BRICK.get(), 0.8f, soundPitch(player));
 		return super.magicFinish(level, player, staff);
 	}
 
@@ -50,7 +50,7 @@ public class BricksMagic extends Magic {
 			for (int z = -1; z < 2; z++) {
 				for (int y = 0; y < 2; y++) {
 					if ((x != 0 || z != 0) && level.isEmptyBlock(position.offset(x, y, z))) {
-						level.setBlockAndUpdate(position.offset(x, y, z), ModBlocks.MAGIC_BRICKS.defaultBlockState());
+						level.setBlockAndUpdate(position.offset(x, y, z), ModBlocks.MAGIC_BRICKS.get().defaultBlockState());
 					}
 				}
 			}

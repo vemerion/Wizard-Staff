@@ -26,7 +26,7 @@ public class WizardStaffContainer extends AbstractContainerMenu {
 
 	protected WizardStaffContainer(int id, Inventory inventory, WizardStaffItemHandler handler,
 			ItemStack staff, boolean shouldAnimate, InteractionHand hand) {
-		super(ModContainers.WIZARD_STAFF, id);
+		super(ModContainers.WIZARD_STAFF.get(), id);
 		this.staff = staff;
 		this.shouldAnimate = shouldAnimate;
 		this.hand = hand;

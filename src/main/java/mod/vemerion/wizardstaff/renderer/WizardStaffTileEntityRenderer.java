@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
 
 import mod.vemerion.wizardstaff.init.ModItems;
 import mod.vemerion.wizardstaff.init.ModLayerLocations;
@@ -26,6 +25,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.TransformationHelper;
 
 public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRenderer {
 
@@ -51,7 +51,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 	}
 
 	protected AbstractWizardStaffModel getModel(ItemStack itemStackIn) {
-		return itemStackIn.getItem() == ModItems.WIZARD_STAFF ? WIZARD_STAFF : NETHER_WIZARD_STAFF;
+		return itemStackIn.getItem() == ModItems.WIZARD_STAFF.get() ? WIZARD_STAFF : NETHER_WIZARD_STAFF;
 	}
 
 	private boolean shouldRender(ItemStack staff) {
@@ -78,10 +78,11 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 		if (!shouldRender(itemStackIn))
 			return;
 
-		float ageInTicks = Minecraft.getInstance().player.tickCount + Minecraft.getInstance().getFrameTime();
+		var mc = Minecraft.getInstance();
+		float ageInTicks = mc.player.tickCount + Minecraft.getInstance().getFrameTime();
 		matrixStackIn.pushPose();
 		matrixStackIn.translate(0, -3.1, 0);
-		matrixStackIn.mulPose(new Quaternion(180, ageInTicks, 0, true));
+		matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(180, ageInTicks, 0, true));
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 		float magicScale = getModel(itemStackIn).getMagicScale();
 		matrixStackIn.scale(magicScale, magicScale, magicScale);
@@ -110,7 +111,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
 			float partialTicks, HumanoidArm hand) {
 		matrix.pushPose();
-		matrix.mulPose(new Quaternion(0, 0, (duration / 5f) * 360f, true));
+		matrix.mulPose(TransformationHelper.quatFromXYZ(0, 0, (duration / 5f) * 360f, true));
 		matrix.translate(0, -0.5, -1.5);
 		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
@@ -123,7 +124,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 		float max = maxDuration > 20 ? 5 : maxDuration / 4;
 		float progress = Mth.clamp(duration / max, 0, 1);
 		matrix.pushPose();
-		matrix.mulPose(new Quaternion((float) Mth.clampedLerp(0, -45, progress), 0,
+		matrix.mulPose(TransformationHelper.quatFromXYZ((float) Mth.clampedLerp(0, -45, progress), 0,
 				(float) Mth.clampedLerp(0, 35 * offset, progress), true));
 		matrix.translate(offset, -0.5 - progress / 5, -1.2);
 		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
@@ -137,7 +138,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 		float progress = duration / 5;
 		matrix.translate(hand == HumanoidArm.RIGHT ? 1 : -1, -1, -1.2);
 		renderer.renderOnlyStaffNoPop(stack, matrix, buffer, light, combinedOverlayIn);
-		matrix.mulPose(new Quaternion(0, progress * 360, 0, true));
+		matrix.mulPose(TransformationHelper.quatFromXYZ(0, progress * 360, 0, true));
 		renderer.renderOnlyMagic(stack, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
 		matrix.popPose();
@@ -165,7 +166,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
 			float partialTicks, HumanoidArm hand) {
 		matrix.pushPose();
-		matrix.mulPose(new Quaternion((float) Mth.sin((duration / 20) * (float) Math.PI * 2) * 30, 0, 0, true));
+		matrix.mulPose(TransformationHelper.quatFromXYZ((float) Mth.sin((duration / 20) * (float) Math.PI * 2) * 30, 0, 0, true));
 		matrix.translate(hand == HumanoidArm.RIGHT ? 1 : -1, -1, -1.2);
 		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
@@ -184,7 +185,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 				(random.nextDouble() * 0.5 - 0.25) * buildupProgress);
 
 		matrix.pushPose();
-		matrix.mulPose(new Quaternion((float) Mth.clampedLerp(0, -45, progress), 0,
+		matrix.mulPose(TransformationHelper.quatFromXYZ((float) Mth.clampedLerp(0, -45, progress), 0,
 				(float) Mth.clampedLerp(0, 35 * handOffset, progress), true));
 		matrix.translate(handOffset + Mth.clampedLerp(0, offset.x(), partialTicks),
 				-0.5 - progress / 5 + Mth.clampedLerp(0, offset.y(), partialTicks),
@@ -206,7 +207,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 		matrix.pushPose();
 		matrix.translate(0, -0.5, 0);
 		matrix.mulPose(
-				new Quaternion((float) (forward.x + waving.x), (float) waving.y, (float) (forward.z + waving.z), true));
+				TransformationHelper.quatFromXYZ((float) (forward.x + waving.x), (float) waving.y, (float) (forward.z + waving.z), true));
 		matrix.translate(0, 0.5, 0);
 		matrix.translate(offset, -0.5 - forwardProgress / 5, -1.2);
 		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
@@ -218,7 +219,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 			float partialTicks, HumanoidArm hand) {
 		matrix.pushPose();
 		matrix.translate(0, -1, 0);
-		matrix.mulPose(new Quaternion((float) Mth.cos((duration / 10) * (float) Math.PI * 2) * 10, 0,
+		matrix.mulPose(TransformationHelper.quatFromXYZ((float) Mth.cos((duration / 10) * (float) Math.PI * 2) * 10, 0,
 				(float) Mth.sin((duration / 10) * (float) Math.PI * 2) * 10, true));
 		matrix.translate(0, 1, 0);
 		matrix.translate(hand == HumanoidArm.RIGHT ? 1 : -1, -1, -1.2);
@@ -230,8 +231,8 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
 			float partialTicks, HumanoidArm hand) {
 		matrix.pushPose();
-		matrix.mulPose(new Quaternion(0, (duration / 40) * 360f, 0, true));
-		matrix.mulPose(new Quaternion(0, 0, (duration / 5) * 360f, true));
+		matrix.mulPose(TransformationHelper.quatFromXYZ(0, (duration / 40) * 360f, 0, true));
+		matrix.mulPose(TransformationHelper.quatFromXYZ(0, 0, (duration / 5) * 360f, true));
 		matrix.translate(0, 0, -1);
 		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
@@ -245,13 +246,13 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 		float progress = Mth.clamp(duration / max, 0, 1);
 		matrix.pushPose();
 		matrix.translate(offset, -0.5 - progress / 5, -1.2);
-		matrix.mulPose(new Quaternion((float) Mth.clampedLerp(0, -45, progress), 0,
+		matrix.mulPose(TransformationHelper.quatFromXYZ((float) Mth.clampedLerp(0, -45, progress), 0,
 				(float) Mth.clampedLerp(0, 35 * offset, progress), true));
 
 		float maxRotate = maxDuration > 20 ? 20 : maxDuration;
 		float rotation = duration < maxRotate ? duration * duration
 				: maxRotate * maxRotate + maxRotate * 2 * (duration - maxRotate);
-		matrix.mulPose(new Quaternion(0, rotation, 0, true));
+		matrix.mulPose(TransformationHelper.quatFromXYZ(0, rotation, 0, true));
 
 		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();

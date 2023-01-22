@@ -1,10 +1,10 @@
 {
   "cost": 10.0,
   "duration": 20,
-  "magic": "wizardstaff:name_tag_magic",
   "ingredient": {
     "item": "minecraft:name_tag"
   },
+  "magic": "wizardstaff:name_tag_magic",
   "syllables": [
     "ig",
     "nite",

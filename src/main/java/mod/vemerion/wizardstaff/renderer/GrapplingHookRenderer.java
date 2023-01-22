@@ -51,7 +51,7 @@ public class GrapplingHookRenderer extends EntityRenderer<GrapplingHookEntity> {
 			if ((this.entityRenderDispatcher.options == null
 					|| this.entityRenderDispatcher.options.getCameraType().isFirstPerson())
 					&& shooter == Minecraft.getInstance().player) { // First person
-				double fov = entityRenderDispatcher.options.fov / 100d;
+				double fov = entityRenderDispatcher.options.fov().get() / 100d;
 				Vec3 fovOffset = new Vec3(-0.1D * fov * handOffset, 0.03D * fov, 0.3D);
 				fovOffset = fovOffset.xRot((float) -Math.toRadians(shooter.getViewXRot(partialTicks)));
 				fovOffset = fovOffset.yRot((float) -Math.toRadians(shooter.getViewYRot(partialTicks)));

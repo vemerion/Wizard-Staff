@@ -1,8 +1,8 @@
 {
   "cost": 0.05,
   "duration": -1,
-  "magic": "wizardstaff:feather_magic",
   "ingredient": {
     "item": "minecraft:feather"
-  }
+  },
+  "magic": "wizardstaff:feather_magic"
 }

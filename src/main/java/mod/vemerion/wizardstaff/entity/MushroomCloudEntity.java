@@ -23,7 +23,7 @@ public class MushroomCloudEntity extends MagicEntity {
 	}
 
 	public MushroomCloudEntity(Level levelIn, Player shooter) {
-		this(ModEntities.MUSHROOM_CLOUD, levelIn);
+		this(ModEntities.MUSHROOM_CLOUD.get(), levelIn);
 		this.setCaster(shooter);
 	}
 

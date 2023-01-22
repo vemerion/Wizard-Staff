@@ -1,12 +1,12 @@
 {
-  "cost": 1.0,
-  "duration": 10,
-  "magic": "wizardstaff:mining_magic",
-  "ingredient": {
-    "item": "minecraft:diamond_pickaxe"
-  },
+  "block_limit": 20,
   "block_match": {
     "tag": "forge:ores"
   },
-  "block_limit": 20
+  "cost": 1.0,
+  "duration": 10,
+  "ingredient": {
+    "item": "minecraft:diamond_pickaxe"
+  },
+  "magic": "wizardstaff:mining_magic"
 }

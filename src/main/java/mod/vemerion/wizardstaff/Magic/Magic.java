@@ -5,12 +5,13 @@ import com.google.gson.JsonSyntaxException;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.capability.Experience;
+import mod.vemerion.wizardstaff.init.ModMagics;
 import mod.vemerion.wizardstaff.item.MagicArmorItem;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.locale.Language;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -49,7 +50,7 @@ public abstract class Magic {
 	}
 
 	public ResourceLocation getRegistryName() {
-		return type.getRegistryName();
+		return ModMagics.getRegistry().getKey(type);
 	}
 
 	public void setName(ResourceLocation name) {
@@ -216,8 +217,8 @@ public abstract class Magic {
 
 		private float cost;
 		private int duration;
-		private TranslatableComponent name;
-		private TranslatableComponent descr;
+		private Component name;
+		private Component descr;
 
 		private Description(Magic magic) {
 			this.cost = magic.cost;
@@ -230,9 +231,9 @@ public abstract class Magic {
 			String customDescr = "gui." + magic.name.getNamespace() + "." + magic.name.getPath() + ".description";
 			String standardDescr = "gui." + regName.getNamespace() + "." + regName.getPath() + ".description";
 
-			this.name = new TranslatableComponent(hasTranslation(customName) ? customName : standardName,
+			this.name = Component.translatable(hasTranslation(customName) ? customName : standardName,
 					magic.getNameArgs());
-			this.descr = new TranslatableComponent(hasTranslation(customDescr) ? customDescr : standardDescr,
+			this.descr = Component.translatable(hasTranslation(customDescr) ? customDescr : standardDescr,
 					magic.getDescrArgs());
 		}
 
@@ -248,11 +249,11 @@ public abstract class Magic {
 			return duration;
 		}
 
-		public TranslatableComponent getName() {
+		public Component getName() {
 			return name;
 		}
 
-		public TranslatableComponent getDescription() {
+		public Component getDescription() {
 			return descr;
 		}
 	}

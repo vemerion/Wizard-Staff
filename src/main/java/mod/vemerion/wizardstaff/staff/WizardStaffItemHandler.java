@@ -3,8 +3,8 @@ package mod.vemerion.wizardstaff.staff;
 import mod.vemerion.wizardstaff.Main;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -74,11 +74,11 @@ public class WizardStaffItemHandler extends ItemStackHandler {
 	}
 
 	public static WizardStaffItemHandler orNull(ItemStack staff) {
-		return (WizardStaffItemHandler) staff.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
+		return (WizardStaffItemHandler) staff.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
 	}
 
 	public static LazyOptional<WizardStaffItemHandler> getOptional(ItemStack staff) {
-		LazyOptional<IItemHandler> itemInteractionHandlerOpt = staff.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+		LazyOptional<IItemHandler> itemInteractionHandlerOpt = staff.getCapability(ForgeCapabilities.ITEM_HANDLER);
 		if (itemInteractionHandlerOpt.isPresent()) {
 			IItemHandler handler = itemInteractionHandlerOpt.orElse(null);
 			if (handler instanceof WizardStaffItemHandler)
@@ -89,7 +89,7 @@ public class WizardStaffItemHandler extends ItemStackHandler {
 
 	// Use this on itemstacks that are guaranteed to have capability
 	public static WizardStaffItemHandler get(ItemStack staff) {
-		IItemHandler handler = staff.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		IItemHandler handler = staff.getCapability(ForgeCapabilities.ITEM_HANDLER)
 				.orElseThrow(() -> new IllegalArgumentException("ItemStack is missing wizard staff capability"));
 		return (WizardStaffItemHandler) handler;
 	}

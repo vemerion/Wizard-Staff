@@ -63,7 +63,7 @@
   "gui.wizardstaff.haste_magic.name": "Work Ethic",
   "gui.wizardstaff.infest_stone_magic.description": "Infest a %s block with silverfish.",
   "gui.wizardstaff.infest_stone_magic.name": "Infest %s",
-  "gui.wizardstaff.infinity": "\u221E",
+  "gui.wizardstaff.infinity": "∞",
   "gui.wizardstaff.inventory_magic.description": "Gain access to magic storage.",
   "gui.wizardstaff.inventory_magic.name": "Portable Chest",
   "gui.wizardstaff.jukebox_magic.description": "Emit an irresistible tune from the staff, forcing enemies within %s blocks to dance.",

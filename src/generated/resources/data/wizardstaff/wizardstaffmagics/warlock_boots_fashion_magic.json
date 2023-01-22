@@ -1,10 +1,10 @@
 {
   "cost": 30.0,
+  "created": "wizardstaff:warlock_boots",
   "duration": 20,
-  "magic": "wizardstaff:transmutation_magic",
   "ingredient": {
     "item": "minecraft:iron_boots"
   },
-  "created": "wizardstaff:warlock_boots",
+  "magic": "wizardstaff:transmutation_magic",
   "sound": "wizardstaff:plop"
 }

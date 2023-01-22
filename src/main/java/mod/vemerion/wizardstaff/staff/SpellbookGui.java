@@ -19,18 +19,17 @@ import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
 
-public class SpellbookGui extends GuiComponent implements Widget, GuiEventListener {
-	private static final Component SEARCH_HINT = new TranslatableComponent("gui." + Main.MODID + ".search_hint")
+public class SpellbookGui extends GuiComponent implements Renderable, GuiEventListener {
+	private static final Component SEARCH_HINT = Component.translatable("gui." + Main.MODID + ".search_hint")
 			.withStyle(ChatFormatting.ITALIC);
 	private static final ResourceLocation GUI = new ResourceLocation(Main.MODID, "textures/gui/spellbook.png");
 	private static final int X_OFFSET = 86;
@@ -92,7 +91,6 @@ public class SpellbookGui extends GuiComponent implements Widget, GuiEventListen
 				});
 
 		initSearch();
-		mc.keyboardHandler.setSendRepeatsToGui(true);
 
 		if (description != null)
 			description.init(left, top);
@@ -115,7 +113,6 @@ public class SpellbookGui extends GuiComponent implements Widget, GuiEventListen
 
 	public void onClose() {
 		search = null;
-		mc.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
@@ -198,8 +195,8 @@ public class SpellbookGui extends GuiComponent implements Widget, GuiEventListen
 			if (b.stack.getHoverName().getString().toLowerCase().contains(filter)
 					|| b.magicDescr.getName().getString().toLowerCase().contains(filter)) {
 				searched.add(b);
-				b.x = left + BORDER_X + (i % ITEMS_PER_ROW) * ITEM_SIZE;
-				b.y = top + ITEM_BORDER_Y + (i / ITEMS_PER_ROW) * ITEM_SIZE;
+				b.setX(left + BORDER_X + (i % ITEMS_PER_ROW) * ITEM_SIZE);
+				b.setY(top + ITEM_BORDER_Y + (i / ITEMS_PER_ROW) * ITEM_SIZE);
 				i = (i + 1) % ITEMS_PER_PAGE;
 			}
 		page = 0;
@@ -242,7 +239,7 @@ public class SpellbookGui extends GuiComponent implements Widget, GuiEventListen
 			if (isHoveredOrFocused())
 				parent.renderTooltip(matrixStack, getMessage(), mouseX, mouseY);
 
-			mc.getItemRenderer().renderAndDecorateItem(stack, x, y);
+			mc.getItemRenderer().renderAndDecorateItem(stack, getX(), getY());
 		}
 
 		@Override
@@ -251,17 +248,17 @@ public class SpellbookGui extends GuiComponent implements Widget, GuiEventListen
 		}
 
 		@Override
-		public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
+		protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {			
 		}
 	}
 
-	private static final TranslatableComponent COST = new TranslatableComponent("gui." + Main.MODID + ".cost");
-	private static final TranslatableComponent EXP = new TranslatableComponent("gui." + Main.MODID + ".exp");
-	private static final TranslatableComponent DURATION = new TranslatableComponent("gui." + Main.MODID + ".duration");
-	private static final TranslatableComponent INFINITY = new TranslatableComponent("gui." + Main.MODID + ".infinity");
-	private static final TranslatableComponent SECONDS = new TranslatableComponent("gui." + Main.MODID + ".seconds");
+	private static final Component COST = Component.translatable("gui." + Main.MODID + ".cost");
+	private static final Component EXP = Component.translatable("gui." + Main.MODID + ".exp");
+	private static final Component DURATION = Component.translatable("gui." + Main.MODID + ".duration");
+	private static final Component INFINITY = Component.translatable("gui." + Main.MODID + ".infinity");
+	private static final Component SECONDS = Component.translatable("gui." + Main.MODID + ".seconds");
 
-	private class SpellDescription implements Widget, GuiEventListener {
+	private class SpellDescription implements Renderable, GuiEventListener {
 		private ItemStack stack;
 		private Button back;
 		private int left;

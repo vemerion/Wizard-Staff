@@ -1,18 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "l": {
+      "tag": "forge:rods/wooden"
+    },
+    "s": {
+      "tag": "forge:cobblestone"
+    }
+  },
   "pattern": [
     "s s",
     "sls",
     " l "
   ],
-  "key": {
-    "s": {
-      "tag": "forge:cobblestone"
-    },
-    "l": {
-      "tag": "forge:rods/wooden"
-    }
-  },
   "result": {
     "item": "wizardstaff:wizard_staff"
   }

@@ -41,7 +41,7 @@ public class SwapHealthFoodMagic extends Magic {
 			player.setHealth(foodLevel);
 			cost(player);
 		}
-		player.playSound(ModSounds.HEARTBEAT, 1, soundPitch(player));
+		player.playSound(ModSounds.HEARTBEAT.get(), 1, soundPitch(player));
 		return super.magicFinish(level, player, staff);
 	}
 

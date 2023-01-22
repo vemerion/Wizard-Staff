@@ -48,12 +48,12 @@ public class PushBlockMagic extends Magic {
 	
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, block, "block");
+		MagicUtil.write(json, ForgeRegistries.BLOCKS, block, "block");
 	}
 
 	@Override
 	public void encodeAdditional(FriendlyByteBuf buffer) {
-		MagicUtil.encode(buffer, block);
+		MagicUtil.encode(buffer, ForgeRegistries.BLOCKS, block);
 	}
 
 	@Override
@@ -112,9 +112,9 @@ public class PushBlockMagic extends Magic {
 					tileEntity = BlockEntity.loadStatic(p, state, tileEntity.serializeNBT());
 
 				if (p.equals(start)) {
-					playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
+					playSoundServer(level, player, ModSounds.POOF.get(), 1, soundPitch(player));
 				} else {
-					playSoundServer(level, player, ModSounds.PUSH, 1, soundPitch(player));
+					playSoundServer(level, player, ModSounds.PUSH.get(), 1, soundPitch(player));
 					cost(player);
 					level.setBlockAndUpdate(p, state);
 					if (tileEntity != null) {
@@ -125,7 +125,7 @@ public class PushBlockMagic extends Magic {
 					level.setBlockAndUpdate(start, Blocks.AIR.defaultBlockState());
 				}
 			} else {
-				playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.POOF.get(), 1, soundPitch(player));
 			}
 		}
 		return super.magicFinish(level, player, staff);

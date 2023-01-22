@@ -27,7 +27,7 @@ public class ElytraMagic extends Magic {
 	@Override
 	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (count % 5 == 0)
-			player.playSound(ModSounds.WOOSH, 1, soundPitch(player));
+			player.playSound(ModSounds.WOOSH.get(), 1, soundPitch(player));
 		if (!level.isClientSide) {
 			Vec3 motion = player.getDeltaMovement();
 			cost(player);

@@ -8,6 +8,7 @@ import mod.vemerion.wizardstaff.Magic.original.JukeboxMagic;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +20,7 @@ public class WizardStaffTickableSound extends AbstractTickableSoundInstance {
 	private boolean started;
 
 	public WizardStaffTickableSound(UUID id, SoundEvent music) {
-		super(music, SoundSource.PLAYERS);
+		super(music, SoundSource.PLAYERS, SoundInstance.createUnseededRandom());
 		this.id = id;
 		this.volume = 0;
 		this.looping = true;

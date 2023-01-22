@@ -1,10 +1,10 @@
 {
   "cost": 30.0,
+  "created": "wizardstaff:wizard_chestplate",
   "duration": 20,
-  "magic": "wizardstaff:transmutation_magic",
   "ingredient": {
     "item": "minecraft:leather_chestplate"
   },
-  "created": "wizardstaff:wizard_chestplate",
+  "magic": "wizardstaff:transmutation_magic",
   "sound": "wizardstaff:plop"
 }

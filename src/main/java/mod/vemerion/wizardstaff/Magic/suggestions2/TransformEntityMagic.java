@@ -1,7 +1,8 @@
 package mod.vemerion.wizardstaff.Magic.suggestions2;
 
+import org.joml.Vector4f;
+
 import com.google.gson.JsonObject;
-import com.mojang.math.Vector4f;
 
 import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.Magic.MagicType;
@@ -41,27 +42,27 @@ public class TransformEntityMagic extends RayMagic {
 	@Override
 	protected void writeAdditional(JsonObject json) {
 		json.add("entity_match", match.write());
-		MagicUtil.write(json, to, "to");
+		MagicUtil.write(json, ForgeRegistries.ENTITY_TYPES, to, "to");
 		json.addProperty("particle_color", particleColor);
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		match = RegistryMatch.read(ForgeRegistries.ENTITIES, GsonHelper.getAsJsonObject(json, "entity_match"));
-		to = MagicUtil.read(json, ForgeRegistries.ENTITIES, "to");
+		match = RegistryMatch.read(ForgeRegistries.ENTITY_TYPES, GsonHelper.getAsJsonObject(json, "entity_match"));
+		to = MagicUtil.read(json, ForgeRegistries.ENTITY_TYPES, "to");
 		particleColor = GsonHelper.getAsInt(json, "particle_color");
 	}
 
 	@Override
 	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		match.encode(buffer);
-		MagicUtil.encode(buffer, to);
+		MagicUtil.encode(buffer, ForgeRegistries.ENTITY_TYPES, to);
 		buffer.writeInt(particleColor);
 	}
 
 	@Override
 	protected void decodeAdditional(FriendlyByteBuf buffer) {
-		match = RegistryMatch.decode(ForgeRegistries.ENTITIES, buffer);
+		match = RegistryMatch.decode(ForgeRegistries.ENTITY_TYPES, buffer);
 		to = MagicUtil.decode(buffer);
 		particleColor = buffer.readInt();
 	}
@@ -84,7 +85,7 @@ public class TransformEntityMagic extends RayMagic {
 	@Override
 	protected void hitEntity(Level level, Player player, Entity target) {
 		if (match.test(target.getType())) {
-			playSoundServer(level, player, ModSounds.TRANSFORM, 0.7f, soundPitch(player));
+			playSoundServer(level, player, ModSounds.TRANSFORM.get(), 0.7f, soundPitch(player));
 			if (!level.isClientSide) {
 				cost(player);
 				Entity entity = to.create(level);

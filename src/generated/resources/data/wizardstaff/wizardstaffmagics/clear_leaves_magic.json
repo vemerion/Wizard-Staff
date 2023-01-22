@@ -1,12 +1,12 @@
 {
-  "cost": 0.1,
-  "duration": 20,
-  "magic": "wizardstaff:mass_harvest_magic",
-  "ingredient": {
-    "item": "minecraft:shears"
-  },
+  "block_limit": 50,
   "block_match": {
     "tag": "minecraft:leaves"
   },
-  "block_limit": 50
+  "cost": 0.1,
+  "duration": 20,
+  "ingredient": {
+    "item": "minecraft:shears"
+  },
+  "magic": "wizardstaff:mass_harvest_magic"
 }

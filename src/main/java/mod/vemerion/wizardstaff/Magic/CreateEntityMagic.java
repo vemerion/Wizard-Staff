@@ -50,21 +50,21 @@ public abstract class CreateEntityMagic extends Magic {
 
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, entity, "entity");
-		MagicUtil.write(json, sound, "sound");
+		MagicUtil.write(json, ForgeRegistries.ENTITY_TYPES, entity, "entity");
+		MagicUtil.write(json, ForgeRegistries.SOUND_EVENTS, sound, "sound");
 		json.add("additional_data", additionalData);
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		entity = MagicUtil.read(json, ForgeRegistries.ENTITIES, "entity");
+		entity = MagicUtil.read(json, ForgeRegistries.ENTITY_TYPES, "entity");
 		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound");
 		additionalData = GsonHelper.getAsJsonObject(json, "additional_data", null);
 	}
 
 	@Override
 	protected void encodeAdditional(FriendlyByteBuf buffer) {
-		MagicUtil.encode(buffer, entity);
+		MagicUtil.encode(buffer, ForgeRegistries.ENTITY_TYPES, entity);
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public abstract class CreateEntityMagic extends Magic {
 			}
 
 			if (entities.isEmpty()) {
-				playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.POOF.get(), 1, soundPitch(player));
 			} else {
 				playSoundServer(level, player, sound, 1, soundPitch(player));
 				cost(player);

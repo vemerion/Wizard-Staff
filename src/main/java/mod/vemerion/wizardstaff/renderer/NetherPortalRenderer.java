@@ -2,7 +2,6 @@ package mod.vemerion.wizardstaff.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
 
 import mod.vemerion.wizardstaff.entity.NetherPortalEntity;
 import mod.vemerion.wizardstaff.init.ModLayerLocations;
@@ -12,6 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.util.TransformationHelper;
 
 public class NetherPortalRenderer extends EntityRenderer<NetherPortalEntity> {
 	private final NetherPortalModel model;
@@ -26,7 +26,7 @@ public class NetherPortalRenderer extends EntityRenderer<NetherPortalEntity> {
 			MultiBufferSource bufferIn, int packedLightIn) {
 		matrixStackIn.pushPose();
 		matrixStackIn.scale(1.0F, -1.0F, 1.0F);
-		matrixStackIn.mulPose(new Quaternion(0, -entityYaw, 0, true));
+		matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(0, -entityYaw, 0, true));
 		matrixStackIn.translate(0.0D, (double) -1.501F, 0.0D);
 
 		VertexConsumer ivertexbuilder = bufferIn.getBuffer(this.model.renderType(getTextureLocation(entityIn)));

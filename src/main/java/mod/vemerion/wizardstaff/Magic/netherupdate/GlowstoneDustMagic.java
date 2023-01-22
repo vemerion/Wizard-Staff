@@ -39,7 +39,7 @@ public class GlowstoneDustMagic extends Magic {
 	@Override
 	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (count % 11 == 0)
-			player.playSound(ModSounds.RADAR, 0.35f, 1);
+			player.playSound(ModSounds.RADAR.get(), 0.35f, 1);
 		super.magicTick(level, player, staff, count);
 	}
 

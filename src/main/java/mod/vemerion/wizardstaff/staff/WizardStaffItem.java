@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.network.NetworkHooks;
@@ -34,8 +34,14 @@ public class WizardStaffItem extends Item {
 	}
 
 	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(new RenderProperties());
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				var mc = Minecraft.getInstance();
+				return new WizardStaffTileEntityRenderer(mc.getBlockEntityRenderDispatcher(), mc.getEntityModels());
+			}
+		});
 	}
 	
 	public static boolean magicPreventOtherUse(Level level, Player player, ItemStack staff) {
@@ -53,7 +59,7 @@ public class WizardStaffItem extends Item {
 						(id, inventory, player) -> new WizardStaffContainer(id, inventory,
 								WizardStaffItemHandler.get(itemstack), itemstack, shouldAnimate, handIn),
 						getName(itemstack));
-				NetworkHooks.openGui((ServerPlayer) playerIn, provider, (buffer) -> {
+				NetworkHooks.openScreen((ServerPlayer) playerIn, provider, (buffer) -> {
 					buffer.writeBoolean(handIn == InteractionHand.MAIN_HAND);
 					buffer.writeBoolean(shouldAnimate);
 				});
@@ -157,13 +163,4 @@ public class WizardStaffItem extends Item {
 			WizardStaffItemHandler.get(stack).deserializeNBT(nbt.getCompound("cap"));
 		}
 	}
-
-	private static class RenderProperties implements IItemRenderProperties {
-		@Override
-		public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-			var mc = Minecraft.getInstance();
-			return new WizardStaffTileEntityRenderer(mc.getBlockEntityRenderDispatcher(), mc.getEntityModels());
-		}
-	}
-
 }

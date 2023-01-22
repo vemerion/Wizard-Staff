@@ -56,22 +56,22 @@ public class ProjectileMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		projectileType = MagicUtil.read(json, ForgeRegistries.ENTITIES, "projectile");
+		projectileType = MagicUtil.read(json, ForgeRegistries.ENTITY_TYPES, "projectile");
 		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound");
 		speed = GsonHelper.getAsFloat(json, "speed");
 	}
 	
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, projectileType, "projectile");
-		MagicUtil.write(json, sound, "sound");
+		MagicUtil.write(json, ForgeRegistries.ENTITY_TYPES, projectileType, "projectile");
+		MagicUtil.write(json, ForgeRegistries.SOUND_EVENTS, sound, "sound");
 		json.addProperty("speed", speed);
 	}
 
 	@Override
 	public void encodeAdditional(FriendlyByteBuf buffer) {
-		MagicUtil.encode(buffer, projectileType);
-		MagicUtil.encode(buffer, sound);
+		MagicUtil.encode(buffer, ForgeRegistries.ENTITY_TYPES, projectileType);
+		MagicUtil.encode(buffer, ForgeRegistries.SOUND_EVENTS, sound);
 		buffer.writeFloat(speed);
 	}
 	

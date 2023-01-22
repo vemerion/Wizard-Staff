@@ -10,7 +10,6 @@ import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 
 public class WizardStaffMagic extends Magic {
@@ -29,7 +28,7 @@ public class WizardStaffMagic extends Magic {
 		if (!level.isClientSide) {
 			int depth = staffDepth(staff);
 			level.explode(null, magicDamage(player), null, player.getX(), player.getY(),
-					player.getZ(), depth, true, Explosion.BlockInteraction.DESTROY);
+					player.getZ(), depth, true, Level.ExplosionInteraction.MOB);
 		}
 		return ItemStack.EMPTY;
 	}

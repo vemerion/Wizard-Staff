@@ -1,10 +1,10 @@
 {
   "cost": 100.0,
+  "dimension": "minecraft:the_nether",
   "duration": 60,
-  "magic": "wizardstaff:obsidian_magic",
   "ingredient": {
     "item": "minecraft:obsidian"
   },
-  "dimension": "minecraft:the_nether",
+  "magic": "wizardstaff:obsidian_magic",
   "texture": "wizardstaff:textures/entity/nether_portal.png"
 }

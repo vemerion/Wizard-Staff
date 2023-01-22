@@ -52,7 +52,7 @@ public class SwapTradeMagic extends RayMagic {
 	@Override
 	protected void hitEntity(Level level, Player player, Entity target) {
 		if (!(target instanceof Villager)) {
-			playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
+			playSoundServer(level, player, ModSounds.POOF.get(), 1, soundPitch(player));
 			return;
 		}
 

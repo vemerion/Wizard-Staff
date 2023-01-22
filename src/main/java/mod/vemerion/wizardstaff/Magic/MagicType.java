@@ -3,9 +3,8 @@ package mod.vemerion.wizardstaff.Magic;
 import java.util.function.Function;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class MagicType<T extends Magic> extends ForgeRegistryEntry<MagicType<?>> {
+public class MagicType<T extends Magic> {
 
 	private Function<MagicType<T>, T> factory;
 

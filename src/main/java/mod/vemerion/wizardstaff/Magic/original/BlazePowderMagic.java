@@ -1,7 +1,5 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
-import java.util.Random;
-
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.init.ModParticles;
@@ -38,10 +36,10 @@ public class BlazePowderMagic extends Magic {
 	@Override
 	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (count % 7 == 0)
-			player.playSound(ModSounds.BURNING, 1, soundPitch(player));
+			player.playSound(ModSounds.BURNING.get(), 1, soundPitch(player));
 		if (!level.isClientSide) {
 			ServerLevel serverWorld = (ServerLevel) level;
-			Random rand = player.getRandom();
+			var rand = player.getRandom();
 			Vec3 offset = Vec3.directionFromRotation(player.getRotationVector());
 			cost(player);
 			for (Entity e : level.getEntities(player, player.getBoundingBox().inflate(0.3).move(offset),
@@ -55,7 +53,7 @@ public class BlazePowderMagic extends Magic {
 				Vec3 direction = Vec3.directionFromRotation(player.getXRot() + rand.nextFloat() * 30 - 15,
 						player.getYRot() + rand.nextFloat() * 30 - 15);
 				Vec3 particlePos = player.position().add(0, 1.5, 0).add(direction.scale(distance));
-				serverWorld.sendParticles(ModParticles.MAGIC_FLAME_PARTICLE, particlePos.x, particlePos.y, particlePos.z,
+				serverWorld.sendParticles(ModParticles.MAGIC_FLAME_PARTICLE.get(), particlePos.x, particlePos.y, particlePos.z,
 						0, 0, 0, 0, 1);
 			}
 		}

@@ -45,7 +45,7 @@ public class BlueDyeMagic extends Magic {
 				serverWorld.setWeatherParameters(0, player.getRandom().nextInt(12000) + 12000, true, player.getRandom().nextDouble() < 0.3);
 			}
 		}
-		player.playSound(ModSounds.CHIRP, 1, soundPitch(player));
+		player.playSound(ModSounds.CHIRP.get(), 1, soundPitch(player));
 
 		return super.magicFinish(level, player, staff);
 	}

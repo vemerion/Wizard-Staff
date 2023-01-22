@@ -44,7 +44,7 @@ public class MushroomCloudMagic extends Magic {
 			level.addFreshEntity(cloud);
 			cost(player);
 		}
-		player.playSound(ModSounds.SPRAY, 1, soundPitch(player));
+		player.playSound(ModSounds.SPRAY.get(), 1, soundPitch(player));
 		return super.magicFinish(level, player, staff);
 	}
 

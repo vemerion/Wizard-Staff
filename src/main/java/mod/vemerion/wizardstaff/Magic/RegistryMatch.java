@@ -7,16 +7,14 @@ import com.google.gson.JsonSyntaxException;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class RegistryMatch<T extends IForgeRegistryEntry<T>> implements Predicate<T> {
+public class RegistryMatch<T> implements Predicate<T> {
 
 	private IForgeRegistry<T> registry;
 	private T entry;
@@ -44,7 +42,7 @@ public class RegistryMatch<T extends IForgeRegistryEntry<T>> implements Predicat
 		if (entry != null)
 			return getEntryName(entry);
 		else
-			return new TextComponent(tag.location().getPath());
+			return Component.literal(tag.location().getPath());
 	}
 
 	// TODO: Might be a better way to do this in the future
@@ -54,10 +52,10 @@ public class RegistryMatch<T extends IForgeRegistryEntry<T>> implements Predicat
 			return block.getName();
 		else if (entry instanceof EntityType<?> entityType)
 			return entityType.getDescription();
-		return new TextComponent(entry.getRegistryName().getPath());
+		return Component.literal(registry.getKey(entry).getPath());
 	}
 
-	public static <T extends IForgeRegistryEntry<T>> RegistryMatch<T> read(IForgeRegistry<T> registry,
+	public static <T> RegistryMatch<T> read(IForgeRegistry<T> registry,
 			JsonObject json) {
 		String field = registry.getRegistryName().getPath();
 		if (GsonHelper.isValidNode(json, field))
@@ -73,14 +71,14 @@ public class RegistryMatch<T extends IForgeRegistryEntry<T>> implements Predicat
 		String field = registry.getRegistryName().getPath();
 		JsonObject json = new JsonObject();
 		if (entry != null)
-			MagicUtil.write(json, entry, field);
+			MagicUtil.write(json, registry, entry, field);
 		else
 			json.addProperty("tag", tag.location().toString());
 
 		return json;
 	}
 
-	public static <T extends IForgeRegistryEntry<T>> RegistryMatch<T> decode(IForgeRegistry<T> registry,
+	public static <T> RegistryMatch<T> decode(IForgeRegistry<T> registry,
 			FriendlyByteBuf buffer) {
 		if (buffer.readBoolean())
 			return new RegistryMatch<T>(registry, MagicUtil.<T>decode(buffer));
@@ -91,7 +89,7 @@ public class RegistryMatch<T extends IForgeRegistryEntry<T>> implements Predicat
 	public void encode(FriendlyByteBuf buffer) {
 		if (entry != null) {
 			buffer.writeBoolean(true);
-			MagicUtil.encode(buffer, entry);
+			MagicUtil.encode(buffer, registry, entry);
 		} else {
 			buffer.writeBoolean(false);
 			buffer.writeResourceLocation(tag.location());

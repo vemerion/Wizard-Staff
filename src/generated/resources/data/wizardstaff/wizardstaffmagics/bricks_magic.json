@@ -1,8 +1,8 @@
 {
   "cost": 50.0,
   "duration": 30,
-  "magic": "wizardstaff:bricks_magic",
   "ingredient": {
     "item": "minecraft:bricks"
-  }
+  },
+  "magic": "wizardstaff:bricks_magic"
 }

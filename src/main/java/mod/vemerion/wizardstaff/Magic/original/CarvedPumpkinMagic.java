@@ -27,10 +27,10 @@ public class CarvedPumpkinMagic extends Magic {
 
 	@Override
 	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
-		player.playSound(ModSounds.PUMPKIN_MAGIC, 0.2f, soundPitch(player));
+		player.playSound(ModSounds.PUMPKIN_MAGIC.get(), 0.2f, soundPitch(player));
 		if (!level.isClientSide) {
 			cost(player);
-			PumpkinMagicEntity entity = new PumpkinMagicEntity(ModEntities.PUMPKIN_MAGIC, level, player);
+			PumpkinMagicEntity entity = new PumpkinMagicEntity(ModEntities.PUMPKIN_MAGIC.get(), level, player);
 			entity.absMoveTo(player.getX(), player.getY() + 2, player.getZ(), player.getYRot(),
 					0);
 			level.addFreshEntity(entity);

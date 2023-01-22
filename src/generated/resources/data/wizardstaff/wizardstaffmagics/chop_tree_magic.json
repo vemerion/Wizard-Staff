@@ -1,12 +1,12 @@
 {
-  "cost": 2.0,
-  "duration": 40,
-  "magic": "wizardstaff:mass_harvest_magic",
-  "ingredient": {
-    "item": "minecraft:diamond_axe"
-  },
+  "block_limit": 40,
   "block_match": {
     "tag": "minecraft:logs"
   },
-  "block_limit": 40
+  "cost": 2.0,
+  "duration": 40,
+  "ingredient": {
+    "item": "minecraft:diamond_axe"
+  },
+  "magic": "wizardstaff:mass_harvest_magic"
 }

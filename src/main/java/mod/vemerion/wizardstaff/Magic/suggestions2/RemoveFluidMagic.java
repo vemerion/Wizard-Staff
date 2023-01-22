@@ -96,7 +96,7 @@ public class RemoveFluidMagic extends Magic {
 			}
 			cost(player, count);
 			if (count > 0)
-				playSoundServer(level, player, ModSounds.EVAPORATE, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.EVAPORATE.get(), 1, soundPitch(player));
 		}
 		return super.magicFinish(level, player, staff);
 	}

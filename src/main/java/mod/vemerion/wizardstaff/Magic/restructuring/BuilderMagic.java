@@ -17,7 +17,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFir
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.GsonHelper;
@@ -89,12 +89,12 @@ public class BuilderMagic extends Magic {
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { new TextComponent(name.getPath()) };
+		return new Object[] { Component.literal(name.getPath()) };
 	}
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { new TextComponent(name.getPath()) };
+		return new Object[] { Component.literal(name.getPath()) };
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class BuilderMagic extends Magic {
 	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
 		if (!level.isClientSide && generateStructure((ServerLevel) level, player)) {
 			cost(player);
-			playSoundServer(level, player, ModSounds.BUILDING, 1, soundPitch(player));
+			playSoundServer(level, player, ModSounds.BUILDING.get(), 1, soundPitch(player));
 		}
 		return super.magicFinish(level, player, staff);
 	}

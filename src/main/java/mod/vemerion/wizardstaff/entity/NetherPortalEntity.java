@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -70,7 +71,7 @@ public class NetherPortalEntity extends Entity implements IEntityAdditionalSpawn
 			float offset = random.nextFloat() * 0.05f - 0.025f;
 			Vec3 pos = position().add(sideways.x * Mth.cos(rotation) * (0.5 + offset),
 					1 + Mth.sin(rotation) * (1 + offset), sideways.z * Mth.cos(rotation) * (0.5 + offset));
-			serverWorld.sendParticles(ModParticles.MAGIC_SMOKE_PARTICLE, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
+			serverWorld.sendParticles(ModParticles.MAGIC_SMOKE_PARTICLE.get(), pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
 		}
 	}
 
@@ -107,11 +108,6 @@ public class NetherPortalEntity extends Entity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public float getBrightness() {
-		return 15;
-	}
-
-	@Override
 	protected void defineSynchedData() {
 	}
 
@@ -127,7 +123,7 @@ public class NetherPortalEntity extends Entity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

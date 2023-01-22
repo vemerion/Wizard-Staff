@@ -20,7 +20,7 @@ public class GrapplingHookEntity extends MagicEntity implements IEntityAdditiona
 	}
 
 	public GrapplingHookEntity(Level level, Player shooter) {
-		this(ModEntities.GRAPPLING_HOOK, level);
+		this(ModEntities.GRAPPLING_HOOK.get(), level);
 		this.setCaster(shooter);
 	}
 

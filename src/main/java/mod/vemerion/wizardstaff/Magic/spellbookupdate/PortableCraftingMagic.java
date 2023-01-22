@@ -26,7 +26,7 @@ public class PortableCraftingMagic extends ContainerMagic {
 
 	@Override
 	protected SoundEvent getSound() {
-		return ModSounds.ANVIL;
+		return ModSounds.ANVIL.get();
 	}
 
 	private class PortableCrafterContainer extends CraftingMenu {

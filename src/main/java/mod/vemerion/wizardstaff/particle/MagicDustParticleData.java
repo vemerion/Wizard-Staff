@@ -1,6 +1,6 @@
 package mod.vemerion.wizardstaff.particle;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 
 import mod.vemerion.wizardstaff.init.ModParticles;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -14,7 +14,7 @@ public class MagicDustParticleData extends DustParticleOptions {
 	
 	@Override
 	public ParticleType<DustParticleOptions> getType() {
-		return ModParticles.MAGIC_DUST_PARTICLE;
+		return ModParticles.MAGIC_DUST_PARTICLE.get();
 	}
 
 }

@@ -46,7 +46,7 @@ public abstract class ContainerMagic extends Magic {
 				SimpleMenuProvider provider = new SimpleMenuProvider(
 						(id, inventory, p) -> getContainer(id, inventory, p, level, staff, w),
 						getDescription().getName());
-				NetworkHooks.openGui((ServerPlayer) player, provider, b -> addExtraData(b, player));
+				NetworkHooks.openScreen((ServerPlayer) player, provider, b -> addExtraData(b, player));
 			});
 		}
 		player.playSound(getSound(), 1, soundPitch(player));

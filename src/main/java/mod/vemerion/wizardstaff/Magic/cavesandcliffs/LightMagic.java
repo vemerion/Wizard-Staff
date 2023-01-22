@@ -37,12 +37,12 @@ public class LightMagic extends Magic {
 
 	@Override
 	public void magicTick(Level level, Player player, ItemStack staff, int count) {
-		var pos = player.eyeBlockPosition();
+		var pos = player.blockPosition();
 		var state = level.getBlockState(pos);
 		if (!level.isClientSide && (state.isAir() || state.getBlock() == Blocks.WATER)
-				&& state.getBlock() != ModBlocks.MAGIC_LIGHT) {
+				&& state.getBlock() != ModBlocks.MAGIC_LIGHT.get()) {
 			cost(player);
-			level.setBlockAndUpdate(pos, ModBlocks.MAGIC_LIGHT.defaultBlockState()
+			level.setBlockAndUpdate(pos, ModBlocks.MAGIC_LIGHT.get().defaultBlockState()
 					.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(state.getBlock() == Blocks.WATER)));
 		}
 	}

@@ -24,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class DeflectProjectileMagic extends Magic {
 
@@ -75,12 +76,12 @@ public class DeflectProjectileMagic extends Magic {
 			}
 
 			if (!projectiles.isEmpty())
-				playSoundServer(level, player, ModSounds.IMPACT, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.IMPACT.get(), 1, soundPitch(player));
 		}
 	}
 
 	private boolean notBlacklisted(Entity e) {
-		return !blacklist.contains(e.getType().getRegistryName());
+		return !blacklist.contains(ForgeRegistries.ENTITY_TYPES.getKey(e.getType()));
 	}
 
 }

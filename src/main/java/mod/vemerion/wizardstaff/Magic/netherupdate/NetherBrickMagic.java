@@ -2,7 +2,7 @@ package mod.vemerion.wizardstaff.Magic.netherupdate;
 
 import mod.vemerion.wizardstaff.Magic.LookAtMagic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
-import mod.vemerion.wizardstaff.init.ModConfiguredStructureTags;
+import mod.vemerion.wizardstaff.init.ModStructureTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,7 +19,7 @@ public class NetherBrickMagic extends LookAtMagic {
 	protected BlockPos getPosition(ServerLevel level, ServerPlayer player, ItemStack staff) {
 		BlockPos pos = null;
 		if (level.dimension() == Level.NETHER) {
-			pos = level.findNearestMapFeature(ModConfiguredStructureTags.NETHER_FORTRESS,
+			pos = level.findNearestMapStructure(ModStructureTags.NETHER_FORTRESS,
 					new BlockPos(player.position()), 100, false);
 		}
 		return pos;

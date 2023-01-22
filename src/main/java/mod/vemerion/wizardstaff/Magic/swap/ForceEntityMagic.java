@@ -13,7 +13,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -41,7 +41,7 @@ public class ForceEntityMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		match = RegistryMatch.read(ForgeRegistries.ENTITIES, GsonHelper.getAsJsonObject(json, "entity_match"));
+		match = RegistryMatch.read(ForgeRegistries.ENTITY_TYPES, GsonHelper.getAsJsonObject(json, "entity_match"));
 		force = GsonHelper.getAsFloat(json, "force");
 	}
 
@@ -59,7 +59,7 @@ public class ForceEntityMagic extends Magic {
 
 	@Override
 	protected void decodeAdditional(FriendlyByteBuf buffer) {
-		match = RegistryMatch.decode(ForgeRegistries.ENTITIES, buffer);
+		match = RegistryMatch.decode(ForgeRegistries.ENTITY_TYPES, buffer);
 		force = buffer.readFloat();
 	}
 
@@ -67,10 +67,10 @@ public class ForceEntityMagic extends Magic {
 	protected Object[] getNameArgs() {
 		return new Object[] {
 				force >= 0
-						? new TranslatableComponent("gui." + Main.MODID + "."
-								+ ModMagics.FORCE_ENTITY_MAGIC.getRegistryName().getPath() + ".attract")
-						: new TranslatableComponent("gui." + Main.MODID + "."
-								+ ModMagics.FORCE_ENTITY_MAGIC.getRegistryName().getPath() + ".repel"),
+						? Component.translatable("gui." + Main.MODID + "."
+								+ ModMagics.getRegistry().getKey(ModMagics.FORCE_ENTITY_MAGIC.get()).getPath() + ".attract")
+						: Component.translatable("gui." + Main.MODID + "."
+								+ ModMagics.getRegistry().getKey(ModMagics.FORCE_ENTITY_MAGIC.get()).getPath() + ".repel"),
 				match.getName() };
 	}
 
@@ -104,7 +104,7 @@ public class ForceEntityMagic extends Magic {
 			cost(player);
 
 		if (count % 6 == 0)
-			player.playSound(ModSounds.MAGNET, 1, soundPitch(player));
+			player.playSound(ModSounds.MAGNET.get(), 1, soundPitch(player));
 	}
 
 }

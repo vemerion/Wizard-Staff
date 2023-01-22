@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 import mod.vemerion.wizardstaff.Magic.CreateEntityMagic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -60,7 +60,7 @@ public class SummonEntityMagic extends CreateEntityMagic {
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { new TextComponent(String.valueOf(count)), entity.getDescription() };
+		return new Object[] { Component.literal(String.valueOf(count)), entity.getDescription() };
 	}
 
 	private Vec3 nearby(Player player) {

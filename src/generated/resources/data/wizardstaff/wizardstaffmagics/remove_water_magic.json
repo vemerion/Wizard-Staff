@@ -1,11 +1,11 @@
 {
   "cost": 0.2,
   "duration": 10,
-  "magic": "wizardstaff:remove_fluid_magic",
+  "fluid_match": {
+    "tag": "minecraft:water"
+  },
   "ingredient": {
     "item": "minecraft:sponge"
   },
-  "fluid_match": {
-    "tag": "minecraft:water"
-  }
+  "magic": "wizardstaff:remove_fluid_magic"
 }

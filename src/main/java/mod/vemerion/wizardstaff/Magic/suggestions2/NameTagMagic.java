@@ -2,7 +2,6 @@ package mod.vemerion.wizardstaff.Magic.suggestions2;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,8 +17,9 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -64,7 +64,7 @@ public class NameTagMagic extends Magic {
 		return WizardStaffLayer::spinMagic;
 	}
 
-	private String randomName(Random rand) {
+	private String randomName(RandomSource rand) {
 		String name = "";
 		for (int i = 0; i < rand.nextInt(3) + 2; i++) {
 			name += syllables.get(rand.nextInt(syllables.size()));
@@ -74,14 +74,14 @@ public class NameTagMagic extends Magic {
 
 	@Override
 	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
-		player.playSound(ModSounds.SCRIBBLE, 1, soundPitch(player));
+		player.playSound(ModSounds.SCRIBBLE.get(), 1, soundPitch(player));
 		if (!level.isClientSide) {
 			WizardStaffItemHandler.getOptional(staff).ifPresent(h -> {
 				String name = randomName(player.getRandom());
 				cost(player);
 				ItemStack nametag = h.extractCurrent();
 				nametag = Items.NAME_TAG.getDefaultInstance();
-				nametag.setHoverName(new TextComponent(name));
+				nametag.setHoverName(Component.literal(name));
 				h.insertCurrent(nametag);
 			});
 		}

@@ -2,52 +2,52 @@ package mod.vemerion.wizardstaff.datagen;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.init.ModSounds;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
 
 public class ModSoundProvider extends SoundDefinitionsProvider {
 
-	protected ModSoundProvider(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, Main.MODID, helper);
+	protected ModSoundProvider(PackOutput packOutput, ExistingFileHelper helper) {
+		super(packOutput, Main.MODID, helper);
 	}
 
 	@Override
 	public void registerSounds() {
-		addWithSameName(ModSounds.ANVIL);
-		addWithSameName(ModSounds.BELL);
-		addWithSameName(ModSounds.BRICK);
-		addWithSameName(ModSounds.BUILDING);
-		addWithSameName(ModSounds.BURNING);
-		addWithSameName(ModSounds.CHIRP);
-		addWithSameName(ModSounds.CLOCK);
-		addWithSameName(ModSounds.CLOTH);
-		addWithSameName(ModSounds.DEAGE);
-		addWithSameName(ModSounds.EVAPORATE);
-		addWithSameName(ModSounds.FLAP);
-		addWithSameName(ModSounds.GONG);
-		addWithSameName(ModSounds.HEARTBEAT);
-		addWithSameName(ModSounds.IMPACT);
-		addWithSameName(ModSounds.MAGNET);
-		addWithSameName(ModSounds.PAGE_TURN);
-		addWithSameName(ModSounds.PLOP);
-		addWithSameName(ModSounds.POOF);
-		addWithSameName(ModSounds.PORTAL);
-		addWithSameName(ModSounds.PUMPKIN_MAGIC);
-		addWithSameName(ModSounds.PUSH);
-		addWithSameName(ModSounds.RADAR);
-		addWithSameName(ModSounds.RAY);
-		addWithSameName(ModSounds.REVERT);
-		addWithSameName(ModSounds.SCRIBBLE);
-		addWithSameName(ModSounds.SKELETON);
-		addWithSameName(ModSounds.SNIFFLE);
-		addWithSameName(ModSounds.SPRAY);
-		addWithSameName(ModSounds.SWAP);
-		addWithSameName(ModSounds.TELEPORT);
-		addWithSameName(ModSounds.TRANSFORM);
-		addWithSameName(ModSounds.WARP);
-		addWithSameName(ModSounds.WOOSH);
+		addWithSameName(ModSounds.ANVIL.get());
+		addWithSameName(ModSounds.BELL.get());
+		addWithSameName(ModSounds.BRICK.get());
+		addWithSameName(ModSounds.BUILDING.get());
+		addWithSameName(ModSounds.BURNING.get());
+		addWithSameName(ModSounds.CHIRP.get());
+		addWithSameName(ModSounds.CLOCK.get());
+		addWithSameName(ModSounds.CLOTH.get());
+		addWithSameName(ModSounds.DEAGE.get());
+		addWithSameName(ModSounds.EVAPORATE.get());
+		addWithSameName(ModSounds.FLAP.get());
+		addWithSameName(ModSounds.GONG.get());
+		addWithSameName(ModSounds.HEARTBEAT.get());
+		addWithSameName(ModSounds.IMPACT.get());
+		addWithSameName(ModSounds.MAGNET.get());
+		addWithSameName(ModSounds.PAGE_TURN.get());
+		addWithSameName(ModSounds.PLOP.get());
+		addWithSameName(ModSounds.POOF.get());
+		addWithSameName(ModSounds.PORTAL.get());
+		addWithSameName(ModSounds.PUMPKIN_MAGIC.get());
+		addWithSameName(ModSounds.PUSH.get());
+		addWithSameName(ModSounds.RADAR.get());
+		addWithSameName(ModSounds.RAY.get());
+		addWithSameName(ModSounds.REVERT.get());
+		addWithSameName(ModSounds.SCRIBBLE.get());
+		addWithSameName(ModSounds.SKELETON.get());
+		addWithSameName(ModSounds.SNIFFLE.get());
+		addWithSameName(ModSounds.SPRAY.get());
+		addWithSameName(ModSounds.SWAP.get());
+		addWithSameName(ModSounds.TELEPORT.get());
+		addWithSameName(ModSounds.TRANSFORM.get());
+		addWithSameName(ModSounds.WARP.get());
+		addWithSameName(ModSounds.WOOSH.get());
 	}
 
 	private void addWithSameName(SoundEvent sound) {

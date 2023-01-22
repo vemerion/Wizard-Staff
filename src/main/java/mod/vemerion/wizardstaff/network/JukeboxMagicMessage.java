@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class JukeboxMagicMessage {
 
@@ -23,7 +24,7 @@ public class JukeboxMagicMessage {
 
 	public void encode(final FriendlyByteBuf buffer) {
 		buffer.writeUUID(id);
-		buffer.writeRegistryId(music);
+		buffer.writeRegistryId(ForgeRegistries.SOUND_EVENTS, music);
 	}
 
 	public static JukeboxMagicMessage decode(final FriendlyByteBuf buffer) {

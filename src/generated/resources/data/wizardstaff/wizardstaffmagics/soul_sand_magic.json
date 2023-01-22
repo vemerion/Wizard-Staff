@@ -1,12 +1,11 @@
 {
   "cost": 40.0,
   "duration": 40,
-  "magic": "wizardstaff:shaped_create_entity_magic",
+  "entity": "wizardstaff:magic_soul_sand_arm",
   "ingredient": {
     "item": "minecraft:soul_sand"
   },
-  "entity": "wizardstaff:magic_soul_sand_arm",
-  "sound": "wizardstaff:pumpkin_magic",
+  "magic": "wizardstaff:shaped_create_entity_magic",
   "shape": [
     " x ",
     "x  ",
@@ -17,5 +16,6 @@
     "  x",
     " x ",
     " p "
-  ]
+  ],
+  "sound": "wizardstaff:pumpkin_magic"
 }

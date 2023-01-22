@@ -1,14 +1,14 @@
 {
-  "cost": 60.0,
-  "duration": 55,
-  "magic": "wizardstaff:summon_entity_magic",
-  "ingredient": {
-    "item": "minecraft:golden_pickaxe"
-  },
-  "entity": "wizardstaff:magic_mining_vex",
-  "sound": "wizardstaff:bell",
   "additional_data": {
     "minable": "forge:ores"
   },
-  "count": 3
+  "cost": 60.0,
+  "count": 3,
+  "duration": 55,
+  "entity": "wizardstaff:magic_mining_vex",
+  "ingredient": {
+    "item": "minecraft:golden_pickaxe"
+  },
+  "magic": "wizardstaff:summon_entity_magic",
+  "sound": "wizardstaff:bell"
 }

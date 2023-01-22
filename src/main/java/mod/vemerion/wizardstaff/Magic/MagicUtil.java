@@ -17,13 +17,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class MagicUtil {
 
 	// Forge Registries
-	public static <T extends IForgeRegistryEntry<T>> T read(JsonObject json, IForgeRegistry<T> registry,
-			String member) {
+	public static <T> T read(JsonObject json, IForgeRegistry<T> registry, String member) {
 		ResourceLocation key = new ResourceLocation(GsonHelper.getAsString(json, member));
 		if (registry.containsKey(key)) {
 			return registry.getValue(key);
@@ -33,21 +31,20 @@ public class MagicUtil {
 		}
 	}
 
-	public static <T extends IForgeRegistryEntry<T>> T read(JsonObject json, IForgeRegistry<T> registry, String member,
-			T fallback) {
+	public static <T> T read(JsonObject json, IForgeRegistry<T> registry, String member, T fallback) {
 		return json.has(member) ? read(json, registry, member) : fallback;
 	}
 
-	public static <T extends IForgeRegistryEntry<T>> void write(JsonObject json, T obj, String member) {
-		String key = obj.getRegistryName().toString();
+	public static <T> void write(JsonObject json, IForgeRegistry<T> registry, T obj, String member) {
+		String key = registry.getKey(obj).toString();
 		json.addProperty(member, key);
 	}
 
-	public static <T extends IForgeRegistryEntry<T>> void encode(FriendlyByteBuf buffer, T obj) {
-		buffer.writeRegistryId(obj);
+	public static <T> void encode(FriendlyByteBuf buffer, IForgeRegistry<T> registry, T obj) {
+		buffer.writeRegistryId(registry, obj);
 	}
 
-	public static <T extends IForgeRegistryEntry<T>> T decode(FriendlyByteBuf buffer) {
+	public static <T> T decode(FriendlyByteBuf buffer) {
 		return buffer.readRegistryId();
 	}
 	// ---
@@ -59,8 +56,8 @@ public class MagicUtil {
 		if (value.isPresent()) {
 			return value.get();
 		} else {
-			throw new JsonParseException("Invalid registry key " + key + " for registry "
-					+ registry.key().location().getPath());
+			throw new JsonParseException(
+					"Invalid registry key " + key + " for registry " + registry.key().location().getPath());
 		}
 	}
 
@@ -112,7 +109,8 @@ public class MagicUtil {
 		json.add(member, array);
 	}
 
-	public static <T, C extends Collection<T>> C decodeColl(FriendlyByteBuf buffer, Function<FriendlyByteBuf, T> f, C coll) {
+	public static <T, C extends Collection<T>> C decodeColl(FriendlyByteBuf buffer, Function<FriendlyByteBuf, T> f,
+			C coll) {
 		int count = buffer.readInt();
 		for (int i = 0; i < count; i++)
 			coll.add(f.apply(buffer));

@@ -28,7 +28,7 @@ public abstract class RayMagic extends Magic {
 	@Override
 	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (count % 10 == 0) {
-			player.playSound(ModSounds.RAY, 0.6f, 0.95f + player.getRandom().nextFloat() * 0.05f);
+			player.playSound(ModSounds.RAY.get(), 0.6f, 0.95f + player.getRandom().nextFloat() * 0.05f);
 		}
 		if (level.isClientSide) {
 			Vec3 direction = Vec3.directionFromRotation(player.getRotationVector());

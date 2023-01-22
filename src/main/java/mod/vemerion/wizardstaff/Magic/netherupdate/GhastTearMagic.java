@@ -1,7 +1,5 @@
 package mod.vemerion.wizardstaff.Magic.netherupdate;
 
-import java.util.Random;
-
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.init.ModSounds;
@@ -37,7 +35,7 @@ public class GhastTearMagic extends Magic {
 	@Override
 	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (count % 13 == 0)
-			player.playSound(ModSounds.SNIFFLE, 0.6f, soundPitch(player) * 2);
+			player.playSound(ModSounds.SNIFFLE.get(), 0.6f, soundPitch(player) * 2);
 		if (!level.isClientSide) {
 			cost(player);
 			player.clearFire();
@@ -60,7 +58,7 @@ public class GhastTearMagic extends Magic {
 	}
 
 	private void cry(Player player) {
-		Random rand = player.getRandom();
+		var rand = player.getRandom();
 		Vec3 direction = Vec3.directionFromRotation(player.getRotationVector());
 		Vec3 right = direction.yRot(-90);
 		Vec3 center = player.position().add(direction.x * 0.4, 1.6 + direction.y * 0.6, direction.z * 0.4);

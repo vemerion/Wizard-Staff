@@ -1,7 +1,5 @@
 package mod.vemerion.wizardstaff.Magic.spellbookupdate;
 
-import java.util.Random;
-
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
 import mod.vemerion.wizardstaff.init.ModSounds;
@@ -24,14 +22,14 @@ public class DeageMagic extends RayMagic {
 		float duration = getUseDuration(staff);
 		float progress = (duration - count) / duration;
 		float green = Math.min(1, progress * 1.5f);
-		Random rand = player.getRandom();
+		var rand = player.getRandom();
 		return new MagicDustParticleData(rand.nextFloat() * 0.1f, green, 0.2f + rand.nextFloat() * 0.1f, 1);
 	}
 
 	@Override
 	protected void hitEntity(Level level, Player player, Entity target) {
 		if (target instanceof Mob) {
-			target.playSound(ModSounds.DEAGE, 1, soundPitch(player));
+			target.playSound(ModSounds.DEAGE.get(), 1, soundPitch(player));
 			cost(player);
 			Mob mob = (Mob) target;
 			mob.setBaby(true);

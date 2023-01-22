@@ -1,17 +1,17 @@
 {
   "cost": 50.0,
   "duration": 15,
-  "magic": "wizardstaff:shaped_create_entity_magic",
+  "entity": "minecraft:tnt",
   "ingredient": {
     "item": "minecraft:tnt"
   },
-  "entity": "minecraft:tnt",
-  "sound": "wizardstaff:clock",
+  "magic": "wizardstaff:shaped_create_entity_magic",
   "shape": [
     "x",
     "x",
     "x",
     " ",
     "p"
-  ]
+  ],
+  "sound": "wizardstaff:clock"
 }

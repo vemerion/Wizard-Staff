@@ -1,11 +1,11 @@
 {
   "cost": 40.0,
+  "count": 3,
   "duration": 40,
-  "magic": "wizardstaff:summon_entity_magic",
+  "entity": "wizardstaff:magic_vex",
   "ingredient": {
     "item": "minecraft:totem_of_undying"
   },
-  "entity": "wizardstaff:magic_vex",
-  "sound": "wizardstaff:bell",
-  "count": 3
+  "magic": "wizardstaff:summon_entity_magic",
+  "sound": "wizardstaff:bell"
 }

@@ -25,7 +25,7 @@ public class MagicContainer extends AbstractContainerMenu {
 	private InteractionHand hand;
 
 	public MagicContainer(int id, Inventory playerInv, IItemHandler magicInv, ItemStack staff, InteractionHand hand) {
-		super(ModContainers.MAGIC, id);
+		super(ModContainers.MAGIC.get(), id);
 		this.staff = staff;
 		this.hand = hand;
 

@@ -44,12 +44,12 @@ public class RevertPositionMagic extends Magic {
 				BlockPos revert = w.revertPosition(player);
 				if (revert != null) {
 					player.fallDistance = 0;
-					playSoundServer(level, player, ModSounds.REVERT, 1, soundPitch(player));
+					playSoundServer(level, player, ModSounds.REVERT.get(), 1, soundPitch(player));
 					cost(player);
 					((ServerPlayer) player).teleportTo((ServerLevel) level, revert.getX(), revert.getY(),
 							revert.getZ(), player.getYRot(), player.getXRot());
 				} else {
-					playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
+					playSoundServer(level, player, ModSounds.POOF.get(), 1, soundPitch(player));
 				}
 			});
 		}

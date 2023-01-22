@@ -62,7 +62,7 @@ public class BucketMagic extends Magic {
 	
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, bucket, "bucket");
+		MagicUtil.write(json, ForgeRegistries.ITEMS, bucket, "bucket");
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class BucketMagic extends Magic {
 
 	@Override
 	protected void encodeAdditional(FriendlyByteBuf buffer) {
-		MagicUtil.encode(buffer, bucket);
+		MagicUtil.encode(buffer, ForgeRegistries.ITEMS, bucket);
 	}
 
 	@Override

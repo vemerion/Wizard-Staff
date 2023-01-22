@@ -34,7 +34,7 @@ public class ForgeEventSubscriber {
 
 	@SubscribeEvent
 	public static void synchMagics(PlayerLoggedInEvent event) {
-		Magics.getInstance(false).sendAllMagicMessage((ServerPlayer) event.getPlayer());
+		Magics.getInstance(false).sendAllMagicMessage((ServerPlayer) event.getEntity());
 	}
 
 	@SubscribeEvent
@@ -46,7 +46,7 @@ public class ForgeEventSubscriber {
 	@SubscribeEvent
 	public static void cloneCapabilities(PlayerEvent.Clone event) {
 		Player original = event.getOriginal();
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		copyCap(player, original, Experience.CAPABILITY);
 		copyCap(player, original, ScreenAnimations.CAPABILITY);
 		copyCap(player, original, Wizard.CAPABILITY);
@@ -67,7 +67,7 @@ public class ForgeEventSubscriber {
 		if (event.getHand() != InteractionHand.MAIN_HAND || !(stack.getItem() instanceof WizardStaffItem)
 				|| event.getHitVec().getType() != Type.BLOCK)
 			return;
-		if (WizardStaffItem.magicPreventOtherUse(event.getWorld(), event.getPlayer(), stack))
+		if (WizardStaffItem.magicPreventOtherUse(event.getLevel(), event.getEntity(), stack))
 			event.setUseBlock(Result.DENY);
 	}
 }

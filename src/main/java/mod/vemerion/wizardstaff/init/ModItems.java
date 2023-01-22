@@ -4,60 +4,61 @@ import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.item.DruidArmorItem;
 import mod.vemerion.wizardstaff.item.WarlockArmorItem;
 import mod.vemerion.wizardstaff.item.WizardArmorItem;
-import mod.vemerion.wizardstaff.item.WizardStaffItemGroup;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-@ObjectHolder(value = Main.MODID)
 @EventBusSubscriber(bus = Bus.MOD, modid = Main.MODID)
 public class ModItems {
 
-	public static final WizardStaffItem WIZARD_STAFF = null;
-	public static final WizardStaffItem NETHER_WIZARD_STAFF = null;
-	public static final WizardArmorItem WIZARD_HAT = null;
-	public static final WizardArmorItem WIZARD_CHESTPLATE = null;
-	public static final WizardArmorItem WIZARD_LEGGINGS = null;
-	public static final WizardArmorItem WIZARD_BOOTS = null;
-	public static final DruidArmorItem DRUID_HELMET = null;
-	public static final DruidArmorItem DRUID_CHESTPLATE = null;
-	public static final DruidArmorItem DRUID_LEGGINGS = null;
-	public static final DruidArmorItem DRUID_BOOTS = null;
-	public static final WarlockArmorItem WARLOCK_HELMET = null;
-	public static final WarlockArmorItem WARLOCK_CHESTPLATE = null;
-	public static final WarlockArmorItem WARLOCK_LEGGINGS = null;
-	public static final WarlockArmorItem WARLOCK_BOOTS = null;
+	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Main.MODID);
 
-	public static WizardStaffItemGroup WIZARD_STAFF_ITEM_GROUP = new WizardStaffItemGroup();
+	public static final RegistryObject<WizardStaffItem> WIZARD_STAFF = ITEMS.register("wizard_staff",
+			() -> new WizardStaffItem(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<WizardStaffItem> NETHER_WIZARD_STAFF = ITEMS.register("nether_wizard_staff",
+			() -> new WizardStaffItem(new Item.Properties().stacksTo(1).fireResistant()));
+	public static final RegistryObject<WizardArmorItem> WIZARD_HAT = ITEMS.register("wizard_hat",
+			() -> new WizardArmorItem(EquipmentSlot.HEAD));
+	public static final RegistryObject<WizardArmorItem> WIZARD_CHESTPLATE = ITEMS.register("wizard_chestplate",
+			() -> new WizardArmorItem(EquipmentSlot.CHEST));
+	public static final RegistryObject<WizardArmorItem> WIZARD_LEGGINGS = ITEMS.register("wizard_leggings",
+			() -> new WizardArmorItem(EquipmentSlot.LEGS));
+	public static final RegistryObject<WizardArmorItem> WIZARD_BOOTS = ITEMS.register("wizard_boots",
+			() -> new WizardArmorItem(EquipmentSlot.FEET));
+	public static final RegistryObject<DruidArmorItem> DRUID_HELMET = ITEMS.register("druid_helmet",
+			() -> new DruidArmorItem(EquipmentSlot.HEAD));
+	public static final RegistryObject<DruidArmorItem> DRUID_CHESTPLATE = ITEMS.register("druid_chestplate",
+			() -> new DruidArmorItem(EquipmentSlot.CHEST));
+	public static final RegistryObject<DruidArmorItem> DRUID_LEGGINGS = ITEMS.register("druid_leggings",
+			() -> new DruidArmorItem(EquipmentSlot.LEGS));
+	public static final RegistryObject<DruidArmorItem> DRUID_BOOTS = ITEMS.register("druid_boots",
+			() -> new DruidArmorItem(EquipmentSlot.FEET));
+	public static final RegistryObject<WarlockArmorItem> WARLOCK_HELMET = ITEMS.register("warlock_helmet",
+			() -> new WarlockArmorItem(EquipmentSlot.HEAD));
+	public static final RegistryObject<WarlockArmorItem> WARLOCK_CHESTPLATE = ITEMS.register("warlock_chestplate",
+			() -> new WarlockArmorItem(EquipmentSlot.CHEST));
+	public static final RegistryObject<WarlockArmorItem> WARLOCK_LEGGINGS = ITEMS.register("warlock_leggings",
+			() -> new WarlockArmorItem(EquipmentSlot.LEGS));
+	public static final RegistryObject<WarlockArmorItem> WARLOCK_BOOTS = ITEMS.register("warlock_boots",
+			() -> new WarlockArmorItem(EquipmentSlot.FEET));
 
 	@SubscribeEvent
-	public static void onRegisterItem(RegistryEvent.Register<Item> event) {
-		Item.Properties staffProperties = new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_COMBAT);
-		event.getRegistry().register(Init.setup(new WizardStaffItem(staffProperties), "wizard_staff"));
-		Item.Properties netherStaffProperties = new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_COMBAT)
-				.fireResistant();
-		event.getRegistry().register(Init.setup(new WizardStaffItem(netherStaffProperties), "nether_wizard_staff"));
-
-		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlot.HEAD), "druid_helmet"));
-		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlot.CHEST), "druid_chestplate"));
-		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlot.LEGS), "druid_leggings"));
-		event.getRegistry().register(Init.setup(new DruidArmorItem(EquipmentSlot.FEET), "druid_boots"));
-
-		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlot.HEAD), "warlock_helmet"));
-		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlot.CHEST), "warlock_chestplate"));
-		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlot.LEGS), "warlock_leggings"));
-		event.getRegistry().register(Init.setup(new WarlockArmorItem(EquipmentSlot.FEET), "warlock_boots"));
-
-		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlot.HEAD), "wizard_hat"));
-		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlot.CHEST), "wizard_chestplate"));
-		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlot.LEGS), "wizard_leggings"));
-		event.getRegistry().register(Init.setup(new WizardArmorItem(EquipmentSlot.FEET), "wizard_boots"));
+	public static void onRegisterTabs(CreativeModeTabEvent.Register event) {
+		event.registerCreativeModeTab(new ResourceLocation(Main.MODID, "tab"),
+				builder -> builder.title(Component.translatable("itemGroup.wizardstaff"))
+						.icon(() -> WIZARD_HAT.get().getDefaultInstance())
+						.displayItems((features, output, operator) -> {
+							for (var item : ITEMS.getEntries())
+								output.accept(item.get().getDefaultInstance());
+						}));
 	}
-
 }

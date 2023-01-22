@@ -29,8 +29,8 @@ public class WizardArmorItem extends MagicArmorItem {
 	}
 
 	@Override
-	protected RenderProperties getRenderProperties() {
-		return new WizardRenderProperties();
+	protected ClientItemExtensions getClientItemExtensions() {
+		return new WizardClientItemExtensions();
 	}
 
 	private static class WizardArmorMaterial extends MagicArmorMaterial {
@@ -46,7 +46,7 @@ public class WizardArmorItem extends MagicArmorItem {
 		}
 	}
 
-	private static class WizardRenderProperties extends RenderProperties {
+	private static class WizardClientItemExtensions extends ClientItemExtensions {
 
 		@Override
 		protected MagicArmorModel<?> getModel() {

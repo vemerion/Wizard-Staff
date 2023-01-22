@@ -57,7 +57,7 @@ public class MagicLightBlock extends Block implements SimpleWaterloggedBlock {
 
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(BlockStateProperties.WATERLOGGED) ? Fluids.WATER.getSource(false)
-				: super.getFluidState(state);
+				: Fluids.EMPTY.defaultFluidState();
 	}
 
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {

@@ -29,8 +29,8 @@ public class WarlockArmorItem extends MagicArmorItem {
 	}
 
 	@Override
-	protected RenderProperties getRenderProperties() {
-		return new WarlockRenderProperties();
+	protected ClientItemExtensions getClientItemExtensions() {
+		return new WarlockClientItemExtensions();
 	}
 
 	private static class WarlockArmorMaterial extends MagicArmorMaterial {
@@ -45,7 +45,7 @@ public class WarlockArmorItem extends MagicArmorItem {
 		}
 	}
 
-	private static class WarlockRenderProperties extends RenderProperties {
+	private static class WarlockClientItemExtensions extends ClientItemExtensions {
 
 		@Override
 		protected MagicArmorModel<?> getModel() {

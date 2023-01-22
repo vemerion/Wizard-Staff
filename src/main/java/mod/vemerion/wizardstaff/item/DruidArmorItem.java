@@ -29,8 +29,8 @@ public class DruidArmorItem extends MagicArmorItem {
 	}
 
 	@Override
-	protected RenderProperties getRenderProperties() {
-		return new DruidRenderProperties();
+	protected ClientItemExtensions getClientItemExtensions() {
+		return new DruidClientItemExtensions();
 	}
 
 	private static class DruidArmorMaterial extends MagicArmorMaterial {
@@ -46,7 +46,7 @@ public class DruidArmorItem extends MagicArmorItem {
 		}
 	}
 
-	private static class DruidRenderProperties extends RenderProperties {
+	private static class DruidClientItemExtensions extends ClientItemExtensions {
 
 		@Override
 		protected MagicArmorModel<?> getModel() {

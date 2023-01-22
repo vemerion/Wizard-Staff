@@ -1,14 +1,21 @@
 package mod.vemerion.wizardstaff.event;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.math.Axis;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.init.ModContainers;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModItems;
 import mod.vemerion.wizardstaff.init.ModLayerLocations;
+import mod.vemerion.wizardstaff.init.ModMagics;
 import mod.vemerion.wizardstaff.init.ModParticles;
 import mod.vemerion.wizardstaff.model.DruidArmorModel;
 import mod.vemerion.wizardstaff.model.GrapplingHookModel;
@@ -28,38 +35,46 @@ import mod.vemerion.wizardstaff.screen.MagicScreen;
 import mod.vemerion.wizardstaff.staff.WizardStaffScreen;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.particle.DustParticle;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.SmokeParticle;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.VexRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ClientRegistry;
-import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 @EventBusSubscriber(modid = Main.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModEventSubscriber {
-	
+
 	public static KeyMapping cycleMagicKey;
-	
+
 	@SubscribeEvent
 	public static void onRegister(FMLClientSetupEvent event) {
-		MenuScreens.register(ModContainers.WIZARD_STAFF, WizardStaffScreen::new);
-		MenuScreens.register(ModContainers.MAGIC, MagicScreen::new);
-		
+		MenuScreens.register(ModContainers.WIZARD_STAFF.get(), WizardStaffScreen::new);
+		MenuScreens.register(ModContainers.MAGIC.get(), MagicScreen::new);
+	}
+
+	@SubscribeEvent
+	public static void onRegisterKeys(RegisterKeyMappingsEvent event) {
 		cycleMagicKey = new KeyMapping("key." + Main.MODID + ".cycleMagicKey", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM.getOrCreate(GLFW.GLFW_KEY_V), "key." + Main.MODID + ".category");
-		ClientRegistry.registerKeyBinding(cycleMagicKey);
+		event.register(cycleMagicKey);
 	}
 
 	@SubscribeEvent
@@ -77,15 +92,15 @@ public class ClientModEventSubscriber {
 
 	@SubscribeEvent
 	public static void onRegisterEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(ModEntities.PUMPKIN_MAGIC, NoRenderer::new);
-		event.registerEntityRenderer(ModEntities.NETHER_PORTAL, NetherPortalRenderer::new);
-		event.registerEntityRenderer(ModEntities.MAGIC_WITHER_SKULL, MagicWitherSkullRenderer::new);
-		event.registerEntityRenderer(ModEntities.MAGIC_SOUL_SAND_ARM, MagicSoulSandArmRenderer::new);
-		event.registerEntityRenderer(ModEntities.GRAPPLING_HOOK, GrapplingHookRenderer::new);
-		event.registerEntityRenderer(ModEntities.MUSHROOM_CLOUD, NoRenderer::new);
-		event.registerEntityRenderer(ModEntities.WIZARD_HAT, WizardHatRenderer::new);
-		event.registerEntityRenderer(ModEntities.MAGIC_VEX, VexRenderer::new);
-		event.registerEntityRenderer(ModEntities.MAGIC_MINING_VEX, VexRenderer::new);
+		event.registerEntityRenderer(ModEntities.PUMPKIN_MAGIC.get(), NoRenderer::new);
+		event.registerEntityRenderer(ModEntities.NETHER_PORTAL.get(), NetherPortalRenderer::new);
+		event.registerEntityRenderer(ModEntities.MAGIC_WITHER_SKULL.get(), MagicWitherSkullRenderer::new);
+		event.registerEntityRenderer(ModEntities.MAGIC_SOUL_SAND_ARM.get(), MagicSoulSandArmRenderer::new);
+		event.registerEntityRenderer(ModEntities.GRAPPLING_HOOK.get(), GrapplingHookRenderer::new);
+		event.registerEntityRenderer(ModEntities.MUSHROOM_CLOUD.get(), NoRenderer::new);
+		event.registerEntityRenderer(ModEntities.WIZARD_HAT.get(), WizardHatRenderer::new);
+		event.registerEntityRenderer(ModEntities.MAGIC_VEX.get(), VexRenderer::new);
+		event.registerEntityRenderer(ModEntities.MAGIC_MINING_VEX.get(), VexRenderer::new);
 	}
 
 	private static class NoRenderer<T extends Entity> extends EntityRenderer<T> {
@@ -102,20 +117,56 @@ public class ClientModEventSubscriber {
 	}
 
 	@SubscribeEvent
-	public static void onRegisterColor(ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, tint) -> {
+	public static void onRegisterColor(RegisterColorHandlersEvent.Item event) {
+		event.register((stack, tint) -> {
 			return tint > 0 ? -1 : ((DyeableLeatherItem) stack.getItem()).getColor(stack);
-		}, ModItems.WIZARD_HAT, ModItems.WIZARD_BOOTS, ModItems.WIZARD_CHESTPLATE, ModItems.WIZARD_LEGGINGS,
-				ModItems.DRUID_HELMET, ModItems.DRUID_BOOTS, ModItems.DRUID_CHESTPLATE, ModItems.DRUID_LEGGINGS,
-				ModItems.WARLOCK_BOOTS, ModItems.WARLOCK_CHESTPLATE, ModItems.WARLOCK_HELMET,
-				ModItems.WARLOCK_LEGGINGS);
+		}, ModItems.WIZARD_HAT.get(), ModItems.WIZARD_BOOTS.get(), ModItems.WIZARD_CHESTPLATE.get(), ModItems.WIZARD_LEGGINGS.get(),
+				ModItems.DRUID_HELMET.get(), ModItems.DRUID_BOOTS.get(), ModItems.DRUID_CHESTPLATE.get(), ModItems.DRUID_LEGGINGS.get(),
+				ModItems.WARLOCK_BOOTS.get(), ModItems.WARLOCK_CHESTPLATE.get(), ModItems.WARLOCK_HELMET.get(),
+				ModItems.WARLOCK_LEGGINGS.get());
 	}
 
 	@SubscribeEvent
-	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
-		var mc = Minecraft.getInstance();
-		mc.particleEngine.register(ModParticles.MAGIC_SMOKE_PARTICLE, sprite -> new SmokeParticle.Provider(sprite));
-		mc.particleEngine.register(ModParticles.MAGIC_FLAME_PARTICLE, sprite -> new FlameParticle.Provider(sprite));
-		mc.particleEngine.register(ModParticles.MAGIC_DUST_PARTICLE, sprite -> new DustParticle.Provider(sprite));
+	public static void onRegisterParticleFactories(RegisterParticleProvidersEvent event) {
+		event.register(ModParticles.MAGIC_SMOKE_PARTICLE.get(), sprite -> new SmokeParticle.Provider(sprite));
+		event.register(ModParticles.MAGIC_FLAME_PARTICLE.get(), sprite -> new FlameParticle.Provider(sprite));
+		event.register(ModParticles.MAGIC_DUST_PARTICLE.get(), sprite -> new DustParticle.Provider(sprite));
+	}
+	
+	static final Method renderSpyglassOverlay = ObfuscationReflectionHelper.findMethod(Gui.class, "m_168675_",
+			float.class);
+	
+	@SubscribeEvent
+	public static void onRegisterOverlays(RegisterGuiOverlaysEvent event) {
+		event.registerAboveAll("zoom_magic", (gui, ps, partialTick, screenWidth, screenHeight) -> {
+			var mc = Minecraft.getInstance();
+			if (!(Wizard.isUsingMagic(ModMagics.ZOOM_MAGIC.get(), mc.player) && mc.options.getCameraType().isFirstPerson()))
+				return;
+
+			RenderSystem.enableBlend();
+			RenderSystem.defaultBlendFunc();
+			RenderSystem.disableDepthTest();
+
+			float time = mc.level.getGameTime() + partialTick;
+
+			RenderSystem.setShaderColor(Math.abs(Mth.sin(time / 20f)) * 0.5f + 0.5f, 0,
+					Math.abs(Mth.cos(time / 20f + 0.2f)) * 0.5f + 0.5f, 1.0F);
+			RenderSystem.setShader(GameRenderer::getPositionTexShader);
+			var poseStack = RenderSystem.getModelViewStack();
+			poseStack.pushPose();
+			poseStack.translate(screenWidth / 2, screenHeight / 2, 0);
+			poseStack.mulPose(Axis.ZP.rotationDegrees(time));
+			poseStack.translate(-screenWidth / 2, -screenHeight / 2, 0);
+			RenderSystem.applyModelViewMatrix();
+
+			try {
+				renderSpyglassOverlay.invoke(mc.gui, 1.8f);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				Main.LOGGER.warn("Could not invoke 'renderSpyglassOverlay':" + e);
+			}
+			RenderSystem.restoreProjectionMatrix();
+			poseStack.popPose();
+			RenderSystem.applyModelViewMatrix();
+		});
 	}
 }

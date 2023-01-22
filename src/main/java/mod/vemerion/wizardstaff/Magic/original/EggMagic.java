@@ -1,7 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
@@ -21,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class EggMagic extends RayMagic {
 
@@ -48,8 +48,8 @@ public class EggMagic extends RayMagic {
 
 	@Override
 	public void hitEntity(Level level, Player player, Entity target) {
-		if (blacklist.contains(target.getType().getRegistryName())) {
-			target.playSound(ModSounds.POOF, 1, soundPitch(player));
+		if (blacklist.contains(ForgeRegistries.ENTITY_TYPES.getKey(target.getType()))) {
+			target.playSound(ModSounds.POOF.get(), 1, soundPitch(player));
 			return;
 		}
 
@@ -61,20 +61,20 @@ public class EggMagic extends RayMagic {
 			}
 		}
 		if (egg != null) {
-			target.playSound(ModSounds.PLOP, 1, soundPitch(player));
+			target.playSound(ModSounds.PLOP.get(), 1, soundPitch(player));
 			ItemEntity eggEntity = new ItemEntity(level, target.getX(), target.getY(), target.getZ(),
 					new ItemStack(egg));
 			level.addFreshEntity(eggEntity);
 			target.discard();
 			cost(player);
 		} else {
-			target.playSound(ModSounds.POOF, 1, soundPitch(player));
+			target.playSound(ModSounds.POOF.get(), 1, soundPitch(player));
 		}
 	}
 
 	@Override
 	protected ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count) {
-		Random rand = player.getRandom();
+		var rand = player.getRandom();
 		return new MagicDustParticleData(0.8f + rand.nextFloat() * 0.2f, rand.nextFloat() * 0.2f,
 				0.8f + rand.nextFloat() * 0.2f, 1);
 	}

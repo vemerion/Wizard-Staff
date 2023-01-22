@@ -1,8 +1,7 @@
 package mod.vemerion.wizardstaff.Helper;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +30,7 @@ public class Helper {
 		return level.clip(new ClipContext(start, stop, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
 	}
 
-	public static BlockPos randPosInBox(AABB box, Random rand) {
+	public static BlockPos randPosInBox(AABB box, RandomSource rand) {
 		return new BlockPos(rand.nextInt((int) box.minX, (int) box.maxX), rand.nextInt((int) box.minY, (int) box.maxY),
 				rand.nextInt((int) box.minZ, (int) box.maxZ));
 	}

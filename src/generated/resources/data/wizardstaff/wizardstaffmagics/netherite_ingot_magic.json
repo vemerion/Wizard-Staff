@@ -1,10 +1,10 @@
 {
   "cost": 100.0,
+  "created": "wizardstaff:nether_wizard_staff",
   "duration": 40,
-  "magic": "wizardstaff:transmutation_magic",
   "ingredient": {
     "tag": "forge:ingots/netherite"
   },
-  "created": "wizardstaff:nether_wizard_staff",
+  "magic": "wizardstaff:transmutation_magic",
   "sound": "wizardstaff:poof"
 }

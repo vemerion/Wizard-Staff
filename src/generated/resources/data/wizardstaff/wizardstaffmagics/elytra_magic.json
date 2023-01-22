@@ -1,8 +1,8 @@
 {
   "cost": 1.0,
   "duration": -1,
-  "magic": "wizardstaff:elytra_magic",
   "ingredient": {
     "item": "minecraft:elytra"
-  }
+  },
+  "magic": "wizardstaff:elytra_magic"
 }

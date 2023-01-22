@@ -17,7 +17,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.GsonHelper;
@@ -61,7 +61,7 @@ public class JukeboxMagic extends Magic {
 	protected void writeAdditional(JsonObject json) {
 		MagicUtil.writeColl(json, "blacklist", blacklist, rl -> new JsonPrimitive(rl.toString()));
 		json.addProperty("range", range);
-		MagicUtil.write(json, music, "music");
+		MagicUtil.write(json, ForgeRegistries.SOUND_EVENTS, music, "music");
 	}
 
 	@Override
@@ -90,14 +90,14 @@ public class JukeboxMagic extends Magic {
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { new TextComponent(String.valueOf(range)) };
+		return new Object[] { Component.literal(String.valueOf(range)) };
 	}
 
 	@Override
 	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class,
 				player.getBoundingBox().inflate(range),
-				e -> e != player && !blacklist.contains(e.getType().getRegistryName()));
+				e -> e != player && !blacklist.contains(ForgeRegistries.ENTITY_TYPES.getKey(e.getType())));
 
 		for (LivingEntity e : entities) {
 			if (!level.isClientSide) {

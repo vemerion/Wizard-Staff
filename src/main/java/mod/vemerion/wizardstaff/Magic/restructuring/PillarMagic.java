@@ -40,7 +40,7 @@ public class PillarMagic extends Magic {
 
 	@Override
 	protected void encodeAdditional(FriendlyByteBuf buffer) {
-		MagicUtil.encode(buffer, block);
+		MagicUtil.encode(buffer, ForgeRegistries.BLOCKS, block);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class PillarMagic extends Magic {
 	
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, block, "block");
+		MagicUtil.write(json, ForgeRegistries.BLOCKS, block, "block");
 	}
 
 	@Override

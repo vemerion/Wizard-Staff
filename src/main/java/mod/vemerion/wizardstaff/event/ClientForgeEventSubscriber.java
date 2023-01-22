@@ -1,14 +1,11 @@
 package mod.vemerion.wizardstaff.event;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.OptionalDouble;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
-import com.mojang.math.Vector3f;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.Magic.Magics;
@@ -20,9 +17,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -35,34 +30,32 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.RenderProperties;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
+import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 @EventBusSubscriber(modid = Main.MODID, bus = EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientForgeEventSubscriber {
 
 	@SubscribeEvent
 	public static void wizardStaff(RenderHandEvent event) {
-		AbstractClientPlayer player = Minecraft.getInstance().player;
+		var mc = Minecraft.getInstance();
+		AbstractClientPlayer player = mc.player;
 		ItemStack itemStack = event.getItemStack();
 		Item item = itemStack.getItem();
-		float partialTicks = event.getPartialTicks();
+		float partialTicks = event.getPartialTick();
 		if (item instanceof WizardStaffItem && player.getUseItem().equals(itemStack)) {
 			event.setCanceled(true);
 			ItemStack magic = WizardStaffItem.getMagic(itemStack);
 			HumanoidArm side = event.getHand() == InteractionHand.MAIN_HAND ? player.getMainArm()
 					: player.getMainArm().getOpposite();
-			WizardStaffTileEntityRenderer renderer = (WizardStaffTileEntityRenderer) RenderProperties.get(item)
-					.getItemStackRenderer();
+			WizardStaffTileEntityRenderer renderer = (WizardStaffTileEntityRenderer) IClientItemExtensions.of(item).getCustomRenderer();
 			int maxDuration = itemStack.getUseDuration();
 			float duration = (float) maxDuration - ((float) player.getUseItemRemainingTicks() - partialTicks + 1.0f);
 			Magics.getInstance(true).get(magic).firstPersonRenderer().render(renderer, duration, maxDuration, itemStack,
@@ -72,11 +65,12 @@ public class ClientForgeEventSubscriber {
 	}
 
 	@SubscribeEvent
-	public static void cycleMagicKey(InputEvent.KeyInputEvent event) {
+	public static void cycleMagicKey(InputEvent.Key event) {
 		if (!ClientModEventSubscriber.cycleMagicKey.consumeClick())
 			return;
 
-		WizardStaffItemHandler.getOptional(Minecraft.getInstance().player.getMainHandItem()).ifPresent(h -> {
+		var mc = Minecraft.getInstance();
+		WizardStaffItemHandler.getOptional(mc.player.getMainHandItem()).ifPresent(h -> {
 			h.cycleCurrent();
 			Network.INSTANCE.sendToServer(new CycleCurrentMessage());
 		});
@@ -84,7 +78,7 @@ public class ClientForgeEventSubscriber {
 
 	@SubscribeEvent
 	public static void noStaffSlowdown(MovementInputUpdateEvent event) {
-		if (!(event.getPlayer().getUseItem().getItem() instanceof WizardStaffItem))
+		if (!(event.getEntity().getUseItem().getItem() instanceof WizardStaffItem))
 			return;
 		var movement = event.getInput();
 		movement.leftImpulse *= 1 / 0.2;
@@ -92,11 +86,14 @@ public class ClientForgeEventSubscriber {
 	}
 
 	@SubscribeEvent
-	public static void xRay(RenderLevelLastEvent event) {
+	public static void xRay(RenderLevelStageEvent event) {
+		if (event.getStage() != Stage.AFTER_PARTICLES)
+			return;
+		
 		var mc = Minecraft.getInstance();
 		var player = mc.player;
 
-		if (!Wizard.isUsingMagic(ModMagics.X_RAY_MAGIC, player)) {
+		if (!Wizard.isUsingMagic(ModMagics.X_RAY_MAGIC.get(), player)) {
 			Wizard.getWizardOptional(player).ifPresent(w -> {
 				w.getXRayed().clear();
 			});
@@ -124,58 +121,16 @@ public class ClientForgeEventSubscriber {
 		});
 	}
 
-	static boolean shouldZoom(Minecraft mc) {
-		return Wizard.isUsingMagic(ModMagics.ZOOM_MAGIC, mc.player) && mc.options.getCameraType().isFirstPerson();
-	}
-
-	static final Method renderSpyglassOverlay = ObfuscationReflectionHelper.findMethod(Gui.class, "m_168675_",
-			float.class);
-
 	@SubscribeEvent
-	public static void magicSpyglass(RenderGameOverlayEvent.Pre event) {
-		if (event.getType() != ElementType.ALL)
-			return;
-
-		var mc = Minecraft.getInstance();
-		if (!shouldZoom(mc))
-			return;
-
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.disableDepthTest();
-
-		float time = mc.level.getGameTime() + event.getPartialTicks();
-
-		RenderSystem.setShaderColor(Math.abs(Mth.sin(time / 20f)) * 0.5f + 0.5f, 0,
-				Math.abs(Mth.cos(time / 20f + 0.2f)) * 0.5f + 0.5f, 1.0F);
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		var poseStack = RenderSystem.getModelViewStack();
-		poseStack.pushPose();
-		poseStack.translate(event.getWindow().getGuiScaledWidth() / 2, event.getWindow().getGuiScaledHeight() / 2, 0);
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(time));
-		poseStack.translate(-event.getWindow().getGuiScaledWidth() / 2, -event.getWindow().getGuiScaledHeight() / 2, 0);
-		RenderSystem.applyModelViewMatrix();
-
-		try {
-			renderSpyglassOverlay.invoke(mc.gui, 1.8f);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			Main.LOGGER.warn("Could not invoke 'renderSpyglassOverlay':" + e);
-		}
-		RenderSystem.restoreProjectionMatrix();
-		poseStack.popPose();
-		RenderSystem.applyModelViewMatrix();
-	}
-
-	@SubscribeEvent
-	public static void zoom(EntityViewRenderEvent.FieldOfView event) {
+	public static void zoom(ViewportEvent.ComputeFov event) {
 		var mc = Minecraft.getInstance();
 		var player = mc.player;
 
-		if (!shouldZoom(mc))
+		if (!(Wizard.isUsingMagic(ModMagics.ZOOM_MAGIC.get(), mc.player) && mc.options.getCameraType().isFirstPerson()))
 			return;
 
 		Wizard.getWizardOptional(player).ifPresent(w -> {
-			float time = mc.level.getGameTime() + (float) event.getPartialTicks();
+			float time = mc.level.getGameTime() + (float) event.getPartialTick();
 			var fov = w.getFov() + Mth.sin(time / 20f);
 			event.setFOV(fov);
 		});

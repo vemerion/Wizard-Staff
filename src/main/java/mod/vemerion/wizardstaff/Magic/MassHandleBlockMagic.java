@@ -16,7 +16,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFir
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -89,7 +89,7 @@ public abstract class MassHandleBlockMagic extends Magic {
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { new TextComponent(String.valueOf(harvestLimit)), match.getName() };
+		return new Object[] { Component.literal(String.valueOf(harvestLimit)), match.getName() };
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public abstract class MassHandleBlockMagic extends Magic {
 				if (!level.isClientSide)
 					cost(player, handleBlocks(result.getBlockPos(), state.getBlock(), level, player, staff));
 			} else {
-				player.playSound(ModSounds.POOF, 1, soundPitch(player));
+				player.playSound(ModSounds.POOF.get(), 1, soundPitch(player));
 			}
 		}
 

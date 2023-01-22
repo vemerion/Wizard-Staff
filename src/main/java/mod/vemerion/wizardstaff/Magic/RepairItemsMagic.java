@@ -69,7 +69,7 @@ public abstract class RepairItemsMagic extends Magic {
 		}
 		
 		if (count % 20 == 0)
-			player.playSound(ModSounds.ANVIL, 1, soundPitch(player));
+			player.playSound(ModSounds.ANVIL.get(), 1, soundPitch(player));
 	}
 
 	protected abstract Iterable<ItemStack> getItems(Level level, Player player, ItemStack staff, int count);

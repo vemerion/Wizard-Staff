@@ -11,8 +11,6 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.effect.MobEffect;
@@ -78,9 +76,9 @@ public class PotionMagic extends Magic {
 		json.addProperty("level", amplifier);
 		json.addProperty("potion_time", potionTime);
 		json.addProperty("radius", radius);
-		MagicUtil.write(json, potion, "potion");
+		MagicUtil.write(json, ForgeRegistries.MOB_EFFECTS, potion, "potion");
 		json.addProperty("affect_caster", affectCaster);
-		MagicUtil.write(json, sound, "sound");
+		MagicUtil.write(json, ForgeRegistries.SOUND_EVENTS, sound, "sound");
 	}
 
 	@Override
@@ -98,9 +96,9 @@ public class PotionMagic extends Magic {
 		buffer.writeInt(amplifier);
 		buffer.writeInt(potionTime);
 		buffer.writeFloat(radius);
-		MagicUtil.encode(buffer, potion);
+		MagicUtil.encode(buffer, ForgeRegistries.MOB_EFFECTS, potion);
 		buffer.writeBoolean(affectCaster);
-		MagicUtil.encode(buffer, sound);
+		MagicUtil.encode(buffer, ForgeRegistries.SOUND_EVENTS, sound);
 	}
 
 	@Override
@@ -113,25 +111,25 @@ public class PotionMagic extends Magic {
 		Object[] args = new Object[5];
 		args[0] = potion.getDisplayName();
 		args[1] = levelTranslation();
-		args[2] = new TextComponent(String.valueOf(potionTime / 20));
+		args[2] = Component.literal(String.valueOf(potionTime / 20));
 		Component glue = radius > 0.001
-				? new TranslatableComponent("gui.wizardstaff.potion_magic.glue")
-				: TextComponent.EMPTY;
-		args[3] = affectCaster ? new TranslatableComponent("gui.wizardstaff.potion_magic.affect_caster", glue)
-				: TextComponent.EMPTY;
-		args[4] = radius > 0.001 ? new TranslatableComponent("gui.wizardstaff.potion_magic.affect_others")
-				: TextComponent.EMPTY;
+				? Component.translatable("gui.wizardstaff.potion_magic.glue")
+				: Component.empty();
+		args[3] = affectCaster ? Component.translatable("gui.wizardstaff.potion_magic.affect_caster", glue)
+				: Component.empty();
+		args[4] = radius > 0.001 ? Component.translatable("gui.wizardstaff.potion_magic.affect_others")
+				: Component.empty();
 
 		return args;
 	}
 
 	private Component levelTranslation() {
 		if (amplifier <= 0)
-			return new TranslatableComponent("enchantment.level.1");
+			return Component.translatable("enchantment.level.1");
 		else if (amplifier <= 10)
-			return new TranslatableComponent("enchantment.level." + amplifier);
+			return Component.translatable("enchantment.level." + amplifier);
 		else
-			return new TextComponent(String.valueOf(amplifier));
+			return Component.literal(String.valueOf(amplifier));
 	}
 
 	@Override

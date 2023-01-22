@@ -57,7 +57,7 @@ public class PlaceLightRandomMagic extends Magic {
 	protected void writeAdditional(JsonObject json) {
 		json.addProperty("radius", radius);
 		json.addProperty("light_level", lightLevel);
-		MagicUtil.write(json, item, "item");
+		MagicUtil.write(json, ForgeRegistries.ITEMS, item, "item");
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class PlaceLightRandomMagic extends Magic {
 	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		buffer.writeInt(radius);
 		buffer.writeInt(lightLevel);
-		MagicUtil.encode(buffer, item);
+		MagicUtil.encode(buffer, ForgeRegistries.ITEMS, item);
 	}
 
 	@Override

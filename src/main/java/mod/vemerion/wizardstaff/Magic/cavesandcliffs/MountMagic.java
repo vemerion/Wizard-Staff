@@ -2,7 +2,6 @@ package mod.vemerion.wizardstaff.Magic.cavesandcliffs;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Random;
 
 import com.google.gson.JsonObject;
 
@@ -52,7 +51,7 @@ public class MountMagic extends RayMagic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		match = RegistryMatch.read(ForgeRegistries.ENTITIES, GsonHelper.getAsJsonObject(json, "match"));
+		match = RegistryMatch.read(ForgeRegistries.ENTITY_TYPES, GsonHelper.getAsJsonObject(json, "match"));
 	}
 
 	@Override
@@ -62,7 +61,7 @@ public class MountMagic extends RayMagic {
 
 	@Override
 	protected void decodeAdditional(FriendlyByteBuf buffer) {
-		match = RegistryMatch.decode(ForgeRegistries.ENTITIES, buffer);
+		match = RegistryMatch.decode(ForgeRegistries.ENTITY_TYPES, buffer);
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public class MountMagic extends RayMagic {
 
 	@Override
 	protected ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count) {
-		Random rand = player.getRandom();
+		var rand = player.getRandom();
 		return new MagicDustParticleData(0.8f + rand.nextFloat() * 0.2f, 0.8f + rand.nextFloat() * 0.2f,
 				0.8f + rand.nextFloat() * 0.2f, 1);
 	}

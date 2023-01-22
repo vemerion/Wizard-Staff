@@ -1,11 +1,11 @@
 {
   "cost": 40.0,
+  "count": 1,
   "duration": 60,
-  "magic": "wizardstaff:summon_entity_magic",
+  "entity": "minecraft:lightning_bolt",
   "ingredient": {
     "item": "minecraft:lightning_rod"
   },
-  "entity": "minecraft:lightning_bolt",
-  "sound": "minecraft:entity.lightning_bolt.impact",
-  "count": 1
+  "magic": "wizardstaff:summon_entity_magic",
+  "sound": "minecraft:entity.lightning_bolt.impact"
 }

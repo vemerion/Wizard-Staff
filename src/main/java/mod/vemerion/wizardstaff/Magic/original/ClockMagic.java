@@ -28,7 +28,7 @@ public class ClockMagic extends Magic {
 	@Override
 	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (count % 7 == 0)
-			player.playSound(ModSounds.CLOCK, 1, soundPitch(player));
+			player.playSound(ModSounds.CLOCK.get(), 1, soundPitch(player));
 		if (!level.isClientSide) {
 			cost(player);
 		}

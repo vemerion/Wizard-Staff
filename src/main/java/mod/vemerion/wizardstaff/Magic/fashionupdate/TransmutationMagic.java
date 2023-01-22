@@ -61,19 +61,19 @@ public class TransmutationMagic extends Magic {
 	@Override
 	protected void encodeAdditional(FriendlyByteBuf buffer) {
 		buffer.writeItem(created.getDefaultInstance());
-		MagicUtil.encode(buffer, sound);
+		MagicUtil.encode(buffer, ForgeRegistries.SOUND_EVENTS, sound);
 	}
 
 	@Override
 	protected void readAdditional(JsonObject json) {
 		created = GsonHelper.getAsItem(json, "created");
-		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound", ModSounds.PLOP);
+		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound", ModSounds.PLOP.get());
 	}
 	
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, created, "created");
-		MagicUtil.write(json, sound, "sound");
+		MagicUtil.write(json, ForgeRegistries.ITEMS, created, "created");
+		MagicUtil.write(json, ForgeRegistries.SOUND_EVENTS, sound, "sound");
 	}
 
 	@Override

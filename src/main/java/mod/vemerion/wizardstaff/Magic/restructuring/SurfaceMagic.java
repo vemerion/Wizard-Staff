@@ -40,7 +40,8 @@ public class SurfaceMagic extends Magic {
 	@Override
 	public InteractionResult magicInteractBlock(UseOnContext context) {
 		Player player = context.getPlayer();
-		if (!context.getLevel().isClientSide)
+		var level = context.getLevel();
+		if (!level.isClientSide)
 			Wizard.getWizardOptional(player).ifPresent(w -> w.setSurfacePos(context.getClickedPos()));
 		player.playSound(SoundEvents.STONE_PLACE, 1, soundPitch(player));
 		return InteractionResult.SUCCESS;
@@ -54,7 +55,7 @@ public class SurfaceMagic extends Magic {
 				if (count > 0)
 					cost(player, count);
 				else
-					playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
+					playSoundServer(level, player, ModSounds.POOF.get(), 1, soundPitch(player));
 			});
 		return super.magicFinish(level, player, staff);
 	}

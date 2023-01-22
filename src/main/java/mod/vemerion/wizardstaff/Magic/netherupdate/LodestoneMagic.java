@@ -42,7 +42,7 @@ public class LodestoneMagic extends Magic {
 
 	@Override
 	protected void encodeAdditional(FriendlyByteBuf buffer) {
-		MagicUtil.encode(buffer, waypoint);
+		MagicUtil.encode(buffer, ForgeRegistries.BLOCKS, waypoint);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class LodestoneMagic extends Magic {
 	
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, waypoint, "waypoint");
+		MagicUtil.write(json, ForgeRegistries.BLOCKS, waypoint, "waypoint");
 	}
 	
 	@Override
@@ -65,7 +65,7 @@ public class LodestoneMagic extends Magic {
 		Level level = context.getLevel();
 		Player player = context.getPlayer();
 		if (level.getBlockState(context.getClickedPos()).getBlock() == waypoint) {
-			player.playSound(ModSounds.GONG, 1, soundPitch(player));
+			player.playSound(ModSounds.GONG.get(), 1, soundPitch(player));
 			if (!level.isClientSide) {
 				Wizard.getWizard(player).trackLodestone(level, context.getClickedPos(), waypoint);
 			}
@@ -79,7 +79,7 @@ public class LodestoneMagic extends Magic {
 	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
 		if (!level.isClientSide) {
 			if (Wizard.getWizard(player).lodestoneTeleport((ServerPlayer) player, waypoint)) {
-				playSoundServer(level, player, ModSounds.GONG, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.GONG.get(), 1, soundPitch(player));
 				cost(player);
 			}
 		}
@@ -89,7 +89,7 @@ public class LodestoneMagic extends Magic {
 	@Override
 	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (count % 10 == 0)
-			player.playSound(ModSounds.TELEPORT, 1, soundPitch(player));
+			player.playSound(ModSounds.TELEPORT.get(), 1, soundPitch(player));
 	}
 
 	@Override

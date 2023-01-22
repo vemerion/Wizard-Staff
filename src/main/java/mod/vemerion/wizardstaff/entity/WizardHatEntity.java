@@ -5,6 +5,7 @@ import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModItems;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -28,18 +29,18 @@ public class WizardHatEntity extends AbstractArrow {
 	public WizardHatEntity(EntityType<? extends WizardHatEntity> entityTypeIn, Level level) {
 		super(entityTypeIn, level);
 		this.setBaseDamage(1);
-		this.setSoundEvent(ModSounds.CLOTH);
+		this.setSoundEvent(ModSounds.CLOTH.get());
 	}
 
 	public WizardHatEntity(double x, double y, double z, Level level) {
-		super(ModEntities.WIZARD_HAT, x, y, z, level);
+		super(ModEntities.WIZARD_HAT.get(), x, y, z, level);
 		this.setBaseDamage(1);
-		this.setSoundEvent(ModSounds.CLOTH);
+		this.setSoundEvent(ModSounds.CLOTH.get());
 	}
 	
 	@Override
 	protected SoundEvent getDefaultHitGroundSoundEvent() {
-		return ModSounds.CLOTH;
+		return ModSounds.CLOTH.get();
 	}
 
 	@Override
@@ -81,13 +82,13 @@ public class WizardHatEntity extends AbstractArrow {
 			if (random.nextFloat() < 0.1 && target instanceof Mob) {
 				Mob mob = (Mob) target;
 				if (mob.getItemBySlot(EquipmentSlot.HEAD).isEmpty())
-					mob.setItemSlot(EquipmentSlot.HEAD, new ItemStack(ModItems.WIZARD_HAT));
+					mob.setItemSlot(EquipmentSlot.HEAD, new ItemStack(ModItems.WIZARD_HAT.get()));
 			}
 		}
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

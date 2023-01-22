@@ -1,7 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.restructuring;
 
 import java.util.List;
-import java.util.Random;
 
 import com.google.gson.JsonObject;
 
@@ -12,9 +11,8 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
@@ -68,7 +66,7 @@ public class SmeltingMagic extends Magic {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void decodeAdditional(FriendlyByteBuf buffer) {
-		recipeType = (RecipeType<Recipe<Container>>) MagicUtil.decode(buffer, Registry.RECIPE_TYPE);
+		recipeType = (RecipeType<Recipe<Container>>) MagicUtil.decode(buffer);
 		sound = MagicUtil.decode(buffer);
 		interval = buffer.readInt();
 		int nameLength = buffer.readInt();
@@ -77,8 +75,8 @@ public class SmeltingMagic extends Magic {
 
 	@Override
 	protected void encodeAdditional(FriendlyByteBuf buffer) {
-		MagicUtil.encode(buffer, recipeType, Registry.RECIPE_TYPE);
-		MagicUtil.encode(buffer, sound);
+		MagicUtil.encode(buffer, ForgeRegistries.RECIPE_TYPES, recipeType);
+		MagicUtil.encode(buffer, ForgeRegistries.SOUND_EVENTS, sound);
 		buffer.writeInt(interval);
 		buffer.writeInt(recipeName.length());
 		buffer.writeUtf(recipeName);
@@ -87,7 +85,7 @@ public class SmeltingMagic extends Magic {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void readAdditional(JsonObject json) {
-		recipeType = (RecipeType<Recipe<Container>>) MagicUtil.read(json, Registry.RECIPE_TYPE, "recipe_type");
+		recipeType = (RecipeType<Recipe<Container>>) MagicUtil.read(json, ForgeRegistries.RECIPE_TYPES, "recipe_type");
 		sound = MagicUtil.read(json, ForgeRegistries.SOUND_EVENTS, "sound");
 		interval = GsonHelper.getAsInt(json, "smelt_interval");
 		recipeName = GsonHelper.getAsString(json, "recipe_name");
@@ -96,8 +94,8 @@ public class SmeltingMagic extends Magic {
 
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, recipeType, Registry.RECIPE_TYPE, "recipe_type");
-		MagicUtil.write(json, sound, "sound");
+		MagicUtil.write(json, ForgeRegistries.RECIPE_TYPES, recipeType, "recipe_type");
+		MagicUtil.write(json, ForgeRegistries.SOUND_EVENTS, sound, "sound");
 		json.addProperty("smelt_interval", interval);
 		json.addProperty("recipe_name", recipeName);
 		json.addProperty("item_cost", itemCost);
@@ -105,19 +103,19 @@ public class SmeltingMagic extends Magic {
 
 	@Override
 	protected Object[] getNameArgs() {
-		return new Object[] { new TranslatableComponent(recipeName) };
+		return new Object[] { Component.translatable(recipeName) };
 	}
 
 	@Override
 	protected Object[] getDescrArgs() {
-		return new Object[] { new TranslatableComponent(recipeName) };
+		return new Object[] { Component.translatable(recipeName) };
 	}
 
 	@Override
 	public void magicTick(Level level, Player player, ItemStack staff, int count) {
 		if (!level.isClientSide) {
 			if (count % interval == 0 && count != getUseDuration(staff)) {
-				Random rand = player.getRandom();
+				var rand = player.getRandom();
 
 				List<ItemEntity> entities = level.getEntitiesOfClass(ItemEntity.class,
 						player.getBoundingBox().inflate(2),

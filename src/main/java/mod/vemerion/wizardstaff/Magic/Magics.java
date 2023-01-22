@@ -57,7 +57,7 @@ public class Magics extends SimpleJsonResourceReloadListener {
 				}
 			}
 		}
-		return ModMagics.NO_MAGIC.create(new ResourceLocation(Main.MODID, "no_magic"));
+		return ModMagics.NO_MAGIC.get().create(new ResourceLocation(Main.MODID, "no_magic"));
 	}
 
 	public static Magics getInstance(boolean isRemote) {
@@ -86,7 +86,7 @@ public class Magics extends SimpleJsonResourceReloadListener {
 				throw new JsonSyntaxException("The magic " + magicKey + " does not exist");
 			MagicType<?> type = ModMagics.getRegistry().getValue(magicKey);
 
-			if (type == ModMagics.NO_MAGIC)
+			if (type == ModMagics.NO_MAGIC.get())
 				continue;
 
 			Magic magic = type.create(key);

@@ -38,8 +38,8 @@ public class BookshelfMagic extends Magic {
 
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, generated, "generated");
-		MagicUtil.write(json, sound, "sound");
+		MagicUtil.write(json, ForgeRegistries.ITEMS, generated, "generated");
+		MagicUtil.write(json, ForgeRegistries.SOUND_EVENTS, sound, "sound");
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class BookshelfMagic extends Magic {
 
 	@Override
 	protected void encodeAdditional(FriendlyByteBuf buffer) {
-		MagicUtil.encode(buffer, generated);
-		MagicUtil.encode(buffer, sound);
+		MagicUtil.encode(buffer, ForgeRegistries.ITEMS, generated);
+		MagicUtil.encode(buffer, ForgeRegistries.SOUND_EVENTS, sound);
 	}
 
 	@Override

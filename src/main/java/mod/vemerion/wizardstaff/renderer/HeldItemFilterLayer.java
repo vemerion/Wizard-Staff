@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.staff.WizardStaffItemHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -68,7 +69,7 @@ public class HeldItemFilterLayer extends ItemInHandLayer<AbstractClientPlayer, P
 
 	public HeldItemFilterLayer(LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer,
 			RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> parent) {
-		super(renderer);
+		super(renderer, Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer());
 		this.parent = parent;
 	}
 

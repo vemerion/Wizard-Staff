@@ -8,7 +8,6 @@ import mod.vemerion.wizardstaff.model.MagicArmorModel;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -16,18 +15,17 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public abstract class MagicArmorItem extends DyeableArmorItem {
 
 	public MagicArmorItem(ArmorMaterial material, EquipmentSlot slot) {
-		super(material, slot, new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_SEARCH));
+		super(material, slot, new Item.Properties().stacksTo(1));
 	}
 
 	@Override
@@ -39,7 +37,7 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 
 	protected abstract String getMagicArmorName();
 
-	protected abstract RenderProperties getRenderProperties();
+	protected abstract ClientItemExtensions getClientItemExtensions();
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
@@ -51,7 +49,7 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
-		tooltip.add(new TranslatableComponent("item.wizardstaff." + getMagicArmorName() + ".description")
+		tooltip.add(Component.translatable("item.wizardstaff." + getMagicArmorName() + ".description")
 				.withStyle(ChatFormatting.BLUE));
 		super.appendHoverText(stack, level, tooltip, flagIn);
 	}
@@ -66,8 +64,8 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 	}
 
 	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(getRenderProperties());
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(getClientItemExtensions());
 	}
 
 	protected static abstract class MagicArmorMaterial implements ArmorMaterial {
@@ -105,12 +103,12 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 		}
 	}
 
-	protected static abstract class RenderProperties implements IItemRenderProperties {
+	protected static abstract class ClientItemExtensions implements IClientItemExtensions {
 
 		MagicArmorModel<?> model;
 
 		@Override
-		public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot,
+		public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot,
 				HumanoidModel<?> _default) {
 			if (model == null)
 				model = getModel();

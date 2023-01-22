@@ -29,7 +29,7 @@ public class CobwebMagic extends RayMagic {
 		if (level.isEmptyBlock(pos) && !level.isClientSide) {
 			cost(player);
 			level.setBlockAndUpdate(pos, Blocks.COBWEB.defaultBlockState());
-			playSoundServer(level, player, ModSounds.SPRAY, 1, soundPitch(player));
+			playSoundServer(level, player, ModSounds.SPRAY.get(), 1, soundPitch(player));
 		}
 	}
 

@@ -1,7 +1,6 @@
 package mod.vemerion.wizardstaff.Magic.swap;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
@@ -22,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class SwapPositionMagic extends RayMagic {
 
@@ -68,7 +68,7 @@ public class SwapPositionMagic extends RayMagic {
 
 	@Override
 	protected ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count) {
-		Random rand = player.getRandom();
+		var rand = player.getRandom();
 		float duration = getUseDuration(staff);
 		float progress = (duration - count) / duration;
 		float alfa = Math.min(1, progress * 1.5f);
@@ -77,8 +77,8 @@ public class SwapPositionMagic extends RayMagic {
 
 	@Override
 	protected void hitEntity(Level level, Player player, Entity target) {
-		if (!(target instanceof LivingEntity) || blacklist.contains(target.getType().getRegistryName())) {
-			playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
+		if (!(target instanceof LivingEntity) || blacklist.contains(ForgeRegistries.ENTITY_TYPES.getKey(target.getType()))) {
+			playSoundServer(level, player, ModSounds.POOF.get(), 1, soundPitch(player));
 			return;
 		}
 
@@ -86,7 +86,7 @@ public class SwapPositionMagic extends RayMagic {
 		Vec3 start = player.position();
 		player.teleportTo(target.getX(), target.getY(), target.getZ());
 		target.teleportTo(start.x, start.y, start.z);
-		playSoundServer(level, player, ModSounds.SWAP, 1, soundPitch(player));
+		playSoundServer(level, player, ModSounds.SWAP.get(), 1, soundPitch(player));
 	}
 
 }

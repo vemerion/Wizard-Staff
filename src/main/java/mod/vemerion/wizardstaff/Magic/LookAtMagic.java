@@ -43,11 +43,11 @@ public abstract class LookAtMagic extends Magic {
 		if (!level.isClientSide) {
 			BlockPos pos = getPosition((ServerLevel) level, (ServerPlayer) player, staff);
 			if (pos != null) {
-				playSoundServer(level, player, ModSounds.WARP, 0.8f, soundPitch(player));
+				playSoundServer(level, player, ModSounds.WARP.get(), 0.8f, soundPitch(player));
 				cost(player);
 				player.lookAt(EntityAnchorArgument.Anchor.EYES, Vec3.atCenterOf(pos));
 			} else {
-				playSoundServer(level, player, ModSounds.POOF, 1, soundPitch(player));
+				playSoundServer(level, player, ModSounds.POOF.get(), 1, soundPitch(player));
 			}
 		}
 		return super.magicFinish(level, player, staff);

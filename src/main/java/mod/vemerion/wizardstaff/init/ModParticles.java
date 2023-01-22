@@ -6,31 +6,24 @@ import mod.vemerion.wizardstaff.Main;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-@ObjectHolder(value = Main.MODID)
-@EventBusSubscriber(bus = Bus.MOD, modid = Main.MODID)
 public class ModParticles {
 
-	public static final SimpleParticleType MAGIC_SMOKE_PARTICLE = null;
-	public static final SimpleParticleType MAGIC_FLAME_PARTICLE = null;
-	public static final ParticleType<DustParticleOptions> MAGIC_DUST_PARTICLE = null;
+	public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister
+			.create(ForgeRegistries.PARTICLE_TYPES, Main.MODID);
 
-	@SubscribeEvent
-	public static void onIParticleTypeRegistration(RegistryEvent.Register<ParticleType<?>> event) {
-		event.getRegistry().register(Init.setup(new SimpleParticleType(true), "magic_smoke_particle"));
-		event.getRegistry().register(Init.setup(new SimpleParticleType(true), "magic_flame_particle"));
-		event.getRegistry()
-				.register(Init.setup(new ParticleType<DustParticleOptions>(true, DustParticleOptions.DESERIALIZER) {
-					@Override
-					public Codec<DustParticleOptions> codec() {
-						return DustParticleOptions.CODEC;
-					}
-				}, "magic_dust_particle"));
-
-	}
+	public static final RegistryObject<SimpleParticleType> MAGIC_SMOKE_PARTICLE = PARTICLES
+			.register("magic_smoke_particle", () -> new SimpleParticleType(true));
+	public static final RegistryObject<SimpleParticleType> MAGIC_FLAME_PARTICLE = PARTICLES
+			.register("magic_flame_particle", () -> new SimpleParticleType(true));
+	public static final RegistryObject<ParticleType<DustParticleOptions>> MAGIC_DUST_PARTICLE = PARTICLES.register(
+			"magic_dust_particle", () -> new ParticleType<DustParticleOptions>(true, DustParticleOptions.DESERIALIZER) {
+				@Override
+				public Codec<DustParticleOptions> codec() {
+					return DustParticleOptions.CODEC;
+				}
+			});
 }

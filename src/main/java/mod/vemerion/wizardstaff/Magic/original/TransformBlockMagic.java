@@ -37,8 +37,8 @@ public class TransformBlockMagic extends BlockRayMagic {
 
 	@Override
 	protected void encodeAdditional(FriendlyByteBuf buffer) {
-		MagicUtil.encode(buffer, from);
-		MagicUtil.encode(buffer, to);
+		MagicUtil.encode(buffer, ForgeRegistries.BLOCKS, from);
+		MagicUtil.encode(buffer, ForgeRegistries.BLOCKS, to);
 	}
 
 	@Override
@@ -49,8 +49,8 @@ public class TransformBlockMagic extends BlockRayMagic {
 
 	@Override
 	protected void writeAdditional(JsonObject json) {
-		MagicUtil.write(json, from, "from");
-		MagicUtil.write(json, to, "to");
+		MagicUtil.write(json, ForgeRegistries.BLOCKS, from, "from");
+		MagicUtil.write(json, ForgeRegistries.BLOCKS, to, "to");
 	}
 
 	@Override
