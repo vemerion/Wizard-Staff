@@ -306,7 +306,7 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 			linesPerPage = 7 - title.size();
 			pageCount = (int) Math.ceil(text.size() / (float) linesPerPage);
 
-			DecimalFormat decimalFormat = new DecimalFormat("#.#");
+			DecimalFormat decimalFormat = new DecimalFormat("#.##");
 			cost = COST.getString() + ": " + decimalFormat.format(magicDescr.getCost()) + " " + EXP.getString();
 
 			float durationSeconds = magicDescr.getDuration() / 20f;

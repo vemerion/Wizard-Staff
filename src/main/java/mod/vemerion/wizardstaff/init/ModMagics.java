@@ -67,6 +67,7 @@ import mod.vemerion.wizardstaff.Magic.swap.MassHarvestMagic;
 import mod.vemerion.wizardstaff.Magic.swap.SwapHealthFoodMagic;
 import mod.vemerion.wizardstaff.Magic.swap.SwapPositionMagic;
 import mod.vemerion.wizardstaff.Magic.swap.SwapTradeMagic;
+import mod.vemerion.wizardstaff.Magic.wild.QuietMagic;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -148,6 +149,7 @@ public class ModMagics {
 	public static final RegistryObject<MagicType<LightMagic>> LIGHT_MAGIC = MAGICS.register("light_magic", () -> new MagicType<>(LightMagic::new));
 	public static final RegistryObject<MagicType<ZoomMagic>> ZOOM_MAGIC = MAGICS.register("zoom_magic", () -> new MagicType<>(ZoomMagic::new));
 	public static final RegistryObject<MagicType<PlaceLightRandomMagic>> PLACE_LIGHT_RANDOM_MAGIC = MAGICS.register("place_light_random_magic", () -> new MagicType<>(PlaceLightRandomMagic::new));
+	public static final RegistryObject<MagicType<QuietMagic>> QUIET_MAGIC = MAGICS.register("quiet_magic", () -> new MagicType<>(QuietMagic::new));
 	public static final RegistryObject<MagicType<NoMagic>> NO_MAGIC = MAGICS.register("no_magic", () -> new MagicType<>(NoMagic::new));
 
 	@SubscribeEvent

@@ -217,6 +217,10 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.ZOOM_MAGIC.get(), "Enhance your eyes!");
 		addMagicName(ModMagics.PLACE_LIGHT_RANDOM_MAGIC.get(), "Lighten Up!");
 		addMagicDescription(ModMagics.PLACE_LIGHT_RANDOM_MAGIC.get(), "Randomly place %s blocks in a radius of %s around you if the light level is below %s.");
+		
+		addMagicName(ModMagics.QUIET_MAGIC.get(), "Shhhh!");
+		addMagicDescription(ModMagics.QUIET_MAGIC.get(), "Magically suppress any sound you make, preventing the Warden from noticing you.");
+
 	}
 	// @formatter:on
 

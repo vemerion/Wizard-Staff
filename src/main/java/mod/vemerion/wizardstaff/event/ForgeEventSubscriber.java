@@ -5,9 +5,11 @@ import mod.vemerion.wizardstaff.Magic.Magics;
 import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.capability.Wizard;
+import mod.vemerion.wizardstaff.init.ModMagics;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.GameEventTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,6 +18,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.VanillaGameEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
@@ -69,5 +72,13 @@ public class ForgeEventSubscriber {
 			return;
 		if (WizardStaffItem.magicPreventOtherUse(event.getLevel(), event.getEntity(), stack))
 			event.setUseBlock(Result.DENY);
+	}
+
+	@SubscribeEvent
+	public static void vibrations(VanillaGameEvent event) {
+		if (event.getVanillaEvent().is(GameEventTags.WARDEN_CAN_LISTEN) && event.getCause() instanceof Player player
+				&& Wizard.isUsingMagic(ModMagics.QUIET_MAGIC.get(), player)) {
+			event.setCanceled(true);
+		}
 	}
 }

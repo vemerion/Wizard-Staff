@@ -1,0 +1,8 @@
+{
+  "cost": 0.03,
+  "duration": -1,
+  "ingredient": {
+    "item": "minecraft:white_wool"
+  },
+  "magic": "wizardstaff:quiet_magic"
+}

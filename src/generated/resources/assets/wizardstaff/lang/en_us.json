@@ -111,6 +111,8 @@
   "gui.wizardstaff.push_block_magic.name": "%s Mover",
   "gui.wizardstaff.push_button_magic.description": "Activate buttons from a large distance.",
   "gui.wizardstaff.push_button_magic.name": "Long Range Button Pushing",
+  "gui.wizardstaff.quiet_magic.description": "Magically suppress any sound you make, preventing the Warden from noticing you.",
+  "gui.wizardstaff.quiet_magic.name": "Shhhh!",
   "gui.wizardstaff.remove_fluid_magic.description": "Use your magic to remove fluid of type '%s' around you.",
   "gui.wizardstaff.remove_fluid_magic.name": "Fluid Remover: '%s'",
   "gui.wizardstaff.repair_armor_magic.description": "Use magic to repair the armor you are wearing.",
