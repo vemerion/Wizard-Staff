@@ -1,0 +1,8 @@
+{
+  "cost": 100.0,
+  "duration": 30,
+  "ingredient": {
+    "item": "minecraft:recovery_compass"
+  },
+  "magic": "wizardstaff:death_teleport_magic"
+}

@@ -36,6 +36,8 @@
   "gui.wizardstaff.cost": "Cost",
   "gui.wizardstaff.deage_magic.description": "Shoot a de-age ray at an entity, turning it into a child.",
   "gui.wizardstaff.deage_magic.name": "Deage Magic",
+  "gui.wizardstaff.death_teleport_magic.description": "Return to the place of your death.",
+  "gui.wizardstaff.death_teleport_magic.name": "Exhume",
   "gui.wizardstaff.deflect_projectile_magic.description": "Use your staff as a protective layer around you, deflecting projectiles.",
   "gui.wizardstaff.deflect_projectile_magic.name": "Deflect Projectiles",
   "gui.wizardstaff.duration": "Duration",

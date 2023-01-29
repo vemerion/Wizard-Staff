@@ -153,6 +153,7 @@ public class MagicProvider implements DataProvider {
 		c.accept(create(ModMagics.SUMMON_ENTITY_MAGIC.get(), "summon_mining_vex_magic").setAdditionalParams(3).setAdditionalParams(ModEntities.MAGIC_MINING_VEX.get(), ModSounds.BELL.get(), jsonWithSingleProp("minable", Tags.Blocks.ORES.location().toString())).setParams(60, 55, ing(Items.GOLDEN_PICKAXE)));
 		c.accept(create(ModMagics.PLACE_LIGHT_RANDOM_MAGIC.get()).setAdditionalParams(10, 4, (BlockItem) Items.TORCH).setParams(0.4f, -1, ing(Items.TORCH)));
 		c.accept(create(ModMagics.QUIET_MAGIC.get()).setParams(0.03f, -1, ing(Items.WHITE_WOOL)));
+		c.accept(create(ModMagics.DEATH_TELEPORT_MAGIC.get()).setParams(100, 30, ing(Items.RECOVERY_COMPASS)));
 	}
 	// @formatter:on
 

@@ -220,6 +220,9 @@ public class ModLanguageProvider extends LanguageProvider {
 		
 		addMagicName(ModMagics.QUIET_MAGIC.get(), "Shhhh!");
 		addMagicDescription(ModMagics.QUIET_MAGIC.get(), "Magically suppress any sound you make, preventing the Warden from noticing you.");
+		addMagicName(ModMagics.DEATH_TELEPORT_MAGIC.get(), "Exhume");
+		addMagicDescription(ModMagics.DEATH_TELEPORT_MAGIC.get(), "Return to the place of your death.");
+
 
 	}
 	// @formatter:on
