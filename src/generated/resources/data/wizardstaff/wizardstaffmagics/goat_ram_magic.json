@@ -1,0 +1,9 @@
+{
+  "cost": 10.0,
+  "duration": 30,
+  "ingredient": {
+    "item": "minecraft:goat_horn"
+  },
+  "magic": "wizardstaff:goat_ram_magic",
+  "range": 7
+}

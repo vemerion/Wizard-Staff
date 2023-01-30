@@ -222,8 +222,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.QUIET_MAGIC.get(), "Magically suppress any sound you make, preventing the Warden from noticing you.");
 		addMagicName(ModMagics.DEATH_TELEPORT_MAGIC.get(), "Exhume");
 		addMagicDescription(ModMagics.DEATH_TELEPORT_MAGIC.get(), "Return to the place of your death.");
-
-
+		addMagicName(ModMagics.GOAT_RAM_MAGIC.get(), "Goat Grudge ");
+		addMagicDescription(ModMagics.GOAT_RAM_MAGIC.get(), "Compel nearby goats to charge at you!");
 	}
 	// @formatter:on
 

@@ -154,6 +154,7 @@ public class MagicProvider implements DataProvider {
 		c.accept(create(ModMagics.PLACE_LIGHT_RANDOM_MAGIC.get()).setAdditionalParams(10, 4, (BlockItem) Items.TORCH).setParams(0.4f, -1, ing(Items.TORCH)));
 		c.accept(create(ModMagics.QUIET_MAGIC.get()).setParams(0.03f, -1, ing(Items.WHITE_WOOL)));
 		c.accept(create(ModMagics.DEATH_TELEPORT_MAGIC.get()).setParams(100, 30, ing(Items.RECOVERY_COMPASS)));
+		c.accept(create(ModMagics.GOAT_RAM_MAGIC.get()).setAdditionalParams(7).setParams(10, 30, ing(Items.GOAT_HORN)));
 	}
 	// @formatter:on
 

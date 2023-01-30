@@ -68,6 +68,7 @@ import mod.vemerion.wizardstaff.Magic.swap.SwapHealthFoodMagic;
 import mod.vemerion.wizardstaff.Magic.swap.SwapPositionMagic;
 import mod.vemerion.wizardstaff.Magic.swap.SwapTradeMagic;
 import mod.vemerion.wizardstaff.Magic.wild.DeathTeleportMagic;
+import mod.vemerion.wizardstaff.Magic.wild.GoatRamMagic;
 import mod.vemerion.wizardstaff.Magic.wild.QuietMagic;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -152,6 +153,7 @@ public class ModMagics {
 	public static final RegistryObject<MagicType<PlaceLightRandomMagic>> PLACE_LIGHT_RANDOM_MAGIC = MAGICS.register("place_light_random_magic", () -> new MagicType<>(PlaceLightRandomMagic::new));
 	public static final RegistryObject<MagicType<QuietMagic>> QUIET_MAGIC = MAGICS.register("quiet_magic", () -> new MagicType<>(QuietMagic::new));
 	public static final RegistryObject<MagicType<DeathTeleportMagic>> DEATH_TELEPORT_MAGIC = MAGICS.register("death_teleport_magic", () -> new MagicType<>(DeathTeleportMagic::new));
+	public static final RegistryObject<MagicType<GoatRamMagic>> GOAT_RAM_MAGIC = MAGICS.register("goat_ram_magic", () -> new MagicType<>(GoatRamMagic::new));
 	public static final RegistryObject<MagicType<NoMagic>> NO_MAGIC = MAGICS.register("no_magic", () -> new MagicType<>(NoMagic::new));
 
 	@SubscribeEvent
