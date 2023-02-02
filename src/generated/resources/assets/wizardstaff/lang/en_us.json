@@ -54,6 +54,8 @@
   "gui.wizardstaff.force_entity_magic.description": "%s %s entities with you magic.",
   "gui.wizardstaff.force_entity_magic.name": "%s %s",
   "gui.wizardstaff.force_entity_magic.repel": "Repel",
+  "gui.wizardstaff.frog_eat_magic.description": "Temporarily turn frogs cannibalistic.",
+  "gui.wizardstaff.frog_eat_magic.name": "Frog Feast ",
   "gui.wizardstaff.ghast_tear_magic.description": "Use magic to enhance your crying, immediately extinguishing flames from you.",
   "gui.wizardstaff.ghast_tear_magic.name": "Fire Immunity",
   "gui.wizardstaff.glowstone_dust_magic.description": "Locate nearby entities.",

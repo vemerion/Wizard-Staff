@@ -74,7 +74,7 @@ public class GoatRamMagic extends Magic {
 				goat.getBrain().setMemory(MemoryModuleType.RAM_COOLDOWN_TICKS, 0);
 				goat.getBrain().setMemory(MemoryModuleType.RAM_TARGET, player.position());
 			}
-			playSoundServer(level, player, getSound(!goats.isEmpty(), player.getRandom()), cost, HOUR);
+			playSoundServer(level, player, getSound(!goats.isEmpty(), player.getRandom()), cost, soundPitch(player));
 		}
 
 		return super.magicFinish(level, player, staff);

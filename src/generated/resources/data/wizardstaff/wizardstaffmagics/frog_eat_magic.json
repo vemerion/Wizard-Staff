@@ -1,0 +1,9 @@
+{
+  "cost": 20.0,
+  "duration": 30,
+  "ingredient": {
+    "item": "minecraft:rotten_flesh"
+  },
+  "magic": "wizardstaff:frog_eat_magic",
+  "range": 7
+}

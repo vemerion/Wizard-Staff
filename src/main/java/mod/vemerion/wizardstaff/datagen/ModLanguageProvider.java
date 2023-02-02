@@ -224,6 +224,9 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.DEATH_TELEPORT_MAGIC.get(), "Return to the place of your death.");
 		addMagicName(ModMagics.GOAT_RAM_MAGIC.get(), "Goat Grudge ");
 		addMagicDescription(ModMagics.GOAT_RAM_MAGIC.get(), "Compel nearby goats to charge at you!");
+		addMagicName(ModMagics.FROG_EAT_MAGIC.get(), "Frog Feast ");
+		addMagicDescription(ModMagics.FROG_EAT_MAGIC.get(), "Temporarily turn frogs cannibalistic.");
+
 	}
 	// @formatter:on
 
