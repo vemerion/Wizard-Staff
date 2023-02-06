@@ -156,6 +156,7 @@ public class MagicProvider implements DataProvider {
 		c.accept(create(ModMagics.DEATH_TELEPORT_MAGIC.get()).setParams(100, 30, ing(Items.RECOVERY_COMPASS)));
 		c.accept(create(ModMagics.GOAT_RAM_MAGIC.get()).setAdditionalParams(7).setParams(10, 30, ing(Items.GOAT_HORN)));
 		c.accept(create(ModMagics.FROG_EAT_MAGIC.get()).setAdditionalParams(7).setParams(20, 30, ing(Items.ROTTEN_FLESH)));
+		c.accept(create(ModMagics.ANGER_WARDEN_MAGIC.get()).setParams(100, 50, ing(Items.SCULK_SHRIEKER)));
 	}
 	// @formatter:on
 

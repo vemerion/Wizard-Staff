@@ -1,5 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.bugfix;
 
+import java.util.Optional;
+
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
 import mod.vemerion.wizardstaff.init.ModSounds;
@@ -11,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 
 public class CobwebMagic extends RayMagic {
 
@@ -19,8 +22,8 @@ public class CobwebMagic extends RayMagic {
 	}
 
 	@Override
-	protected ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count) {
-		return new MagicDustParticleData(1, 1, 1, 1);
+	protected Optional<ParticleOptions> generateParticle(Level level, Player player, ItemStack staff, int count, Vec3 pos, Entity target) {
+		return Optional.of(new MagicDustParticleData(1, 1, 1, 1));
 	}
 
 	@Override

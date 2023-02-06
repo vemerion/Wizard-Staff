@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.original;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class EggMagic extends RayMagic {
@@ -73,9 +75,9 @@ public class EggMagic extends RayMagic {
 	}
 
 	@Override
-	protected ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count) {
+	protected Optional<ParticleOptions> generateParticle(Level level, Player player, ItemStack staff, int count, Vec3 pos, Entity target) {
 		var rand = player.getRandom();
-		return new MagicDustParticleData(0.8f + rand.nextFloat() * 0.2f, rand.nextFloat() * 0.2f,
-				0.8f + rand.nextFloat() * 0.2f, 1);
+		return Optional.of(new MagicDustParticleData(0.8f + rand.nextFloat() * 0.2f, rand.nextFloat() * 0.2f,
+				0.8f + rand.nextFloat() * 0.2f, 1));
 	}
 }

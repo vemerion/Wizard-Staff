@@ -1,5 +1,7 @@
 package mod.vemerion.wizardstaff.Magic;
 
+import java.util.Optional;
+
 import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
@@ -36,7 +38,8 @@ public abstract class RayMagic extends Magic {
 			if (target != null) {
 				Vec3 pos = player.position().add(0, 1.5, 0).add(direction);
 				for (int i = 0; i < 25; i++) {
-					level.addParticle(generateParticle(level, player, staff, count), pos.x, pos.y, pos.z, 0.1, 0.1, 0.1);
+					final var p = pos;
+					generateParticle(level, player, staff, count, pos, target).ifPresent(particle -> level.addParticle(particle, p.x, p.y, p.z, 0.1, 0.1, 0.1));
 					pos = pos.add(direction.scale(0.3));
 					if (target.getBoundingBox().intersects(new AABB(pos, pos).inflate(0.25)))
 						break;
@@ -45,7 +48,7 @@ public abstract class RayMagic extends Magic {
 		}
 	}
 	
-	protected abstract ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count);
+	protected abstract Optional<ParticleOptions> generateParticle(Level level, Player player, ItemStack staff, int count, Vec3 pos, Entity target);
 	
 	@Override
 	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {

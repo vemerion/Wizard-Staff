@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.Magic.cavesandcliffs;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 import com.google.gson.JsonObject;
 
@@ -70,10 +71,10 @@ public class MountMagic extends RayMagic {
 	}
 
 	@Override
-	protected ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count) {
+	protected Optional<ParticleOptions> generateParticle(Level level, Player player, ItemStack staff, int count, Vec3 pos, Entity target) {
 		var rand = player.getRandom();
-		return new MagicDustParticleData(0.8f + rand.nextFloat() * 0.2f, 0.8f + rand.nextFloat() * 0.2f,
-				0.8f + rand.nextFloat() * 0.2f, 1);
+		return Optional.of(new MagicDustParticleData(0.8f + rand.nextFloat() * 0.2f, 0.8f + rand.nextFloat() * 0.2f,
+				0.8f + rand.nextFloat() * 0.2f, 1));
 	}
 
 	private boolean isValidEntity(Entity target) {

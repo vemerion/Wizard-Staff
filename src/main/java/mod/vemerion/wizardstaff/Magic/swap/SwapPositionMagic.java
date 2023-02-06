@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.swap;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
@@ -67,12 +68,12 @@ public class SwapPositionMagic extends RayMagic {
 	}
 
 	@Override
-	protected ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count) {
+	protected Optional<ParticleOptions> generateParticle(Level level, Player player, ItemStack staff, int count, Vec3 pos, Entity target) {
 		var rand = player.getRandom();
 		float duration = getUseDuration(staff);
 		float progress = (duration - count) / duration;
 		float alfa = Math.min(1, progress * 1.5f);
-		return new MagicDustParticleData(0.9f + rand.nextFloat() * 0.1f, 0.9f + rand.nextFloat() * 0.1f, 0, alfa);
+		return Optional.of(new MagicDustParticleData(0.9f + rand.nextFloat() * 0.1f, 0.9f + rand.nextFloat() * 0.1f, 0, alfa));
 	}
 
 	@Override

@@ -1,0 +1,8 @@
+{
+  "cost": 100.0,
+  "duration": 50,
+  "ingredient": {
+    "item": "minecraft:sculk_shrieker"
+  },
+  "magic": "wizardstaff:anger_warden_magic"
+}

@@ -1,5 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.spellbookupdate;
 
+import java.util.Optional;
+
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
 import mod.vemerion.wizardstaff.init.ModSounds;
@@ -10,6 +12,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class DeageMagic extends RayMagic {
 
@@ -18,12 +21,12 @@ public class DeageMagic extends RayMagic {
 	}
 
 	@Override
-	protected ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count) {
+	protected Optional<ParticleOptions> generateParticle(Level level, Player player, ItemStack staff, int count, Vec3 pos, Entity target) {
 		float duration = getUseDuration(staff);
 		float progress = (duration - count) / duration;
 		float green = Math.min(1, progress * 1.5f);
 		var rand = player.getRandom();
-		return new MagicDustParticleData(rand.nextFloat() * 0.1f, green, 0.2f + rand.nextFloat() * 0.1f, 1);
+		return Optional.of(new MagicDustParticleData(rand.nextFloat() * 0.1f, green, 0.2f + rand.nextFloat() * 0.1f, 1));
 	}
 
 	@Override

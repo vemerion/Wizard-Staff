@@ -1,5 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.swap;
 
+import java.util.Optional;
+
 import com.google.gson.JsonObject;
 
 import mod.vemerion.wizardstaff.Magic.MagicType;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class SwapTradeMagic extends RayMagic {
 
@@ -28,8 +31,8 @@ public class SwapTradeMagic extends RayMagic {
 	}
 
 	@Override
-	protected ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count) {
-		return ParticleTypes.HAPPY_VILLAGER;
+	protected Optional<ParticleOptions> generateParticle(Level level, Player player, ItemStack staff, int count, Vec3 pos, Entity target) {
+		return Optional.of(ParticleTypes.HAPPY_VILLAGER);
 	}
 
 	public SwapTradeMagic setAdditionalParams(Ingredient blacklist) {

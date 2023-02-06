@@ -1,5 +1,7 @@
 package mod.vemerion.wizardstaff.Magic.suggestions2;
 
+import java.util.Optional;
+
 import org.joml.Vector4f;
 
 import com.google.gson.JsonObject;
@@ -19,6 +21,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class TransformEntityMagic extends RayMagic {
@@ -73,13 +76,13 @@ public class TransformEntityMagic extends RayMagic {
 	}
 
 	@Override
-	protected ParticleOptions generateParticle(Level level, Player player, ItemStack staff, int count) {
+	protected Optional<ParticleOptions> generateParticle(Level level, Player player, ItemStack staff, int count, Vec3 pos, Entity target) {
 		if (particleColorComponents == null) {
 			particleColorComponents = new Vector4f(Helper.red(particleColor) / 255f, Helper.green(particleColor) / 255f,
 					Helper.blue(particleColor) / 255f, Helper.alfa(particleColor) / 255f);
 		}
-		return new MagicDustParticleData(particleColorComponents.x(), particleColorComponents.y(),
-				particleColorComponents.z(), particleColorComponents.w());
+		return Optional.of(new MagicDustParticleData(particleColorComponents.x(), particleColorComponents.y(),
+				particleColorComponents.z(), particleColorComponents.w()));
 	}
 
 	@Override
