@@ -68,6 +68,7 @@ import mod.vemerion.wizardstaff.Magic.swap.SwapHealthFoodMagic;
 import mod.vemerion.wizardstaff.Magic.swap.SwapPositionMagic;
 import mod.vemerion.wizardstaff.Magic.swap.SwapTradeMagic;
 import mod.vemerion.wizardstaff.Magic.wild.AngerWardenMagic;
+import mod.vemerion.wizardstaff.Magic.wild.CycleVariantMagic;
 import mod.vemerion.wizardstaff.Magic.wild.DeathTeleportMagic;
 import mod.vemerion.wizardstaff.Magic.wild.FrogEatMagic;
 import mod.vemerion.wizardstaff.Magic.wild.GoatRamMagic;
@@ -160,6 +161,7 @@ public class ModMagics {
 	public static final RegistryObject<MagicType<FrogEatMagic>> FROG_EAT_MAGIC = MAGICS.register("frog_eat_magic", () -> new MagicType<>(FrogEatMagic::new));
 	public static final RegistryObject<MagicType<AngerWardenMagic>> ANGER_WARDEN_MAGIC = MAGICS.register("anger_warden_magic", () -> new MagicType<>(AngerWardenMagic::new));
 	public static final RegistryObject<MagicType<ListenMagic>> LISTEN_MAGIC = MAGICS.register("listen_magic", () -> new MagicType<>(ListenMagic::new));
+	public static final RegistryObject<MagicType<CycleVariantMagic>> CYCLE_VARIANT_MAGIC = MAGICS.register("cycle_variant_magic", () -> new MagicType<>(CycleVariantMagic::new));
 	public static final RegistryObject<MagicType<NoMagic>> NO_MAGIC = MAGICS.register("no_magic", () -> new MagicType<>(NoMagic::new));
 
 	@SubscribeEvent

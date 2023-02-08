@@ -230,7 +230,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.ANGER_WARDEN_MAGIC.get(), "Increase the anger level of the target Warden towards a nearby random creature.");
 		addMagicName(ModMagics.LISTEN_MAGIC.get(), "Noise Amplifier");
 		addMagicDescription(ModMagics.LISTEN_MAGIC.get(), "Highlight nearby vibrations.");
-
+		addMagicName(ModMagics.CYCLE_VARIANT_MAGIC.get(), "Alter Variant");
+		addMagicDescription(ModMagics.CYCLE_VARIANT_MAGIC.get(), "Cycle through the different variants of the target creature.");
 	}
 	// @formatter:on
 

@@ -36,6 +36,8 @@
   "gui.wizardstaff.cobweb_magic.description": "Shoot cobweb at your enemies!",
   "gui.wizardstaff.cobweb_magic.name": "Spider Web",
   "gui.wizardstaff.cost": "Cost",
+  "gui.wizardstaff.cycle_variant_magic.description": "Cycle through the different variants of the target creature.",
+  "gui.wizardstaff.cycle_variant_magic.name": "Alter Variant",
   "gui.wizardstaff.deage_magic.description": "Shoot a de-age ray at an entity, turning it into a child.",
   "gui.wizardstaff.deage_magic.name": "Deage Magic",
   "gui.wizardstaff.death_teleport_magic.description": "Return to the place of your death.",

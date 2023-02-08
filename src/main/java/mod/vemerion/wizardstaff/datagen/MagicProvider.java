@@ -158,6 +158,7 @@ public class MagicProvider implements DataProvider {
 		c.accept(create(ModMagics.FROG_EAT_MAGIC.get()).setAdditionalParams(7).setParams(20, 30, ing(Items.ROTTEN_FLESH)));
 		c.accept(create(ModMagics.ANGER_WARDEN_MAGIC.get()).setParams(100, 50, ing(Items.SCULK_SHRIEKER)));
 		c.accept(create(ModMagics.LISTEN_MAGIC.get()).setParams(0.04f, -1, ing(Items.SPECTRAL_ARROW)));
+		c.accept(create(ModMagics.CYCLE_VARIANT_MAGIC.get()).setParams(5, 10, ing(Items.MANGROVE_PROPAGULE)));
 	}
 	// @formatter:on
 

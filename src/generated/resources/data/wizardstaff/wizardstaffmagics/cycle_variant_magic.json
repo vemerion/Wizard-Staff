@@ -1,0 +1,8 @@
+{
+  "cost": 5.0,
+  "duration": 10,
+  "ingredient": {
+    "item": "minecraft:mangrove_propagule"
+  },
+  "magic": "wizardstaff:cycle_variant_magic"
+}
