@@ -1,0 +1,8 @@
+{
+  "cost": 0.04,
+  "duration": -1,
+  "ingredient": {
+    "item": "minecraft:spectral_arrow"
+  },
+  "magic": "wizardstaff:listen_magic"
+}

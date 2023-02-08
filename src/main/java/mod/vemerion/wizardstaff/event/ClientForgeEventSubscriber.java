@@ -93,7 +93,7 @@ public class ClientForgeEventSubscriber {
 		var mc = Minecraft.getInstance();
 		var player = mc.player;
 
-		if (!Wizard.isUsingMagic(ModMagics.X_RAY_MAGIC.get(), player)) {
+		if (!Wizard.isUsingMagic(ModMagics.X_RAY_MAGIC.get(), player) && !Wizard.isUsingMagic(ModMagics.LISTEN_MAGIC.get(), player)) {
 			Wizard.getWizardOptional(player).ifPresent(w -> {
 				w.getXRayed().clear();
 			});

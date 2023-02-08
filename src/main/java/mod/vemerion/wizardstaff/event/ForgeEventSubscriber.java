@@ -6,7 +6,10 @@ import mod.vemerion.wizardstaff.capability.Experience;
 import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.init.ModMagics;
+import mod.vemerion.wizardstaff.network.ListenMagicMessage;
+import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.staff.WizardStaffItem;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.GameEventTags;
@@ -26,6 +29,7 @@ import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = Main.MODID, bus = Bus.FORGE)
 public class ForgeEventSubscriber {
@@ -74,11 +78,22 @@ public class ForgeEventSubscriber {
 			event.setUseBlock(Result.DENY);
 	}
 
+	private static final int LISTEN_DISTANCE = 20 * 20;
+
 	@SubscribeEvent
 	public static void vibrations(VanillaGameEvent event) {
 		if (event.getVanillaEvent().is(GameEventTags.WARDEN_CAN_LISTEN) && event.getCause() instanceof Player player
 				&& Wizard.isUsingMagic(ModMagics.QUIET_MAGIC.get(), player)) {
 			event.setCanceled(true);
+		} else {
+			var pos = event.getEventPosition();
+			for (var player : event.getLevel().players()) {
+				if (Wizard.isUsingMagic(ModMagics.LISTEN_MAGIC.get(), player) && event.getCause() != player
+						&& player.distanceToSqr(pos) < LISTEN_DISTANCE) {
+					Network.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
+							new ListenMagicMessage(new BlockPos(pos)));
+				}
+			}
 		}
 	}
 }

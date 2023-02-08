@@ -7,6 +7,7 @@ import mod.vemerion.wizardstaff.capability.ScreenAnimations;
 import mod.vemerion.wizardstaff.capability.Wizard;
 import mod.vemerion.wizardstaff.network.CycleCurrentMessage;
 import mod.vemerion.wizardstaff.network.JukeboxMagicMessage;
+import mod.vemerion.wizardstaff.network.ListenMagicMessage;
 import mod.vemerion.wizardstaff.network.Network;
 import mod.vemerion.wizardstaff.network.UpdateMagicsMessage;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -27,6 +28,8 @@ public class ModEventSubscriber {
 				JukeboxMagicMessage::decode, JukeboxMagicMessage::handle);
 		Network.INSTANCE.registerMessage(3, CycleCurrentMessage.class, CycleCurrentMessage::encode,
 				CycleCurrentMessage::decode, CycleCurrentMessage::handle);
+		Network.INSTANCE.registerMessage(4, ListenMagicMessage.class, ListenMagicMessage::encode,
+				ListenMagicMessage::decode, ListenMagicMessage::handle);
 
 
 		Magics.init();

@@ -228,7 +228,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.FROG_EAT_MAGIC.get(), "Temporarily turn frogs cannibalistic.");
 		addMagicName(ModMagics.ANGER_WARDEN_MAGIC.get(), "Artificial Anger");
 		addMagicDescription(ModMagics.ANGER_WARDEN_MAGIC.get(), "Increase the anger level of the target Warden towards a nearby random creature.");
-
+		addMagicName(ModMagics.LISTEN_MAGIC.get(), "Noise Amplifier");
+		addMagicDescription(ModMagics.LISTEN_MAGIC.get(), "Highlight nearby vibrations.");
 
 	}
 	// @formatter:on
