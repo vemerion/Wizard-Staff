@@ -39,9 +39,19 @@
       "wizardstaff:cloth"
     ]
   },
+  "create": {
+    "sounds": [
+      "wizardstaff:create"
+    ]
+  },
   "deage": {
     "sounds": [
       "wizardstaff:deage"
+    ]
+  },
+  "disappear": {
+    "sounds": [
+      "wizardstaff:disappear"
     ]
   },
   "evaporate": {
@@ -67,6 +77,11 @@
   "impact": {
     "sounds": [
       "wizardstaff:impact"
+    ]
+  },
+  "listen": {
+    "sounds": [
+      "wizardstaff:listen"
     ]
   },
   "magnet": {

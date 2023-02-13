@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.Magic.wild;
 
 import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -30,6 +31,11 @@ public class ListenMagic extends Magic {
 	@Override
 	public UseAnim getUseAnim(ItemStack stack) {
 		return UseAnim.NONE;
+	}
+	
+	@Override
+	public void magicStart(Level level, Player player, ItemStack staff) {
+		player.playSound(ModSounds.LISTEN.get(), 1, soundPitch(player));
 	}
 	
 	@Override

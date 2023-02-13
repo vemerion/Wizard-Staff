@@ -6,6 +6,7 @@ import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.MagicUtil;
 import mod.vemerion.wizardstaff.entity.MagicMissileEntity;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
@@ -106,6 +107,7 @@ public class MissileMagic extends Magic {
 			missile.setOwner(player);
 			missile.setItem(item);
 			level.addFreshEntity(missile);
+			playSoundServer(level, player, ModSounds.CREATE.get(), 1, soundPitch(player));
 		}
 	}
 

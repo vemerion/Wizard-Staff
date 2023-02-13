@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
+import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
@@ -36,6 +37,7 @@ public class CycleVariantMagic extends RayMagic {
 		if (target instanceof VariantHolder<?> holder) {
 			if (cycle(holder)) {
 				cost(player);
+				playSoundServer(level, player, ModSounds.SWAP.get(), 1, soundPitch(player));
 			}
 		}
 	}

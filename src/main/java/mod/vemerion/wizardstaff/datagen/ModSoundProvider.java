@@ -48,6 +48,9 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addWithSameName(ModSounds.TRANSFORM.get());
 		addWithSameName(ModSounds.WARP.get());
 		addWithSameName(ModSounds.WOOSH.get());
+		addWithSameName(ModSounds.DISAPPEAR.get());
+		addWithSameName(ModSounds.LISTEN.get());
+		addWithSameName(ModSounds.CREATE.get());
 	}
 
 	private void addWithSameName(SoundEvent sound) {

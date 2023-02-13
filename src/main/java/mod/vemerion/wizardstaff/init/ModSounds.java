@@ -44,4 +44,7 @@ public class ModSounds {
 	public static final RegistryObject<SoundEvent> SWAP = SOUNDS.register("swap", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "swap")));
 	public static final RegistryObject<SoundEvent> MAGNET = SOUNDS.register("magnet", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "magnet")));
 	public static final RegistryObject<SoundEvent> HEARTBEAT = SOUNDS.register("heartbeat", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "heartbeat")));
+	public static final RegistryObject<SoundEvent> DISAPPEAR = SOUNDS.register("disappear", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "disappear")));
+	public static final RegistryObject<SoundEvent> LISTEN = SOUNDS.register("listen", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "listen")));
+	public static final RegistryObject<SoundEvent> CREATE = SOUNDS.register("create", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Main.MODID, "create")));
 }
