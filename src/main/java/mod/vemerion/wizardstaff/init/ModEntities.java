@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.init;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.entity.GrapplingHookEntity;
+import mod.vemerion.wizardstaff.entity.MagicMissileEntity;
 import mod.vemerion.wizardstaff.entity.MagicSoulSandArmEntity;
 import mod.vemerion.wizardstaff.entity.MagicVexEntity;
 import mod.vemerion.wizardstaff.entity.MagicWitherSkullEntity;
@@ -55,6 +56,10 @@ public class ModEntities {
 			"magic_mining_vex",
 			() -> EntityType.Builder.<MagicVexEntity.Mining>of(MagicVexEntity.Mining::new, MobCategory.MONSTER)
 					.fireImmune().sized(0.4f, 0.8f).clientTrackingRange(8).build(""));
+	public static final RegistryObject<EntityType<MagicMissileEntity>> MAGIC_MISSILE_ENTITY = ENTITIES.register(
+			"magic_missile_entity",
+			() -> EntityType.Builder.<MagicMissileEntity>of(MagicMissileEntity::new, MobCategory.MISC)
+					.sized(0.3125F, 0.3125F).fireImmune().build(""));
 
 	@SubscribeEvent
 	public static void onRegisterEntityAttributes(EntityAttributeCreationEvent event) {

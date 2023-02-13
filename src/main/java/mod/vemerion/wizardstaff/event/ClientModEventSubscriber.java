@@ -43,6 +43,7 @@ import net.minecraft.client.particle.SmokeParticle;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.VexRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -101,6 +102,7 @@ public class ClientModEventSubscriber {
 		event.registerEntityRenderer(ModEntities.WIZARD_HAT.get(), WizardHatRenderer::new);
 		event.registerEntityRenderer(ModEntities.MAGIC_VEX.get(), VexRenderer::new);
 		event.registerEntityRenderer(ModEntities.MAGIC_MINING_VEX.get(), VexRenderer::new);
+		event.registerEntityRenderer(ModEntities.MAGIC_MISSILE_ENTITY.get(), r -> new ThrownItemRenderer<>(r, 1, true));
 	}
 
 	private static class NoRenderer<T extends Entity> extends EntityRenderer<T> {

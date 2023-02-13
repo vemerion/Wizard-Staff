@@ -73,6 +73,7 @@ import mod.vemerion.wizardstaff.Magic.wild.DeathTeleportMagic;
 import mod.vemerion.wizardstaff.Magic.wild.FrogEatMagic;
 import mod.vemerion.wizardstaff.Magic.wild.GoatRamMagic;
 import mod.vemerion.wizardstaff.Magic.wild.ListenMagic;
+import mod.vemerion.wizardstaff.Magic.wild.MissileMagic;
 import mod.vemerion.wizardstaff.Magic.wild.QuietMagic;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -162,6 +163,7 @@ public class ModMagics {
 	public static final RegistryObject<MagicType<AngerWardenMagic>> ANGER_WARDEN_MAGIC = MAGICS.register("anger_warden_magic", () -> new MagicType<>(AngerWardenMagic::new));
 	public static final RegistryObject<MagicType<ListenMagic>> LISTEN_MAGIC = MAGICS.register("listen_magic", () -> new MagicType<>(ListenMagic::new));
 	public static final RegistryObject<MagicType<CycleVariantMagic>> CYCLE_VARIANT_MAGIC = MAGICS.register("cycle_variant_magic", () -> new MagicType<>(CycleVariantMagic::new));
+	public static final RegistryObject<MagicType<MissileMagic>> MISSILE_MAGIC = MAGICS.register("missile_magic", () -> new MagicType<>(MissileMagic::new));
 	public static final RegistryObject<MagicType<NoMagic>> NO_MAGIC = MAGICS.register("no_magic", () -> new MagicType<>(NoMagic::new));
 
 	@SubscribeEvent

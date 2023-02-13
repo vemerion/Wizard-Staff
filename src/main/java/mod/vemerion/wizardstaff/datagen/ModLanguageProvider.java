@@ -47,6 +47,7 @@ public class ModLanguageProvider extends LanguageProvider {
 		add(ModEntities.WIZARD_HAT.get(), "Wizard Hat");
 		add(ModEntities.MAGIC_VEX.get(), "Friendly Vex");
 		add(ModEntities.MAGIC_MINING_VEX.get(), "Mining Vex");
+		add(ModEntities.MAGIC_MISSILE_ENTITY.get(), "Magic Missile");
 
 		add("item.wizardstaff.wizard_armor.description", "-10% spell cost");
 		add("item.wizardstaff.druid_armor.description", "-10% spell cost");
@@ -232,6 +233,9 @@ public class ModLanguageProvider extends LanguageProvider {
 		addMagicDescription(ModMagics.LISTEN_MAGIC.get(), "Highlight nearby vibrations.");
 		addMagicName(ModMagics.CYCLE_VARIANT_MAGIC.get(), "Alter Variant");
 		addMagicDescription(ModMagics.CYCLE_VARIANT_MAGIC.get(), "Cycle through the different variants of the target creature.");
+		addMagicName(ModMagics.MISSILE_MAGIC.get(), "Magic Missiles: %s");
+		addMagicDescription(ModMagics.MISSILE_MAGIC.get(), "Channel your power to create several magic missiles of type %s at intervals of %s ticks. Stop casting the spell to fire the missiles in your current direction, dealing %s damage on impact.");
+
 	}
 	// @formatter:on
 

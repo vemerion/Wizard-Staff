@@ -1,0 +1,11 @@
+{
+  "cost": 4.0,
+  "damage": 4,
+  "duration": 200,
+  "ingredient": {
+    "item": "minecraft:amethyst_shard"
+  },
+  "interval": 7,
+  "item": "minecraft:amethyst_shard",
+  "magic": "wizardstaff:missile_magic"
+}
