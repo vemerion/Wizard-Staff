@@ -63,7 +63,7 @@ public class MushroomCloudEntity extends MagicEntity {
 			if (caster != null) {
 				e.hurt(Magic.magicDamage(this, caster), 2);
 			} else {
-				e.hurt(Magic.magicDamage(), 2);
+				e.hurt(Magic.magicDamage(level), 2);
 			}
 			if (e.getHealth() <= 0) {
 				spawnMushrooms(e.getEyePosition(1));

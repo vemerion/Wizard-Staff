@@ -1,6 +1,7 @@
 package mod.vemerion.wizardstaff.item;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import mod.vemerion.wizardstaff.Main;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.Item;
@@ -24,8 +26,8 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public abstract class MagicArmorItem extends DyeableArmorItem {
 
-	public MagicArmorItem(ArmorMaterial material, EquipmentSlot slot) {
-		super(material, slot, new Item.Properties().stacksTo(1));
+	public MagicArmorItem(ArmorMaterial material, ArmorItem.Type type) {
+		super(material, type, new Item.Properties().stacksTo(1));
 	}
 
 	@Override
@@ -69,17 +71,19 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 	}
 
 	protected static abstract class MagicArmorMaterial implements ArmorMaterial {
-		protected static final int[] MAX_DAMAGE_ARRAY = new int[] { 13, 15, 16, 11 };
-		protected static final int[] PROTECTION_ARRAY = new int[] { 1, 2, 3, 1 };
+		protected static final Map<ArmorItem.Type, Integer> MAX_DAMAGE = Map.of(ArmorItem.Type.BOOTS, 13,
+				ArmorItem.Type.LEGGINGS, 15, ArmorItem.Type.CHESTPLATE, 16, ArmorItem.Type.HELMET, 11);
+		protected static final Map<ArmorItem.Type, Integer> PROTECTION = Map.of(ArmorItem.Type.BOOTS, 1,
+				ArmorItem.Type.LEGGINGS, 2, ArmorItem.Type.CHESTPLATE, 3, ArmorItem.Type.HELMET, 1);
 
 		@Override
-		public int getDurabilityForSlot(EquipmentSlot slotIn) {
-			return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * 5;
+		public int getDurabilityForType(ArmorItem.Type type) {
+			return MAX_DAMAGE.get(type) * 5;
 		}
 
 		@Override
-		public int getDefenseForSlot(EquipmentSlot slotIn) {
-			return PROTECTION_ARRAY[slotIn.getIndex()];
+		public int getDefenseForType(ArmorItem.Type type) {
+			return PROTECTION.get(type);
 		}
 
 		@Override
@@ -108,8 +112,8 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 		MagicArmorModel<?> model;
 
 		@Override
-		public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot,
-				HumanoidModel<?> _default) {
+		public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entityLiving, ItemStack itemStack,
+				EquipmentSlot armorSlot, HumanoidModel<?> _default) {
 			if (model == null)
 				model = getModel();
 

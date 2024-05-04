@@ -133,7 +133,7 @@ public class SmeltingMagic extends Magic {
 					cost(player);
 					Recipe<Container> recipe = recipes.get(rand.nextInt(recipes.size()));
 					itemEntity.getItem().shrink(itemCost);
-					itemEntity.spawnAtLocation(recipe.assemble(inv));
+					itemEntity.spawnAtLocation(recipe.assemble(inv, level.registryAccess()));
 				}
 			}
 		}

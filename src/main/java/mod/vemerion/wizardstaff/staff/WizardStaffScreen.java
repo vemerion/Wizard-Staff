@@ -148,10 +148,10 @@ public class WizardStaffScreen extends AbstractContainerScreen<WizardStaffContai
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		renderTooltip(matrix, mouseX, mouseY);
 		spellbook.render(matrix, mouseX, mouseY, partialTicks);
-		if (toggleAnimationsButton.isHoveredOrFocused())
+		if (toggleAnimationsButton.isHovered())
 			renderTooltip(matrix, guiComponent("toggle_animations"), mouseX, mouseY);
 
-		if (spellbookButton.isHoveredOrFocused())
+		if (spellbookButton.isHovered())
 			renderTooltip(matrix, guiComponent("toggle_spellbook"), mouseX, mouseY);
 	}
 

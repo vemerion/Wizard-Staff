@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "wizardstaff:wizard_staff"
-  }
+  },
+  "show_notification": true
 }

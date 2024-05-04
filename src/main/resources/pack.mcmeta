@@ -1,6 +1,9 @@
 {
-    "pack": {
-        "description": "examplemod resources",
-        "pack_format": 6
-    }
+  "pack": {
+    "description": {
+      "text": "wizardstaff resources"
+    },
+    "forge:server_data_pack_format": 12,
+    "pack_format": 13
+  }
 }

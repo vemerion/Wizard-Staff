@@ -3,12 +3,13 @@ package mod.vemerion.wizardstaff.Magic;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.capability.Experience;
+import mod.vemerion.wizardstaff.init.ModDamageTypes;
 import mod.vemerion.wizardstaff.init.ModMagics;
 import mod.vemerion.wizardstaff.item.MagicArmorItem;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -18,8 +19,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -137,7 +136,7 @@ public abstract class Magic {
 		double debt = debt(player, whole);
 		player.giveExperiencePoints(-whole);
 		if (debt > 0)
-			player.hurt(DamageSource.MAGIC, (float) debt);
+			player.hurt(player.damageSources().magic(), (float) debt);
 	}
 
 	protected final void cost(Player player) {
@@ -259,17 +258,18 @@ public abstract class Magic {
 	}
 
 	// Damage Types
-	private static final DamageSource MAGIC = (new DamageSource(Main.MODID + ".magic")).setMagic();
-
-	public static DamageSource magicDamage() {
-		return MAGIC;
+	public static DamageSource magicDamage(Level level) {
+		return new DamageSource(
+				level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ModDamageTypes.MAGIC));
 	}
 
 	public static DamageSource magicDamage(Player player) {
-		return new EntityDamageSource(Main.MODID + ".magicplayer", player).setMagic();
+		return new DamageSource(player.level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE)
+				.getHolderOrThrow(ModDamageTypes.MAGIC), player);
 	}
 
 	public static DamageSource magicDamage(Entity source, Player player) {
-		return new IndirectEntityDamageSource(Main.MODID + ".magicindirect", source, player).setMagic();
+		return new DamageSource(player.level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE)
+				.getHolderOrThrow(ModDamageTypes.MAGIC), source, player);
 	}
 }

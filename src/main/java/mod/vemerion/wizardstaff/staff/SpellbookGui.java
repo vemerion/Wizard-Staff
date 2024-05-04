@@ -57,6 +57,7 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 	private int page;
 	private SpellDescription description;
 	private EditBox search;
+	private boolean focused;
 	WizardStaffScreen parent;
 	Minecraft mc;
 
@@ -235,11 +236,11 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 		}
 
 		@Override
-		public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-			if (isHoveredOrFocused())
+		public void renderWidget(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+			if (isHovered())
 				parent.renderTooltip(matrixStack, getMessage(), mouseX, mouseY);
 
-			mc.getItemRenderer().renderAndDecorateItem(stack, getX(), getY());
+			mc.getItemRenderer().renderAndDecorateItem(matrixStack, stack, getX(), getY());
 		}
 
 		@Override
@@ -248,7 +249,7 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 		}
 
 		@Override
-		protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {			
+		protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
 		}
 	}
 
@@ -272,6 +273,7 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 		String cost, duration;
 		private int linesPerPage;
 		private int pageCount;
+		private boolean focused;
 
 		public SpellDescription(Magic.Description magicDescr, ItemStack stack, int left, int top) {
 			this.magicDescr = magicDescr;
@@ -328,7 +330,7 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 			int textWidth = 0;
 
 			// Item
-			mc.getItemRenderer().renderAndDecorateItem(stack, left + X_SIZE / 2 - 8, y);
+			mc.getItemRenderer().renderAndDecorateItem(matrixStack, stack, left + X_SIZE / 2 - 8, y);
 			y += 20;
 
 			// Magic name
@@ -366,5 +368,25 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 			return false;
 		}
 
+		@Override
+		public void setFocused(boolean pFocused) {
+			focused = true;
+		}
+
+		@Override
+		public boolean isFocused() {
+			return focused;
+		}
+
+	}
+
+	@Override
+	public void setFocused(boolean pFocused) {
+		focused = true;
+	}
+
+	@Override
+	public boolean isFocused() {
+		return focused;
 	}
 }

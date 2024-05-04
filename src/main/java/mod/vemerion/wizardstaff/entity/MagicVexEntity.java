@@ -80,7 +80,7 @@ public abstract class MagicVexEntity extends Vex implements ICasted {
 	public boolean doHurtTarget(Entity entityIn) {
 		Player caster = getCaster(level);
 		float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
-		DamageSource source = caster == null ? Magic.magicDamage() : Magic.magicDamage(this, caster);
+		DamageSource source = caster == null ? Magic.magicDamage(level) : Magic.magicDamage(this, caster);
 		return entityIn.hurt(source, damage);
 	}
 

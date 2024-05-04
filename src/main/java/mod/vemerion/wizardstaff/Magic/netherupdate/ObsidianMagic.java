@@ -92,10 +92,10 @@ public class ObsidianMagic extends Magic {
 	@Override
 	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
 		if (!level.isClientSide && level.dimension() != dimension) {
-			Vec3 spawnPos = player.position()
+			var spawnPos = player.position()
 					.add(Vec3.directionFromRotation(player.getXRot(), player.getYRot()).scale(2));
 			spawnPos = new Vec3(spawnPos.x, Math.max(player.getY(), spawnPos.y), spawnPos.z);
-			BlockPos pos = new BlockPos(spawnPos);
+			var pos = new BlockPos((int) spawnPos.x, (int) spawnPos.y, (int) spawnPos.z);
 			if (!level.getBlockState(pos).canOcclude() && !level.getBlockState(pos.above()).canOcclude()) {
 				cost(player);
 				NetherPortalEntity portal = new NetherPortalEntity(ModEntities.NETHER_PORTAL.get(), level, dimension,

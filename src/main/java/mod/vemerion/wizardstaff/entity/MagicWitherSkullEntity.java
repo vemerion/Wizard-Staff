@@ -73,7 +73,7 @@ public class MagicWitherSkullEntity extends AbstractArrow {
 			if (getOwner() != null && getOwner() instanceof Player) {
 				target.hurt(Magic.magicDamage(this, (Player) getOwner()), (float) getBaseDamage());
 			} else {
-				target.hurt(Magic.magicDamage(), (float) getBaseDamage());
+				target.hurt(Magic.magicDamage(level), (float) getBaseDamage());
 			}
 
 			if (target instanceof LivingEntity) {

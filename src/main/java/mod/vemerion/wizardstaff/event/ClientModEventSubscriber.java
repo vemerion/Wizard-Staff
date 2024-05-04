@@ -1,8 +1,5 @@
 package mod.vemerion.wizardstaff.event;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -35,12 +32,11 @@ import mod.vemerion.wizardstaff.screen.MagicScreen;
 import mod.vemerion.wizardstaff.staff.WizardStaffScreen;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.particle.DustParticle;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.SmokeParticle;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -59,7 +55,6 @@ import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 @EventBusSubscriber(modid = Main.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModEventSubscriber {
@@ -74,7 +69,8 @@ public class ClientModEventSubscriber {
 
 	@SubscribeEvent
 	public static void onRegisterKeys(RegisterKeyMappingsEvent event) {
-		cycleMagicKey = new KeyMapping("key." + Main.MODID + ".cycleMagicKey", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM.getOrCreate(GLFW.GLFW_KEY_V), "key." + Main.MODID + ".category");
+		cycleMagicKey = new KeyMapping("key." + Main.MODID + ".cycleMagicKey", KeyConflictContext.IN_GAME,
+				InputConstants.Type.KEYSYM.getOrCreate(GLFW.GLFW_KEY_V), "key." + Main.MODID + ".category");
 		event.register(cycleMagicKey);
 	}
 
@@ -122,27 +118,25 @@ public class ClientModEventSubscriber {
 	public static void onRegisterColor(RegisterColorHandlersEvent.Item event) {
 		event.register((stack, tint) -> {
 			return tint > 0 ? -1 : ((DyeableLeatherItem) stack.getItem()).getColor(stack);
-		}, ModItems.WIZARD_HAT.get(), ModItems.WIZARD_BOOTS.get(), ModItems.WIZARD_CHESTPLATE.get(), ModItems.WIZARD_LEGGINGS.get(),
-				ModItems.DRUID_HELMET.get(), ModItems.DRUID_BOOTS.get(), ModItems.DRUID_CHESTPLATE.get(), ModItems.DRUID_LEGGINGS.get(),
-				ModItems.WARLOCK_BOOTS.get(), ModItems.WARLOCK_CHESTPLATE.get(), ModItems.WARLOCK_HELMET.get(),
-				ModItems.WARLOCK_LEGGINGS.get());
+		}, ModItems.WIZARD_HAT.get(), ModItems.WIZARD_BOOTS.get(), ModItems.WIZARD_CHESTPLATE.get(),
+				ModItems.WIZARD_LEGGINGS.get(), ModItems.DRUID_HELMET.get(), ModItems.DRUID_BOOTS.get(),
+				ModItems.DRUID_CHESTPLATE.get(), ModItems.DRUID_LEGGINGS.get(), ModItems.WARLOCK_BOOTS.get(),
+				ModItems.WARLOCK_CHESTPLATE.get(), ModItems.WARLOCK_HELMET.get(), ModItems.WARLOCK_LEGGINGS.get());
 	}
 
 	@SubscribeEvent
 	public static void onRegisterParticleFactories(RegisterParticleProvidersEvent event) {
-		event.register(ModParticles.MAGIC_SMOKE_PARTICLE.get(), sprite -> new SmokeParticle.Provider(sprite));
-		event.register(ModParticles.MAGIC_FLAME_PARTICLE.get(), sprite -> new FlameParticle.Provider(sprite));
-		event.register(ModParticles.MAGIC_DUST_PARTICLE.get(), sprite -> new DustParticle.Provider(sprite));
+		event.registerSpriteSet(ModParticles.MAGIC_SMOKE_PARTICLE.get(), sprite -> new SmokeParticle.Provider(sprite));
+		event.registerSpriteSet(ModParticles.MAGIC_FLAME_PARTICLE.get(), sprite -> new FlameParticle.Provider(sprite));
+		event.registerSpriteSet(ModParticles.MAGIC_DUST_PARTICLE.get(), sprite -> new DustParticle.Provider(sprite));
 	}
-	
-	static final Method renderSpyglassOverlay = ObfuscationReflectionHelper.findMethod(Gui.class, "m_168675_",
-			float.class);
-	
+
 	@SubscribeEvent
 	public static void onRegisterOverlays(RegisterGuiOverlaysEvent event) {
 		event.registerAboveAll("zoom_magic", (gui, ps, partialTick, screenWidth, screenHeight) -> {
 			var mc = Minecraft.getInstance();
-			if (!(Wizard.isUsingMagic(ModMagics.ZOOM_MAGIC.get(), mc.player) && mc.options.getCameraType().isFirstPerson()))
+			if (!(Wizard.isUsingMagic(ModMagics.ZOOM_MAGIC.get(), mc.player)
+					&& mc.options.getCameraType().isFirstPerson()))
 				return;
 
 			RenderSystem.enableBlend();
@@ -153,21 +147,18 @@ public class ClientModEventSubscriber {
 
 			RenderSystem.setShaderColor(Math.abs(Mth.sin(time / 20f)) * 0.5f + 0.5f, 0,
 					Math.abs(Mth.cos(time / 20f + 0.2f)) * 0.5f + 0.5f, 1.0F);
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			var poseStack = RenderSystem.getModelViewStack();
-			poseStack.pushPose();
-			poseStack.translate(screenWidth / 2, screenHeight / 2, 0);
-			poseStack.mulPose(Axis.ZP.rotationDegrees(time));
-			poseStack.translate(-screenWidth / 2, -screenHeight / 2, 0);
-			RenderSystem.applyModelViewMatrix();
+			RenderSystem.setShaderTexture(0, new ResourceLocation("textures/misc/spyglass_scope.png"));
 
-			try {
-				renderSpyglassOverlay.invoke(mc.gui, 1.8f);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				Main.LOGGER.warn("Could not invoke 'renderSpyglassOverlay':" + e);
-			}
+			ps.pushPose();
+			ps.translate((screenWidth - 256) / 2, 0, 0);
+			ps.translate(256 / 2, 256 / 2, 0);
+			ps.mulPose(Axis.ZP.rotationDegrees(time));
+			ps.translate(-256 / 2, -256 / 2, 0);
+
+			GuiComponent.blit(ps, 0, 0, -90, 0, 0, 256, 256, 256, 256);
+
 			RenderSystem.restoreProjectionMatrix();
-			poseStack.popPose();
+			ps.popPose();
 			RenderSystem.applyModelViewMatrix();
 		});
 	}

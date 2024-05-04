@@ -55,9 +55,9 @@ public class NetherrackMagic extends Magic {
 		boolean hasRackified = false;
 		if (player.isOnGround()) {
 			BlockState netherrack = Blocks.NETHERRACK.defaultBlockState();
-			float range = 2;
-			BlockPos start = new BlockPos(player.position()).offset(-range, -1, -range);
-			BlockPos stop = new BlockPos(player.position()).offset(range, -1, range);
+			int range = 2;
+			BlockPos start = player.blockPosition().offset(-range, -1, -range);
+			BlockPos stop = player.blockPosition().offset(range, -1, range);
 			for (BlockPos pos : BlockPos.betweenClosed(start, stop)) {
 				if (canBeRackified(level, pos)) {
 					if (level.isUnobstructed(netherrack, pos, CollisionContext.empty())

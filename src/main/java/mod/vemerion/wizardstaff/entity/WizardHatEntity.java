@@ -37,7 +37,7 @@ public class WizardHatEntity extends AbstractArrow {
 		this.setBaseDamage(1);
 		this.setSoundEvent(ModSounds.CLOTH.get());
 	}
-	
+
 	@Override
 	protected SoundEvent getDefaultHitGroundSoundEvent() {
 		return ModSounds.CLOTH.get();
@@ -67,10 +67,9 @@ public class WizardHatEntity extends AbstractArrow {
 		if (!level.isClientSide) {
 			Entity target = result.getEntity();
 			if (getOwner() != null && getOwner() instanceof Player) { // getShooter()
-				target.hurt(Magic.magicDamage(this, (Player) getOwner()),
-						(float) getBaseDamage());
+				target.hurt(Magic.magicDamage(this, (Player) getOwner()), (float) getBaseDamage());
 			} else {
-				target.hurt(Magic.magicDamage(), (float) getBaseDamage());
+				target.hurt(Magic.magicDamage(level), (float) getBaseDamage());
 			}
 			playSound(getDefaultHitGroundSoundEvent(), 1, 0.8f + random.nextFloat() * 0.4f);
 

@@ -30,7 +30,7 @@ public class BucketMagic extends Magic {
 	public BucketMagic(MagicType<? extends BucketMagic> type) {
 		super(type);
 	}
-	
+
 	public BucketMagic setAdditionalParams(BucketItem bucket) {
 		this.bucket = bucket;
 		return this;
@@ -59,7 +59,7 @@ public class BucketMagic extends Magic {
 		else
 			throw new JsonParseException("bucket attribute must be instance of BucketItem");
 	}
-	
+
 	@Override
 	protected void writeAdditional(JsonObject json) {
 		MagicUtil.write(json, ForgeRegistries.ITEMS, bucket, "bucket");
@@ -84,7 +84,7 @@ public class BucketMagic extends Magic {
 	protected Object[] getDescrArgs() {
 		return new Object[] { bucket.getName(bucket.getDefaultInstance()) };
 	}
-	
+
 	@Override
 	public boolean magicPreventOtherUse(Level level, Player player, ItemStack staff) {
 		var raytrace = Helper.blockRay(level, player, 4.5f);
@@ -95,9 +95,10 @@ public class BucketMagic extends Magic {
 	public ItemStack magicFinish(Level level, Player player, ItemStack staff) {
 		var raytrace = Helper.blockRay(level, player, 4.5f);
 		if (raytrace.getType() == HitResult.Type.BLOCK) {
-			BlockPos pos = new BlockPos(raytrace.getLocation());
-			if (bucket.emptyContents(player, level, pos, (BlockHitResult) raytrace)) {
-				bucket.checkExtraContent(player, level, new ItemStack(bucket), pos);
+			BlockPos pos = new BlockPos(raytrace.getBlockPos());
+			var stack = new ItemStack(bucket);
+			if (bucket.emptyContents(player, level, pos, (BlockHitResult) raytrace, stack)) {
+				bucket.checkExtraContent(player, level, stack, pos);
 				if (!level.isClientSide) {
 					cost(player);
 				}

@@ -41,7 +41,7 @@ public class MagicSoulSandArmEntity extends MagicEntity {
 				Player caster = getCaster(level);
 				for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox())) {
 					if (e != caster) {
-						e.hurt(caster == null ? Magic.magicDamage() : Magic.magicDamage(this, caster), 2);
+						e.hurt(caster == null ? Magic.magicDamage(level) : Magic.magicDamage(this, caster), 2);
 						e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30, 1));
 					}
 				}

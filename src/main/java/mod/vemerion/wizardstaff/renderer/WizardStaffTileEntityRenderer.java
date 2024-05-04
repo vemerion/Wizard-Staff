@@ -16,12 +16,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
@@ -41,7 +40,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 	}
 
 	@Override
-	public void renderByItem(ItemStack itemStackIn, ItemTransforms.TransformType transformType, PoseStack matrixStackIn,
+	public void renderByItem(ItemStack itemStackIn, ItemDisplayContext transformType, PoseStack matrixStackIn,
 			MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		if (!shouldRender(itemStackIn))
 			return;
@@ -86,8 +85,8 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 		float magicScale = getModel(itemStackIn).getMagicScale();
 		matrixStackIn.scale(magicScale, magicScale, magicScale);
-		itemRenderer.renderStatic(magic, TransformType.GUI, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn,
-				0);
+		itemRenderer.renderStatic(magic, ItemDisplayContext.GUI, combinedLightIn, combinedOverlayIn, matrixStackIn,
+				bufferIn, null, 0);
 		matrixStackIn.popPose();
 
 	}
@@ -103,7 +102,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 		matrix.translate(0 + Mth.clampedLerp(0, offset.x(), partialTicks),
 				-1.4 + Mth.clampedLerp(0, offset.y(), partialTicks),
 				-1.5 + Mth.clampedLerp(0, offset.z(), partialTicks));
-		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		renderer.renderByItem(stack, ItemDisplayContext.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
 	}
 
@@ -113,7 +112,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 		matrix.pushPose();
 		matrix.mulPose(TransformationHelper.quatFromXYZ(0, 0, (duration / 5f) * 360f, true));
 		matrix.translate(0, -0.5, -1.5);
-		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		renderer.renderByItem(stack, ItemDisplayContext.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
 	}
 
@@ -127,7 +126,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 		matrix.mulPose(TransformationHelper.quatFromXYZ((float) Mth.clampedLerp(0, -45, progress), 0,
 				(float) Mth.clampedLerp(0, 35 * offset, progress), true));
 		matrix.translate(offset, -0.5 - progress / 5, -1.2);
-		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		renderer.renderByItem(stack, ItemDisplayContext.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
 	}
 
@@ -166,9 +165,10 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 			ItemStack stack, PoseStack matrix, MultiBufferSource buffer, int light, int combinedOverlayIn,
 			float partialTicks, HumanoidArm hand) {
 		matrix.pushPose();
-		matrix.mulPose(TransformationHelper.quatFromXYZ((float) Mth.sin((duration / 20) * (float) Math.PI * 2) * 30, 0, 0, true));
+		matrix.mulPose(TransformationHelper.quatFromXYZ((float) Mth.sin((duration / 20) * (float) Math.PI * 2) * 30, 0,
+				0, true));
 		matrix.translate(hand == HumanoidArm.RIGHT ? 1 : -1, -1, -1.2);
-		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		renderer.renderByItem(stack, ItemDisplayContext.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
 	}
 
@@ -190,7 +190,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 		matrix.translate(handOffset + Mth.clampedLerp(0, offset.x(), partialTicks),
 				-0.5 - progress / 5 + Mth.clampedLerp(0, offset.y(), partialTicks),
 				-1.2 + Mth.clampedLerp(0, offset.z(), partialTicks));
-		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		renderer.renderByItem(stack, ItemDisplayContext.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
 	}
 
@@ -206,11 +206,11 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 				Mth.sin(duration / 20 * (float) Math.PI * 2) * 10);
 		matrix.pushPose();
 		matrix.translate(0, -0.5, 0);
-		matrix.mulPose(
-				TransformationHelper.quatFromXYZ((float) (forward.x + waving.x), (float) waving.y, (float) (forward.z + waving.z), true));
+		matrix.mulPose(TransformationHelper.quatFromXYZ((float) (forward.x + waving.x), (float) waving.y,
+				(float) (forward.z + waving.z), true));
 		matrix.translate(0, 0.5, 0);
 		matrix.translate(offset, -0.5 - forwardProgress / 5, -1.2);
-		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		renderer.renderByItem(stack, ItemDisplayContext.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
 	}
 
@@ -223,7 +223,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 				(float) Mth.sin((duration / 10) * (float) Math.PI * 2) * 10, true));
 		matrix.translate(0, 1, 0);
 		matrix.translate(hand == HumanoidArm.RIGHT ? 1 : -1, -1, -1.2);
-		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		renderer.renderByItem(stack, ItemDisplayContext.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
 	}
 
@@ -234,7 +234,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 		matrix.mulPose(TransformationHelper.quatFromXYZ(0, (duration / 40) * 360f, 0, true));
 		matrix.mulPose(TransformationHelper.quatFromXYZ(0, 0, (duration / 5) * 360f, true));
 		matrix.translate(0, 0, -1);
-		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		renderer.renderByItem(stack, ItemDisplayContext.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
 	}
 
@@ -254,7 +254,7 @@ public class WizardStaffTileEntityRenderer extends BlockEntityWithoutLevelRender
 				: maxRotate * maxRotate + maxRotate * 2 * (duration - maxRotate);
 		matrix.mulPose(TransformationHelper.quatFromXYZ(0, rotation, 0, true));
 
-		renderer.renderByItem(stack, ItemTransforms.TransformType.GUI, matrix, buffer, light, combinedOverlayIn);
+		renderer.renderByItem(stack, ItemDisplayContext.GUI, matrix, buffer, light, combinedOverlayIn);
 		matrix.popPose();
 	}
 

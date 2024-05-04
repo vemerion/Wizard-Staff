@@ -19,8 +19,7 @@ public class NetherBrickMagic extends LookAtMagic {
 	protected BlockPos getPosition(ServerLevel level, ServerPlayer player, ItemStack staff) {
 		BlockPos pos = null;
 		if (level.dimension() == Level.NETHER) {
-			pos = level.findNearestMapStructure(ModStructureTags.NETHER_FORTRESS,
-					new BlockPos(player.position()), 100, false);
+			pos = level.findNearestMapStructure(ModStructureTags.NETHER_FORTRESS, player.blockPosition(), 100, false);
 		}
 		return pos;
 	}

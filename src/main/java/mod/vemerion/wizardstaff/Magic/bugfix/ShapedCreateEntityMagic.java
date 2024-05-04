@@ -118,7 +118,7 @@ public class ShapedCreateEntityMagic extends CreateEntityMagic {
 	private Vec3 findValidPosition(Vec3 position, Level level) {
 		int[] heights = new int[] { 0, -1, 1 };
 		for (int height : heights) {
-			BlockPos pos = new BlockPos(position).above(height);
+			var pos = new BlockPos((int) position.x, (int) position.y, (int) position.z).above(height);
 			if (!level.getBlockState(pos).canOcclude() && level.getBlockState(pos.below()).canOcclude())
 				return new Vec3(position.x, pos.getY(), position.z);
 		}

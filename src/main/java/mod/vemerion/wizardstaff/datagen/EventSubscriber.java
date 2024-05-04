@@ -1,8 +1,6 @@
 package mod.vemerion.wizardstaff.datagen;
 
 import mod.vemerion.wizardstaff.Main;
-import net.minecraft.data.DataGenerator;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -13,17 +11,24 @@ public class EventSubscriber {
 
 	@SubscribeEvent
 	public static void onGatherData(GatherDataEvent event) {
-		DataGenerator generator = event.getGenerator();
+		var generator = event.getGenerator();
 
-		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+		var existingFileHelper = event.getExistingFileHelper();
 
 		generator.addProvider(event.includeServer(), new MagicProvider(generator.getPackOutput(), Main.MODID));
 		generator.addProvider(event.includeServer(), new ModRecipeProvider(generator.getPackOutput()));
-		generator.addProvider(event.includeServer(), new ModStructureTagsProvider(generator.getPackOutput(), event.getLookupProvider(), existingFileHelper));
-		
-		generator.addProvider(event.includeClient(), new ModItemModelProvider(generator.getPackOutput(), existingFileHelper));
-		generator.addProvider(event.includeClient(),new ModBlockStateProvider(generator.getPackOutput(), existingFileHelper));
-		generator.addProvider(event.includeClient(),new ModLanguageProvider(generator.getPackOutput()));
-		generator.addProvider(event.includeClient(),new ModSoundProvider(generator.getPackOutput(), existingFileHelper));
+		generator.addProvider(event.includeServer(),
+				new ModStructureTagsProvider(generator.getPackOutput(), event.getLookupProvider(), existingFileHelper));
+
+		generator.addProvider(event.includeServer(),
+				new ModDamageTypeProvider(generator.getPackOutput(), event.getLookupProvider()));
+
+		generator.addProvider(event.includeClient(),
+				new ModItemModelProvider(generator.getPackOutput(), existingFileHelper));
+		generator.addProvider(event.includeClient(),
+				new ModBlockStateProvider(generator.getPackOutput(), existingFileHelper));
+		generator.addProvider(event.includeClient(), new ModLanguageProvider(generator.getPackOutput()));
+		generator.addProvider(event.includeClient(),
+				new ModSoundProvider(generator.getPackOutput(), existingFileHelper));
 	}
 }

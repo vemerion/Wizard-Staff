@@ -91,7 +91,7 @@ public class ForgeEventSubscriber {
 				if (Wizard.isUsingMagic(ModMagics.LISTEN_MAGIC.get(), player) && event.getCause() != player
 						&& player.distanceToSqr(pos) < LISTEN_DISTANCE) {
 					Network.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-							new ListenMagicMessage(new BlockPos(pos)));
+							new ListenMagicMessage(new BlockPos((int) pos.x, (int) pos.y, (int) pos.z)));
 				}
 			}
 		}

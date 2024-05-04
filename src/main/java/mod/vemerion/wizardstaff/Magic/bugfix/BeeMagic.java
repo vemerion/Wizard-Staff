@@ -20,7 +20,7 @@ public class BeeMagic extends BlockRayMagic {
 
 	private static final int STAY_OUT_OF_HIVE_TIME = 20 * 40;
 
-	private static Method tryReleaseBee;
+	private static Method releaseAllOccupants;
 
 	public BeeMagic(MagicType<? extends BeeMagic> type) {
 		super(type);
@@ -39,11 +39,11 @@ public class BeeMagic extends BlockRayMagic {
 		BeehiveBlockEntity hive = (BeehiveBlockEntity) tile;
 
 		try {
-			if (tryReleaseBee == null)
-				tryReleaseBee = ObfuscationReflectionHelper.findMethod(BeehiveBlockEntity.class, "m_58759_",
+			if (releaseAllOccupants == null)
+				releaseAllOccupants = ObfuscationReflectionHelper.findMethod(BeehiveBlockEntity.class, "m_58759_",
 						BlockState.class, BeehiveBlockEntity.BeeReleaseStatus.class);
 
-			List<?> bees = (List<?>) tryReleaseBee.invoke(hive, state, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
+			List<?> bees = (List<?>) releaseAllOccupants.invoke(hive, state, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
 			boolean didRelease = false;
 			for (Object bee : bees) {
 				if (bee instanceof Bee) {

@@ -104,7 +104,7 @@ public class JukeboxMagic extends Magic {
 				if (count % 5 == 0)
 					e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 7, 100, false, false, false));
 			} else if (e.tickCount % 5 == 0) {
-				e.animationSpeed = 1 + player.getRandom().nextFloat() - 0.5f;
+				e.walkAnimation.setSpeed(1 + player.getRandom().nextFloat() - 0.5f);
 				e.swing(InteractionHand.MAIN_HAND);
 				e.swing(InteractionHand.OFF_HAND);
 			}
