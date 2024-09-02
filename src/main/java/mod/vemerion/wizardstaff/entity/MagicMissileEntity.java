@@ -6,7 +6,6 @@ import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModMagics;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -103,7 +102,7 @@ public class MagicMissileEntity extends AbstractArrow implements ItemSupplier {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
@@ -116,7 +115,7 @@ public class MagicMissileEntity extends AbstractArrow implements ItemSupplier {
 	public ItemStack getItem() {
 		return entityData.get(STACK);
 	}
-	
+
 	@Override
 	protected SoundEvent getDefaultHitGroundSoundEvent() {
 		return ModSounds.IMPACT.get();

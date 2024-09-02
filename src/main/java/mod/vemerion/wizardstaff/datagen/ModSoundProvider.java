@@ -2,15 +2,15 @@ package mod.vemerion.wizardstaff.datagen;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.init.ModSounds;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
 
 public class ModSoundProvider extends SoundDefinitionsProvider {
 
-	protected ModSoundProvider(PackOutput packOutput, ExistingFileHelper helper) {
-		super(packOutput, Main.MODID, helper);
+	protected ModSoundProvider(DataGenerator generator, ExistingFileHelper helper) {
+		super(generator, Main.MODID, helper);
 	}
 
 	@Override

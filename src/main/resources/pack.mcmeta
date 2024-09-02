@@ -1,9 +1,8 @@
 {
-  "pack": {
-    "description": {
-      "text": "wizardstaff resources"
-    },
-    "forge:server_data_pack_format": 12,
-    "pack_format": 13
-  }
+    "pack": {
+        "description": "wizard staff resources",
+        "pack_format": 9,
+        "forge:resource_pack_format": 9,
+        "forge:data_pack_format": 10
+    }
 }

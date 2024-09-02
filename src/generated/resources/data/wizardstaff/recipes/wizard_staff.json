@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "equipment",
   "key": {
     "l": {
       "tag": "forge:rods/wooden"
@@ -16,6 +15,5 @@
   ],
   "result": {
     "item": "wizardstaff:wizard_staff"
-  },
-  "show_notification": true
+  }
 }

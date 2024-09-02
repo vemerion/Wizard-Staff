@@ -2,9 +2,8 @@ package mod.vemerion.wizardstaff.Magic.suggestions2;
 
 import java.util.Optional;
 
-import org.joml.Vector4f;
-
 import com.google.gson.JsonObject;
+import com.mojang.math.Vector4f;
 
 import mod.vemerion.wizardstaff.Helper.Helper;
 import mod.vemerion.wizardstaff.Magic.MagicType;

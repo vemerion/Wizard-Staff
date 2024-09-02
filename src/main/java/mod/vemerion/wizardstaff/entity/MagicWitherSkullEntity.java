@@ -4,7 +4,6 @@ import mod.vemerion.wizardstaff.Magic.Magic;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -16,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -60,7 +60,7 @@ public class MagicWitherSkullEntity extends AbstractArrow {
 	protected void onHit(HitResult result) {
 		super.onHit(result);
 		if (!level.isClientSide) {
-			level.explode(this, this.getX(), this.getY(), this.getZ(), 1.0F, false, Level.ExplosionInteraction.MOB);
+			level.explode(this, this.getX(), this.getY(), this.getZ(), 1.0F, false, Explosion.BlockInteraction.BREAK);
 			discard();
 		}
 
@@ -73,7 +73,7 @@ public class MagicWitherSkullEntity extends AbstractArrow {
 			if (getOwner() != null && getOwner() instanceof Player) {
 				target.hurt(Magic.magicDamage(this, (Player) getOwner()), (float) getBaseDamage());
 			} else {
-				target.hurt(Magic.magicDamage(level), (float) getBaseDamage());
+				target.hurt(Magic.magicDamage(), (float) getBaseDamage());
 			}
 
 			if (target instanceof LivingEntity) {
@@ -93,7 +93,7 @@ public class MagicWitherSkullEntity extends AbstractArrow {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

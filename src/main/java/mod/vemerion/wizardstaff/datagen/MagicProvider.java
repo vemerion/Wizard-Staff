@@ -1,9 +1,9 @@
 package mod.vemerion.wizardstaff.datagen;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import com.google.common.collect.ImmutableList;
@@ -23,8 +23,8 @@ import mod.vemerion.wizardstaff.init.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
@@ -44,26 +44,26 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class MagicProvider implements DataProvider {
-	protected final PackOutput packOutput;
+	protected final DataGenerator generator;
 	private final String modid;
 
-	public MagicProvider(PackOutput packOutput, String modid) {
-		this.packOutput = packOutput;
+	public MagicProvider(DataGenerator generator, String modid) {
+		this.generator = generator;
 		this.modid = modid;
 	}
 
 	@Override
-	public CompletableFuture<?> run(CachedOutput cache) {
-		Path folder = packOutput.getOutputFolder();
-		var list = new ArrayList<CompletableFuture<?>>();
+	public void run(CachedOutput cache) throws IOException {
+		Path folder = generator.getOutputFolder();
 		registerMagics(magic -> {
 			Path path = folder
 					.resolve("data/" + modid + "/" + Magics.FOLDER_NAME + "/" + magic.getName().getPath() + ".json");
-			list.add(DataProvider.saveStable(cache, magic.write(), path));
+			try {
+				DataProvider.saveStable(cache, magic.write(), path);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		});
-		return CompletableFuture.allOf(list.toArray((length) -> {
-			return new CompletableFuture[length];
-		}));
 	}
 
 	// @formatter:off
@@ -164,7 +164,8 @@ public class MagicProvider implements DataProvider {
 	// @formatter:on
 
 	private void magicArmor(Consumer<Magic> c, Item from, Item created) {
-		c.accept(create(ModMagics.TRANSMUTATION_MAGIC.get(), ForgeRegistries.ITEMS.getKey(created).getPath() + "_fashion_magic")
+		c.accept(create(ModMagics.TRANSMUTATION_MAGIC.get(),
+				ForgeRegistries.ITEMS.getKey(created).getPath() + "_fashion_magic")
 				.setAdditionalParams(created, ModSounds.PLOP.get()).setParams(30, 20, ing(from)));
 	}
 

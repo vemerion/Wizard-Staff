@@ -5,7 +5,6 @@ import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModItems;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -69,7 +68,7 @@ public class WizardHatEntity extends AbstractArrow {
 			if (getOwner() != null && getOwner() instanceof Player) { // getShooter()
 				target.hurt(Magic.magicDamage(this, (Player) getOwner()), (float) getBaseDamage());
 			} else {
-				target.hurt(Magic.magicDamage(level), (float) getBaseDamage());
+				target.hurt(Magic.magicDamage(), (float) getBaseDamage());
 			}
 			playSound(getDefaultHitGroundSoundEvent(), 1, 0.8f + random.nextFloat() * 0.4f);
 
@@ -87,7 +86,7 @@ public class WizardHatEntity extends AbstractArrow {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

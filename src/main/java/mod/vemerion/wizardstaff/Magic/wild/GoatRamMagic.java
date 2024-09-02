@@ -11,7 +11,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.InstrumentTags;
@@ -84,9 +84,9 @@ public class GoatRamMagic extends Magic {
 		if (!success)
 			return ModSounds.POOF.get();
 
-		var sounds = BuiltInRegistries.INSTRUMENT.getTag(InstrumentTags.GOAT_HORNS);
+		var sounds = Registry.INSTRUMENT.getTag(InstrumentTags.GOAT_HORNS);
 
-		return sounds.flatMap(e -> e.getRandomElement(rand)).map(e -> e.get().soundEvent().get())
-				.orElse(SoundEvents.GOAT_HORN_SOUND_VARIANTS.get(0).get());
+		return sounds.flatMap(e -> e.getRandomElement(rand)).map(e -> e.get().soundEvent())
+				.orElse(SoundEvents.GOAT_HORN_SOUND_VARIANTS.get(0));
 	}
 }

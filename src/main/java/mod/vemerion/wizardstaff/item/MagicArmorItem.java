@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import mod.vemerion.wizardstaff.Main;
+import mod.vemerion.wizardstaff.init.ModItems;
 import mod.vemerion.wizardstaff.model.MagicArmorModel;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
@@ -15,7 +16,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.Item;
@@ -26,8 +26,8 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public abstract class MagicArmorItem extends DyeableArmorItem {
 
-	public MagicArmorItem(ArmorMaterial material, ArmorItem.Type type) {
-		super(material, type, new Item.Properties().stacksTo(1));
+	public MagicArmorItem(ArmorMaterial material, EquipmentSlot type) {
+		super(material, type, new Item.Properties().tab(ModItems.WIZARD_STAFF_ITEM_GROUP).stacksTo(1));
 	}
 
 	@Override
@@ -71,18 +71,18 @@ public abstract class MagicArmorItem extends DyeableArmorItem {
 	}
 
 	protected static abstract class MagicArmorMaterial implements ArmorMaterial {
-		protected static final Map<ArmorItem.Type, Integer> MAX_DAMAGE = Map.of(ArmorItem.Type.BOOTS, 13,
-				ArmorItem.Type.LEGGINGS, 15, ArmorItem.Type.CHESTPLATE, 16, ArmorItem.Type.HELMET, 11);
-		protected static final Map<ArmorItem.Type, Integer> PROTECTION = Map.of(ArmorItem.Type.BOOTS, 1,
-				ArmorItem.Type.LEGGINGS, 2, ArmorItem.Type.CHESTPLATE, 3, ArmorItem.Type.HELMET, 1);
+		protected static final Map<EquipmentSlot, Integer> MAX_DAMAGE = Map.of(EquipmentSlot.FEET, 13,
+				EquipmentSlot.LEGS, 15, EquipmentSlot.CHEST, 16, EquipmentSlot.HEAD, 11);
+		protected static final Map<EquipmentSlot, Integer> PROTECTION = Map.of(EquipmentSlot.FEET, 1,
+				EquipmentSlot.LEGS, 2, EquipmentSlot.CHEST, 3, EquipmentSlot.HEAD, 1);
 
 		@Override
-		public int getDurabilityForType(ArmorItem.Type type) {
+		public int getDurabilityForSlot(EquipmentSlot type) {
 			return MAX_DAMAGE.get(type) * 5;
 		}
 
 		@Override
-		public int getDefenseForType(ArmorItem.Type type) {
+		public int getDefenseForSlot(EquipmentSlot type) {
 			return PROTECTION.get(type);
 		}
 

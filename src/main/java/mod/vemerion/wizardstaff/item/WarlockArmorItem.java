@@ -7,14 +7,14 @@ import mod.vemerion.wizardstaff.init.ModLayerLocations;
 import mod.vemerion.wizardstaff.model.MagicArmorModel;
 import mod.vemerion.wizardstaff.model.WarlockArmorModel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class WarlockArmorItem extends MagicArmorItem {
 	private static final int COLOR = Color.RED.getRGB();
 
-	public WarlockArmorItem(ArmorItem.Type type) {
+	public WarlockArmorItem(EquipmentSlot type) {
 		super(new WarlockArmorMaterial(), type);
 	}
 

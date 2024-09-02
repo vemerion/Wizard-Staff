@@ -1,19 +1,18 @@
 package mod.vemerion.wizardstaff.Magic.wild;
 
+import java.util.List;
 import java.util.Optional;
 
 import mod.vemerion.wizardstaff.Magic.MagicType;
 import mod.vemerion.wizardstaff.Magic.RayMagic;
 import mod.vemerion.wizardstaff.init.ModSounds;
 import mod.vemerion.wizardstaff.particle.MagicDustParticleData;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.VariantHolder;
+import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.CatVariant;
 import net.minecraft.world.entity.animal.FrogVariant;
-import net.minecraft.world.entity.npc.VillagerType;
+import net.minecraft.world.entity.animal.frog.Frog;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -34,64 +33,27 @@ public class CycleVariantMagic extends RayMagic {
 
 	@Override
 	protected void hitEntity(Level level, Player player, Entity target) {
-		if (target instanceof VariantHolder<?> holder) {
-			if (cycle(holder)) {
-				cost(player);
-				playSoundServer(level, player, ModSounds.SWAP.get(), 1, soundPitch(player));
+		if (target instanceof Frog frog) {
+			frog.setVariant(
+					cycle(frog.getVariant(), List.of(FrogVariant.COLD, FrogVariant.TEMPERATE, FrogVariant.WARM)));
+			cost(player);
+			playSoundServer(level, player, ModSounds.SWAP.get(), 1, soundPitch(player));
+		} else if (target instanceof Cat cat) {
+			cat.setCatVariant(cycle(cat.getCatVariant(),
+					List.of(CatVariant.TABBY, CatVariant.BLACK, CatVariant.RED, CatVariant.SIAMESE,
+							CatVariant.BRITISH_SHORTHAIR, CatVariant.CALICO, CatVariant.PERSIAN, CatVariant.RAGDOLL,
+							CatVariant.WHITE, CatVariant.JELLIE, CatVariant.ALL_BLACK)));
+			cost(player);
+			playSoundServer(level, player, ModSounds.SWAP.get(), 1, soundPitch(player));
+		}
+	}
+
+	private <T> T cycle(T current, List<T> variants) {
+		for (int i = 0; i < variants.size(); i++) {
+			if (current == variants.get(i)) {
+				return variants.get((i + 1) % variants.size());
 			}
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	<T> boolean cycle(VariantHolder<T> holder) {
-		var variant = holder.getVariant();
-
-		// Enum
-		if (variant instanceof Enum<?> e) {
-			Enum<?>[] values = e.getClass().getEnumConstants();
-			for (int i = 0; i < values.length; i++) {
-				if (values[i] == e) {
-					holder.setVariant((T) values[(i + 1) % values.length]);
-					return true;
-				}
-			}
-		}
-
-		// Registry
-		if (variant instanceof CatVariant)
-			return cycleReg(holder, BuiltInRegistries.CAT_VARIANT, variant);
-		else if (variant instanceof FrogVariant)
-			return cycleReg(holder, BuiltInRegistries.FROG_VARIANT, variant);
-		else if (variant instanceof VillagerType)
-			return cycleReg(holder, BuiltInRegistries.VILLAGER_TYPE, variant);
-
-		return false;
-	}
-
-	@SuppressWarnings("unchecked")
-	<A, B> boolean cycleReg(VariantHolder<A> holder, Registry<B> reg, A value) {
-		var next = nextFromReg(reg, value);
-		if (next != null) {
-			holder.setVariant((A) next);
-			return true;
-		}
-		return false;
-	}
-
-	<T> T nextFromReg(Registry<T> reg, Object value) {
-		T first = null;
-		boolean next = false;
-		for (var v : reg) {
-			if (next)
-				return v;
-			if (first == null)
-				first = v;
-			if (v == value)
-				next = true;
-		}
-		if (next)
-			return first;
-
-		return null;
+		return current;
 	}
 }

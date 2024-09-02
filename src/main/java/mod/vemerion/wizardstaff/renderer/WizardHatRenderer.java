@@ -2,6 +2,7 @@ package mod.vemerion.wizardstaff.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Quaternion;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.entity.WizardHatEntity;
@@ -12,7 +13,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.util.TransformationHelper;
 
 public class WizardHatRenderer extends EntityRenderer<WizardHatEntity> {
 	private static final ResourceLocation TEXTURES = new ResourceLocation(Main.MODID,
@@ -33,7 +33,7 @@ public class WizardHatRenderer extends EntityRenderer<WizardHatEntity> {
 		matrixStackIn.pushPose();
 		matrixStackIn.scale(-1, -1, 1);
 		matrixStackIn.translate(0, 0.5, 0);
-		matrixStackIn.mulPose(TransformationHelper.quatFromXYZ(0, entityIn.getHatRotation(partialTicks), 0, true));
+		matrixStackIn.mulPose(new Quaternion(0, entityIn.getHatRotation(partialTicks), 0, true));
 		VertexConsumer ivertexbuilder = bufferIn.getBuffer(model.renderType(this.getTextureLocation(entityIn)));
 		model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 0.1f, 0.8f, 1);
 		ivertexbuilder = bufferIn.getBuffer(model.renderType(OVERLAY));

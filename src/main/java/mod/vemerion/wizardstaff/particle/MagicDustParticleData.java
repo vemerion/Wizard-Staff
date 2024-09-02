@@ -1,6 +1,6 @@
 package mod.vemerion.wizardstaff.particle;
 
-import org.joml.Vector3f;
+import com.mojang.math.Vector3f;
 
 import mod.vemerion.wizardstaff.init.ModParticles;
 import net.minecraft.core.particles.DustParticleOptions;

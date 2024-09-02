@@ -7,14 +7,14 @@ import mod.vemerion.wizardstaff.init.ModLayerLocations;
 import mod.vemerion.wizardstaff.model.MagicArmorModel;
 import mod.vemerion.wizardstaff.model.WizardArmorModel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class WizardArmorItem extends MagicArmorItem {
 	private static final int COLOR = Color.MAGENTA.getRGB();
 
-	public WizardArmorItem(ArmorItem.Type type) {
+	public WizardArmorItem(EquipmentSlot type) {
 		super(new WizardArmorMaterial(), type);
 	}
 

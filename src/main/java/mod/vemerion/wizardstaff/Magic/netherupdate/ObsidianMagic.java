@@ -12,7 +12,7 @@ import mod.vemerion.wizardstaff.renderer.WizardStaffLayer.RenderThirdPersonMagic
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer;
 import mod.vemerion.wizardstaff.renderer.WizardStaffTileEntityRenderer.RenderFirstPersonMagic;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -41,7 +41,7 @@ public class ObsidianMagic extends Magic {
 
 	@Override
 	protected void decodeAdditional(FriendlyByteBuf buffer) {
-		dimension = ResourceKey.create(Registries.DIMENSION, buffer.readResourceLocation());
+		dimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, buffer.readResourceLocation());
 		texture = buffer.readResourceLocation();
 	}
 
@@ -53,7 +53,7 @@ public class ObsidianMagic extends Magic {
 
 	@Override
 	protected void readAdditional(JsonObject json) {
-		dimension = ResourceKey.create(Registries.DIMENSION,
+		dimension = ResourceKey.create(Registry.DIMENSION_REGISTRY,
 				new ResourceLocation(GsonHelper.getAsString(json, "dimension")));
 		texture = new ResourceLocation(GsonHelper.getAsString(json, "texture"));
 	}

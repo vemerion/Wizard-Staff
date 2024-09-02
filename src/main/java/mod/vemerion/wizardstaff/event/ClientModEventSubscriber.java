@@ -4,7 +4,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 
 import mod.vemerion.wizardstaff.Main;
 import mod.vemerion.wizardstaff.capability.Wizard;
@@ -126,9 +126,9 @@ public class ClientModEventSubscriber {
 
 	@SubscribeEvent
 	public static void onRegisterParticleFactories(RegisterParticleProvidersEvent event) {
-		event.registerSpriteSet(ModParticles.MAGIC_SMOKE_PARTICLE.get(), sprite -> new SmokeParticle.Provider(sprite));
-		event.registerSpriteSet(ModParticles.MAGIC_FLAME_PARTICLE.get(), sprite -> new FlameParticle.Provider(sprite));
-		event.registerSpriteSet(ModParticles.MAGIC_DUST_PARTICLE.get(), sprite -> new DustParticle.Provider(sprite));
+		event.register(ModParticles.MAGIC_SMOKE_PARTICLE.get(), sprite -> new SmokeParticle.Provider(sprite));
+		event.register(ModParticles.MAGIC_FLAME_PARTICLE.get(), sprite -> new FlameParticle.Provider(sprite));
+		event.register(ModParticles.MAGIC_DUST_PARTICLE.get(), sprite -> new DustParticle.Provider(sprite));
 	}
 
 	@SubscribeEvent
@@ -152,7 +152,7 @@ public class ClientModEventSubscriber {
 			ps.pushPose();
 			ps.translate((screenWidth - 256) / 2, 0, 0);
 			ps.translate(256 / 2, 256 / 2, 0);
-			ps.mulPose(Axis.ZP.rotationDegrees(time));
+			ps.mulPose(Vector3f.ZP.rotationDegrees(time));
 			ps.translate(-256 / 2, -256 / 2, 0);
 
 			GuiComponent.blit(ps, 0, 0, -90, 0, 0, 256, 256, 256, 256);

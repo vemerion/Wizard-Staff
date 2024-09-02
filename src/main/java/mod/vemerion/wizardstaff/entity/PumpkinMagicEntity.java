@@ -48,7 +48,7 @@ public class PumpkinMagicEntity extends MagicEntity {
 		Vec3 sideways = Vec3.directionFromRotation(0, getYRot() + 90);
 		Vec3 pos = position().add(sideways.x * 3, 0, sideways.z * 3);
 		Player shooter = getCaster(level);
-		DamageSource source = shooter == null ? Magic.magicDamage(level) : Magic.magicDamage(this, shooter);
+		DamageSource source = shooter == null ? Magic.magicDamage() : Magic.magicDamage(this, shooter);
 		for (int i = 0; i < 6; i++) {
 			for (Entity e : level.getEntities(shooter, new AABB(pos, pos).inflate(1, 2, 1),
 					(e) -> e instanceof LivingEntity)) {

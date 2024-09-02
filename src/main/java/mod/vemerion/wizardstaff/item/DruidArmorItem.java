@@ -7,14 +7,14 @@ import mod.vemerion.wizardstaff.init.ModLayerLocations;
 import mod.vemerion.wizardstaff.model.DruidArmorModel;
 import mod.vemerion.wizardstaff.model.MagicArmorModel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class DruidArmorItem extends MagicArmorItem {
 	private static final int COLOR = Color.GREEN.getRGB();
 
-	public DruidArmorItem(ArmorItem.Type type) {
+	public DruidArmorItem(EquipmentSlot type) {
 		super(new DruidArmorMaterial(), type);
 	}
 

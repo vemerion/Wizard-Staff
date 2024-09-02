@@ -19,7 +19,7 @@ import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
@@ -28,7 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
 
-public class SpellbookGui extends GuiComponent implements Renderable, GuiEventListener {
+public class SpellbookGui extends GuiComponent implements Widget, GuiEventListener {
 	private static final Component SEARCH_HINT = Component.translatable("gui." + Main.MODID + ".search_hint")
 			.withStyle(ChatFormatting.ITALIC);
 	private static final ResourceLocation GUI = new ResourceLocation(Main.MODID, "textures/gui/spellbook.png");
@@ -57,7 +57,6 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 	private int page;
 	private SpellDescription description;
 	private EditBox search;
-	private boolean focused;
 	WizardStaffScreen parent;
 	Minecraft mc;
 
@@ -196,8 +195,8 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 			if (b.stack.getHoverName().getString().toLowerCase().contains(filter)
 					|| b.magicDescr.getName().getString().toLowerCase().contains(filter)) {
 				searched.add(b);
-				b.setX(left + BORDER_X + (i % ITEMS_PER_ROW) * ITEM_SIZE);
-				b.setY(top + ITEM_BORDER_Y + (i / ITEMS_PER_ROW) * ITEM_SIZE);
+				b.x = left + BORDER_X + (i % ITEMS_PER_ROW) * ITEM_SIZE;
+				b.y = top + ITEM_BORDER_Y + (i / ITEMS_PER_ROW) * ITEM_SIZE;
 				i = (i + 1) % ITEMS_PER_PAGE;
 			}
 		page = 0;
@@ -236,11 +235,11 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 		}
 
 		@Override
-		public void renderWidget(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-			if (isHovered())
+		public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+			if (isHoveredOrFocused())
 				parent.renderTooltip(matrixStack, getMessage(), mouseX, mouseY);
 
-			mc.getItemRenderer().renderAndDecorateItem(matrixStack, stack, getX(), getY());
+			mc.getItemRenderer().renderAndDecorateItem(stack, x, y);
 		}
 
 		@Override
@@ -249,7 +248,7 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 		}
 
 		@Override
-		protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+		public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
 		}
 	}
 
@@ -259,7 +258,7 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 	private static final Component INFINITY = Component.translatable("gui." + Main.MODID + ".infinity");
 	private static final Component SECONDS = Component.translatable("gui." + Main.MODID + ".seconds");
 
-	private class SpellDescription implements Renderable, GuiEventListener {
+	private class SpellDescription implements Widget, GuiEventListener {
 		private ItemStack stack;
 		private Button back;
 		private int left;
@@ -273,7 +272,6 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 		String cost, duration;
 		private int linesPerPage;
 		private int pageCount;
-		private boolean focused;
 
 		public SpellDescription(Magic.Description magicDescr, ItemStack stack, int left, int top) {
 			this.magicDescr = magicDescr;
@@ -330,7 +328,7 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 			int textWidth = 0;
 
 			// Item
-			mc.getItemRenderer().renderAndDecorateItem(matrixStack, stack, left + X_SIZE / 2 - 8, y);
+			mc.getItemRenderer().renderAndDecorateItem(stack, left + X_SIZE / 2 - 8, y);
 			y += 20;
 
 			// Magic name
@@ -367,26 +365,5 @@ public class SpellbookGui extends GuiComponent implements Renderable, GuiEventLi
 
 			return false;
 		}
-
-		@Override
-		public void setFocused(boolean pFocused) {
-			focused = true;
-		}
-
-		@Override
-		public boolean isFocused() {
-			return focused;
-		}
-
-	}
-
-	@Override
-	public void setFocused(boolean pFocused) {
-		focused = true;
-	}
-
-	@Override
-	public boolean isFocused() {
-		return focused;
 	}
 }

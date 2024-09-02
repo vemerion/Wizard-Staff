@@ -6,13 +6,13 @@ import mod.vemerion.wizardstaff.init.ModBlocks;
 import mod.vemerion.wizardstaff.init.ModEntities;
 import mod.vemerion.wizardstaff.init.ModItems;
 import mod.vemerion.wizardstaff.init.ModMagics;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 
 public class ModLanguageProvider extends LanguageProvider {
 
-	public ModLanguageProvider(PackOutput packOutput) {
-		super(packOutput, Main.MODID, "en_us");
+	public ModLanguageProvider(DataGenerator gen) {
+		super(gen, Main.MODID, "en_us");
 	}
 
 	// @formatter:off
@@ -56,8 +56,8 @@ public class ModLanguageProvider extends LanguageProvider {
 		add(ModBlocks.MAGIC_BRICKS.get(), "Magic Bricks");
 		add(ModBlocks.MAGIC_LIGHT.get(), "Magic Light");
 
-		add("death.attack.wizardstaff.magic.player", "%1$s was magicked to death by %2$s");
-		add("death.attack.wizardstaff.magic.item", "%1$s was magicked to death by %2$s using %3$s");
+		add("death.attack.wizardstaff.magicplayer", "%1$s was magicked to death by %2$s");
+		add("death.attack.wizardstaff.magicindirect", "%1$s was magicked to death by %2$s");
 		add("death.attack.wizardstaff.magic", "%1$s was magicked to death");
 
 		addGui("toggle_animations", "Toggle GUI animations");
